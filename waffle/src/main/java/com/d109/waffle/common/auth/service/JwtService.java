@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.d109.waffle.api.user.UserDto;
-import com.d109.waffle.api.user.UserRepository;
+import com.d109.waffle.api.user.entity.UserEntity;
+import com.d109.waffle.api.user.repository.UserRepository;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ public class JwtService {
 		Date now = new Date();
 		String role;
 
-		UserDto fanDto = userRepository.findByEmail(email).get();
+		UserEntity fanDto = userRepository.findByEmail(email).get();
 		role = fanDto.getRole().getKey();
 
 		return JWT.create()

@@ -1,4 +1,6 @@
-package com.d109.waffle.api.user;
+package com.d109.waffle.api.user.entity;
+
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,10 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.d109.waffle.common.auth.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -29,7 +36,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @DynamicInsert @DynamicUpdate
-public class UserDto {
+public class UserEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,18 +49,22 @@ public class UserDto {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 
-	private String birthday;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+	private LocalDateTime birthday;
 
 	private String tel;
 
 	@Column(name = "refresh_token")
 	private String refreshToken;
 
+	@CreationTimestamp
 	@Column(name = "create_at")
-	private String createAt;
+	private LocalDateTime createAt;
 
+	@UpdateTimestamp
 	@Column(name = "update_at")
-	private String updateAt;
+	private LocalDateTime updateAt;
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -62,7 +73,7 @@ public class UserDto {
 	public void authorizeUser() {this.role = Role.USER;}
 
 	// Encrypt password
-	private void encodePassword(PasswordEncoder passwordEncoder) {
+	public void encodePassword(PasswordEncoder passwordEncoder) {
 		this.password = passwordEncoder.encode(this.password);
 	}
 

@@ -8,9 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.d109.waffle.api.user.Role;
-import com.d109.waffle.api.user.UserDto;
-import com.d109.waffle.api.user.UserRepository;
+import com.d109.waffle.common.auth.Role;
+import com.d109.waffle.api.user.entity.UserEntity;
+import com.d109.waffle.api.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,10 +21,10 @@ public class LoginService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Optional<UserDto> userDto = userRepository.findByEmail(email);
+		Optional<UserEntity> userDto = userRepository.findByEmail(email);
 
 		if (userDto.isPresent()) {
-			UserDto user = userDto.get();
+			UserEntity user = userDto.get();
 			return User.builder()
 				.username(user.getEmail())
 				.password(user.getPassword())

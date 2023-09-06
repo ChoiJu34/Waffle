@@ -1,4 +1,4 @@
-package com.d109.waffle.common.auth;
+package com.d109.waffle.common.auth.handler;
 
 import java.io.IOException;
 

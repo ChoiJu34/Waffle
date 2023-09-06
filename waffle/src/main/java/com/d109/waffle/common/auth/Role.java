@@ -1,4 +1,4 @@
-package com.d109.waffle.api.user;
+package com.d109.waffle.common.auth;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

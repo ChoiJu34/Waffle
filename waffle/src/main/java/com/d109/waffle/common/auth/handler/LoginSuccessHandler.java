@@ -1,17 +1,16 @@
-package com.d109.waffle.common.auth;
+package com.d109.waffle.common.auth.handler;
 
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
-import com.d109.waffle.api.user.UserRepository;
+import com.d109.waffle.api.user.repository.UserRepository;
 import com.d109.waffle.common.auth.service.JwtService;
 
 import lombok.RequiredArgsConstructor;

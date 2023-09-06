@@ -17,10 +17,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.d109.waffle.api.user.Role;
-import com.d109.waffle.api.user.UserRepository;
-import com.d109.waffle.common.auth.LoginFailureHandler;
-import com.d109.waffle.common.auth.LoginSuccessHandler;
+import com.d109.waffle.common.auth.Role;
+import com.d109.waffle.api.user.repository.UserRepository;
+import com.d109.waffle.common.auth.handler.LoginFailureHandler;
+import com.d109.waffle.common.auth.handler.LoginSuccessHandler;
 import com.d109.waffle.common.auth.filter.CustomJsonAuthenticationFilter;
 import com.d109.waffle.common.auth.filter.JwtAuthenticationProcessingFilter;
 import com.d109.waffle.common.auth.service.JwtService;
@@ -67,6 +67,8 @@ public class SecurityConfig {
 			// 아이콘, css, js 관련
 			// 기본 페이지, css, image, js 하위 폴더에 있는 자료들은 모두 접근 가능
 			.antMatchers("/css/**", "/images/**", "/js/**", "/favicon.ico", "/file/**")
+			.permitAll()
+			.antMatchers("/user/sign-up")
 			.permitAll()
 			// .antMatchers("/search/getAllGroup")
 			// .permitAll()

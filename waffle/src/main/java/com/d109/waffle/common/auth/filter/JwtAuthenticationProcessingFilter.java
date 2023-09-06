@@ -17,8 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.d109.waffle.api.user.UserDto;
-import com.d109.waffle.api.user.UserRepository;
+import com.d109.waffle.api.user.entity.UserEntity;
+import com.d109.waffle.api.user.repository.UserRepository;
 import com.d109.waffle.common.auth.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
@@ -67,7 +67,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 			});
 	}
 
-	private String reIssueRefreshToken(UserDto user) {
+	private String reIssueRefreshToken(UserEntity user) {
 		String reIssuedRefreshToken = jwtService.createRefreshToken();
 		user.updateRefreshToken(reIssuedRefreshToken);
 		userRepository.saveAndFlush(user);
@@ -97,7 +97,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	public void saveAuthentication(UserDto myUser) {
+	public void saveAuthentication(UserEntity myUser) {
 		String password = myUser.getPassword();
 
 		UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
