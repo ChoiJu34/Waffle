@@ -1,7 +1,10 @@
 package com.d109.waffle.api.user.service;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtService jwtService;
+	private final EmailServiceImpl emailService;
 
 	@Override
 	public void signUp(UserEntity userEntity) throws Exception {
@@ -38,5 +42,15 @@ public class UserServiceImpl implements UserService {
 
 		user.encodePassword(passwordEncoder);
 		userRepository.save(user);
+	}
+
+	@Override
+	public void verifyEmail(String email) throws Exception {
+		Optional<UserEntity> userEntity = userRepository.findByEmail(email);
+		if(!userEntity.isPresent()) {
+			emailService.createEmailToken(email);
+		} else {
+			throw new DuplicateKeyException("이미 가입 정보가 존재합니다.");
+		}
 	}
 }
