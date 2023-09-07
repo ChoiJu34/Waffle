@@ -35,6 +35,7 @@ public class TripPackageController {
 
 	@PostMapping("/test")
 	public ResponseEntity<?> test(@RequestBody String data) throws JsonProcessingException {
+		System.out.println(data);
 		Map<String, Object> map = tripPackageService.all(data);
 		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 	}

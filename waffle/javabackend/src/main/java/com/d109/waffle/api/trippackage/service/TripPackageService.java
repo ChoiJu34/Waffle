@@ -30,7 +30,7 @@ public class TripPackageService {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
 
-		//data : 0:항공사, 1:출발항공, 2:출발시간, 3:도착항공, 4:도착시간, 5:직항, 6:걸리는시간, 7:걸리는분
+		//data : [[day1 항공], [day1 카드], [day2 항공], [day2 카드]]
 		//팝업닫기 배열 다음배열부터 카드정보
 		//카드 이름이 띄워쓰기가 있어서....
 		return dataMap;
