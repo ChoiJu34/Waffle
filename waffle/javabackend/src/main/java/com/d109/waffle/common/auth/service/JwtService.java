@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.d109.waffle.api.user.entity.UserEntity;
 import com.d109.waffle.api.user.repository.UserRepository;
 
@@ -165,6 +166,9 @@ public class JwtService {
 		try {
 			JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
 			return true;
+		} catch (TokenExpiredException tee) {
+			log.error("만료된 토큰입니다. {}", tee.getMessage());
+			return false;
 		} catch (Exception e) {
 			log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
 			return false;

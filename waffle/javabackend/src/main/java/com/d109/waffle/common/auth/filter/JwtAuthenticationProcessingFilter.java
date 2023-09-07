@@ -86,13 +86,13 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
 		log.info("checkAccessTokenAndAuthentication response"+response.getStatus());
 
-		Optional<String> accessToken = jwtService.extractAccessToken(request);
-		if(accessToken.isPresent()) {
-			if(!jwtService.isTokenValid(accessToken.get())) {
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());
-				return;
-			}
-		}
+		// Optional<String> accessToken = jwtService.extractAccessToken(request);
+		// if(accessToken.isPresent()) {
+		// 	if(!jwtService.isTokenValid(accessToken.get())) {
+		// 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		// 		return;
+		// 	}
+		// }
 
 		filterChain.doFilter(request, response);
 	}
