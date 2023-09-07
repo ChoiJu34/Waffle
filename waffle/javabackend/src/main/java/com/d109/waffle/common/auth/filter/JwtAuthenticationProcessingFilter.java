@@ -84,7 +84,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 				.ifPresent(email -> userRepository.findByEmail(email)
 					.ifPresent(this::saveAuthentication)));
 
-		log.info("checkAccessTokenAndAuthentication response"+response.getStatus());
+		// log.info("checkAccessTokenAndAuthentication response"+response.getStatus());
 
 		// Optional<String> accessToken = jwtService.extractAccessToken(request);
 		// if(accessToken.isPresent()) {

@@ -45,7 +45,7 @@ jwt:
   secretKey:
     uptriewucb89fjckwewejhwe37dhcvvmxdsjwuiurhm5ffwfregyutjregyuwhjiquxyd32ctvgbbfgdteeyggdaxccxewrtfdefrgvxcxsdikjme43gbj7gcf6tg64sfjioxjd
   access:
-    expiration: 10000
+    expiration: 100000
     header: Authorization
   refresh:
     # 2 week expiration

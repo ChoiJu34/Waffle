@@ -22,17 +22,17 @@ public class UserServiceImpl implements UserService {
 	private final JwtService jwtService;
 
 	@Override
-	public void signUp(UserEntity userDto) throws Exception {
-		if(userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+	public void signUp(UserEntity userEntity) throws Exception {
+		if(userRepository.findByEmail(userEntity.getEmail()).isPresent()) {
 			throw new Exception("이미 존재하는 이메일입니다.");
 		}
 
 		UserEntity user = UserEntity.builder()
-			.email(userDto.getEmail())
-			.password(userDto.getPassword())
-			.name(userDto.getName())
-			.tel(userDto.getTel())
-			.birthday(userDto.getBirthday())
+			.email(userEntity.getEmail())
+			.password(userEntity.getPassword())
+			.name(userEntity.getName())
+			.tel(userEntity.getTel())
+			.birthday(userEntity.getBirthday())
 			.role(Role.USER)
 			.build();
 

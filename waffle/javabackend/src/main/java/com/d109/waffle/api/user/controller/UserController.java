@@ -2,6 +2,7 @@ package com.d109.waffle.api.user.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +28,10 @@ public class UserController {
 	private final UserServiceImpl userService;
 
 	@PostMapping("/sign-up")
-	public ResponseEntity<?> fanSignUp(@RequestBody UserEntity userDto) throws Exception {
+	public ResponseEntity<?> fanSignUp(@RequestBody UserEntity userEntity) throws Exception {
 		Map<String, String> result = new HashMap<>();
 		try {
-			userService.signUp(userDto);
+			userService.signUp(userEntity);
 			result.put("message", "SUCCESS");
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
@@ -44,9 +45,12 @@ public class UserController {
 	@GetMapping("/token-test")
 	public ResponseEntity<?> tokenTest(@RequestHeader("Authorization") String header) throws Exception {
 		try {
-			String accessToken = jwtService.headerStringToAccessToken(header).get();
-			System.out.println(jwtService.accessTokenToUserId(accessToken));
-			return new ResponseEntity<>(HttpStatus.OK);
+			Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(header);
+			UserEntity user = null;
+			if(userEntity.isPresent()) {
+				user = userEntity.get();
+			}
+			return new ResponseEntity<>(user.getName(), HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.OK);
