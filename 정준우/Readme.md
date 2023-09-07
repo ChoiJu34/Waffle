@@ -145,3 +145,15 @@
 - 앞으로도 사용할 은행 로고 에셋에 추가
 
 ---
+
+# 2023 / 09 / 07
+
+- 모음 통장 정보 수정 및 삭제 디자인 완료
+
+- 마이페이지 여행 계획 / 보유 카드 / 개인정보 수정 / 패키지 북마크 디자인 완료
+
+- 담당한 파트 디자인 완료, 내일 팀 피드백 받을 예정
+  
+  [Figma Link]([Figma](https://www.figma.com/file/2TL4I9L8rIEWkx6Y4sD255/Waffle?type=design&node-id=0-1&mode=design&t=HMwMwUPKhG2II5S7-0))
+
+---
