@@ -23,3 +23,12 @@
     모임통장 api 조사
 
 
+## 2023/09/06
+
+1. GIT
+    git branch 나눔과 권한 정리
+    git switch, checkout, rebase, reset 공부
+
+2. INFRA
+    jenkins pipeline 조사
+
