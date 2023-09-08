@@ -34,33 +34,77 @@ def convert_data(request):
         # Chrome WebDriver 실행 파일의 경로를 지정
         driver = webdriver.Chrome()
         try:
-            data = []
+            planes = []
+            cards = []
+            tests=[]
             for n in range(day):
                 # Constructing the URL
                 url = f'https://fly.interpark.com/booking/mainFlights.do?tripType=OW&sdate0={int(startStart)+int(n)}&sdate1=&dep0={placeStart}&arr0={placeEnd}&dep1=&arr1=&adt={memberCnt}&chd=0&inf=0&val=&comp=Y&via=#list'
                 xpath = '//ul[@id="schedule0List"]/li'
 
                 driver.get(url)
-                wait=WebDriverWait(driver, 10)
+                wait=WebDriverWait(driver, 60)
                 wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
 
                 elements = driver.find_elements(By.XPATH, xpath)
                 # data = [element.get_attribute('textContent') for element in elements]
                 plane = []
-                cards = []
+                card = []
+                test=[]
                 for element in elements:
-                    origin = element.get_attribute('textContent').split('팝업닫기')
-                    planeinfo=origin[0].split()
-                    if planeinfo[2].split[":"][0]>startStart[1].split[":"][0]: # 비행기시간>설정시간
+                    pattern=r'공동운항.*?입니다.|Best'
+                    origin = re.sub(pattern,"",element.get_attribute('textContent')).split('팝업닫기')
+                    planeTime=origin[0].split()[2].split(":")
+                    userTimeS=planPlane["startStart"].split()[1].split(":")
+                    userTimeE=planPlane["startEnd"].split()[1].split(":")
+                    test.append("??")
+                    pt = int(planeTime[0])
+                    uts = int(userTimeS[0])
+                    ute = int(userTimeE[0])
+                    pt1 = int(planeTime[1])
+                    uts1 = int(userTimeS[1])
+                    ute1 = int(userTimeE[1])
+                    if n==0:
+                        if pt>uts: # 비행기H>설정H
+                            test.append(1)
+                            test.append(planeTime[0])
+                            test.append(userTimeS[0])
+                            plane.append(origin[0].split())
+                            card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+                        elif pt==uts and pt1>=uts1:
+                            test.append(2)
+                            test.append(planeTime[0])
+                            test.append(userTimeS[0])
+                            plane.append(origin[0].split())
+                            card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+                    elif n==(day-1):
+                        if pt<ute:
+                            test.append(3)
+                            test.append(planeTime[0])
+                            test.append(userTimeE[0])
+                            plane.append(origin[0].split())
+                            card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+                        elif pt==ute and pt1<=ute1:
+                            test.append(4)
+                            test.append(planeTime[0])
+                            test.append(userTimeE[0])
+                            plane.append(origin[0].split())
+                            card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+                    else:
+                        test.append(5)
+                        test.append(planeTime[0])
                         plane.append(origin[0].split())
-                        cards.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+                        card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
 
-                data.append(plane)
-                data.append(cards)
+                planes.append(plane)
+                cards.append(card)
+                tests.append(test)
 
             response_data = {
                 'result': 'accept success',
-                'data': data
+                'planes' : planes,
+                'cards' : cards,
+                'tests' : tests
             }
 
             # Spring Boot로 응답
