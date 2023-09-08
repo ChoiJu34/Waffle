@@ -14,97 +14,78 @@ def convert_data(request):
     if request.method == 'POST':
         # Spring Boot로부터 데이터 수신
         data = json.loads(request.body)
-
         # Extracting data from JSON
         memberCnt = data["memberCnt"]
-        planPlane = data["planPlane"][0]  # Assuming you are using the first planPlane entry
-
-        # Extracting relevant fields from planPlane
-        placeStart = planPlane["placeStart"]
-        placeEnd = planPlane["placeEnd"]
-        startStart = planPlane["startStart"].split()[0].replace("-", "")
-        startEnd = planPlane["startEnd"].split()[0].replace("-", "")
-
-        day = int(startEnd)-int(startStart) + 1
-
         options = Options()
         options.add_argument("--headless")  # 헤드리스 모드로 실행
         options.add_argument("--disable-gpu")  # GPU 사용 안 함 (헤드리스 모드에서 필요)
-
         # Chrome WebDriver 실행 파일의 경로를 지정
         driver = webdriver.Chrome()
         try:
-            planes = []
-            cards = []
-            tests=[]
-            for n in range(day):
-                # Constructing the URL
-                url = f'https://fly.interpark.com/booking/mainFlights.do?tripType=OW&sdate0={int(startStart)+int(n)}&sdate1=&dep0={placeStart}&arr0={placeEnd}&dep1=&arr1=&adt={memberCnt}&chd=0&inf=0&val=&comp=Y&via=#list'
-                xpath = '//ul[@id="schedule0List"]/li'
+            result=[]
+            for planPlane in data["planPlane"]:
+                placeStart = planPlane["placeStart"]
+                placeEnd = planPlane["placeEnd"]
+                startStart = planPlane["startStart"].split()[0].replace("-", "")
+                startEnd = planPlane["startEnd"].split()[0].replace("-", "")
 
-                driver.get(url)
-                wait=WebDriverWait(driver, 60)
-                wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+                day = int(startEnd)-int(startStart) + 1
+                planes = []
+                cards = []
+                for n in range(day):
+                    # Constructing the URL
+                    url = f'https://fly.interpark.com/booking/mainFlights.do?tripType=OW&sdate0={int(startStart)+int(n)}&sdate1=&dep0={placeStart}&arr0={placeEnd}&dep1=&arr1=&adt={memberCnt}&chd=0&inf=0&val=&comp=Y&via=#list'
+                    xpath = '//ul[@id="schedule0List"]/li'
 
-                elements = driver.find_elements(By.XPATH, xpath)
-                # data = [element.get_attribute('textContent') for element in elements]
-                plane = []
-                card = []
-                test=[]
-                for element in elements:
-                    pattern=r'공동운항.*?입니다.|Best'
-                    origin = re.sub(pattern,"",element.get_attribute('textContent')).split('팝업닫기')
-                    planeTime=origin[0].split()[2].split(":")
-                    userTimeS=planPlane["startStart"].split()[1].split(":")
-                    userTimeE=planPlane["startEnd"].split()[1].split(":")
-                    test.append("??")
-                    pt = int(planeTime[0])
-                    uts = int(userTimeS[0])
-                    ute = int(userTimeE[0])
-                    pt1 = int(planeTime[1])
-                    uts1 = int(userTimeS[1])
-                    ute1 = int(userTimeE[1])
-                    if n==0:
-                        if pt>uts: # 비행기H>설정H
-                            test.append(1)
-                            test.append(planeTime[0])
-                            test.append(userTimeS[0])
-                            plane.append(origin[0].split())
-                            card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
-                        elif pt==uts and pt1>=uts1:
-                            test.append(2)
-                            test.append(planeTime[0])
-                            test.append(userTimeS[0])
-                            plane.append(origin[0].split())
-                            card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
-                    elif n==(day-1):
-                        if pt<ute:
-                            test.append(3)
-                            test.append(planeTime[0])
-                            test.append(userTimeE[0])
-                            plane.append(origin[0].split())
-                            card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
-                        elif pt==ute and pt1<=ute1:
-                            test.append(4)
-                            test.append(planeTime[0])
-                            test.append(userTimeE[0])
-                            plane.append(origin[0].split())
-                            card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
-                    else:
-                        test.append(5)
-                        test.append(planeTime[0])
-                        plane.append(origin[0].split())
-                        card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+                    driver.get(url)
+                    wait=WebDriverWait(driver, 120)
+                    wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
 
-                planes.append(plane)
-                cards.append(card)
-                tests.append(test)
+                    elements = driver.find_elements(By.XPATH, xpath)
+
+                    plane = []
+                    card = []
+                    for element in elements:
+                        pattern=r'공동운항.*?입니다.|Best'
+                        origin = re.sub(pattern,"",element.get_attribute('textContent')).split('팝업닫기')
+                        planeTime=origin[0].split()[2].split(":")
+                        userTimeS=planPlane["startStart"].split()[1].split(":")
+                        userTimeE=planPlane["startEnd"].split()[1].split(":")
+                        pt = int(planeTime[0])
+                        uts = int(userTimeS[0])
+                        ute = int(userTimeE[0])
+                        pt1 = int(planeTime[1])
+                        uts1 = int(userTimeS[1])
+                        ute1 = int(userTimeE[1])
+                        if n==0:
+                            if pt>uts: # 비행기H>설정H
+                                plane.append(origin[0].split())
+                                card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+                            elif pt==uts and pt1>=uts1:
+                                plane.append(origin[0].split())
+                                card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+                        elif n==(day-1):
+                            if pt<ute:
+                                plane.append(origin[0].split())
+                                card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+                            elif pt==ute and pt1<=ute1:
+                                plane.append(origin[0].split())
+                                card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+                        else:
+                            plane.append(origin[0].split())
+                            card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
+
+                    planes.append(plane)
+                    cards.append(card)
+
+                plane_card = {
+                    "plane" : planes,
+                    "card" : cards
+                }
+                result.append(plane_card)
 
             response_data = {
-                'result': 'accept success',
-                'planes' : planes,
-                'cards' : cards,
-                'tests' : tests
+                'data' : result,
             }
 
             # Spring Boot로 응답
