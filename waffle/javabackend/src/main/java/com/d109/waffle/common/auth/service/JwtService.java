@@ -62,7 +62,6 @@ public class JwtService {
 			.withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
 
 			.withClaim(EMAIL_CLAIM, email)
-			// .withClaim(USER_ID_CLAIM, userDto.getId())
 			.withClaim(USER_ROLE_CLAIM, role)
 			.sign(Algorithm.HMAC512(secretKey));
 	}
@@ -81,9 +80,6 @@ public class JwtService {
 
 		setAccessTokenHeader(response, accessToken);
 		setRefreshTokenHeader(response, refreshToken);
-		log.info("Access Token, Refresh Token 헤더 설정 완료");
-		log.info("access token :: "+ accessToken);
-		log.info("refresh token :: "+ refreshToken);
 	}
 
 	public Optional<String> extractRefreshToken(HttpServletRequest request) {
@@ -93,16 +89,23 @@ public class JwtService {
 	}
 
 	public Optional<String> extractAccessToken(HttpServletRequest request) {
-		log.info("extractAccessToken");
 		return Optional.ofNullable(request.getHeader(accessHeader))
 			.filter(refreshToken -> refreshToken.startsWith(BEARER))
 			.map(refreshToken -> refreshToken.replace(BEARER, ""));
 	}
 
-	public Optional<String> headerStringToAccessToken(String AccessTokenHeader) {
-		return Optional.ofNullable(AccessTokenHeader)
-			.filter(refreshToken -> refreshToken.startsWith(BEARER))
-			.map(refreshToken -> refreshToken.replace(BEARER, ""));
+	public Optional<String> removeBearer(String accessHeader) {
+		return Optional.ofNullable(accessHeader)
+			.filter(token -> token.startsWith(BEARER))
+			.map(token -> token.replace(BEARER, ""));
+	}
+
+	public Optional<UserEntity> accessHeaderToUser(String accessHeader) {
+		String accessToken = removeBearer(accessHeader).orElseThrow();
+
+		String email = extractEmail(accessToken).orElseThrow();
+
+		return userRepository.findByEmail(email);
 	}
 
 	public Optional<String> extractEmail(String accessToken) {
@@ -112,6 +115,9 @@ public class JwtService {
 				.verify(accessToken)
 				.getClaim(EMAIL_CLAIM)
 				.asString());
+		} catch (TokenExpiredException tee) {
+			log.error("만료된 토큰입니다. {}", tee.getMessage());
+			return Optional.empty();
 		} catch (Exception e) {
 			log.error("액세스 토큰이 유효하지 않습니다.");
 			return Optional.empty();
@@ -120,7 +126,7 @@ public class JwtService {
 
 	public Integer accessTokenToUserId(String accessToken) {
 		try {
-			accessToken = headerStringToAccessToken(accessToken).get();
+			accessToken = removeBearer(accessToken).get();
 
 			String email = extractEmail(accessToken).get();
 
@@ -140,6 +146,9 @@ public class JwtService {
 				.verify(accessToken)
 				.getClaim(USER_ROLE_CLAIM)
 				.asString());
+		} catch (TokenExpiredException tee) {
+			log.error("만료된 토큰입니다. {}", tee.getMessage());
+			return Optional.empty();
 		} catch (Exception e) {
 			log.error("extracRole :: 액세스 토큰이 유효하지 않습니다.");
 			return Optional.empty();

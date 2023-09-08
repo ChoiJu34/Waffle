@@ -21,10 +21,10 @@ public class LoginService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Optional<UserEntity> userDto = userRepository.findByEmail(email);
+		Optional<UserEntity> userEntity = userRepository.findByEmail(email);
 
-		if (userDto.isPresent()) {
-			UserEntity user = userDto.get();
+		if (userEntity.isPresent()) {
+			UserEntity user = userEntity.get();
 			return User.builder()
 				.username(user.getEmail())
 				.password(user.getPassword())
