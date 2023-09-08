@@ -1,6 +1,7 @@
 package com.d109.waffle.api.trippackage.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class TripPackageService {
 		//data:[{
 		//	plane:[[[],[],[],[]],[],[]]
 		//	card:[[[],[],[],[],[]],[],[]]},{...}]
+		for(int i=0; i<dataMap.size(); i++){//비행기 탑승 횟수
+			List<Map<String,List<List<List<String>>>>> list = (List<Map<String, List<List<List<String>>>>>)dataMap.get("data");
+			for(int k=0; k<list.get(i).get("plane").size(); k++){//비행기 출발 날짜 범위
+				List<List<String>> planeList = list.get(i).get("plane").get(k);//첫째날 비행기 목록
+			}
+		}
 		return dataMap;
 	}
 }
