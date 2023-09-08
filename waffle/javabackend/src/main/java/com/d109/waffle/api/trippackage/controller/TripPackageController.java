@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.d109.waffle.api.trippackage.dto.RecommendDto;
 import com.d109.waffle.api.trippackage.service.TripPackageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -34,9 +35,8 @@ public class TripPackageController {
 	}
 
 	@PostMapping("/test")
-	public ResponseEntity<?> test(@RequestBody String data) throws JsonProcessingException {
-		System.out.println(data);
-		Map<String, Object> map = tripPackageService.all(data);
+	public ResponseEntity<?> test(@RequestBody RecommendDto recommendDto) throws JsonProcessingException {
+		Map<String, Object> map = tripPackageService.all(recommendDto);
 		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 	}
 }

@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class InterparkPlaneModel(models.Model):
+class Recommed(models.Model):
     plane_company = models.TextField()
 
     def __str__(self):
