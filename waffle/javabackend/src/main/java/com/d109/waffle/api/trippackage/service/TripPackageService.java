@@ -30,10 +30,9 @@ public class TripPackageService {
 		String s = restTemplate.postForObject("http://127.0.0.1:8000/convertData", recommendDto, String.class);
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
-
-		//data : [[day1 항공], [day1 카드], [day2 항공], [day2 카드]]
-		//팝업닫기 배열 다음배열부터 카드정보
-		//카드 이름이 띄워쓰기가 있어서....
+		//data:[{
+		//	plane:[[[],[],[],[]],[],[]]
+		//	card:[[[],[],[],[],[]],[],[]]},{...}]
 		return dataMap;
 	}
 }

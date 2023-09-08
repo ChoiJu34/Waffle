@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class RecommendDto {
 	int memberCnt;
-	List<PlaneDto> plane;
-	List<HotelDto> hotel;
+	List<PlaneDto> planPlane;
+	List<HotelDto> planeHotel;
 }
