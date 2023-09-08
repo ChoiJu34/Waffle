@@ -157,3 +157,13 @@
   [Figma Link]([Figma](https://www.figma.com/file/2TL4I9L8rIEWkx6Y4sD255/Waffle?type=design&node-id=0-1&mode=design&t=HMwMwUPKhG2II5S7-0))
 
 ---
+
+# 2023 / 09 / 08
+
+- Figma 디자인 피드백 받음
+
+- 피드백 받은 내용 기반으로 Figma 전체 수정 완료
+
+- 다음 스프린트부터 실제 개발 들어갈 예정
+
+---
