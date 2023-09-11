@@ -1,14 +1,13 @@
 import './App.css';
 import { useMediaQuery } from 'react-responsive'
-
-import Header from './components/Header/Header.jsx'
+import RootNavigationContainer from './routes/RootNavigation';
 
 const App = () => {
   const isMobile = useMediaQuery({query: '(max-width:768px)'});
   
   return (
     <div className="App">
-      <Header />
+      <RootNavigationContainer />
     </div>
   );
 }
