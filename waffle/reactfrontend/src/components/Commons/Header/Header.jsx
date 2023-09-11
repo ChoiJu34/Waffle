@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
-import WaffleLogo from '../../assets/WaffleLogo.png'
+import WaffleLogo from '../../../assets/WaffleLogo.png'
 
 const Header = () => {
 
