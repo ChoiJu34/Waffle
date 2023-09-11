@@ -1,6 +1,6 @@
-import React, {useState, useRef, useEffect} from 'react'
-import 
-import styled from 'styled-components'
+import React, {useState} from 'react';
+import styled from 'styled-components';
+
 
 const RecoCardList = () => {
   const [creaditdata, setCreaditData] = useState();
@@ -44,17 +44,15 @@ const RecoCardList = () => {
       </Budgetbox>
       </Creditbox>
     </Container>
-  )
-}
+  );
+};
 
-export default RecoCardList
+export default RecoCardList;
 
 const Container = styled.div`
   margin-top: 170px;
   width: 360px;
-
 `
-
 const Creditbox = styled.div`
   width: 340px;
   height: 130px;
