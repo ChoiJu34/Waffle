@@ -10,5 +10,5 @@ import lombok.Setter;
 public class RecommendDto {
 	int memberCnt;
 	List<PlaneDto> planPlane;
-	List<HotelDto> planeHotel;
+	List<HotelDto> planHotel;
 }

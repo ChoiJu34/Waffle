@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class HotelDto {
-	String hotelPlace;
+	String where;
 	String start;
 	String end;
 }

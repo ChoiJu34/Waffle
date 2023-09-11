@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from waffle import views
+from waffle import interpark
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('convertData', views.convert_data, name='convert_data'),
+    path('interparkPlane', views.interparkPlane, name='convert_data'),
+    path('interparkHotel', interpark.interparkHotel, name='convert_data'),
 ]

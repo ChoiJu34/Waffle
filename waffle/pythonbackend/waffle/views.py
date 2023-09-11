@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import re
 
 @csrf_exempt
-def convert_data(request):
+def interparkPlane(request):
     if request.method == 'POST':
         # Spring Boot로부터 데이터 수신
         data = json.loads(request.body)
@@ -48,7 +48,7 @@ def convert_data(request):
                     for element in elements:
                         pattern=r'공동운항.*?입니다.|Best'
                         origin = re.sub(pattern,"",element.get_attribute('textContent')).split('팝업닫기')
-                        planeTime=origin[0].split()[2].split(":")
+                        planeTime=origin[0].replace(" 경유", "경유").split()[2].split(":")
                         userTimeS=planPlane["startStart"].split()[1].split(":")
                         userTimeE=planPlane["startEnd"].split()[1].split(":")
                         pt = int(planeTime[0])
@@ -59,20 +59,20 @@ def convert_data(request):
                         ute1 = int(userTimeE[1])
                         if n==0:
                             if pt>uts: # 비행기H>설정H
-                                plane.append(origin[0].split())
+                                plane.append(origin[0].replace(" 경유", "경유").split())
                                 card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
                             elif pt==uts and pt1>=uts1:
-                                plane.append(origin[0].split())
+                                plane.append(origin[0].replace(" 경유", "경유").split())
                                 card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
                         elif n==(day-1):
                             if pt<ute:
-                                plane.append(origin[0].split())
+                                plane.append(origin[0].replace(" 경유", "경유").split())
                                 card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
                             elif pt==ute and pt1<=ute1:
-                                plane.append(origin[0].split())
+                                plane.append(origin[0].replace(" 경유", "경유").split())
                                 card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
                         else:
-                            plane.append(origin[0].split())
+                            plane.append(origin[0].replace(" 경유", "경유").split())
                             card.append(re.sub("( |~|원|,|요금선택|조건)","", origin[1]).replace('(', '').replace(')',' ').split("성인"))
 
                     planes.append(plane)
@@ -95,3 +95,38 @@ def convert_data(request):
         finally:
             driver.quit()
 
+
+@csrf_exempt
+def interparkHotel(request):
+    if request.method == 'POST':
+        # Spring Boot로부터 데이터 수신
+        data = json.loads(request.body)
+        # Extracting data from JSON
+        memberCnt = data["memberCnt"]
+        options = Options()
+        options.add_argument("--headless")  # 헤드리스 모드로 실행
+        options.add_argument("--disable-gpu")  # GPU 사용 안 함 (헤드리스 모드에서 필요)
+        # Chrome WebDriver 실행 파일의 경로를 지정
+        driver = webdriver.Chrome()
+        try:
+            for planHotel in data["planHotel"]:
+                where = planHotel["where"]
+                start = planHotel["start"]
+                end = planHotel["end"]
+                # Constructing the URL
+                url = f'https://travel.interpark.com/hotel/search?q={where}&checkin={start}&checkout={end}&searchType=keyword&occupancies={memberCnt}&typeKey='
+                xpath = '//ul[@class="tourComSearchList"]/li'
+
+                driver.get(url)
+                wait = WebDriverWait(driver, 120)
+                wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+
+                elements = driver.find_elements(By.XPATH, xpath)
+
+                response_data = {
+                    'data' : elements,
+                }
+            json_response = json.dumps(response_data, ensure_ascii=False).encode('utf-8')
+            return HttpResponse(json_response, content_type="application/json;charset=utf-8")
+        finally:
+            driver.quit()
