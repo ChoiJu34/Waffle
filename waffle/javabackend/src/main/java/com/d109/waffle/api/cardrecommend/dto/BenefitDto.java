@@ -1,0 +1,59 @@
+package com.d109.waffle.api.cardrecommend.dto;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@Entity(name = "benefit")
+public class BenefitDto {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
+	@ManyToOne
+	@JoinColumn(name="card_id")
+	private CardDto cardDto;
+
+	@Column(name="case")
+	private String benefitCase;
+
+	private String at;
+
+	@Column(name="if")
+	private int benefitIf;
+
+	private String what;
+
+	@Column(name="get_percent")
+	private double percent;
+
+	@Column(name="get_price")
+	private int price;
+
+	@Column(name="base_price")
+	private int base;
+
+	private int type;
+
+	private int max;
+
+	private String limit;
+}
