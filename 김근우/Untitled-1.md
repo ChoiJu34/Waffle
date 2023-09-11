@@ -32,3 +32,8 @@
 2. INFRA
     jenkins pipeline 조사
 
+
+## 2023/09/07
+
+1. 모임통장
+    add-list 기능 구현
