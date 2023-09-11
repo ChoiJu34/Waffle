@@ -1,5 +1,6 @@
 package com.d109.waffle.api.user.controller;
 
+import java.security.InvalidKeyException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -8,13 +9,16 @@ import java.util.Optional;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.d109.waffle.api.user.dto.UpdateUserDto;
 import com.d109.waffle.api.user.service.EmailServiceImpl;
 import com.d109.waffle.api.user.service.UserServiceImpl;
 import com.d109.waffle.api.user.entity.UserEntity;
@@ -131,6 +135,51 @@ public class UserController {
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
 	}
+
+	@PutMapping("/update-password")
+	public ResponseEntity<?> updatePassword(@RequestBody Map<String, String> map) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			userService.updatePassword(map.get("token"), map.get("newPassword"));
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (InvalidKeyException ike) {
+			log.error(ike.getMessage());
+			result.put("message", "FAIL");
+			result.put("result", ike.getMessage());
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+
+	@PutMapping("/update-user")
+	public ResponseEntity<?> updateUser(@RequestHeader("Authorization") String authorization, @RequestBody UpdateUserDto updateUserDto) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			userService.updateUser(authorization, updateUserDto);
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (InvalidKeyException ike) {		// 비밀번호 오류
+			log.error(ike.getMessage());
+			result.put("message", "FAIL");
+			result.put("result", ike.getMessage());
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (AuthorizationServiceException ase) {	// 토큰 오류
+			log.error(ase.getMessage());
+			result.put("message", "FAIL");
+			result.put("result", ase.getMessage());
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+
+
 
 
 }

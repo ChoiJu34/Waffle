@@ -57,7 +57,7 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public Optional<EmailTokenEntity> findValidToken(String emailTokenId) throws Exception {
-		return Optional.empty();
+		return emailTokenRepository.findById(emailTokenId);
 	}
 
 	@Override

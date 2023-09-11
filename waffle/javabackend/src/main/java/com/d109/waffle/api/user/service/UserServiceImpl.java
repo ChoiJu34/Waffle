@@ -1,14 +1,19 @@
 package com.d109.waffle.api.user.service;
 
+import java.security.InvalidKeyException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.catalina.User;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.d109.waffle.api.user.dto.UpdateUserDto;
+import com.d109.waffle.api.user.entity.EmailTokenEntity;
 import com.d109.waffle.common.auth.Role;
 import com.d109.waffle.api.user.entity.UserEntity;
 import com.d109.waffle.api.user.repository.UserRepository;
@@ -74,6 +79,38 @@ public class UserServiceImpl implements UserService {
 			emailService.createEmailToken(email, userEntity.get().getId());
 		} else {
 			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+		}
+	}
+
+	@Override
+	public void updatePassword(String token, String newPassword) throws Exception {
+		if(emailService.verifyToken(token)){
+			Optional<EmailTokenEntity> emailToken = emailService.findValidToken(token);
+			UserEntity user = userRepository.findById(emailToken.get().getUserId()).orElseThrow();
+			user.setPassword(newPassword);
+			user.encodePassword(passwordEncoder);
+			userRepository.save(user);
+		} else {
+			throw new InvalidKeyException("잘못된 키값입니다.");
+		}
+	}
+
+	@Override
+	public void updateUser(String authorization, UpdateUserDto updateUserDto) throws Exception {
+		Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
+		if(userEntity.isPresent()) {
+			UserEntity user = userEntity.get();
+
+			if(!passwordEncoder.matches(updateUserDto.getPassword(), user.getPassword())) {
+				throw new InvalidKeyException("비밀번호를 다시 입력해주세요.");
+			}
+			user.setName(updateUserDto.getNewName());
+			user.setTel(updateUserDto.getNewTel());
+			user.setPassword(updateUserDto.getNewPassword());
+			user.encodePassword(passwordEncoder);
+			userRepository.save(user);
+		} else {
+			throw new AuthorizationServiceException("인증 오류");
 		}
 	}
 }
