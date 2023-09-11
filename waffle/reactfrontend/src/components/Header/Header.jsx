@@ -12,21 +12,22 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <HeaderWrapper isToggled={isToggled} userToggled={userToggled}>
-      {/* 햄버거 버튼(bar) */}
+      {/* 세부 메뉴 햄버거 버튼 */}
       <div className="header-toggle" onClick={() => {setIsToggled(!isToggled); userToggled ? setUserToggled(!userToggled) : setUserToggled(false)}}>
         <FontAwesomeIcon icon={!isToggled ? faBars : faTimes} color="black"/>
       </div>
-
+    
+      {/* 로고 */}
       <div className="logo">
         <img src={WaffleLogo} alt="WaffleLogo" className="header-logo" />
       </div>
 
-      {/* User 버튼 */}
+      {/* 회원 관리 세부 메뉴 버튼 */}
       <div className="header-user" onClick={() => {setUserToggled(!userToggled); isToggled ? setIsToggled(!isToggled) : setIsToggled(false)}}>
         <FontAwesomeIcon icon={!userToggled ? faUser : faTimes} color="black"/>
       </div>
 
-      {/* 메뉴 리스트 */}
+      {/* 세부 메뉴 리스트 */}
       <ul className="header-menulist">
         <li>패키지</li>
         <li>카드</li>
@@ -34,7 +35,8 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
         <li>모임통장</li>
       </ul>
 
-      {/* User 메뉴 리스트 */}
+      {/* 회원 관리 세부 메뉴 리스트 */}
+      {/* 로그인 여부에 따라 출력되는 세부 메뉴 다르게 처리 */}
       <ul className="header-menulist-user">
         {isLoggedIn? (
         <>
