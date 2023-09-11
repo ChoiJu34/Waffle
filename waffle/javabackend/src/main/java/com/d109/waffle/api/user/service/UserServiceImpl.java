@@ -1,5 +1,6 @@
 package com.d109.waffle.api.user.service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -14,10 +15,12 @@ import com.d109.waffle.api.user.repository.UserRepository;
 import com.d109.waffle.common.auth.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
@@ -48,9 +51,29 @@ public class UserServiceImpl implements UserService {
 	public void verifyEmail(String email) throws Exception {
 		Optional<UserEntity> userEntity = userRepository.findByEmail(email);
 		if(!userEntity.isPresent()) {
-			emailService.createEmailToken(email);
+			emailService.createEmailToken(email, null);
 		} else {
 			throw new DuplicateKeyException("이미 가입 정보가 존재합니다.");
+		}
+	}
+
+	@Override
+	public String findEmail(String name, String tel) throws Exception {
+		Optional<UserEntity> userEntity = userRepository.findByNameAndTel(name, tel);
+		if(userEntity.isPresent()) {
+			return userEntity.get().getEmail();
+		} else {
+			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+		}
+	}
+
+	@Override
+	public void findPassword(String email) throws Exception {
+		Optional<UserEntity> userEntity = userRepository.findByEmail(email);
+		if(userEntity.isPresent()) {
+			emailService.createEmailToken(email, userEntity.get().getId());
+		} else {
+			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
 		}
 	}
 }

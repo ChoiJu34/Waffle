@@ -2,6 +2,7 @@ package com.d109.waffle.api.user.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.dao.DuplicateKeyException;
@@ -45,12 +46,13 @@ public class UserController {
 	}
 
 	private final JwtService jwtService;
+
 	@GetMapping("/token-test")
 	public ResponseEntity<?> tokenTest(@RequestHeader("Authorization") String header) throws Exception {
 		try {
 			Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(header);
 			UserEntity user = null;
-			if(userEntity.isPresent()) {
+			if (userEntity.isPresent()) {
 				user = userEntity.get();
 			}
 			return new ResponseEntity<>(user.getName(), HttpStatus.OK);
@@ -91,4 +93,44 @@ public class UserController {
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
 	}
+
+	@PostMapping("/find-email")
+	public ResponseEntity<?> findEmail(@RequestBody Map<String, String> map) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			result.put("email", userService.findEmail(map.get("name"), map.get("tel")));
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (NoSuchElementException nse) {
+			log.error(nse.getMessage());
+			result.put("message", "FAIL");
+			result.put("result", nse.getMessage());
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+
+	@PostMapping("/find-password")
+	public ResponseEntity<?> findPassword(@RequestBody Map<String, String> map) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			userService.findPassword(map.get("email"));
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (NoSuchElementException nse) {
+			log.error(nse.getMessage());
+			result.put("message", "FAIL");
+			result.put("result", nse.getMessage());
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+
+
 }
