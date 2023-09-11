@@ -33,8 +33,11 @@ const RecoCardList = () => {
       <div>여행카드추천</div>
       <Creditbox>
         <div>카드 종류</div>
-        <Checkcardbox>체크카드</Checkcardbox>
-        <Checkcardbox>신용카드</Checkcardbox>
+        <Checkcardline>
+          <Checkcardbox>체크카드</Checkcardbox>
+          <Checkcardbox>신용카드</Checkcardbox>
+        </Checkcardline>
+      </Creditbox>
       <Companybox>
         <div>카드사 선택</div>
         <div>미선택시 모든 카드사를 검색합니다.</div>
@@ -42,7 +45,7 @@ const RecoCardList = () => {
       </Companybox>
       <Budgetbox>
       </Budgetbox>
-      </Creditbox>
+      
     </Container>
   );
 };
@@ -50,13 +53,19 @@ const RecoCardList = () => {
 export default RecoCardList;
 
 const Container = styled.div`
-  margin-top: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
   width: 360px;
 `
 const Creditbox = styled.div`
   width: 340px;
-  height: 130px;
   border: 1px solid #B3B1B1;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
 `
 
 const Checkcardbox = styled.div`
@@ -64,7 +73,11 @@ const Checkcardbox = styled.div`
   height: 50px;
   border: 1px solid #B3B1B1;
 `
-
+const Checkcardline = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+`
 const Companybox = styled.div`
   
 `
