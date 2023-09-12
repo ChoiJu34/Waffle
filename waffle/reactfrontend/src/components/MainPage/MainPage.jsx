@@ -36,6 +36,39 @@ const MainPage = () => {
     });
   };
 
+  // 일정 수준 스크롤되어야 요소가 나타나도록 하기
+  const [showPackage, setShowPackage] = useState(false);
+  const [showCard, setShowCard] = useState(false);
+  const [showExchange, setShowExchange] = useState(false);
+  const [showAccount, setShowAccount] = useState(false);
+  const [showChecklist, setShowChecklist] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setShowPackage(true);
+      }
+      if (window.scrollY > 500) {
+        setShowCard(true);
+      }
+      if (window.scrollY > 900) {
+        setShowExchange(true);
+      }
+      if (window.scrollY > 1300) {
+        setShowAccount(true);
+      }
+      if (window.scrollY > 1500) {
+        setShowChecklist(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
       <MainPageWrapper>
         <div className="main-img-container">
@@ -48,7 +81,7 @@ const MainPage = () => {
     
         <div className="main-body-contents">
 
-          <div className="main-body-package-container">
+          <div className="main-body-package-container" style={{opacity: showPackage ? 1 : 0, transition: 'opacity 1s'}}>
             <div className="main-body-package-text">
               <div className="main-body-package-text-title">
                 내 취향으로 토핑한 여행 패키지
@@ -64,7 +97,7 @@ const MainPage = () => {
               <img className="main-body-package-img" src={MainPackageImg}/>
           </div>
 
-          <div className="main-body-card-container">
+          <div className="main-body-card-container" style={{opacity: showCard ? 1 : 0, transition: 'opacity 1s'}}>
             <img className="main-body-card-img" src={MainCardImg}/>
             <div className="main-body-card-text">
               <div className="main-body-card-text-title">
@@ -81,7 +114,7 @@ const MainPage = () => {
           </div>
         </div>
 
-        <div className="main-body-exchange-container">
+        <div className="main-body-exchange-container" style={{opacity: showExchange ? 1 : 0, transition: 'opacity 1s'}}>
             <div className="main-body-exchange-text">
               <div className="main-body-exchange-text-title">
                 오늘 대비하는 내일의 환율
@@ -97,7 +130,7 @@ const MainPage = () => {
               <img className="main-body-exchange-img" src={MainExchangeImg}/>
           </div>
 
-          <div className="main-body-account-container">
+          <div className="main-body-account-container" style={{opacity: showAccount ? 1 : 0, transition: 'opacity 1s'}}>
             <img className="main-body-account-img" src={MainAccountImg}/>
             <div className="main-body-account-text">
               <div className="main-body-account-text-title">
@@ -113,7 +146,7 @@ const MainPage = () => {
             </div>
           </div>
 
-          <div className="main-body-checklist-container">
+          <div className="main-body-checklist-container" style={{opacity: showChecklist ? 1 : 0, transition: 'opacity 1s'}}>
             <div className="main-body-checklist-text">
               <div className="main-body-checklist-text-title">
                 한 여행은 또 다음 여행으로
@@ -199,6 +232,7 @@ const MainPageWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 10vh;
   }
 
   .main-body-package-text {
@@ -243,7 +277,7 @@ const MainPageWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 11vh;
+    margin-top: 30vh;
   }
 
   .main-body-card-text {
@@ -284,7 +318,7 @@ const MainPageWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 11vh;
+    margin-top: 30vh;
   }
 
   .main-body-exchange-text {
@@ -325,7 +359,7 @@ const MainPageWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 11vh;
+    margin-top: 30vh;
   }
 
   .main-body-account-text {
@@ -366,7 +400,8 @@ const MainPageWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 11vh;
+    margin-top: 30vh;
+    margin-bottom: 20vh;
   }
 
   .main-body-checklist-text {
