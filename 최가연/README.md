@@ -99,3 +99,16 @@
 
 - JPA 새 entity 만들어서 저장하면 @DynamicUpdate 적용 안됨
 - 암호화 적용된 비밀번호와 일치하는지 확인 시 encoder.matches() 사용
+
+<br>
+
+## 0912
+
+# 회의
+
+- choco bank 에서 정보 가져오는 로직 상의
+
+# 개발
+
+- choco bank 로그인/ 회원가입
+- uuid 추가
