@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { styled } from 'styled-components'
 
 import Header from '../components/Commons/Header/Header.jsx'
@@ -8,11 +8,14 @@ import { useSelector } from 'react-redux'
 
 const Layout = () => {
 
+  const location = useLocation();
+  const isUserRoute = /^\/user\//.test(location.pathname);
+
   return (
     <SLayout>
-      <Header/>
+      {!isUserRoute && <Header/>}
       <Outlet/>
-      <Footer/>
+      {!isUserRoute && <Footer/>}
     </SLayout>
   )
 }

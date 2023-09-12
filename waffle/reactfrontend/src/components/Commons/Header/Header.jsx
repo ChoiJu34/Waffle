@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -19,7 +20,7 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
     
       {/* 로고 */}
       <div className="logo">
-        <img src={WaffleLogo} alt="WaffleLogo" className="header-logo" />
+        <Link to='/'><img src={WaffleLogo} alt="WaffleLogo" className="header-logo" /></Link>
       </div>
 
       {/* 회원 관리 세부 메뉴 버튼 */}
@@ -45,7 +46,7 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
         </>
         ) : (
         <>
-          <li>로그인</li>
+          <li><Link to="/user/login">로그인</Link></li>
           <li>회원가입</li>
         </>
         )}
