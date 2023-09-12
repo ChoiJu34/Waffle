@@ -15,10 +15,10 @@ public class RecommendCardDto {
 	private int cardId;
 	private String cardCompany;
 	private String cardName;
-	private int originalPrice;
-	private int getPrice;
-	private int discountPrice;
-	private Map<String, Integer> getBenefit;
+	private Map<String, Integer> originalPrice;
+	private Map<String, Integer> getPrice;
+	private Map<String, Integer> discountPrice;
+	private List<String[]> getBenefit;
 	private List<String> otherBenefit;
 	private String link;
 }

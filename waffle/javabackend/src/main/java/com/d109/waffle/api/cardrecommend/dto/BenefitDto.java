@@ -38,22 +38,25 @@ public class BenefitDto {
 	private String at;
 
 	@Column(name="if")
-	private int benefitIf;
+	private Integer benefitIf;
 
 	private String what;
 
 	@Column(name="get_percent")
-	private double percent;
+	private Double percent;
 
 	@Column(name="get_price")
-	private int price;
+	private Integer price;
 
 	@Column(name="base_price")
-	private int base;
+	private Integer base;
 
-	private int type;
+	@Column(name="base_price_per")
+	private Integer basePer;
 
-	private int max;
+	private Integer type;
+
+	private Integer max;
 
 	private String limit;
 }
