@@ -46,7 +46,7 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
         </>
         ) : (
         <>
-          <li><Link to="/user/login">로그인</Link></li>
+          <li><StyledLink to="/user/login">로그인</StyledLink></li>
           <li>회원가입</li>
         </>
         )}
@@ -144,6 +144,15 @@ const HeaderWrapper = styled.div`
     .header-user {
       display: block;
     }
+  }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;  // 링크 표시 제거
+  color: inherit;  // 부모 요소의 색상을 상속받아 링크 색상 변경 방지
+  
+  &:hover, &:active, &:visited {
+    color: inherit;  // 호버, 활성화, 방문한 상태의 색상 변경 방지
   }
 `;
 
