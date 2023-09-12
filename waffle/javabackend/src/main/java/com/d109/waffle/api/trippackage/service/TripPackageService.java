@@ -93,6 +93,42 @@ public class TripPackageService {
 		String s = restTemplate.postForObject("http://127.0.0.1:8000/interparkHotel", recommendDto, String.class);
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
-		return dataMap;
+		List<List<String>> hotelList = (List<List<String>>)dataMap.get("data");
+		List<Map<String, String>> hotels = new ArrayList<>();
+		Map<String,Object> result = new HashMap<>();
+		for(List<String> hotelInfo : hotelList){
+			Map<String, String> hotel = new HashMap<>();
+			int n = hotelInfo.size();
+			System.out.println(hotelInfo.get(n-4));
+			if(isInteger(hotelInfo.get(n-4))){//가격이면
+				String name="";
+				for(int i=0; i<n-4; i++){
+					name += hotelInfo.get(i);
+				}
+				hotel.put("name", name);
+				hotel.put("price", hotelInfo.get(n-4));
+			}else{
+				String name="";
+				for(int i=0; i<n-3; i++){
+					name += hotelInfo.get(i);
+				}
+				hotel.put("name", name);
+				hotel.put("price", hotelInfo.get(n-3));
+			}
+			hotel.put("url", hotelInfo.get(n-2));
+			hotel.put("img", hotelInfo.get(n-1));
+			hotels.add(hotel);
+		}
+		result.put("hotel", hotels);
+		return result;
+	}
+
+	public static boolean isInteger(String strValue) {
+		try {
+			Integer.parseInt(strValue);
+			return true;
+		} catch (NumberFormatException ex) {
+			return false;
+		}
 	}
 }
