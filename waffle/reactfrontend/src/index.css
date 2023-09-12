@@ -7,3 +7,7 @@
 body {
   font-family: "NanumSquare-Extrabold";
 }
+
+html, body {
+  min-height: 100vh;
+}
