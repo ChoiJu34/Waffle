@@ -5,6 +5,7 @@ import Layout from '../pages/Layout';
 import RecoCardList from '../components/RecommendCard/RecoCardList';
 import MainPage from '../components/MainPage/MainPage';
 import Login from '../components/Login/Login'
+import Signup from '../components/Signup/Signup'
 
 const RootNavigation = () => {
   return (
@@ -12,8 +13,9 @@ const RootNavigation = () => {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<MainPage />} />
-          <Route path="/recocard/list" element={<RecoCardList />} />
           <Route path="/user/login" element={<Login/>} />
+          <Route path="/user/sign-up" element={<Signup/>} />
+          <Route path="/recocard/list" element={<RecoCardList />} />
         </Route>
       </Routes>
     </BrowserRouter>

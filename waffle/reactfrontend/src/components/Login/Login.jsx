@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faUser, faTimes, faArrowAltCircleLeft, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   
@@ -96,7 +97,7 @@ const Login = () => {
       <div className="login-extra">
         <div className="login-find-email">이메일 찾기</div>
         <div className="login-change-password">비밀번호 변경</div>
-        <div className="login-signup">회원가입</div>
+        <div className="login-signup"><StyledLink to="/user/sign-up">회원가입</StyledLink></div>
       </div>
 
     </LoginWrapper>
@@ -290,5 +291,14 @@ const LoginWrapper = styled.div`
     font-size: 1.4vh;
   }
 `
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  
+  &:hover, &:active, &:visited {
+    color: inherit;
+  }
+`;
 
 export default Login
