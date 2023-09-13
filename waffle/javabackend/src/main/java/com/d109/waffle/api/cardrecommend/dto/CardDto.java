@@ -34,16 +34,16 @@ public class CardDto {
 
 	private String name;
 
-	private boolean credit;
+	private Boolean credit;
 
 	@Column(name="usage_fee")
-	private double usageFee;
+	private Double usageFee;
 
 	@Column(name="exchange_fee")
-	private double exchangeFee;
+	private Double exchangeFee;
 
 	@Column(name="annual_fee")
-	private int annualFee;
+	private Integer annualFee;
 
 	private String link;
 }
