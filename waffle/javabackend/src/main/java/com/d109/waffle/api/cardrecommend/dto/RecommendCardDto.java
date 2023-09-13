@@ -14,6 +14,7 @@ public class RecommendCardDto {
 	private int recommendNumber;
 	private int cardId;
 	private String cardCompany;
+	private String cardBrand;
 	private String cardName;
 	private Map<String, Integer> originalPrice;
 	private Map<String, Integer> getPrice;

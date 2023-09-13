@@ -1,6 +1,8 @@
 package com.d109.waffle.api.cardrecommend.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +33,16 @@ public class CardRecommendController {
 
 	@PostMapping("/recommend")
 	public ResponseEntity<?> getRecommendCardList(@RequestBody SurveyDto surveyDto) {
+		Map<String, Object> result = new HashMap<>();
 		try {
 			List<RecommendCardDto> recommendCardList = cardRecommendService.getRecommendCardList(surveyDto);
-			return new ResponseEntity<List<RecommendCardDto>>(recommendCardList, HttpStatus.OK);
+			result.put("message", "SUCCESS");
+			result.put("result", recommendCardList);
+			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
 	}
 }
