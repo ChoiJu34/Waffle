@@ -1,6 +1,7 @@
 package com.d109.chocobank.api.user.entity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -49,6 +51,9 @@ public class UserEntity {
 
 	private String tel;
 
+	@Column(name = "refresh_token")
+	private String refreshToken;
+
 	@CreationTimestamp
 	@Column(name = "create_at")
 	private LocalDateTime createAt;
@@ -60,12 +65,23 @@ public class UserEntity {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	private String uuid;
+
 	// user role setting
 	public void authorizeUser() {this.role = Role.USER;}
 
 	// Encrypt password
 	public void encodePassword(PasswordEncoder passwordEncoder) {
 		this.password = passwordEncoder.encode(this.password);
+	}
+
+	// update refresh token
+	public void updateRefreshToken(String updateRefreshToken) {
+		this.refreshToken = updateRefreshToken;
+	}
+
+	public void setUserUuid() {
+		this.uuid = UUID.randomUUID().toString();
 	}
 
 }

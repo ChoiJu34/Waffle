@@ -91,7 +91,7 @@ public class SecurityConfig {
 
 		http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
 		http.addFilterBefore(oauthJsonAuthenticaitonFilter(), CustomJsonAuthenticationFilter.class);
-		http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonAuthenticationFilter.class);
+		http.addFilterBefore(jwtAuthenticationProcessingFilter(), OauthJsonAuthenticationFilter.class);
 
 		return http.build();
 	}

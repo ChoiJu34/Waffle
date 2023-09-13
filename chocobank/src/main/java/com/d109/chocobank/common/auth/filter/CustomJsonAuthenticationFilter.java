@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CustomJsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 	private static final String DEFAULT_LOGIN_REQUEST_URL = "/user/login";
+	private static final String NO_CHECK_URL = "/user/auth";
 	private static final String HTTP_METHOD = "POST";
 	private static final String CONTENT_TYPE = "application/json";
 	private static final String USERNAME_KEY = "email";
@@ -38,6 +39,7 @@ public class CustomJsonAuthenticationFilter extends AbstractAuthenticationProces
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws
 		AuthenticationException,
 		IOException {
+		logger.info("custom");
 		if (request.getContentType() == null || !request.getContentType().equals(CONTENT_TYPE)) {
 			throw new AuthenticationServiceException(
 				"Authentication Content-Type not supported: " + request.getContentType());

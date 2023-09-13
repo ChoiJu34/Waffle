@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class OauthJsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-	private static final String DEFAULT_LOGIN_REQUEST_URL = "/oauth/login";
+	private static final String DEFAULT_LOGIN_REQUEST_URL = "/user/auth";
 	private static final String HTTP_METHOD = "POST";
 	private static final String CONTENT_TYPE = "application/json";
 	private static final String USERNAME_KEY = "email";
@@ -51,7 +51,6 @@ public class OauthJsonAuthenticationFilter extends AbstractAuthenticationProcess
 		String password = usernamePasswordMap.get(PASSWORD_KEY);
 
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(email, password);
-
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
 }
