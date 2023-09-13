@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 	private static final String NO_CHECK_URL = "/user/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
-	private static final String NO_CHECK_URL2 = "/oauth/login";
+	private static final String NO_CHECK_URL2 = "/user/auth";
 
 	private final JwtService jwtService;
 
@@ -47,31 +47,31 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 			.filter(jwtService::isTokenValid)
 			.orElse(null);
 
-		// if (refreshToken != null) {
-		// 	checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-		// 	return;
-		// }
+		if (refreshToken != null) {
+			checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
+			return;
+		}
 
 		if (refreshToken == null) {
 			checkAccessTokenAndAuthentication(request, response, filterChain);
 		}
 	}
 
-	// public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
-	// 	userRepository.findByRefreshToken(refreshToken)
-	// 		.ifPresent(user -> {
-	// 			String reIssuedRefreshToken = reIssueRefreshToken(user);
-	// 			jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(user.getEmail()),
-	// 				reIssuedRefreshToken);
-	// 		});
-	// }
+	public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
+		userRepository.findByRefreshToken(refreshToken)
+			.ifPresent(user -> {
+				String reIssuedRefreshToken = reIssueRefreshToken(user);
+				jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(user.getEmail()),
+					reIssuedRefreshToken);
+			});
+	}
 
-	// private String reIssueRefreshToken(UserEntity user) {
-	// 	String reIssuedRefreshToken = jwtService.createRefreshToken();
-	// 	user.updateRefreshToken(reIssuedRefreshToken);
-	// 	userRepository.saveAndFlush(user);
-	// 	return reIssuedRefreshToken;
-	// }
+	private String reIssueRefreshToken(UserEntity user) {
+		String reIssuedRefreshToken = jwtService.createRefreshToken();
+		user.updateRefreshToken(reIssuedRefreshToken);
+		userRepository.saveAndFlush(user);
+		return reIssuedRefreshToken;
+	}
 
 
 	public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
