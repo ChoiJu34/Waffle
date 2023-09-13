@@ -1,14 +1,12 @@
-package com.d109.waffle.common.auth.filter;
+package com.d109.chocobank.common.auth.filter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -17,9 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.d109.waffle.api.user.entity.UserEntity;
-import com.d109.waffle.api.user.repository.UserRepository;
-import com.d109.waffle.common.auth.service.JwtService;
+import com.d109.chocobank.api.user.entity.UserEntity;
+import com.d109.chocobank.api.user.repository.UserRepository;
+import com.d109.chocobank.common.auth.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 	private static final String NO_CHECK_URL = "/user/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
+	private static final String NO_CHECK_URL2 = "/user/auth";
 
 	private final JwtService jwtService;
 
@@ -38,7 +37,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
-		if (request.getRequestURI().equals(NO_CHECK_URL)) {
+		if (request.getRequestURI().equals(NO_CHECK_URL) || request.getRequestURI().equals(NO_CHECK_URL2)) {
 			filterChain.doFilter(request, response); // "/login" 요청이 들어오면, 다음 필터 호출
 			return;
 		}

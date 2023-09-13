@@ -179,6 +179,20 @@ public class UserController {
 		}
 	}
 
+	@PostMapping("/save/uuid")
+	public ResponseEntity<?> saveUserUuid(@RequestHeader("Authorization") String authorization, @RequestBody String uuid) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			userService.saveUserUuid(authorization, uuid);
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+
 
 
 

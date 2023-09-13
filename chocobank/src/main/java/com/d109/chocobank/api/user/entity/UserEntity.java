@@ -1,6 +1,7 @@
-package com.d109.waffle.api.user.entity;
+package com.d109.chocobank.api.user.entity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,11 +16,9 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.d109.waffle.common.auth.Role;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.d109.chocobank.common.auth.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -29,7 +28,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "user")
+@Entity(name = "bank_user")
 @Getter
 @Setter
 @ToString
@@ -49,10 +48,6 @@ public class UserEntity {
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
-
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-	private LocalDateTime birthday;
 
 	private String tel;
 
@@ -83,6 +78,10 @@ public class UserEntity {
 	// update refresh token
 	public void updateRefreshToken(String updateRefreshToken) {
 		this.refreshToken = updateRefreshToken;
+	}
+
+	public void setUserUuid() {
+		this.uuid = UUID.randomUUID().toString();
 	}
 
 }

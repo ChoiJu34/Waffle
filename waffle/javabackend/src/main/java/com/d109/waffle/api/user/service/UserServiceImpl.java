@@ -113,4 +113,15 @@ public class UserServiceImpl implements UserService {
 			throw new AuthorizationServiceException("인증 오류");
 		}
 	}
+
+	@Override
+	public void saveUserUuid(String authorization, String uuid) throws Exception {
+		Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
+		if(userEntity.isPresent()) {
+			UserEntity user = userEntity.get();
+
+			user.setUuid(uuid);
+			userRepository.save(user);
+		}
+	}
 }

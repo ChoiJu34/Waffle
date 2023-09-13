@@ -1,4 +1,4 @@
-package com.d109.waffle.api.cardrecommend.dto;
+package com.d109.waffle.api.cardrecommend.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,8 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import com.d109.waffle.api.cardrecommend.entity.CardEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,14 +24,14 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @Entity(name = "benefit")
-public class BenefitDto {
+public class BenefitEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@ManyToOne
 	@JoinColumn(name="card_id")
-	private CardDto cardDto;
+	private CardEntity cardDto;
 
 	@Column(name="case")
 	private String benefitCase;
