@@ -1,4 +1,4 @@
-package com.d109.waffle.api.cardrecommend.dto;
+package com.d109.waffle.api.cardrecommend.entity;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @Entity(name = "card")
-public class CardDto {
+public class CardEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

@@ -1,7 +1,6 @@
 package com.d109.waffle.api.cardrecommend.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.d109.waffle.api.cardrecommend.controller.CardRecommendController;
-import com.d109.waffle.api.cardrecommend.dto.BenefitDto;
-import com.d109.waffle.api.cardrecommend.dto.CardDto;
+import com.d109.waffle.api.cardrecommend.entity.BenefitEntity;
+import com.d109.waffle.api.cardrecommend.entity.CardEntity;
 import com.d109.waffle.api.cardrecommend.dto.RecommendCardDto;
 import com.d109.waffle.api.cardrecommend.dto.SurveyDto;
 import com.d109.waffle.api.cardrecommend.repository.CardBenefitRepository;
@@ -22,7 +21,6 @@ import com.d109.waffle.api.cardrecommend.repository.CardRecommendRepository;
 import com.d109.waffle.common.country.CashCountry;
 import com.d109.waffle.common.country.CountryCard;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,7 +37,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 		int credit = surveyDto.getCard();
 		List<String> company = surveyDto.getFavoriteCompany();
 
-		List<CardDto> cardList;
+		List<CardEntity> cardList;
 
 		// 조건에 맞는 card List에 넣기
 		if (credit == 1) {
@@ -62,8 +60,6 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			}
 		}
 
-		// logger.info(cardList.toString());
-
 		PriorityQueue<RecommendCardDto> pricePQ = new PriorityQueue<>(new Comparator<RecommendCardDto>() { // 순수 가격
 			@Override
 			public int compare(RecommendCardDto r1, RecommendCardDto r2) {
@@ -82,7 +78,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			}
 		});
 
-		for (CardDto card : cardList) {
+		for (CardEntity card : cardList) {
 			// 원가
 			Map<String, Integer> originalPrice = new HashMap<>();
 			originalPrice.put("dutyFree", surveyDto.getDutyFree());
@@ -99,9 +95,9 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			// 금액 할인 외 여행 혜택
 			List<String> otherBenefit = new ArrayList<>();
 
-			List<BenefitDto> benefitDtoList = cardBenefitRepository.findAllByCardDto_Id(card.getId());
+			List<BenefitEntity> benefitDtoList = cardBenefitRepository.findAllByCardDto_Id(card.getId());
 
-			for (BenefitDto benefit : benefitDtoList) {
+			for (BenefitEntity benefit : benefitDtoList) {
 				if (benefit.getType() == 7) { // 해외 여행과 상관없는 서비스
 
 				} else if (benefit.getType() == 5) { // 해외 여행과 상관있지만 가격과 상관없는 서비스
