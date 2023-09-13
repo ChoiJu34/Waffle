@@ -38,11 +38,13 @@ def interparkHotel(request):
 
                 driver = webdriver.Chrome()
                 driver.get(url)
+                time.sleep(0.1)
                 wait = WebDriverWait(driver, 120)
                 wait.until(EC.presence_of_element_located((By.XPATH, xpath3)))
                 driver.find_element(By.XPATH, xpath3).click()
 
                 wait = WebDriverWait(driver, 120)
+                time.sleep(0.1)
                 wait.until(EC.presence_of_element_located((By.XPATH, xpath4)))
                 driver.find_element(By.XPATH, xpath4).click()
 
@@ -63,7 +65,7 @@ def interparkHotel(request):
                 for element1, element2 in zip(elements1, elements2):
                     # 추출한 데이터를 딕셔너리로 추가
                     origin = re.sub(r'\+', "", element1.get_attribute('textContent'))
-                    pattern = r'청구할인|추천|항공할인|05267.*?가|원~정상가|(\d+)성급.*?가|~로그인.*?확인'
+                    pattern = r'청구할인|추천|항공할인|05267.*?가|원~정상가|(\d+)성급.*?가|~로그인.*?확인|(\d+)(\d+)(\d+)(\d+)(\d+)판매가'
                     origin = re.sub(pattern, " ", origin)
                     origin = re.sub(r' +', " ", origin)
                     degree = re.compile('\(([^)]+)').findall(origin)
@@ -74,7 +76,7 @@ def interparkHotel(request):
                         result.append(hotel)
 
             response_data = {
-                'data': result,
+                'hotel': result,
             }
 
             # 이제 JSON으로 직렬화할 수 있습니다.
