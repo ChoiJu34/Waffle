@@ -24,7 +24,6 @@ public class TripPackageService {
 		int originPirce;
 		int planeListJ;
 		int planeDateK;
-
 		public cardpq(String cardName, int planePrice, int originPrice, int planeListJ, int planeDateK){
 			this.cardName=cardName;
 			this.planePrice=planePrice;
@@ -34,27 +33,41 @@ public class TripPackageService {
 		}
 	}
 
+	class IHotel{
+		String img;
+		int price;
+		String name;
+		String url;
+		public IHotel(String img, int price, String name, String url){
+			this.img=img;
+			this.price = price;
+			this.name = name;
+			this.url = url;
+		}
+	}
+
 	@Autowired
 	public void TripPackageService(RestTemplate restTemplate){
 		this.restTemplate = restTemplate;
 	}
 
 	public Map<String, Object> all(RecommendDto recommendDto) throws JsonProcessingException {
-		// Map<String, Object> map1 = interparkPlane(recommendDto);
+		Map<String, Object> map1 = interparkPlane(recommendDto);
 		Map<String, Object> map2 = interparkHotel(recommendDto);
-		return map2;
+		Map<String, Object> result = new HashMap<>();
+		result.put("plane", map1);
+		result.put("hotel", map2);
+		return result;
 	}
 
 	public Map<String, Object> interparkPlane(RecommendDto recommendDto) throws JsonProcessingException {
 		String s = restTemplate.postForObject("http://127.0.0.1:8000/interparkPlane", recommendDto, String.class);
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
-		List<Map<String, Object>> data = new ArrayList<>();
 		Map<String, Object> planeInfo = new HashMap<>();
-		Map<String,Object> result = new HashMap<>();
-		//data:[{
-		//	plane:[[[],[],[],[]],[],[]]
-		//	card:[[[],[],[],[],[]],[],[]]},{...}]
+		// data:[{
+		// 	plane:[[[],[],[],[]],[],[]]
+		// 	card:[[[],[],[],[],[]],[],[]]},{...}]
 		for(int i=0; i<dataMap.size(); i++){//비행기 탑승 횟수
 			PriorityQueue<cardpq> pq = new PriorityQueue<>((o1, o2) -> (o1.planePrice-o2.planePrice));
 			List<Map<String,List<List<List<String>>>>> planPlane = (List<Map<String, List<List<List<String>>>>>)dataMap.get("data");
@@ -63,7 +76,6 @@ public class TripPackageService {
 				List<List<String>> cardList = planPlane.get(i).get("card").get(k);
 				for(int j=0; j<planeList.size(); j++){//0:비행기 회사, 1:출발 위치, 2:시간, 3:도착위치, 4:시간, 5:경유, 6: 걸리는 시간, 7:걸리는 분
 					for(int r=1; r<cardList.get(j).size()-1; r++) {
-						System.out.println("???? : " + cardList.get(j).toString());
 						pq.add(new cardpq(cardList.get(j).get(r).split(" ")[0], Integer.parseInt(cardList.get(j).get(r).split(" ")[1]),
 							Integer.parseInt(cardList.get(j).get(cardList.get(j).size()-1)), j, k));
 					}
@@ -82,44 +94,46 @@ public class TripPackageService {
 			planeInfo.put("originPrice", info.originPirce);
 			planeInfo.put("discountPrice", info.planePrice);
 			planeInfo.put("discount", info.planePrice/info.originPirce*100);
-			data.add(planeInfo);
 		}
-		result.put("count", data.size());
-		result.put("list", data);
-		return result;
+		return planeInfo;
 	}
 
 	public Map<String, Object> interparkHotel(RecommendDto recommendDto) throws JsonProcessingException {
+		String cardName="신한카드";
+		int cardIf=200000;
+		int cardBenefitPercent=5;
+		int cardTop=100000;
 		String s = restTemplate.postForObject("http://127.0.0.1:8000/interparkHotel", recommendDto, String.class);
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
-		List<List<String>> hotelList = (List<List<String>>)dataMap.get("data");
+		List<List<String>> hotelList = (List<List<String>>) dataMap.get("hotel");
 		List<Map<String, String>> hotels = new ArrayList<>();
 		Map<String,Object> result = new HashMap<>();
+		PriorityQueue<IHotel> pq = new PriorityQueue<>((o1, o2) -> (o1.price-o2.price));
 		for(List<String> hotelInfo : hotelList){
 			Map<String, String> hotel = new HashMap<>();
 			int n = hotelInfo.size();
-			System.out.println(hotelInfo.get(n-4));
-			if(isInteger(hotelInfo.get(n-4))){//가격이면
-				String name="";
+			String name="";
+			int price = 0;
+			if(isInteger(hotelInfo.get(n-4))){
 				for(int i=0; i<n-4; i++){
+					name+= hotelInfo.get(i);
+				}
+				price = Integer.parseInt(hotelInfo.get(n-4));
+			}else {
+				for (int i = 0; i < n - 3; i++) {
 					name += hotelInfo.get(i);
 				}
-				hotel.put("name", name);
-				hotel.put("price", hotelInfo.get(n-4));
-			}else{
-				String name="";
-				for(int i=0; i<n-3; i++){
-					name += hotelInfo.get(i);
-				}
-				hotel.put("name", name);
-				hotel.put("price", hotelInfo.get(n-3));
+				price = Integer.parseInt(hotelInfo.get(n-3));
 			}
-			hotel.put("url", hotelInfo.get(n-2));
-			hotel.put("img", hotelInfo.get(n-1));
-			hotels.add(hotel);
+			IHotel iHotel = new IHotel(hotelInfo.get(n-2), price, name, hotelInfo.get(n-1));
+			pq.add(iHotel);
 		}
-		result.put("hotel", hotels);
+		IHotel pop = pq.peek();
+		result.put("hotelName", pop.name);
+		result.put("hotelUrl", pop.url);
+		result.put("hotelImg", pop.img);
+		result.put("hotelPrice", pop.price);
 		return result;
 	}
 
