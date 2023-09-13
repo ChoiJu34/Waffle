@@ -87,8 +87,18 @@ const Login = () => {
       </div>
       <label className="loginPage_text">
         <input type="checkbox" onChange={handleOnChange} checked={isRemember}/>
-        이메일 저장하기
+        이메일 저장
       </label>
+      <div className="login-button-container">
+        <button className="login-button">로그인</button>
+      </div>
+      <div className="login-underline"></div>
+      <div className="login-extra">
+        <div className="login-find-email">이메일 찾기</div>
+        <div className="login-change-password">비밀번호 변경</div>
+        <div className="login-signup">회원가입</div>
+      </div>
+
     </LoginWrapper>
   );
 }
@@ -252,6 +262,33 @@ const LoginWrapper = styled.div`
         font-size: 12px;
         line-height: 1.33;
     }
+
+    .login-button {
+      width: 11vh;
+      height: 5vh;
+      border-radius: 15px;
+      border: none;
+      background-color: #9AC5F4;
+      color: white;
+      font-weight: 800;
+      font-size: 2.3vh;
+      margin-top: 2vh;
+    }
+
+    .login-underline {
+    height: 0.1vh;
+    width: 80%;
+    margin: 1.5vh auto;
+    background-color: #000004;
+  }
+
+  .login-extra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1vh 6vh;
+    font-size: 1.4vh;
+  }
 `
 
 export default Login
