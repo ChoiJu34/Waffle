@@ -18,8 +18,7 @@ import com.d109.waffle.api.card.dto.RecommendCardDto;
 import com.d109.waffle.api.card.dto.SurveyDto;
 import com.d109.waffle.api.card.repository.CardBenefitRepository;
 import com.d109.waffle.api.card.repository.CardRecommendRepository;
-import com.d109.waffle.common.country.CashCountry;
-import com.d109.waffle.common.country.CountryCard;
+import com.d109.waffle.common.card.ExchangeValue;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,13 +28,18 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 	private static final Logger logger = LoggerFactory.getLogger(CardRecommendController.class);
 	private final CardRecommendRepository cardRecommendRepository;
 	private final CardBenefitRepository cardBenefitRepository;
-	private final Map<String, List<String>> cardCompany = CountryCard.getCountryCard();
-	private final List<String> cashCountry = CashCountry.getCashCountry();
+	private final Map<String, double[]> exchangeValue = ExchangeValue.getExchangeValue();
 
 	@Override
 	public List<RecommendCardDto> getRecommendCardList(SurveyDto surveyDto) throws Exception {
 		int credit = surveyDto.getCard();
 		List<String> company = surveyDto.getFavoriteCompany();
+
+		// 특정 국가 Dto 설정해두기
+		RecommendCardDto chinaPriceRecommendCardDto = new RecommendCardDto();
+		RecommendCardDto japanPriceRecommendCardDto = new RecommendCardDto();
+		RecommendCardDto chinaOtherRecommendCardDto = new RecommendCardDto();
+		RecommendCardDto japanOtherRecommendCardDto = new RecommendCardDto();
 
 		List<CardEntity> cardList;
 
@@ -67,14 +71,14 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			}
 		});
 
-		PriorityQueue<RecommendCardDto> benefitPQ = new PriorityQueue<>(new Comparator<RecommendCardDto>() { // 가격 대비 혜택 (같으면 가격 내림차순)
+		PriorityQueue<RecommendCardDto> benefitPQ = new PriorityQueue<>(new Comparator<RecommendCardDto>() { // 카드 회사 별 혜택 갯수 (갯수가 같으면 가격 오름차순)
 			@Override
 			public int compare(RecommendCardDto r1, RecommendCardDto r2) {
-				if (((r1.getGetBenefit().size() + r1.getOtherBenefit().size()) / r1.getDiscountPrice().get("total")) == ((r2.getGetBenefit().size() + r2.getOtherBenefit().size()) / r2.getDiscountPrice().get("total"))) {
+				if ((r1.getGetBenefit().size() + r1.getOtherBenefit().size()) == (r2.getGetBenefit().size() + r2.getOtherBenefit().size())) {
 					return r1.getDiscountPrice().get("total") - r2.getDiscountPrice().get("total");
 				}
 
-				return -(((r1.getGetBenefit().size() + r1.getOtherBenefit().size()) / r1.getDiscountPrice().get("total")) - ((r2.getGetBenefit().size() + r2.getOtherBenefit().size()) / r2.getDiscountPrice().get("total")));
+				return -((r1.getGetBenefit().size() + r1.getOtherBenefit().size()) - (r2.getGetBenefit().size() + r2.getOtherBenefit().size()));
 			}
 		});
 
@@ -297,39 +301,91 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			recommendCardDto.setOtherBenefit(otherBenefit);
 			recommendCardDto.setLink(card.getLink());
 
-			// pq에 RecommendCard 넣어주기
-			pricePQ.offer(recommendCardDto);
-			benefitPQ.offer(recommendCardDto);
-		}
+			// pq에 RecommendCard 넣어주기 (jcb랑 unionpay는 특별취급)
+			if (card.getBrand().equals("mastercard") || card.getBrand().equals("visa")) {
+				pricePQ.offer(recommendCardDto);
 
-		RecommendCardDto priceRecommendCard = pricePQ.poll(); // 순수 가격 추천
-		RecommendCardDto otherRecommendCard = benefitPQ.poll(); // 가격 대비 혜택이 많은 카드 추천
+				if (card.getAnnualFee() <= surveyDto.getAnnualFee()) {
+					benefitPQ.offer(recommendCardDto);
+				}
+			}
 
-		if (priceRecommendCard.getCardId() == otherRecommendCard.getCardId()) {
-			otherRecommendCard = null;
-		}
+			if (surveyDto.getCountry().equals("Japan") && card.getBrand().equals("jcb")) {
+				if (japanPriceRecommendCardDto.getCardName() == null) {
+					japanPriceRecommendCardDto = recommendCardDto;
+				} else if (japanPriceRecommendCardDto.getCardName() != null && recommendCardDto.getDiscountPrice().get("total") < japanPriceRecommendCardDto.getDiscountPrice().get("total")) {
+					japanPriceRecommendCardDto = recommendCardDto;
+				}
 
-		if (otherRecommendCard != null) {
-			logger.info(otherRecommendCard.toString());
-		}
-
-		RecommendCardDto countryRecommendCard = null; // 현금 카드에 대한 고민이 필요
-
-		if (cardCompany.containsKey(surveyDto.getCountry())) { // 국가별 추천 카드가 있을 때
-			List<String> countryCardBrand = cardCompany.get(surveyDto.getCountry());
-
-			if (!countryCardBrand.contains(priceRecommendCard.getCardBrand())) {
-				if ((otherRecommendCard == null) || otherRecommendCard != null && !countryCardBrand.contains(otherRecommendCard.getCardBrand())) {
-					while (!pricePQ.isEmpty()) {
-						RecommendCardDto output = pricePQ.poll();
-
-						if (countryCardBrand.contains(output.getCardBrand())) {
-							countryRecommendCard = output;
-							break;
+				if (card.getAnnualFee() <= surveyDto.getAnnualFee()) {
+					if (japanOtherRecommendCardDto.getCardName() == null) {
+						japanOtherRecommendCardDto = recommendCardDto;
+					} else if (japanOtherRecommendCardDto.getCardName() != null
+						&& (recommendCardDto.getGetBenefit().size() + recommendCardDto.getOtherBenefit().size()) >= (
+						japanOtherRecommendCardDto.getGetBenefit().size() + japanOtherRecommendCardDto.getOtherBenefit()
+							.size())) {
+						if ((recommendCardDto.getGetBenefit().size() + recommendCardDto.getOtherBenefit().size()) == (
+							japanOtherRecommendCardDto.getGetBenefit().size()
+								+ japanOtherRecommendCardDto.getOtherBenefit().size())
+							&& recommendCardDto.getDiscountPrice().get("total")
+							< japanOtherRecommendCardDto.getDiscountPrice().get("total")) {
+							japanOtherRecommendCardDto = recommendCardDto;
+						} else {
+							japanOtherRecommendCardDto = recommendCardDto;
 						}
 					}
 				}
 			}
+
+			if (surveyDto.getCountry().equals("China") && card.getBrand().equals("unionpay")) {
+				if (chinaPriceRecommendCardDto.getCardName() == null) {
+					chinaPriceRecommendCardDto = recommendCardDto;
+				} else if (chinaPriceRecommendCardDto.getCardName() != null && recommendCardDto.getDiscountPrice().get("total") < chinaPriceRecommendCardDto.getDiscountPrice().get("total")) {
+					chinaPriceRecommendCardDto = recommendCardDto;
+				}
+
+				if (card.getAnnualFee() <= surveyDto.getAnnualFee()) {
+					if (chinaOtherRecommendCardDto.getCardName() == null) {
+						chinaOtherRecommendCardDto = recommendCardDto;
+					} else if (chinaOtherRecommendCardDto.getCardName() != null
+						&& (recommendCardDto.getGetBenefit().size() + recommendCardDto.getOtherBenefit().size()) >= (
+						chinaOtherRecommendCardDto.getGetBenefit().size() + chinaOtherRecommendCardDto.getOtherBenefit()
+							.size())) {
+						if ((recommendCardDto.getGetBenefit().size() + recommendCardDto.getOtherBenefit().size()) == (
+							chinaOtherRecommendCardDto.getGetBenefit().size()
+								+ chinaOtherRecommendCardDto.getOtherBenefit().size())
+							&& recommendCardDto.getDiscountPrice().get("total")
+							< chinaOtherRecommendCardDto.getDiscountPrice().get("total")) {
+							chinaOtherRecommendCardDto = recommendCardDto;
+						} else {
+							chinaOtherRecommendCardDto = recommendCardDto;
+						}
+					}
+				}
+			}
+		}
+
+		RecommendCardDto priceRecommendCard = pricePQ.poll(); // 순수 가격 추천
+		RecommendCardDto otherRecommendCard = null;
+
+		if (!benefitPQ.isEmpty()) {
+			otherRecommendCard = benefitPQ.poll(); // 혜택이 가장 많은 카드 추천 (같으면 가격이 가장 낮은 거)
+		}
+
+		if (surveyDto.getCountry().equals("Japan") && japanPriceRecommendCardDto.getCardName() != null) {
+			priceRecommendCard = japanPriceRecommendCardDto;
+		}
+
+		if (surveyDto.getCountry().equals("Japan") && japanOtherRecommendCardDto.getCardName() != null) {
+			otherRecommendCard = japanOtherRecommendCardDto;
+		}
+
+		if (surveyDto.getCountry().equals("China") && chinaPriceRecommendCardDto.getCardName() != null) {
+			priceRecommendCard = chinaPriceRecommendCardDto;
+		}
+
+		if (surveyDto.getCountry().equals("China") && chinaOtherRecommendCardDto.getCardName() != null) {
+			otherRecommendCard = chinaOtherRecommendCardDto;
 		}
 
 		List<RecommendCardDto> result = new ArrayList<>();
@@ -339,13 +395,23 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 
 		if (otherRecommendCard != null) {
 			otherRecommendCard.setRecommendNumber(2);
-			result.add(priceRecommendCard);
+			result.add(otherRecommendCard);
 		}
 
-		if (countryRecommendCard != null) {
-			countryRecommendCard.setRecommendNumber(3);
-			result.add(countryRecommendCard);
+		RecommendCardDto exchangeRecommendCard = new RecommendCardDto();
+
+		double[] exchange = exchangeValue.get(surveyDto.getCountry());
+		exchangeRecommendCard.setRecommendNumber(3);
+
+		if (exchange[0] >= exchange[1]) {
+			exchangeRecommendCard.setCardName("트래블월렛");
+			exchangeRecommendCard.setLink("환전 수수료 " + String.valueOf(exchange[0] * 100) + "%");
+		} else {
+			exchangeRecommendCard.setCardName("트래블로그");
+			exchangeRecommendCard.setLink("환전 수수료 " + String.valueOf(exchange[0] * 100) + "%");
 		}
+
+		result.add(exchangeRecommendCard);
 
 		return result;
 	}

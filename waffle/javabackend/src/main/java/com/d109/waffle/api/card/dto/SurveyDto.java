@@ -12,6 +12,7 @@ import lombok.ToString;
 public class SurveyDto {
 	private int card;
 	private List<String> favoriteCompany;
+	private int annualFee;
 	private int dutyFree;
 	private int use;
 	private String country;
