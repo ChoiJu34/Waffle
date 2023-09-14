@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-
+import BottomSheet from '../Commons/BottomSheet';
 
 const RecoCardMain = () => {
-  const [creaditdata, setCreaditData] = useState();
+  const [creaditData, setCreaditData] = useState();
   const [company, setCompany] = useState();
   const [budget, setBudget] = useState();
-
+  const [checkCard, setCheckcard] = useState(0);
+  const [creditCard, setCreditCard] = useState(0);
+  const [nation, setNation] = useState();
+  const [bottomSheetTitle, setBottomSheetTitle] = useState('국가선택');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // const saverecocardboard = async () => {
   //   try {
   
@@ -28,14 +32,56 @@ const RecoCardMain = () => {
   //   }
     
   // };
+  const clickCredit= async() => {
+    setCreditCard(2);
+  }
+
+  const unClickCredit = async() => {
+    setCreditCard(0);
+  }
+  const clickCheck= async() => {
+    setCheckcard(1);
+  }
+
+  const unClickCheck = async() => {
+    setCheckcard(0);
+  }
+
+
+
+  // const likeBtn = async() => {
+  //   const param = {
+  //     fpId: {
+  //       "id": Number(postid)     
+  //   },
+  // } 
+  // try {
+  //   console.log(param)
+  //     const likeres = await axios.post('http://i9d108.p.ssafy.io:9999/api/free/post/is/good', param);
+  //     setlike(true);
+  //     console.log(like)
+  //     console.log('성공')
+    
+  // } catch (error) {
+  //   console.error('에러:', error);
+  // }
+  // };
   return (
     <Container>
       <Maintext>여행카드추천</Maintext>
       <Creditbox>
         <Cardtext>카드 종류</Cardtext>
         <Checkcardline>
-          <Checkcardbox>체크카드</Checkcardbox>
-          <Checkcardbox>신용카드</Checkcardbox>
+        {(checkCard === 0 ? (
+            <Checkcardbox onClick={clickCheck}>체크카드</Checkcardbox>
+          ) : (
+            <Checkcardbox2 onClick={unClickCheck}>체크카드</Checkcardbox2>
+          ))}
+        {(creditCard === 0 ? (
+            <Checkcardbox onClick={clickCredit}>신용카드</Checkcardbox>
+          ) : (
+            <Checkcardbox2 onClick={unClickCredit}>신용카드</Checkcardbox2>
+          ))}
         </Checkcardline>
       </Creditbox>
       <Companybox>
@@ -49,7 +95,7 @@ const RecoCardMain = () => {
         <Budgettext>여행비용</Budgettext>
         <Writebox>
           <Frombox>
-            <From>국가</From><div></div>
+            <From>국가</From><Nations>+</Nations>
           </Frombox>
           <Shopbox>
             <div>면세점</div><input type="text" />
@@ -110,7 +156,20 @@ const Checkcardbox = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+`
 
+const Checkcardbox2 = styled.div`
+  width: 140px;
+  height: 30px;
+  border: 1px solid #9AC5F4;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #9AC5F4;
+  cursor: pointer;
 `
 const Checkcardline = styled.div`
   display: flex;
@@ -173,6 +232,10 @@ const Writebox = styled.div`
   align-items: start;
 `
 const Frombox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   margin: 15px;
 `
 const From = styled.div`
@@ -202,4 +265,12 @@ const Totalbox = styled.div`
 `
 const Line = styled.hr`
   width: 280px;
+`
+
+const Nations = styled.div`
+  width: 80px;
+  border-radius: 7px;
+  border: 1px dashed;
+  margin-left: 120px;
+  cursor: pointer;
 `
