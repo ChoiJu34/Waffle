@@ -1,4 +1,4 @@
-package com.d109.waffle.api.cardrecommend.controller;
+package com.d109.waffle.api.card.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.d109.waffle.api.cardrecommend.dto.RecommendCardDto;
-import com.d109.waffle.api.cardrecommend.dto.SurveyDto;
-import com.d109.waffle.api.cardrecommend.service.CardRecommendServiceImpl;
+import com.d109.waffle.api.card.dto.RecommendCardDto;
+import com.d109.waffle.api.card.dto.SurveyDto;
+import com.d109.waffle.api.card.service.CardRecommendServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

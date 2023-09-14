@@ -1,4 +1,4 @@
-package com.d109.waffle.api.cardrecommend.dto;
+package com.d109.waffle.api.card.dto;
 
 import java.util.List;
 import java.util.Map;

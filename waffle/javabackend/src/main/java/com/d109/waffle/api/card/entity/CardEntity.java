@@ -1,7 +1,4 @@
-package com.d109.waffle.api.cardrecommend.entity;
-
-import java.util.List;
-import java.util.Map;
+package com.d109.waffle.api.card.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

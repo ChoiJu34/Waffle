@@ -1,4 +1,4 @@
-package com.d109.waffle.api.cardrecommend.entity;
+package com.d109.waffle.api.card.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.d109.waffle.api.cardrecommend.entity.CardEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

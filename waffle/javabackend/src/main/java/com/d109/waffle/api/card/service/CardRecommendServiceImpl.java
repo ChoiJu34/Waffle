@@ -1,4 +1,4 @@
-package com.d109.waffle.api.cardrecommend.service;
+package com.d109.waffle.api.card.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,13 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.d109.waffle.api.cardrecommend.controller.CardRecommendController;
-import com.d109.waffle.api.cardrecommend.entity.BenefitEntity;
-import com.d109.waffle.api.cardrecommend.entity.CardEntity;
-import com.d109.waffle.api.cardrecommend.dto.RecommendCardDto;
-import com.d109.waffle.api.cardrecommend.dto.SurveyDto;
-import com.d109.waffle.api.cardrecommend.repository.CardBenefitRepository;
-import com.d109.waffle.api.cardrecommend.repository.CardRecommendRepository;
+import com.d109.waffle.api.card.controller.CardRecommendController;
+import com.d109.waffle.api.card.entity.BenefitEntity;
+import com.d109.waffle.api.card.entity.CardEntity;
+import com.d109.waffle.api.card.dto.RecommendCardDto;
+import com.d109.waffle.api.card.dto.SurveyDto;
+import com.d109.waffle.api.card.repository.CardBenefitRepository;
+import com.d109.waffle.api.card.repository.CardRecommendRepository;
 import com.d109.waffle.common.country.CashCountry;
 import com.d109.waffle.common.country.CountryCard;
 

@@ -1,11 +1,11 @@
-package com.d109.waffle.api.cardrecommend.repository;
+package com.d109.waffle.api.card.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.d109.waffle.api.cardrecommend.entity.CardEntity;
+import com.d109.waffle.api.card.entity.CardEntity;
 
 @Repository
 public interface CardRecommendRepository extends JpaRepository<CardEntity, Integer> {
