@@ -29,11 +29,11 @@ def interparkPlane(request):
     memberCnt = data["memberCnt"]
 
     # 항공권 크롤링(계획별)
-    with Pool(processes=4) as pool:
+    with Pool(processes=5) as pool:
         result.append(pool.starmap(multi_threading, [(plan, memberCnt) for plan in data["planPlane"]]))
 
     response_data = {
-        'data': result,
+        'plane': result,
     }
     logger.debug(f"~!!!!!! : {response_data}")
 
