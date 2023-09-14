@@ -7,20 +7,31 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.d109.waffle.api.trippackage.dto.RecommendDto;
+import com.d109.waffle.api.trippackage.repository.CrawlingRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class TripPackageService {
-	private RestTemplate restTemplate;
+	private final RestTemplate restTemplate;
+	private final CrawlingRepository crawlingRepository;
 	class cardpq{
 		String cardName;
 		int planePrice;
@@ -49,18 +60,14 @@ public class TripPackageService {
 		}
 	}
 
-	@Autowired
-	public void TripPackageService(RestTemplate restTemplate){
-		this.restTemplate = restTemplate;
-	}
-
-	public Map<String, Object> all(RecommendDto recommendDto) throws JsonProcessingException {
-		ListenableFuture<Map<String, Object>> map1 = interparkPlane(recommendDto);
-		System.out.println("111");
-		ListenableFuture<Map<String, Object>> map2 = interparkPlane2(recommendDto);
+	public Map<String,Object> all(@RequestBody RecommendDto recommendDto) throws JsonProcessingException {
+		ListenableFuture<Map<String, Object>> map1 = crawlingRepository.interparkPlane(recommendDto);
+		ListenableFuture<Map<String, Object>> map2 = crawlingRepository.interparkHotel(recommendDto);
 		Map<String, Object> ans = new HashMap<>();
-		map1.addCallback(result -> ans.put("plane", result), error -> System.out.println(error.getMessage()));
-		map2.addCallback(result -> ans.put("hotel", result), error -> System.out.println(error.getMessage()));
+		while(!map1.isDone() || !map2.isDone()){
+		}
+		map1.addCallback(result -> ans.putAll(result), error -> System.out.println(error.getMessage()));
+		map2.addCallback(result -> ans.putAll(result), error -> System.out.println(error.getMessage()));
 		return ans;
 	}
 
@@ -105,16 +112,7 @@ public class TripPackageService {
 		return new AsyncResult<>(dataMap);
 	}
 
-	@Async("multiAsync")
-	public ListenableFuture<Map<String, Object>> interparkPlane2(RecommendDto recommendDto) throws JsonProcessingException {
-		System.out.println("start2");
-		String s = restTemplate.postForObject("http://127.0.0.1:8000/interparkPlane", recommendDto, String.class);
-		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
-		Map<String, Object> planeInfo = new HashMap<>();
-		System.out.println("end2");
-		return new AsyncResult<>(dataMap);
-	}
+
 
 	public Map<String, Object> interparkHotel(RecommendDto recommendDto) throws JsonProcessingException {
 		String cardName="신한카드";
