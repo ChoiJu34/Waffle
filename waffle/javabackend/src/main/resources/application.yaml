@@ -45,9 +45,14 @@ jwt:
   secretKey:
     uptriewucb89fjckwewejhwe37dhcvvmxdsjwuiurhm5ffwfregyutjregyuwhjiquxyd32ctvgbbfgdteeyggdaxccxewrtfdefrgvxcxsdikjme43gbj7gcf6tg64sfjioxjd
   access:
-    expiration: 1000000
+    expiration: 100000000
     header: Authorization
   refresh:
     # 2 week expiration
     expiration: 129600000
     header: Authorization-refresh
+
+# choco bank base_url
+request:
+  chocobank:
+    base_url: http://localhost:8001
