@@ -61,8 +61,23 @@ public class CardController {
     }
 
     // 은행에서 단일 카드 조회
-    @GetMapping("")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getCard() throws Exception {
         return null;
+    }
+
+    // 은행에서 카드 생성
+    @PostMapping("/add/{id}")
+    public ResponseEntity<?> addCard(@RequestHeader("Authorization") String authorization, @PathVariable int id) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            cardService.addCard(authorization, id);
+            result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            result.put("message", "FAIL");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
