@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -19,7 +20,7 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
     
       {/* 로고 */}
       <div className="logo">
-        <img src={WaffleLogo} alt="WaffleLogo" className="header-logo" />
+        <Link to='/'><img src={WaffleLogo} alt="WaffleLogo" className="header-logo" /></Link>
       </div>
 
       {/* 회원 관리 세부 메뉴 버튼 */}
@@ -45,8 +46,8 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
         </>
         ) : (
         <>
-          <li>로그인</li>
-          <li>회원가입</li>
+          <li><StyledLink to="/user/login">로그인</StyledLink></li>
+          <li><StyledLink to="/user/sign-up">회원가입</StyledLink></li>
         </>
         )}
       </ul>
@@ -143,6 +144,15 @@ const HeaderWrapper = styled.div`
     .header-user {
       display: block;
     }
+  }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  
+  &:hover, &:active, &:visited {
+    color: inherit;
   }
 `;
 
