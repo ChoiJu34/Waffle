@@ -22,5 +22,5 @@ from waffle import interpark
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('interparkPlane', views.interparkPlane, name='convert_data'),
-    path('interparkHotel', interpark.interparkHotel, name='convert_data'),
+    # path('interparkHotel', interpark.interparkHotel, name='convert_data'),
 ]
