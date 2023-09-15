@@ -68,7 +68,7 @@ public class SecurityConfig {
 			// 기본 페이지, css, image, js 하위 폴더에 있는 자료들은 모두 접근 가능
 			.antMatchers("/**", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/file/**")
 			.permitAll()
-			.antMatchers("/user/sign-up", "/user/validate-email")
+			.antMatchers("/user/sign-up", "/user/validate-email", "/user/find-email")
 			.permitAll()
 			// .antMatchers("/search/getAllGroup")
 			// .permitAll()
