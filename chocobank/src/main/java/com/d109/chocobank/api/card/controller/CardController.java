@@ -18,7 +18,7 @@ public class CardController {
     private final CardServiceImpl cardService;
 
     // 서비스에서 사용자 카드 리스트 조회
-    @PostMapping("/service/list")
+    @GetMapping("/service/list")
     public ResponseEntity<?> getServiceUserCardList(@RequestHeader("Authorization-uuid") String uuid) throws Exception {
         Map<String, Object> result = new HashMap<>();
         try {
