@@ -1,6 +1,7 @@
 package com.d109.chocobank.api.card.service;
 
 import com.auth0.jwt.JWT;
+import com.d109.chocobank.api.card.dto.UserCardDto;
 import com.d109.chocobank.api.card.entity.CardEntity;
 import com.d109.chocobank.api.card.entity.UserCardEntity;
 import com.d109.chocobank.api.card.repository.CardRepository;
@@ -45,10 +46,20 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<CardEntity> getUserCardList(String uuid) throws Exception {
+//        log.info("uuid: {}", uuid);
         Optional<UserEntity> userEntity = userRepository.findByUuid(uuid);
         if(userEntity.isEmpty()) {
             throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
         }
+        List<UserCardEntity> cardList = userCardRepository.findByUserEntity_Id(userEntity.get().getId());
+
+        List<UserCardDto> list = userCardRepository.findByUserEntity_IdAndGetCardNameList(userEntity.get().getId());
+
+//        log.info("userId: {}", userEntity.get().getId());
+//
+//        log.info("user card entity: {}", cardList.toString());
+//        log.info("list: ", list.toString());
+        log.info("list: {}", userCardRepository.findByUserEntity_IdAndGetCardNameList(userEntity.get().getId()));
 
         return null;
     }
