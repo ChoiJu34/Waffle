@@ -28,11 +28,16 @@ public class EmailServiceImpl implements EmailService {
 
 	// 이메일 인증 토큰 생성 및 전송
 	@Override
-	public String createEmailToken(String email) throws Exception {
+	public String createEmailToken(String email, Integer userId) throws Exception {
 		Assert.hasText(email, "email error");
 
 		// 이메일 토큰 저장
-		EmailTokenEntity emailToken = EmailTokenEntity.createEmailToken();
+		EmailTokenEntity emailToken = null;
+		if(userId == null) {
+			emailToken = EmailTokenEntity.createEmailToken();
+		} else {
+			emailToken = EmailTokenEntity.createEmailToken(userId);
+		}
 		emailTokenRepository.save(emailToken);
 
 		// 이메일 전송
@@ -52,7 +57,7 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public Optional<EmailTokenEntity> findValidToken(String emailTokenId) throws Exception {
-		return Optional.empty();
+		return emailTokenRepository.findById(emailTokenId);
 	}
 
 	@Override
