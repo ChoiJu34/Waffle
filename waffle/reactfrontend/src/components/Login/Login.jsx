@@ -13,6 +13,9 @@ const Login = () => {
   const location = useLocation()
 
   const handleGoBack = () => {
+
+    window.scrollTo(0, 0)
+
     if (location.state?.from === 'fromComplete') { 
       navigate('/');
     } else {

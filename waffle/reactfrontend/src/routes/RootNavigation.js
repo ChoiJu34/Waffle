@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import Layout from '../pages/Layout';
+import ScrollTop from '../components/Commons/ScrollTop'
 import RecoCardMain from '../components/RecommendCard/RecoCardMain';
 import MainPage from '../components/MainPage/MainPage';
 import Login from '../components/Login/Login'
@@ -13,6 +13,7 @@ import SignupComplete from '../components/Signup/SignupComplete'
 const RootNavigation = () => {
   return (
     <BrowserRouter>
+      <ScrollTop />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/recocard/main" element={<RecoCardMain />} />

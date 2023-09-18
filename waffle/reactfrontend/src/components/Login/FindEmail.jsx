@@ -11,7 +11,10 @@ const FindEmail = () => {
   const navigate = useNavigate()
 
   const handleGoBack = () => {
-      navigate(-1);
+
+    window.scrollTo(0, 0)
+    
+    navigate(-1);
   }
 
   // 이름 입력 칸 애니메이션
