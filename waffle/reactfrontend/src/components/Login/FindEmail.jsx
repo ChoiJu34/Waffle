@@ -13,8 +13,8 @@ const FindEmail = () => {
   const handleGoBack = () => {
 
     window.scrollTo(0, 0)
-    
-    navigate(-1);
+
+    navigate('/user/login', { state: { from: 'fromComplete'}});
   }
 
   // 이름 입력 칸 애니메이션

@@ -9,7 +9,7 @@ const FindEmail = () => {
   const navigate = useNavigate()
 
   const goToLogin = () => {
-    navigate('/user/login')
+    navigate('/user/login', { state: { from: 'fromComplete'}})
   }
 
   const goToFindPassword = () => {
