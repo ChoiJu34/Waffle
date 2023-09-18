@@ -56,4 +56,3 @@ jwt:
     # 2 week expiration
     expiration: 129600000
     header: Authorization-refresh
-
