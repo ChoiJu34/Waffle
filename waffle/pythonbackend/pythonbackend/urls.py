@@ -16,11 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from waffle import views
+from waffle import interpark_plane
 from waffle import interpark_hotel
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('interparkPlane', views.interparkPlane, name='convert_data'),
+    path('interparkPlane', interpark_plane.interparkPlane, name='convert_data'),
     path('interparkHotel', interpark_hotel.interparkHotel, name='convert_data'),
 ]
