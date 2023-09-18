@@ -95,7 +95,7 @@ const RecoCardMain = () => {
         <Budgettext>여행비용</Budgettext>
         <Writebox>
           <Frombox>
-            <From>국가</From><Nations>+</Nations>
+            <From>국가</From><Nations onClick={setIsModalOpen}>+</Nations>
           </Frombox>
           <Shopbox>
             <div>면세점</div><input type="text" />
@@ -110,7 +110,59 @@ const RecoCardMain = () => {
         </Totalbox>  
         </Budgetbox>
       <div>확인</div>
+      {isModalOpen && (
+        <BottomSheet title={bottomSheetTitle} closeModal={() => setIsModalOpen(false)}>
+          {bottomSheetTitle === '위시리스트' ? (
+            <StyledExistingWishList>
+              <StyledButtonWrapper>
+                <button onClick={() => setBottomSheetTitle('위시리스트 이름 정하기')}>
+                  {/* <img src={icPlus} /> */}
+                </button>
+                <div>새로운 위시리스트 만들기</div>
+              </StyledButtonWrapper>
+              {/* <MiniWishListInfo list={wishListInfo} /> */}
+            </StyledExistingWishList>
+          ) : (
+            <StyledNewWishList>
+              <Countrybox>
+              <Countryimg src="/countrys/US.png" alt="US"/>
+              <div>미국</div>
+              </Countrybox>
+              <Countrybox>
+              <Countryimg src="/countrys/UR.png" alt="US"/>
+              <div>유럽</div>
+              </Countrybox>
+              <Countrybox>
+              <Countryimg src="/countrys/UK.png" alt="US"/>
+              <div>영국</div>
+              </Countrybox>
+              <Countrybox>
+              <Countryimg src="/countrys/JP.png" alt="US"/>
+              <div>일본</div>
+              </Countrybox>
+              <Countrybox>
+              <Countryimg src="/countrys/CH.png" alt="US"/>
+              <div>중국</div>
+              </Countrybox>
+              <Countrybox>
+              <Countryimg src="/countrys/HO.png" alt="US"/>
+              <div>홍콩</div>
+              </Countrybox>
+              <Countrybox>
+              <Countryimg src="/countrys/SI.png" alt="US"/>
+              <div>싱가포르</div>
+              </Countrybox>
+              <Countrybox>
+              <Countryimg src="/countrys/TH.png" alt="US"/>
+              <div>태국</div>
+              </Countrybox>
+              <button>확인</button>
+            </StyledNewWishList>
+          )}
+        </BottomSheet>
+      )}
     </Container>
+    
   );
 };
 
@@ -123,6 +175,7 @@ const Container = styled.div`
   justify-content: center;
   margin-top: 30px;
   width: 400px;
+  height: 100%;
 `
 const Maintext = styled.div`
   padding-bottom: 10px;
@@ -273,4 +326,69 @@ const Nations = styled.div`
   border: 1px dashed;
   margin-left: 120px;
   cursor: pointer;
+`
+const StyledExistingWishList = styled.div`
+  padding: 2.4rem 2.2rem 2rem 2.2rem;
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1.7rem;
+`;
+
+const StyledButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+
+  & > button {
+    width: 5.8rem;
+    height: 5.8rem;
+    border: 0.1rem solid gray;
+    border-radius: 0.8rem;
+    background-color: white;
+  }
+
+  & > button > img {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+`;
+
+const StyledNewWishList = styled.div`
+  padding: 3.3rem 2.2rem 3.6rem 2.2rem;
+  
+
+
+
+  & > div {
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    color: gray;
+  }
+
+  & > button {
+    width: 30%;
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 1.9rem;
+    padding: 1.6rem 0 1.5rem 0;
+    border-radius: 0.6rem;
+    color: white;
+  }
+  & > button:disabled {
+    background-color: gray;
+  }
+`;
+
+const Countryimg = styled.img`
+  width: 100px;
+  height: 50px;
+`
+const Countrybox = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid;
 `

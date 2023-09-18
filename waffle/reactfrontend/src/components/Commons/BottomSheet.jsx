@@ -1,4 +1,4 @@
-import { icClose } from 'assets';
+// import { icClose } from 'assets';
 import styled from 'styled-components';
 
 function BottomSheet({ title, closeModal, children }) {
@@ -7,7 +7,7 @@ function BottomSheet({ title, closeModal, children }) {
       <StyledModalBackground />
       <StyledBottomSheet>
         <StyledBottomSheetHeader>
-          <img src={icClose} alt="x" onClick={closeModal} />
+          {/* <img src={icClose} alt="x" onClick={closeModal} /> */}
           <div>{title}</div>
         </StyledBottomSheetHeader>
         <div>{children}</div>
@@ -25,16 +25,18 @@ const StyledModalBackground = styled.div`
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  background-color: ${(props) => props.theme.colors.airBlack};
+  background-color: #292929;
   opacity: 0.5;
   z-index: 1;
 `;
 
 const StyledBottomSheet = styled.div`
+  margin-left: 0px;
+  margin-bottom: 10px;
   z-index: 2;
   position: fixed;
-  width: min(42rem, 100%);
-  height: fit-content;
+  width: 100%;
+  /* height: fit-content; */
   max-height: 90%;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -42,7 +44,7 @@ const StyledBottomSheet = styled.div`
   }
   bottom: 0;
   border-radius: 1rem 1rem 0 0;
-  background-color: ${(props) => props.theme.colors.airWhite};
+  background-color: white
 `;
 
 const StyledBottomSheetHeader = styled.div`
@@ -50,10 +52,10 @@ const StyledBottomSheetHeader = styled.div`
   padding: 1.1rem 2.2rem 0.9rem 2.2rem;
   display: flex;
   align-items: center;
-  border-bottom: 0.1rem solid ${(props) => props.theme.colors.airGray1};
+  border-bottom: 0.1rem solid gray;
   position: sticky;
   top: 0;
-  background: ${(props) => props.theme.colors.airWhite};
+  background: white;
 
   & > img {
     cursor: pointer;
