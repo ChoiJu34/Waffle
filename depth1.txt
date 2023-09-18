@@ -1,0 +1,1 @@
+depth1으로 clone받아서 push가 됩니까?
