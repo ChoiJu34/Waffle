@@ -285,6 +285,7 @@ const LoginWrapper = styled.div`
     height: 0.1vh;
     width: 80%;
     margin: 1.5vh auto;
+    margin-top: 3vh;
     background-color: #000004;
   }
 
