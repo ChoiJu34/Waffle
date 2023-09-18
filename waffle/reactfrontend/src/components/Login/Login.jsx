@@ -215,11 +215,11 @@ const LoginWrapper = styled.div`
 	    -webkit-appearance: none;
 	    overflow: visible;
 	    margin:0;
-        /* type:password가 사용자 지정 폰트를 지원하지 않아 출력되지 않았으므로 여기서만 새로 지정 */
-        /* 단순히 돋움으로만 설정해두면 점 간격이 고르지 않아, 추가 작업 필요 */
-        font-family: "돋움";
-        font: small-caption;
-        font-size: 3vh;
+      /* type:password가 사용자 지정 폰트를 지원하지 않아 출력되지 않았으므로 여기서만 새로 지정 */
+      /* 단순히 돋움으로만 설정해두면 점 간격이 고르지 않아, 추가 작업 필요 */
+      font-family: "돋움";
+      font: small-caption;
+      font-size: 3vh;
 	}
 
     .login-password > input:focus{
