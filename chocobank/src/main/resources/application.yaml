@@ -3,7 +3,6 @@ server:
   port: 8001
 
 spring :
-
   # Database setting
   datasource:
     hikari:
@@ -35,6 +34,11 @@ spring :
             enable: true
           auth: true
 
+  # Swagger Setting
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 # hibernate logging
 logging:
   level:
@@ -52,3 +56,4 @@ jwt:
     # 2 week expiration
     expiration: 129600000
     header: Authorization-refresh
+

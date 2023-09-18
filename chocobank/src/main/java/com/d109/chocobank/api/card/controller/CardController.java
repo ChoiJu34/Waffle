@@ -1,6 +1,8 @@
 package com.d109.chocobank.api.card.controller;
 
 import com.d109.chocobank.api.card.service.CardServiceImpl;
+
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@Api(tags = "Card Controller")
 @RequiredArgsConstructor
 @RequestMapping("/card")
 @Slf4j

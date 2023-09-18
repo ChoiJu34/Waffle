@@ -22,15 +22,22 @@ import com.d109.chocobank.api.user.entity.UserEntity;
 import com.d109.chocobank.api.user.service.UserServiceImpl;
 import com.d109.chocobank.common.auth.service.JwtService;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Api(tags = "User Controller")
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @Slf4j
 public class UserController {
 	private final UserServiceImpl userService;
+
+	@PostMapping("/login")
+	public ResponseEntity<?> userLogin(@RequestBody Map<String, String> map) throws Exception {
+		return null;
+	}
 
 	@PostMapping("/sign-up")
 	public ResponseEntity<?> fanSignUp(@RequestBody UserEntity userEntity) throws Exception {
@@ -62,9 +69,4 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
-
-
-
-
-
 }
