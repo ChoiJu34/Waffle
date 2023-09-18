@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import styled from 'styled-components';
@@ -9,13 +9,18 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 const Login = () => {
   
   // 뒤로가기
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const handleGoBack = () => {
-    navigate(-1);
+    if (location.state?.from === 'fromComplete') { 
+      navigate('/');
+    } else {
+      navigate(-1);
+    }
   }
 
-  // 이메일 입력 칸 애니메이션 
+  // 이메일 입력 칸 애니메이션
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isEmailComplete, setIsEmailComplete] = useState(false);
   const inputEmailRef = useRef(null);
@@ -95,7 +100,7 @@ const Login = () => {
       </div>
       <div className="login-underline"></div>
       <div className="login-extra">
-        <div className="login-find-email">이메일 찾기</div>
+        <div className="login-find-email"><StyledLink to="/user/find-email">이메일 찾기</StyledLink></div>
         <div className="login-change-password">비밀번호 변경</div>
         <div className="login-signup"><StyledLink to="/user/sign-up">회원가입</StyledLink></div>
       </div>
