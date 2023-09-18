@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
 
 const Signup = () => {
@@ -195,12 +195,12 @@ const Signup = () => {
   const [passwordVerify, setPasswordVerify] = useState('')
 
   // 유효성 검사
-  const [isName, setIsName] = useState(false)
+  const [isName, setIsName] = useState(null)
   const [isEmail, setIsEmail] = useState(false)
-  const [isPassword, setIsPassword] = useState(false)
-  const [isPasswordVerify, setIsPasswordVerify] = useState(false)
-  const [isBirthdate, setIsBirthdate] = useState(false)
-  const [isTel, setIsTel] = useState(false)
+  const [isPassword, setIsPassword] = useState(null)
+  const [isPasswordVerify, setIsPasswordVerify] = useState(null)
+  const [isBirthdate, setIsBirthdate] = useState(null)
+  const [isTel, setIsTel] = useState(null)
 
   // const onSubmit = useCallback(
   //   async (e) => {
@@ -227,12 +227,16 @@ const Signup = () => {
 
   // 이름
   const onChangeName = useCallback((e) => {
-    if (e.target.value.length < 2 || e.target.value.length > 5) {
-      setIsName(false)
+    const koreanNameRegex = /^[가-힣]+$/;
+
+    if (e.target.value === "") {
+        setIsName(null);
+    } else if (!koreanNameRegex.test(e.target.value) || e.target.value.length < 2 || e.target.value.length > 5) {
+        setIsName(false);
     } else {
-      setIsName(true)
+        setIsName(true);
     }
-  }, [])
+  }, []);
 
   // 이메일
   const onChangeEmail = useCallback((e) => {
@@ -253,12 +257,14 @@ const Signup = () => {
     const passwordCurrent = e.target.value
     setPassword(passwordCurrent)
 
-    if (!passwordRegex.test(passwordCurrent)) {
-      setIsPassword(false)
+    if (passwordCurrent === "") {
+      setIsPassword(null);
+    } else if (!passwordRegex.test(passwordCurrent)) {
+      setIsPassword(false);
     } else {
-      setIsPassword(true)
+      setIsPassword(true);
     }
-  }, [])
+  }, []);
 
   // 비밀번호 확인
   const onChangePasswordVerify = useCallback(
@@ -266,32 +272,30 @@ const Signup = () => {
       const passwordVerifyCurrent = e.target.value
       setPasswordVerify(passwordVerifyCurrent)
 
-      if (password === passwordVerifyCurrent) {
-        setIsPasswordVerify(true)
+      if (passwordVerifyCurrent === "") {
+        setIsPasswordVerify(null);
+      } else if (password === passwordVerifyCurrent) {
+        setIsPasswordVerify(true);
       } else {
-        setIsPasswordVerify(false)
+        setIsPasswordVerify(false);
       }
     },
     [password]
   )
 
   const onChangeBirthdate = useCallback((e) => {
-    const BirthdateRegex = /^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/;
-    const BirthdateCurrent = e.target.value;
-  
-    // 생년월일의 길이가 10자리가 아니면 유효성 검사를 스킵
-    if (BirthdateCurrent.length !== 10) {
+    const birthdateRegex = /^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/;
+    const birthdateCurrent = e.target.value;
+
+    if (birthdateCurrent === "") {
+      setIsBirthdate(null);
       return;
-    }
-  
-    if (!BirthdateRegex.test(BirthdateCurrent)) {
+    } else if (!birthdateRegex.test(birthdateCurrent)) {
       setIsBirthdate(false);
       return;
     }
-  
-    const [year, month, day] = BirthdateCurrent.split("-").map((str) => parseInt(str, 10))
-  
-    let isValid = false
+
+    const [year, month, day] = birthdateCurrent.split("-").map((str) => parseInt(str, 10))
   
     // 윤년 체크
     const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
@@ -305,21 +309,23 @@ const Signup = () => {
   
     // 해당 월의 일수보다 작거나 같은지 확인
     if (day <= monthDays[month]) {
-      isValid = true
+      setIsBirthdate(true);
+    } else {
+      setIsBirthdate(false);
     }
-  
-    setIsBirthdate(isValid);
-  }, []);
+}, []);
 
   // 연락처
   const onChangeTel = useCallback((e) => {
   const telRegex = /^01[016789]-\d{3,4}-\d{4}$/
   const telCurrent = e.target.value
 
-  if (!telRegex.test(telCurrent)) {
-    setIsTel(false)
+  if (telCurrent === "") {
+    setIsTel(null);
+  } else if (!telRegex.test(telCurrent)) {
+    setIsTel(false);
   } else {
-    setIsTel(true)
+    setIsTel(true);
   }
 }, [])
 
@@ -349,26 +355,31 @@ const Signup = () => {
       <div className={`signup-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
         <label id="signup-label">비밀번호</label>
         <input type="password" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={onChangePassword} placeholder={showPasswordPlaceholder ? "영문, 숫자, 특수문자를 포함한 8자리 이상" : ""} />
+        {isPassword === null ? null : (isPassword ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
       </div>
 
       <div className={`signup-password-verify ${isPasswordVerifyFocused ? 'focus' : ''} ${isPasswordVerifyComplete ? 'complete' : ''}`}>
         <label id="signup-label">비밀번호 확인</label>
         <input type="password" id="signup-input" ref={inputPasswordVerifyRef} onFocus={handlePasswordVerifyFocus} onBlur={handlePasswordVerifyBlur} onChange={onChangePasswordVerify} placeholder={showPasswordVerifyPlaceholder ? "" : ""} />
+        {isPasswordVerify === null ? null : (isPasswordVerify ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
       </div>
 
       <div className={`signup-name ${isNameFocused ? 'focus' : ''} ${isNameComplete ? 'complete' : ''}`}>
         <label id="signup-label">이름</label>
         <input type="text" id="signup-input" ref={inputNameRef} onFocus={handleNameFocus} onBlur={handleNameBlur} onChange={onChangeName} placeholder={showNamePlaceholder ? "ex) 이재용" : ""} />
+        {isName === null ? null : (isName ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
       </div>
 
       <div className={`signup-birthdate ${isBirthdateFocused ? 'focus' : ''} ${isBirthdateComplete ? 'complete' : ''}`}>
         <label id="signup-label">생년월일</label>
         <input type="text" id="signup-input" ref={inputBirthdateRef} onFocus={handleBirthdateFocus} onBlur={handleBirthdateBlur} onChange={functionSetBirthdate} placeholder={showBirthdatePlaceholder ? "ex) 19900101" : ""} inputmode="numeric" />
+        {isBirthdate === null ? null : (isBirthdate ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
       </div>
 
       <div className={`signup-tel ${isTelFocused ? 'focus' : ''} ${isTelComplete ? 'complete' : ''}`}>
         <label id="signup-label">연락처</label>
         <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={functionSetTel} placeholder={showTelPlaceholder ? "ex) 01012345678" : ""} />
+        {isTel === null ? null : (isTel ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
       </div>
 
       <div className="signup-button-container">
@@ -817,6 +828,18 @@ const SignupWrapper = styled.div`
       left: 8vh;
       font-size: 12px;
       line-height: 1.33;
+  }
+
+  .signup-wrong {
+    margin-left: 2vh;
+    width: 3vh;
+    height: 3vh;
+  }
+
+  .signup-correct {
+    margin-left: 2vh;
+    width: 3vh;
+    height: 3vh;
   }
 `
 
