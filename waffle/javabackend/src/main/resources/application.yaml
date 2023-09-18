@@ -21,7 +21,7 @@ spring :
       hibernate:
         format_sql: true
         globally_quoted_identifiers: true
-    # show-sql: true
+#    show-sql: true
   mail:
     host: smtp.gmail.com
     port: 587
@@ -45,9 +45,14 @@ jwt:
   secretKey:
     uptriewucb89fjckwewejhwe37dhcvvmxdsjwuiurhm5ffwfregyutjregyuwhjiquxyd32ctvgbbfgdteeyggdaxccxewrtfdefrgvxcxsdikjme43gbj7gcf6tg64sfjioxjd
   access:
-    expiration: 10000
+    expiration: 100000000
     header: Authorization
   refresh:
     # 2 week expiration
     expiration: 129600000
     header: Authorization-refresh
+
+# choco bank base_url
+request:
+  chocobank:
+    base_url: http://localhost:8001
