@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -340,6 +340,11 @@ const Signup = () => {
     onChangeTel(e);
   }
 
+  // 가입하기 버튼 누르면 완료 페이지로
+  const goToSignupComplete = () => {
+    navigate('/user/sign-up/complete')
+  }
+
   return (
     <SignupWrapper>
       <div className="signup-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
@@ -383,7 +388,7 @@ const Signup = () => {
       </div>
 
       <div className="signup-button-container">
-        <SignupButton className="signup-button" disabled={!(isEmail && isName && isBirthdate && isPassword && isPasswordVerify && isTel)}>가입하기</SignupButton>
+        <SignupButton className="signup-button" disabled={!(isEmail && isName && isBirthdate && isPassword && isPasswordVerify && isTel)} onClick={goToSignupComplete}>가입하기</SignupButton>
       </div>
     </SignupWrapper>
   )

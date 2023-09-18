@@ -6,6 +6,7 @@ import RecoCardMain from '../components/RecommendCard/RecoCardMain';
 import MainPage from '../components/MainPage/MainPage';
 import Login from '../components/Login/Login'
 import Signup from '../components/Signup/Signup'
+import SignupComplete from '../components/Signup/SignupComplete'
 
 const RootNavigation = () => {
   return (
@@ -16,6 +17,7 @@ const RootNavigation = () => {
           <Route path="/" element={<MainPage />} />
           <Route path="/user/login" element={<Login/>} />
           <Route path="/user/sign-up" element={<Signup/>} />
+          <Route path="/user/sign-up/complete" element={<SignupComplete/>} />
         </Route>
       </Routes>
     </BrowserRouter>
