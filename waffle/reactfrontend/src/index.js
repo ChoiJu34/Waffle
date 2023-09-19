@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import axios from 'axios'
+
+// EC2 서버
+// axios.defaults.baseURL = "https://j9d109.p.ssafy.io:8001";
+// 로컬
+axios.defaults.baseURL = "http://localhost:8080";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
