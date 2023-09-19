@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -68,6 +69,8 @@ public class UserEntity {
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
+
+	private String uuid;
 
 	// user role setting
 	public void authorizeUser() {this.role = Role.USER;}

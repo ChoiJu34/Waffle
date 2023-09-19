@@ -40,4 +40,8 @@ dependencies {
 
 	// mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	//json->map
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+
 }

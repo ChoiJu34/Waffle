@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
-	private static final String NO_CHECK_URL = "/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
+	private static final String NO_CHECK_URL = "/user/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
 
 	private final JwtService jwtService;
 
