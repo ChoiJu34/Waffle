@@ -26,6 +26,7 @@ const Signup = () => {
   const nameFromPrevious = location.state?.name || '';
   const birthdayFromPrevious = location.state?.birthday || '';
   const telFromPrevious = location.state?.tel || '';
+  const isVerified = location.state?.isVerified || false;
 
   const [formData, setFormData] = useState({
     email: emailFromPrevious,
@@ -439,7 +440,11 @@ const handleChange = (e) => {
         <div className={`signup-email ${isEmailFocused ? 'focus' : ''} ${isEmailComplete ? 'complete' : ''}`}>
           <label id="signup-label">이메일</label>
           <input type="text" id="signup-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} onChange={functionSetEmail} placeholder={showEmailPlaceholder ? "ex) nutella@waffle.com" : ""} inputmode="email" value={formData.email} name="email"/>
+          {isVerified ? (
+          <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" />
+          ) : (
           <button className="signup-emailverify" disabled={!isEmail} onClick={handleEmailVerification}>인증</button>
+          )}
         </div>
 
         <div className={`signup-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
@@ -473,7 +478,7 @@ const handleChange = (e) => {
         </div>
 
         <div className="signup-button-container">
-          <SignupButton type="submit" className="signup-button" disabled={!(isEmail && isName && isBirthdate && isPassword && isPasswordVerify && isTel)} onClick={handleSubmit}>가입하기</SignupButton>
+          <SignupButton type="submit" className="signup-button" disabled={!(isVerified && isName && isBirthdate && isPassword && isPasswordVerify && isTel)} onClick={handleSubmit}>가입하기</SignupButton>
         </div>
       </form>
 
