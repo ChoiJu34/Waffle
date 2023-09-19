@@ -1,38 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import BottomSheet from '../Commons/BottomSheet';
+import axios from 'axios';
+import { NumericFormat } from 'react-number-format';
 
 const RecoCardMain = () => {
   const [creaditData, setCreaditData] = useState();
-  const [company, setCompany] = useState();
-  const [budget, setBudget] = useState();
+  const [company, setCompany] = useState([]);
+  const [dutyFree, setDutyFree] = useState();
+  const [annualFee, setannualFee] = useState();
+  const [use, setuse] = useState();
   const [checkCard, setCheckcard] = useState(0);
   const [creditCard, setCreditCard] = useState(0);
   const [nation, setNation] = useState();
   const [bottomSheetTitle, setBottomSheetTitle] = useState('국가선택');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const saverecocardboard = async () => {
-  //   try {
   
-  //     const params = {
-  //       fpId: {
-  //         "id": Number(postid),       
-  //     },
-  //       content:commentboard.commentcontent,
-  //       anonymous : anonymous,
-  //     }
-  //     // 서버에 보낼 데이터 구조를 맞추기 위해 board 객체를 변경합니다.
-  //     const response = await requestPost(`free/comment/save/${postid}`, params);
-  //     console.log(response);
-  //     alert('등록되었습니다.');
-  //     getBoardList()
-  //   } catch (error) {
-  //     console.error('댓글 등록 에러:', error);
-  //     getBoardList()
-  //   }
-    
-  // };
 
 
   const clickCredit = async() => {
@@ -53,7 +37,6 @@ const RecoCardMain = () => {
   }
  
   useEffect(() => {
-   console.log(nation)
   }, []);
   // const likeBtn = async() => {
   //   const param = {
@@ -72,6 +55,28 @@ const RecoCardMain = () => {
   //   console.error('에러:', error);
   // }
   // };
+
+const saverecocardboard = async () => {
+    try {
+  
+      const params = {
+        card: 3,
+        favoriteCompany: [],
+        dutyFree : dutyFree,
+        annualFee : annualFee,
+        use : use,
+        country : nation,
+      }
+      // 서버에 보낼 데이터 구조를 맞추기 위해 board 객체를 변경합니다.
+      const response = await axios.post(`http://localhost:8080/recommend-card/recommend`, params);
+      console.log(response);
+      alert('등록되었습니다.');
+    } catch (error) {
+      console.error('댓글 등록 에러:', error);
+    }
+    
+  };
+
   return (
     <Container>
       <Maintext>여행카드추천</Maintext>
@@ -97,6 +102,10 @@ const RecoCardMain = () => {
         </Companytext>
         <Company>+</Company>
       </Companybox>
+      <AnnualFeebox>
+        <div>최대 연회비</div>
+        <input type="text"/>
+      </AnnualFeebox>
       <Budgetbox>
         <Budgettext>여행비용</Budgettext>
         <Writebox>
@@ -104,32 +113,16 @@ const RecoCardMain = () => {
             <From>국가</From><Nations onClick={setIsModalOpen}>+</Nations>
           </Frombox>
           <Shopbox>
-            <div>면세점</div><input type="text" />
+            <div>면세점</div><NumericFormat  allowLeadingZeros thousandSeparator=","/>
           </Shopbox>
           <Usebox>
-          <div>해외이용</div><input type="text" />
+          <div>해외이용</div><NumericFormat allowLeadingZeros thousandSeparator="," />
           </Usebox>
         </Writebox>
-        <Line/>
-        <Totalbox>
-          <div>총 금액</div><div>1,700,000원</div>
-        </Totalbox>  
         </Budgetbox>
-      <div>확인</div>
+      <button onClick={saverecocardboard}>확인</button>
       {isModalOpen && (
         <BottomSheet title={bottomSheetTitle} closeModal={() => setIsModalOpen(false)}>
-          {bottomSheetTitle === '위시리스트' ? (
-            <StyledExistingWishList>
-              <StyledButtonWrapper>
-                <button onClick={() => setBottomSheetTitle('위시리스트 이름 정하기')}>
-                  {/* <img src={icPlus} /> */}
-                </button>
-                <div>새로운 위시리스트 만들기</div>
-              </StyledButtonWrapper>
-              {/* <MiniWishListInfo list={wishListInfo} /> */}
-            </StyledExistingWishList>
-          ) : (
-            <StyledNewWishList>
               <Countrybox>
               <Countryimg onClick={() => setNation("USA")} src="/countrys/US.png" alt="US"/>
               <div>미국</div>
@@ -162,10 +155,7 @@ const RecoCardMain = () => {
               <Countryimg onClick={() => setNation("Thailand")} src="/countrys/TH.png" alt="US"/>
               <div>태국</div>
               </Countrybox>
-              
               <button>확인</button>
-            </StyledNewWishList>
-          )}
         </BottomSheet>
       )}
     </Container>
@@ -316,17 +306,6 @@ const Usebox = styled.div`
   justify-content: space-between;
   margin: 15px;
 `
-const Totalbox = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  margin-bottom: 10px;
-`
-const Line = styled.hr`
-  width: 280px;
-`
-
 const Nations = styled.div`
   width: 80px;
   border-radius: 7px;
@@ -399,4 +378,17 @@ const Countrybox = styled.div`
   padding: 10px;
   border-bottom: 1px solid #898989;
   cursor: pointer;
+`
+
+const AnnualFeebox = styled.div`
+  width: 340px;
+  height: 60px;
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 30px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `
