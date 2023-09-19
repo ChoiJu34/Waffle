@@ -61,13 +61,16 @@ public class TripPackageService {
 	}
 
 	public Map<String,Object> all(@RequestBody RecommendDto recommendDto) throws JsonProcessingException {
-		ListenableFuture<Map<String, Object>> map1 = crawlingRepository.interparkPlane(recommendDto);
-		ListenableFuture<Map<String, Object>> map2 = crawlingRepository.interparkHotel(recommendDto);
+		// ListenableFuture<Map<String, Object>> map1 = crawlingRepository.interparkPlane(recommendDto);
+		// ListenableFuture<Map<String, Object>> map2 = crawlingRepository.interparkHotel(recommendDto);
+		ListenableFuture<Map<String, Object>> map1 = crawlingRepository.tripPlane(recommendDto);
 		Map<String, Object> ans = new HashMap<>();
-		while(!map1.isDone() || !map2.isDone()){
+		// while(!map1.isDone() || !map2.isDone()){
+		// }
+		while(!map1.isDone()){
 		}
 		map1.addCallback(result -> ans.putAll(result), error -> System.out.println(error.getMessage()));
-		map2.addCallback(result -> ans.putAll(result), error -> System.out.println(error.getMessage()));
+		// map2.addCallback(result -> ans.putAll(result), error -> System.out.println(error.getMessage()));
 		return ans;
 	}
 
