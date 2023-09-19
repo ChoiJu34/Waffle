@@ -54,13 +54,23 @@ public class CardController {
     // 은행에서 사용자 카드 리스트 조회
     @GetMapping("/list/user")
     public ResponseEntity<?> getUserCardList(@RequestHeader("Authorization") String authorization) throws Exception {
+
         return null;
     }
 
     // 은행에서 모든 카드 리스트 조회
     @GetMapping("/list")
     public ResponseEntity<?> getCardList() throws Exception {
-        return null;
+        Map<String, Object> result = new HashMap<>();
+        try {
+            result.put("result", cardService.getCardList());
+            result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            result.put("message", "FAIL");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // 은행에서 단일 카드 조회

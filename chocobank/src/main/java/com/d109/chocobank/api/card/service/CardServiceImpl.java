@@ -1,5 +1,6 @@
 package com.d109.chocobank.api.card.service;
 
+import com.d109.chocobank.api.card.dto.CardDto;
 import com.d109.chocobank.api.card.dto.UserCardDto;
 import com.d109.chocobank.api.card.entity.CardEntity;
 import com.d109.chocobank.api.card.entity.UserCardEntity;
@@ -71,5 +72,11 @@ public class CardServiceImpl implements CardService {
                 .cardEntity(cardEntity.get())
                 .build();
         userCardRepository.save(userCardEntity);
+    }
+
+    @Override
+    public List<CardDto> getCardList() throws Exception {
+        List<CardDto> cardDtoList = cardRepository.findAllBy();
+        return cardDtoList;
     }
 }

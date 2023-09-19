@@ -1,12 +1,8 @@
 package com.d109.chocobank.api.card.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.Column;
-
-public interface UserCardDto {
+public interface CardDto {
     int getId();
     String getName();
     String getCompany();
