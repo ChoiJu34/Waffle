@@ -25,7 +25,7 @@ public class CardController {
     public ResponseEntity<?> getServiceUserCardList(@RequestHeader("Authorization-uuid") String uuid) throws Exception {
         Map<String, Object> result = new HashMap<>();
         try {
-            result.put("result", cardService.getUserCardList(uuid));
+            result.put("userCardDtoList", cardService.getUserCardList(uuid));
             result.put("message", "SUCCESS");
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {

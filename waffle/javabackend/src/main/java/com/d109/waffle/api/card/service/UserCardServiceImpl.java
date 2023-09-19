@@ -1,6 +1,8 @@
 package com.d109.waffle.api.card.service;
 
+import com.d109.waffle.api.card.dto.CardListResponseDto;
 import com.d109.waffle.api.card.dto.CardResponseDto;
+import com.d109.waffle.api.card.dto.UserCardDto;
 import com.d109.waffle.api.card.entity.CardEntity;
 import com.d109.waffle.api.card.entity.UserCardEntity;
 import com.d109.waffle.api.card.repository.CardRepository;
@@ -26,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -83,7 +86,7 @@ public class UserCardServiceImpl implements UserCardService {
         if(response.getBody().getMessage().equals("SUCCESS")) {
             Optional<CardEntity> cardEntity = cardRepository.findByName(response.getBody().getResult());
             if(cardEntity.isEmpty()) {
-                throw new NoSuchElementException("해당 카드의 정보를 waffle에서 찾지 못했습니다.");
+                throw new NoSuchElementException("해당 카드의 정보를 찾지 못했습니다.");
             }
             UserCardEntity userCardEntity = UserCardEntity.builder()
                     .cardEntity(cardEntity.get())
@@ -92,5 +95,37 @@ public class UserCardServiceImpl implements UserCardService {
             userCardRepository.save(userCardEntity);
         }
 
+    }
+
+    @Override
+    public List<UserCardDto> getBankUserCardList(String authorization) throws Exception {
+        Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
+        if(!userEntity.isPresent()) {
+            throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+        }
+        UserEntity user = userEntity.get();
+
+        HashMap<String, String> body = new HashMap<>();
+//        body.put("uuid", cardNumber);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        headers.add("Authorization-uuid", user.getUuid());
+        HttpEntity<HashMap<String, String>> entity = new HttpEntity<>(body, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<CardListResponseDto> response = restTemplate.exchange(
+                bank_url+"/card/service/list",
+                HttpMethod.GET,
+                entity,
+                CardListResponseDto.class
+        );
+
+        if(response.getBody().getMessage().equals("SUCCESS")) {
+            List<UserCardDto> userCardDtoList = response.getBody().getUserCardDtoList();
+            return userCardDtoList;
+        } else {
+            throw new Exception("bank FAIL");
+        }
     }
 }
