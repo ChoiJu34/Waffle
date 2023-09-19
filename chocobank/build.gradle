@@ -36,6 +36,9 @@ dependencies {
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.7.5'
 	implementation 'com.auth0:java-jwt:4.4.0'
+
+	// swagger
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 }
 
 tasks.named('test') {
