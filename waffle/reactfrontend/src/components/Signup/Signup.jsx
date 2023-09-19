@@ -1,19 +1,55 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
+import 'animate.css'
+import SignupCompleteWaffle from '../../assets/SignupCompleteWaffle.png'
 
 const Signup = () => {
 
+  useEffect (() => {
+    onChangeEmail()
+    handleEmailBlur()
+    onChangeName()
+    handleNameBlur()
+    onChangeBirthdate()
+    handleBirthdateBlur()
+    onChangeTel()
+    handleTelBlur()
+  }, [])
+
+  const location = useLocation()
+
+  const emailFromPrevious = location.state?.email || '';
+  const nameFromPrevious = location.state?.name || '';
+  const birthdayFromPrevious = location.state?.birthday || '';
+  const telFromPrevious = location.state?.tel || '';
+
   const [formData, setFormData] = useState({
-    email: '',
-    name: '',
+    email: emailFromPrevious,
+    name: nameFromPrevious,
     password: '',
-    birthday: '',
-    tel: ''
+    birthday: birthdayFromPrevious,
+    tel: telFromPrevious
   })
+
+  useEffect (() => {
+    onChangeName()
+  }, [formData.name])
+
+  useEffect (() => {
+    onChangeEmail()
+  }, [formData.email])
+
+  useEffect (() => {
+    onChangeTel()
+  }, [formData.tel])
+
+  useEffect (() => {
+    onChangeBirthdate()
+  }, [formData.birthday])
 
   // 뒤로가기
   const navigate = useNavigate();
@@ -22,7 +58,7 @@ const Signup = () => {
 
     window.scrollTo(0, 0)
     
-    navigate(-1);
+    navigate('/user/login');
   }
 
   // 이메일 입력 칸
@@ -34,14 +70,16 @@ const Signup = () => {
     setIsEmailFocused(true);
   };
 
-  const handleEmailBlur = (event) => {
+  const handleEmailBlur = useCallback(() => {
+    const emailValue = formData.email
+
     setIsEmailFocused(false);
-    if (event.target.value === "") {
+    if (emailValue === "") {
       setIsEmailComplete(false);
     } else {
       setIsEmailComplete(true);
     }
-  };
+  }, [formData.email]);
 
   const showEmailPlaceholder = isEmailFocused && !formData.email
 
@@ -94,14 +132,16 @@ const Signup = () => {
     setIsNameFocused(true);
   };
 
-  const handleNameBlur = (event) => {
+  const handleNameBlur = useCallback(() => {
+
+    const nameValue = formData.name
     setIsNameFocused(false);
-    if (event.target.value === "") {
+    if (nameValue === "") {
       setIsNameComplete(false);
     } else {
       setIsNameComplete(true);
     }
-  };
+  }, [formData.name]);
 
   const showNamePlaceholder = isNameFocused && !inputNameRef.current?.value
 
@@ -114,14 +154,16 @@ const Signup = () => {
     setIsBirthdateFocused(true);
   };
 
-  const handleBirthdateBlur = (event) => {
+  const handleBirthdateBlur = useCallback(() => {
     setIsBirthdateFocused(false);
-    if (event.target.value === "") {
+
+    const birthdateValue = formData.birthday
+    if (birthdateValue === "") {
       setIsBirthdateComplete(false);
     } else {
       setIsBirthdateComplete(true);
     }
-  };
+  }, [formData.birthday]);
 
   const showBirthdatePlaceholder = isBirthdateFocused && !inputBirthdateRef.current?.value
 
@@ -162,14 +204,16 @@ const Signup = () => {
     setIsTelFocused(true);
   };
 
-  const handleTelBlur = (event) => {
+  const handleTelBlur = useCallback(() => {
+
+    const telValue = formData.tel
     setIsTelFocused(false);
-    if (event.target.value === "") {
+    if (telValue === "") {
       setIsTelComplete(false);
     } else {
       setIsTelComplete(true);
     }
-  };
+  }, [formData.tel]);
 
   const showTelPlaceholder = isTelFocused && !inputTelRef.current?.value
 
@@ -214,30 +258,31 @@ const Signup = () => {
   const [isTel, setIsTel] = useState(null)
 
   // 이름
-  const onChangeName = useCallback((e) => {
+  const onChangeName = () => {
     const koreanNameRegex = /^[가-힣]+$/;
+    const nameCurrent = formData.name
 
-    if (e.target.value === "") {
+    if (nameCurrent === "") {
         setIsName(null);
-    } else if (!koreanNameRegex.test(e.target.value) || e.target.value.length < 2 || e.target.value.length > 5) {
+    } else if (!koreanNameRegex.test(nameCurrent) || nameCurrent.length < 2 || nameCurrent.length > 5) {
         setIsName(false);
     } else {
         setIsName(true);
     }
-  }, []);
+  };
 
   // 이메일
-  const onChangeEmail = useCallback((e) => {
+  const onChangeEmail = useCallback(() => {
     const emailRegex =
       /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
-    const emailCurrent = e.target.value
+    const emailCurrent = formData.email
 
     if (!emailRegex.test(emailCurrent)) {
       setIsEmail(false)
     } else {
       setIsEmail(true)
     }
-  }, [])
+  }, [formData.email])
 
   // 비밀번호
   const onChangePassword = useCallback((e) => {
@@ -271,9 +316,9 @@ const Signup = () => {
     [password]
   )
 
-  const onChangeBirthdate = useCallback((e) => {
+  const onChangeBirthdate = useCallback(() => {
     const birthdateRegex = /^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/;
-    const birthdateCurrent = e.target.value;
+    const birthdateCurrent = formData.birthday
 
     if (birthdateCurrent === "") {
       setIsBirthdate(null);
@@ -301,12 +346,12 @@ const Signup = () => {
     } else {
       setIsBirthdate(false);
     }
-}, []);
+}, [formData.birthday]);
 
   // 연락처
-  const onChangeTel = useCallback((e) => {
+  const onChangeTel = useCallback(() => {
   const telRegex = /^01[016789]-\d{3,4}-\d{4}$/
-  const telCurrent = e.target.value
+  const telCurrent = formData.tel
 
   if (telCurrent === "") {
     setIsTel(null);
@@ -315,7 +360,7 @@ const Signup = () => {
   } else {
     setIsTel(true);
   }
-}, [])
+}, [formData.tel])
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -363,17 +408,38 @@ const handleChange = (e) => {
       })
   }
 
+  // 이메일 인증
+  const [loading, setLoading] = useState(false)
+
+  const handleEmailVerification = (e) => {
+
+    e.preventDefault()
+
+    setLoading(true)
+
+    axios.post(`/user/verify-email`, { email: formData.email })
+      .then((response) => {
+        navigate('/user/verify-email', {state: { email: formData.email, name: formData.name, birthday: formData.birthday, tel: formData.tel }})
+      })
+      .catch((error) => {
+        console.log('이메일 인증 메일 전송 실패')
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
+
   return (
     <SignupWrapper>
       <div className="signup-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
       <div className="signup-title">회원가입</div>
       <div className="signup-title-underline"></div>
 
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className={`signup-email ${isEmailFocused ? 'focus' : ''} ${isEmailComplete ? 'complete' : ''}`}>
           <label id="signup-label">이메일</label>
           <input type="text" id="signup-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} onChange={functionSetEmail} placeholder={showEmailPlaceholder ? "ex) nutella@waffle.com" : ""} inputmode="email" value={formData.email} name="email"/>
-          <button className="signup-emailverify">인증</button>
+          <button className="signup-emailverify" disabled={!isEmail} onClick={handleEmailVerification}>인증</button>
         </div>
 
         <div className={`signup-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
@@ -410,6 +476,12 @@ const handleChange = (e) => {
           <SignupButton type="submit" className="signup-button" disabled={!(isEmail && isName && isBirthdate && isPassword && isPasswordVerify && isTel)} onClick={handleSubmit}>가입하기</SignupButton>
         </div>
       </form>
+
+      {loading && (
+      <LoadingOverlay>
+        <LoadingImage className="animate__animated animate__bounce animate__slow animate__infinite" src={SignupCompleteWaffle} alt="LoadingWaffle" />
+      </LoadingOverlay>
+      )}
     </SignupWrapper>
   )
 }
@@ -517,6 +589,11 @@ const SignupWrapper = styled.div`
     color: white;
     font-weight: 600;
     font-size: 1.5vh;
+  }
+
+  .signup-emailverify:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
   }
 
   .signup-password {
@@ -883,6 +960,24 @@ const SignupButton = styled.button`
     background-color: #ddd;
     cursor: not-allowed;
   }
+`;
+
+const LoadingOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoadingImage = styled.img`
+  width: 20vh;
+  height: 20vh;
 `;
 
 export default Signup

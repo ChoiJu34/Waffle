@@ -10,6 +10,7 @@ import FindEmail from '../components/Login/FindEmail'
 import FoundEmail from '../components/Login/FoundEmail'
 import Signup from '../components/Signup/Signup'
 import SignupComplete from '../components/Signup/SignupComplete'
+import VerifyEmail from '../components/Signup/VerifyEmail'
 
 const RootNavigation = () => {
   return (
@@ -23,6 +24,7 @@ const RootNavigation = () => {
           <Route path="/user/sign-up/complete" element={<SignupComplete/>} />
           <Route path="/user/find-email" element={<FindEmail/>} />
           <Route path="/user/found-email" element={<FoundEmail/>} />
+          <Route path="/user/verify-email" element={<VerifyEmail/>} />
           <Route path="/recocard/main" element={<ProtectedRoute><RecoCardMain /></ProtectedRoute>} />
         </Route>
       </Routes>
