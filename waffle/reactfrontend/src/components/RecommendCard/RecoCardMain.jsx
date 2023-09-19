@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import BottomSheet from '../Commons/BottomSheet';
 import axios from 'axios';
 import { NumericFormat } from 'react-number-format';
+import { append } from 'stylis';
 
 const RecoCardMain = () => {
   const [creaditData, setCreaditData] = useState();
@@ -12,28 +13,35 @@ const RecoCardMain = () => {
   const [use, setuse] = useState();
   const [checkCard, setCheckcard] = useState(0);
   const [creditCard, setCreditCard] = useState(0);
-  const [nation, setNation] = useState();
+  const [nation, setNation] = useState(0);
   const [bottomSheetTitle, setBottomSheetTitle] = useState('국가선택');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [selectedCompanies, setSelectedCompanies] = useState([]);
 
   
 
 
   const clickCredit = async() => {
-    setCreditCard(2);
+    setCreditCard(1);
   }
 
   const unClickCredit = async() => {
     setCreditCard(0);
   }
   const clickCheck= async() => {
-    setCheckcard(1);
-    console.log(nation)
+    setCheckcard(2);
   }
 
   const unClickCheck = async() => {
     setCheckcard(0);
-    console.log(nation)
+  }
+
+  function handleCompanyClick(companyName) {
+    setCompany(companyName);
+    if (selectedCompanies.includes(companyName)) {
+      return; } else {
+    setSelectedCompanies((prevSelectedCompanies) => [...prevSelectedCompanies, companyName]); }
   }
  
   useEffect(() => {
@@ -58,15 +66,16 @@ const RecoCardMain = () => {
 
 const saverecocardboard = async () => {
     try {
-  
+      
       const params = {
-        card: 3,
+        card: creditCard+checkCard,
         favoriteCompany: [],
         dutyFree : dutyFree,
         annualFee : annualFee,
         use : use,
-        country : nation,
+        country : "China",
       }
+      console.log(creditCard+checkCard)
       // 서버에 보낼 데이터 구조를 맞추기 위해 board 객체를 변경합니다.
       const response = await axios.post(`http://localhost:8080/recommend-card/recommend`, params);
       console.log(response);
@@ -76,6 +85,13 @@ const saverecocardboard = async () => {
     }
     
   };
+
+  function countrySelect(e) {
+    setNation(e);
+    setIsModalOpen(false);
+  }
+
+  console.log(selectedCompanies)
 
   return (
     <Container>
@@ -100,23 +116,71 @@ const saverecocardboard = async () => {
           <Latext>카드사 선택</Latext>
           <Smalltext>미선택시 모든 카드사를 검색합니다.</Smalltext>
         </Companytext>
-        <Company>+</Company>
+        <Company onClick={setIsModalOpen2}>+</Company>
+          
       </Companybox>
       <AnnualFeebox>
         <div>최대 연회비</div>
-        <input type="text"/>
+        <NumericFormat 
+              allowLeadingZeros 
+              thousandSeparator=","
+              onValueChange={
+                (values) => {
+                    const { value } = values;
+                    console.log(value);
+                    setannualFee(value);
+                }
+            } 
+            />
       </AnnualFeebox>
       <Budgetbox>
         <Budgettext>여행비용</Budgettext>
         <Writebox>
           <Frombox>
-            <From>국가</From><Nations onClick={setIsModalOpen}>+</Nations>
+            <From>국가</From>
+            <Selecnation>
+          {
+            {
+              0 : <Nations onClick={setIsModalOpen}>+</Nations>,
+              USA : <img src="/countrys/US.png" onClick={setIsModalOpen} alt="USA" />,
+              Europe : <img src="/countrys/UR.png" onClick={setIsModalOpen} alt="Europe" />,
+              England : <img src="/countrys/UK.png" onClick={setIsModalOpen} alt="England" />,
+              Japan : <img src="/countrys/JP.png" onClick={setIsModalOpen} alt="Japan" />,
+              China : <img src="/countrys/CH.png" onClick={setIsModalOpen} alt="China" />,
+              Hongkong : <img src="/countrys/HO.png" onClick={setIsModalOpen} alt="Hongkong" />,
+              Singapore : <img src="/countrys/SI.png" onClick={setIsModalOpen} alt="Singapore" />,
+              Thailand : <img src="/countrys/TH.png" onClick={setIsModalOpen} alt="Thailand" />,
+            }[nation]
+          }
+            </Selecnation>
           </Frombox>
           <Shopbox>
-            <div>면세점</div><NumericFormat  allowLeadingZeros thousandSeparator=","/>
+            <div>면세점</div>
+            <NumericFormat  
+            allowLeadingZeros 
+            thousandSeparator=","
+            onValueChange={
+              (values) => {
+                  const { formattedValue, value } = values;
+                  console.log(value);
+                  setDutyFree(value);
+              }
+          }
+            />
           </Shopbox>
           <Usebox>
-          <div>해외이용</div><NumericFormat allowLeadingZeros thousandSeparator="," />
+            <div>해외이용</div>
+            <NumericFormat 
+              allowLeadingZeros 
+              thousandSeparator=","
+              onValueChange={
+                (values) => {
+                    const { formattedValue, value } = values;
+                    console.log(value);
+                    setuse(value);
+                }
+            } 
+            />
           </Usebox>
         </Writebox>
         </Budgetbox>
@@ -124,38 +188,49 @@ const saverecocardboard = async () => {
       {isModalOpen && (
         <BottomSheet title={bottomSheetTitle} closeModal={() => setIsModalOpen(false)}>
               <Countrybox>
-              <Countryimg onClick={() => setNation("USA")} src="/countrys/US.png" alt="US"/>
-              <div>미국</div>
+                <Countryimg onClick={() => countrySelect("USA")} src="/countrys/US.png" alt="US"/>
+                <div>미국</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg onClick={() => setNation("Europe")} src="/countrys/UR.png" alt="US"/>
-              <div>유럽</div>
+                <Countryimg onClick={() => countrySelect("Europe")} src="/countrys/UR.png" alt="US"/>
+                <div>유럽</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg onClick={() => setNation("England")} src="/countrys/UK.png" alt="US"/>
-              <div>영국</div>
+                <Countryimg onClick={() => countrySelect("England")} src="/countrys/UK.png" alt="US"/>
+                <div>영국</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg onClick={() => setNation("Japan")} src="/countrys/JP.png" alt="US"/>
-              <div>일본</div>
+                <Countryimg onClick={() => countrySelect("Japan")} src="/countrys/JP.png" alt="US"/>
+                <div>일본</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg onClick={() => setNation("China")} src="/countrys/CH.png" alt="US"/>
-              <div>중국</div>
+                <Countryimg onClick={() => countrySelect("China")}  src="/countrys/CH.png" alt="US"/>
+                <div>중국</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg onClick={() => setNation("Hongkong")} src="/countrys/HO.png" alt="US"/>
-              <div>홍콩</div>
+                <Countryimg onClick={() => countrySelect("Hongkong")} src="/countrys/HO.png" alt="US"/>
+                <div>홍콩</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg onClick={() => setNation("Singapore")} src="/countrys/SI.png" alt="US"/>
-              <div>싱가포르</div>
+                <Countryimg onClick={() => countrySelect("Singapore")} src="/countrys/SI.png" alt="US"/>
+                <div>싱가포르</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg onClick={() => setNation("Thailand")} src="/countrys/TH.png" alt="US"/>
-              <div>태국</div>
+                <Countryimg onClick={() => countrySelect("Thailand")} src="/countrys/TH.png" alt="US"/>
+                <div>태국</div>
               </Countrybox>
-              <button>확인</button>
+        </BottomSheet>
+      )}
+      {isModalOpen2 && (
+        <BottomSheet title={bottomSheetTitle} closeModal={() => setIsModalOpen2(false)}>
+          <div onClick={() => handleCompanyClick("우리카드")}>우리카드</div>
+          <div onClick={() => handleCompanyClick("신한카드")}>신한카드</div>
+          <div onClick={() => handleCompanyClick("하나카드")} >하나카드</div>
+          <div onClick={() => handleCompanyClick("NH농협카드")} >농협카드</div>
+          <div onClick={() => handleCompanyClick("현대카드카드")}>현대카드</div>
+          <div onClick={() => handleCompanyClick("MG새마을금고")}>새마을금고</div>
+          <div onClick={() => handleCompanyClick("IBK기업은행")}>기업은행</div>
+          <div onClick={() => handleCompanyClick("BNK부산은행")}>부산은행</div>
         </BottomSheet>
       )}
     </Container>
@@ -284,7 +359,7 @@ const Writebox = styled.div`
 const Frombox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin: 15px;
 `
@@ -313,58 +388,7 @@ const Nations = styled.div`
   margin-left: 120px;
   cursor: pointer;
 `
-const StyledExistingWishList = styled.div`
-  padding: 2.4rem 2.2rem 2rem 2.2rem;
-  font-weight: 600;
-  font-size: 1.4rem;
-  line-height: 1.7rem;
-`;
 
-const StyledButtonWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1.6rem;
-
-  & > button {
-    width: 5.8rem;
-    height: 5.8rem;
-    border: 0.1rem solid gray;
-    border-radius: 0.8rem;
-    background-color: white;
-  }
-
-  & > button > img {
-    width: 2.4rem;
-    height: 2.4rem;
-  }
-`;
-
-const StyledNewWishList = styled.div`
-  padding: 3.3rem 2.2rem 3.6rem 2.2rem;
-  
-
-
-
-  & > div {
-    font-weight: 500;
-    font-size: 1.2rem;
-    line-height: 1.4rem;
-    color: gray;
-  }
-
-  & > button {
-    width: 30%;
-    font-weight: 600;
-    font-size: 1.6rem;
-    line-height: 1.9rem;
-    padding: 1.6rem 0 1.5rem 0;
-    border-radius: 0.6rem;
-    color: white;
-  }
-  & > button:disabled {
-    background-color: gray;
-  }
-`;
 
 const Countryimg = styled.img`
   width: 100px;
@@ -391,4 +415,12 @@ const AnnualFeebox = styled.div`
   align-items: center;
   margin-bottom: 30px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+`
+
+const Selecnation = styled.div`
+  & > img {
+    width: 100px;
+    height: 50px;
+    margin-left: 110px;
+  }
 `

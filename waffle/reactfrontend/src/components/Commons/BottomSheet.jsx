@@ -1,13 +1,14 @@
 // import { icClose } from 'assets';
 import styled from 'styled-components';
 
+
 function BottomSheet({ title, closeModal, children }) {
   return (
     <>
       <StyledModalBackground />
       <StyledBottomSheet>
         <StyledBottomSheetHeader>
-          {/* <img src={icClose} alt="x" onClick={closeModal} /> */}
+          <button onClick={closeModal}>X</button>
           <div>{title}</div>
         </StyledBottomSheetHeader>
         <div>{children}</div>
