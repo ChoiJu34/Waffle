@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ProtectedRoute } from '../components/Commons/ProtectedRoute'
 import Layout from '../pages/Layout';
 import ScrollTop from '../components/Commons/ScrollTop'
 import RecoCardMain from '../components/RecommendCard/RecoCardMain';
@@ -16,13 +17,13 @@ const RootNavigation = () => {
       <ScrollTop />
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/recocard/main" element={<RecoCardMain />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/user/login" element={<Login/>} />
           <Route path="/user/sign-up" element={<Signup/>} />
           <Route path="/user/sign-up/complete" element={<SignupComplete/>} />
           <Route path="/user/find-email" element={<FindEmail/>} />
           <Route path="/user/found-email" element={<FoundEmail/>} />
+          <Route path="/recocard/main" element={<ProtectedRoute><RecoCardMain /></ProtectedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>
