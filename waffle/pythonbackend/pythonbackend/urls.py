@@ -19,10 +19,12 @@ from django.urls import path
 from waffle import interpark_plane
 from waffle import interpark_hotel
 from waffle import trip_plane
+from waffle import agoda_hotel
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('interparkPlane', interpark_plane.interparkPlane, name='convert_data'),
     path('interparkHotel', interpark_hotel.interparkHotel, name='convert_data'),
     path('tripPlane', trip_plane.tripPlane, name='convert_data'),
+    path('agodaHotel', agoda_hotel.agodaHotel, name='convert_data'),
 ]
