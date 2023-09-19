@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import BottomSheet from '../Commons/BottomSheet';
 
@@ -11,6 +11,7 @@ const RecoCardMain = () => {
   const [nation, setNation] = useState();
   const [bottomSheetTitle, setBottomSheetTitle] = useState('국가선택');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   // const saverecocardboard = async () => {
   //   try {
   
@@ -32,7 +33,9 @@ const RecoCardMain = () => {
   //   }
     
   // };
-  const clickCredit= async() => {
+
+
+  const clickCredit = async() => {
     setCreditCard(2);
   }
 
@@ -41,14 +44,17 @@ const RecoCardMain = () => {
   }
   const clickCheck= async() => {
     setCheckcard(1);
+    console.log(nation)
   }
 
   const unClickCheck = async() => {
     setCheckcard(0);
+    console.log(nation)
   }
-
-
-
+ 
+  useEffect(() => {
+   console.log(nation)
+  }, []);
   // const likeBtn = async() => {
   //   const param = {
   //     fpId: {
@@ -125,37 +131,38 @@ const RecoCardMain = () => {
           ) : (
             <StyledNewWishList>
               <Countrybox>
-              <Countryimg src="/countrys/US.png" alt="US"/>
+              <Countryimg onClick={() => setNation("USA")} src="/countrys/US.png" alt="US"/>
               <div>미국</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg src="/countrys/UR.png" alt="US"/>
+              <Countryimg onClick={() => setNation("Europe")} src="/countrys/UR.png" alt="US"/>
               <div>유럽</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg src="/countrys/UK.png" alt="US"/>
+              <Countryimg onClick={() => setNation("England")} src="/countrys/UK.png" alt="US"/>
               <div>영국</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg src="/countrys/JP.png" alt="US"/>
+              <Countryimg onClick={() => setNation("Japan")} src="/countrys/JP.png" alt="US"/>
               <div>일본</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg src="/countrys/CH.png" alt="US"/>
+              <Countryimg onClick={() => setNation("China")} src="/countrys/CH.png" alt="US"/>
               <div>중국</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg src="/countrys/HO.png" alt="US"/>
+              <Countryimg onClick={() => setNation("Hongkong")} src="/countrys/HO.png" alt="US"/>
               <div>홍콩</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg src="/countrys/SI.png" alt="US"/>
+              <Countryimg onClick={() => setNation("Singapore")} src="/countrys/SI.png" alt="US"/>
               <div>싱가포르</div>
               </Countrybox>
               <Countrybox>
-              <Countryimg src="/countrys/TH.png" alt="US"/>
+              <Countryimg onClick={() => setNation("Thailand")} src="/countrys/TH.png" alt="US"/>
               <div>태국</div>
               </Countrybox>
+              
               <button>확인</button>
             </StyledNewWishList>
           )}
@@ -390,5 +397,6 @@ const Countrybox = styled.div`
   align-items: center;
   margin-bottom: 10px;
   padding: 10px;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #898989;
+  cursor: pointer;
 `
