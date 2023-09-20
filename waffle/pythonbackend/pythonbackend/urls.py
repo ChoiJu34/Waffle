@@ -20,6 +20,7 @@ from waffle import interpark_plane
 from waffle import interpark_hotel
 from waffle import trip_plane
 from waffle import agoda_hotel
+from waffle import plane
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +28,5 @@ urlpatterns = [
     path('interparkHotel', interpark_hotel.interparkHotel, name='convert_data'),
     path('tripPlane', trip_plane.tripPlane, name='convert_data'),
     path('agodaHotel', agoda_hotel.agodaHotel, name='convert_data'),
+    path('plane', plane.plane, name='convert_data'),
 ]

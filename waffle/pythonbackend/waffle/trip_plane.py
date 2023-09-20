@@ -12,6 +12,8 @@ import time
 import threading
 import logging
 import datetime
+from waffle.dto import Plane
+import queue
 
 # 로깅 설정
 logging.basicConfig(level=logging.DEBUG)
@@ -30,16 +32,11 @@ def tripPlane(request):
     with Pool(processes=5) as pool:
         result.append(pool.starmap(multi_threading, [(plan, memberCnt) for plan in data["planPlane"]]))
 
-    response_data = {
-        'plane': result,
-    }
-
-    json_response = json.dumps(response_data, ensure_ascii=False).encode('utf-8')
+    json_response = json.dumps(result, ensure_ascii=False).encode('utf-8')
     return HttpResponse(json_response, content_type="application/json;charset=utf-8")
 
 
-planes=[]
-cards=[]
+q = queue.PriorityQueue()
 def multi_threading(planPlane, memberCnt):
     placeStart = planPlane["placeStart"]
     placeEnd = planPlane["placeEnd"]
@@ -57,11 +54,9 @@ def multi_threading(planPlane, memberCnt):
     for thread in threads:
         thread.join()
 
-    plane_card = {
-        "plane": planes,
-        "card": cards
-    }
-    return plane_card
+    top = q.get()
+    best = [top.name, top.startPlace, top.startTime, top.endPlace, top.endTime, top.price, top.layover, top.long]
+    return best
 
 
 def crawling_multi_thread(info):
@@ -101,7 +96,27 @@ def crawling_multi_thread(info):
         pattern = r'항공사|선택|원|,|저비용|공동운항편|\s\+\d+\n'
         origin = re.sub(pattern, "", element.get_attribute('innerText'))
         origin = re.sub(r'\n\n', '\n', origin)
-        origin = re.sub(r'\s\n', '', origin).split('\n')
+        p = re.sub(r'\s\n', '', origin).split('\n')
+        planeTime = p[1].split(":")
+        userTimeS = planPlane["startStart"].split()[1].split(":")
+        userTimeE = planPlane["startEnd"].split()[1].split(":")
         plane.append(origin)
-    planes.append(plane)
+        pt = int(planeTime[0])
+        uts = int(userTimeS[0])
+        ute = int(userTimeE[0])
+        pt1 = int(planeTime[1])
+        uts1 = int(userTimeS[1])
+        ute1 = int(userTimeE[1])
+        if n == 0:
+            if pt > uts:  # 비행기H>설정H
+                q.put(Plane(p[0], p[2], p[1], p[6], p[5], p[7], p[4], p[3]))
+            elif pt == uts and pt1 >= uts1:
+                q.put(Plane(p[0], p[2], p[1], p[6], p[5], p[7], p[4], p[3]))
+        elif n == (day - 1):
+            if pt < ute:
+                q.put(Plane(p[0], p[2], p[1], p[6], p[5], p[7], p[4], p[3]))
+            elif pt == ute and pt1 <= ute1:
+                q.put(Plane(p[0], p[2], p[1], p[6], p[5], p[7], p[4], p[3]))
+        else:
+            q.put(Plane(p[0], p[2], p[1], p[6], p[5], p[7], p[4], p[3]))
     driver.quit()

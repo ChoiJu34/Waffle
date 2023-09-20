@@ -11,6 +11,8 @@ import re
 import time
 import threading
 import logging
+from waffle.dto import Plane
+import queue
 
 # 로깅 설정
 logging.basicConfig(level=logging.DEBUG)
@@ -32,17 +34,11 @@ def interparkPlane(request):
     with Pool(processes=5) as pool:
         result.append(pool.starmap(multi_threading, [(plan, memberCnt) for plan in data["planPlane"]]))
 
-    response_data = {
-        'plane': result,
-    }
-    logger.debug(f"~!!!!!! : {response_data}")
-
-    json_response = json.dumps(response_data, ensure_ascii=False).encode('utf-8')
+    json_response = json.dumps(result, ensure_ascii=False).encode('utf-8')
     return HttpResponse(json_response, content_type="application/json;charset=utf-8")
 
 
-planes=[]
-cards=[]
+q = queue.PriorityQueue()
 def multi_threading(planPlane, memberCnt):
     placeStart = planPlane["placeStart"]
     placeEnd = planPlane["placeEnd"]
@@ -60,11 +56,9 @@ def multi_threading(planPlane, memberCnt):
     for thread in threads:
         thread.join()
 
-    plane_card = {
-        "plane": planes,
-        "card": cards
-    }
-    return plane_card
+    top = q.get()
+    best = [top.name, top.startPlace, top.startTime, top.endPlace, top.endTime, top.price, top.layover, top.long]
+    return best
 
 
 def crawling_multi_thread(info):
@@ -92,6 +86,7 @@ def crawling_multi_thread(info):
         planeTime = origin[0].replace(" 경유", "경유").split()[2].split(":")
         userTimeS = planPlane["startStart"].split()[1].split(":")
         userTimeE = planPlane["startEnd"].split()[1].split(":")
+        p = re.sub("(,|원~|\+1)", "", origin[0]).replace(" 경유", "경유").replace('시간 ','시간').split()
         pt = int(planeTime[0])
         uts = int(userTimeS[0])
         ute = int(userTimeE[0])
@@ -100,21 +95,14 @@ def crawling_multi_thread(info):
         ute1 = int(userTimeE[1])
         if n == 0:
             if pt > uts:  # 비행기H>설정H
-                plane.append(origin[0].replace(" 경유", "경유").split())
-                card = re.sub("( |~|원|,|요금선택|조건)", "", origin[1]).replace('(', '').replace(')', ' ').split("성인")
+                q.put(Plane(p[0], p[1], p[2], p[3], p[4], p[len(p) - 2], p[5], p[6]))
             elif pt == uts and pt1 >= uts1:
-                plane.append(origin[0].replace(" 경유", "경유").split())
-                card.append(re.sub("( |~|원|,|요금선택|조건)", "", origin[1]).replace('(', '').replace(')', ' ').split("성인"))
+                q.put(Plane(p[0], p[1], p[2], p[3], p[4], p[len(p) - 2], p[5], p[6]))
         elif n == (day - 1):
             if pt < ute:
-                plane.append(origin[0].replace(" 경유", "경유").split())
-                card.append(re.sub("( |~|원|,|요금선택|조건)", "", origin[1]).replace('(', '').replace(')', ' ').split("성인"))
+                q.put(Plane(p[0], p[1], p[2], p[3], p[4], p[len(p) - 2], p[5], p[6]))
             elif pt == ute and pt1 <= ute1:
-                plane.append(origin[0].replace(" 경유", "경유").split())
-                card.append(re.sub("( |~|원|,|요금선택|조건)", "", origin[1]).replace('(', '').replace(')', ' ').split("성인"))
+                q.put(Plane(p[0], p[1], p[2], p[3], p[4], p[len(p) - 2], p[5], p[6]))
         else:
-            plane.append(origin[0].replace(" 경유", "경유").split())
-            card.append(re.sub("( |~|원|,|요금선택|조건)", "", origin[1]).replace('(', '').replace(')', ' ').split("성인"))
-    planes.append(plane)
-    cards.append(card)
+            q.put(Plane(p[0], p[1], p[2], p[3], p[4], p[len(p) - 2], p[5], p[6]))
     driver.quit()
