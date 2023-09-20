@@ -8,13 +8,15 @@ const RecoCardList = (props) => {
 
 
     const location = useLocation()
-    const data = location.state?.value
+    const data = location.state?.value.result
     console.log(data)
     return (
       <Container>
        {data && data.map(({ recommendNumber, cardId, cardCompany, cardName,discountPrice}) => (
         <Contentbox id={recommendNumber}>
-        <div>{cardId}</div>
+        <img src="/cardlogo/card.png" alt="" />
+        <div>{cardName}</div>
+
         </Contentbox>
         ))}
       </Container>
@@ -50,4 +52,9 @@ const Contentbox = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  & > img {
+    width: 300px;
+    height: px;
+
+  }
 `
