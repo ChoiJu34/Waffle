@@ -12,8 +12,11 @@ const RecoCardList = (props) => {
     console.log(data)
     return (
       <Container>
-        <CardList></CardList>
-        {JSON.stringify(data)}
+       {data && data.map(({ recommendNumber, cardId, cardCompany, cardName,discountPrice}) => (
+        <Contentbox id={recommendNumber}>
+        <div>{cardId}</div>
+        </Contentbox>
+        ))}
       </Container>
     );
   };
@@ -32,6 +35,15 @@ const Container = styled.div`
 `
 const CardList = styled.div`
   width: 340px;
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+`
+const Contentbox = styled.div`
+     width: 340px;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin-bottom: 10px;

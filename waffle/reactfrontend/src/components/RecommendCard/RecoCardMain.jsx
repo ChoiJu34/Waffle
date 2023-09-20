@@ -160,13 +160,13 @@ const saverecocardboard = async () => {
       // 서버에 보낼 데이터 구조를 맞추기 위해 board 객체를 변경합니다.
       const response = await axios.post(`http://localhost:8080/recommend-card/recommend`, params);
       alert('등록되었습니다.');
-      setcompany([])
+      
       navigate('/recocard/list', {state : {value : response.data}})
       
     } catch (error) {
       console.error('포스트에러', error);
     }
-    
+    setcompany([])
   };
 
   function countrySelect(e) {
