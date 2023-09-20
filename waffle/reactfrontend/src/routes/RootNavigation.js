@@ -9,6 +9,7 @@ import FindEmail from '../components/Login/FindEmail'
 import FoundEmail from '../components/Login/FoundEmail'
 import Signup from '../components/Signup/Signup'
 import SignupComplete from '../components/Signup/SignupComplete'
+import RecoCardList from '../components/RecommendCard/RecoCardList';
 
 const RootNavigation = () => {
   return (
@@ -17,6 +18,7 @@ const RootNavigation = () => {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/recocard/main" element={<RecoCardMain />} />
+          <Route path="/recocard/list" element={<RecoCardList />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/user/login" element={<Login/>} />
           <Route path="/user/sign-up" element={<Signup/>} />

@@ -4,23 +4,100 @@ import BottomSheet from '../Commons/BottomSheet';
 import axios from 'axios';
 import { NumericFormat } from 'react-number-format';
 import { append } from 'stylis';
+import RecoCardList from './RecoCardList'
+import { useNavigate } from 'react-router-dom';
+
 
 const RecoCardMain = () => {
-  const [creaditData, setCreaditData] = useState();
-  const [company, setCompany] = useState([]);
+  const navigate = useNavigate();
+  const [creaditData, setCreaditData] = useState();;
   const [dutyFree, setDutyFree] = useState();
   const [annualFee, setannualFee] = useState();
+  const [company, setcompany] = useState([]);
   const [use, setuse] = useState();
   const [checkCard, setCheckcard] = useState(0);
   const [creditCard, setCreditCard] = useState(0);
   const [nation, setNation] = useState(0);
   const [bottomSheetTitle, setBottomSheetTitle] = useState('국가선택');
+  const [bottomSheetTitle2, setBottomSheetTitle2] = useState('카드사선택');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
+  const [HA, setHA] = useState(false)
+  const [NH, setNH] = useState(false)
+  const [WR, setWR] = useState(false)
+  const [BU, setBU] = useState(false)
+  const [HD, setHD] = useState(false)
+  const [MG, setMG] = useState(false)
+  const [SH, setSH] = useState(false)
+  const [IBK, setIBK] = useState(false)
+
+
+
+  function clickHA () {
+    if (HA === false) {
+      setHA(true)
+    } else {
+      setHA(false)
+    }
+  }
+
+  function clickNH () {
+    if (NH === false) {
+      setNH(true)
+    } else {
+      setNH(false)
+    }
+  }
 
   
+  function clickWR () {
+    if (WR === false) {
+      setWR(true)
+    } else {
+      setWR(false)
+    }
+  }
 
+  function clickHD () {
+    if (HD === false) {
+      setHD(true)
+    } else {
+      setHD(false)
+    }
+  }
+
+  function clickBU () {
+    if (BU === false) {
+      setBU(true)
+    } else {
+      setBU(false)
+    }
+  }
+
+  function clickMG () {
+    if (MG === false) {
+      setMG(true)
+    } else {
+      setMG(false)
+    }
+  }
+
+  function clickSH () {
+    if (SH === false) {
+      setSH(true)
+    } else {
+      setSH(false)
+    }
+  }
+
+  function clickIBK () {
+    if (IBK === false) {
+      setIBK(true)
+    } else {
+      setIBK(false)
+    }
+  }
 
   const clickCredit = async() => {
     setCreditCard(1);
@@ -37,14 +114,10 @@ const RecoCardMain = () => {
     setCheckcard(0);
   }
 
-  function handleCompanyClick(companyName) {
-    setCompany(companyName);
-    if (selectedCompanies.includes(companyName)) {
-      return; } else {
-    setSelectedCompanies((prevSelectedCompanies) => [...prevSelectedCompanies, companyName]); }
-  }
+    
  
   useEffect(() => {
+;
   }, []);
   // const likeBtn = async() => {
   //   const param = {
@@ -66,22 +139,32 @@ const RecoCardMain = () => {
 
 const saverecocardboard = async () => {
     try {
-      
+      if (HA) company.push('하나카드');
+      if (NH) company.push('NH농협카드');
+      if (WR) company.push('우리카드');
+      if (HD) company.push('현대카드');
+      if (BU) company.push('BNK부산은행');
+      if (MG) company.push('MG새마을금고');
+      if (SH) company.push('신한카드');
+      if (IBK) company.push('IBK기업은행');
+      console.log(company)
       const params = {
         card: creditCard+checkCard,
-        favoriteCompany: [],
+        favoriteCompany: company,
         dutyFree : dutyFree,
         annualFee : annualFee,
         use : use,
-        country : "China",
+        country : nation,
       }
       console.log(creditCard+checkCard)
       // 서버에 보낼 데이터 구조를 맞추기 위해 board 객체를 변경합니다.
       const response = await axios.post(`http://localhost:8080/recommend-card/recommend`, params);
-      console.log(response);
       alert('등록되었습니다.');
+      setcompany([])
+      navigate('/recocard/list', {state : {value : response.data}})
+      
     } catch (error) {
-      console.error('댓글 등록 에러:', error);
+      console.error('포스트에러', error);
     }
     
   };
@@ -116,7 +199,7 @@ const saverecocardboard = async () => {
           <Latext>카드사 선택</Latext>
           <Smalltext>미선택시 모든 카드사를 검색합니다.</Smalltext>
         </Companytext>
-        <Company onClick={setIsModalOpen2}>+</Company>
+        <Company onClick={() => setIsModalOpen2(true)}>+</Company>
           
       </Companybox>
       <AnnualFeebox>
@@ -222,18 +305,66 @@ const saverecocardboard = async () => {
         </BottomSheet>
       )}
       {isModalOpen2 && (
-        <BottomSheet title={bottomSheetTitle} closeModal={() => setIsModalOpen2(false)}>
-          <div onClick={() => handleCompanyClick("우리카드")}>우리카드</div>
-          <div onClick={() => handleCompanyClick("신한카드")}>신한카드</div>
-          <div onClick={() => handleCompanyClick("하나카드")} >하나카드</div>
-          <div onClick={() => handleCompanyClick("NH농협카드")} >농협카드</div>
-          <div onClick={() => handleCompanyClick("현대카드카드")}>현대카드</div>
-          <div onClick={() => handleCompanyClick("MG새마을금고")}>새마을금고</div>
-          <div onClick={() => handleCompanyClick("IBK기업은행")}>기업은행</div>
-          <div onClick={() => handleCompanyClick("BNK부산은행")}>부산은행</div>
+        <BottomSheet title={bottomSheetTitle2} closeModal={() => setIsModalOpen2(false)}>
+          <Cardsheetbox>
+            <Companyslay>
+              {(WR === false ? (
+                <Companysbox onClick={clickWR}>
+                  <img src="/cardlogo/woorilogo.png" alt="" />
+                  <div>우리카드</div>
+                </Companysbox>
+              ) : ( <Companysbox2 onClick={clickWR}>
+                <img src="/cardlogo/woorilogo.png" alt="" />
+                <div>우리카드</div>
+                </Companysbox2> ))}
+              {(SH === false ? (
+                <Companysbox onClick={clickSH}><img src="/cardlogo/shinhanlogo.png" alt="" />
+                <div>신한카드</div></Companysbox>
+              ) : ( <Companysbox2 onClick={clickSH}><img src="/cardlogo/shinhanlogo.png" alt="" />
+              <div>신한카드</div></Companysbox2> ))}
+              {(HA === false ? (
+               <Companysbox onClick={clickHA} ><img src="/cardlogo/hana.png" alt="" />
+               <div>하나카드</div></Companysbox>
+              ) : ( <Companysbox2 onClick={clickHA}><img src="/cardlogo/hana.png" alt="" />
+              <div>하나카드</div></Companysbox2> ))}  
+            </Companyslay>
+            <Companyslay>
+              {(NH === false ? (
+                <Companysbox onClick={clickNH} ><img src="/cardlogo/nonghyuplogo.png" alt="" />
+                <div>농협카드</div></Companysbox>
+                ) : ( <Companysbox2 onClick={clickNH}><img src="/cardlogo/nonghyuplogo.png" alt="" />
+                <div>농협카드</div></Companysbox2> ))}
+              {(HD === false ? (
+                <Companysbox onClick={clickHD}><img src="/cardlogo/HDlogo.png" alt="" />
+                <div>현대카드</div></Companysbox>
+                ) : ( <Companysbox2 onClick={clickHD}><img src="/cardlogo/HDlogo.png" alt="" />
+                <div>현대카드</div></Companysbox2> ))}
+              {(MG === false ? (
+                <Companysbox onClick={clickMG}><img src="/cardlogo/MGlogo.png" alt="" />
+                <div>새마을금고</div></Companysbox>
+                ) : ( <Companysbox2 onClick={clickMG}><img src="/cardlogo/MGlogo.png" alt="" />
+                <div>새마을금고</div></Companysbox2> ))}
+            </Companyslay>
+            <Companyslay>
+              {(IBK === false ? (
+                <Companysbox onClick={clickIBK}><img src="/cardlogo/ibklogo.png" alt="" />
+                <div>기업은행</div></Companysbox>
+                ) : ( <Companysbox2 onClick={clickIBK}><img src="/cardlogo/ibklogo.png" alt="" />
+                <div>기업은행</div></Companysbox2> ))}
+              {(BU === false ? (
+                <Companysbox onClick={clickBU}><img src="/cardlogo/BNKlogo.png" alt="" />
+                <div>부산은행</div></Companysbox>
+                ) : ( <Companysbox2 onClick={clickBU}><img src="/cardlogo/BNKlogo.png" alt="" />
+                <div>부산은행</div></Companysbox2> ))}       
+              <Minbox></Minbox>
+            </Companyslay>
+          </Cardsheetbox>
+          <Companybutton onClick={() => setIsModalOpen2(false)}>확인</Companybutton>
+          <RecoCardList></RecoCardList>
         </BottomSheet>
       )}
     </Container>
+    
     
   );
 };
@@ -248,6 +379,7 @@ const Container = styled.div`
   margin-top: 30px;
   width: 400px;
   height: 100%;
+
 `
 const Maintext = styled.div`
   padding-bottom: 10px;
@@ -423,4 +555,63 @@ const Selecnation = styled.div`
     height: 50px;
     margin-left: 110px;
   }
+`
+const Cardsheetbox = styled.div`
+`
+const Companyslay = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+`
+
+const Companysbox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 100px;
+  background-color: #A7ECEE;
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  margin: 10px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  & > img {
+    width: 50px;
+    height: 40px;
+    margin-bottom: 5px;
+  }
+`
+
+const Companysbox2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 100px;
+  background-color: #9AC5F4;
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  margin: 10px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  & > img {
+    width: 50px;
+    height: 40px;
+    margin-bottom: 5px;
+  }
+`
+
+const Minbox = styled.div`
+  width: 120px;
+  margin: 10px;
+`
+const Companybutton = styled.button`
+  width: 100px;
+  background-color: #A7ECEE;
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  margin: 10px;
 `
