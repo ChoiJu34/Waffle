@@ -7,9 +7,9 @@ spring :
   datasource:
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      username: root
+      username: chocobar
       password: ssafy
-    url: jdbc:mysql://localhost:3306/mydb?useUniCode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://j9d109.p.ssafy.io/mydb?useUniCode=yes&characterEncoding=UTF-8
 
   # JPA setting
   jpa:
@@ -21,7 +21,7 @@ spring :
       hibernate:
         format_sql: true
         globally_quoted_identifiers: true
-    # show-sql: true
+#    show-sql: true
   mail:
     host: smtp.gmail.com
     port: 587
@@ -45,9 +45,14 @@ jwt:
   secretKey:
     uptriewucb89fjckwewejhwe37dhcvvmxdsjwuiurhm5ffwfregyutjregyuwhjiquxyd32ctvgbbfgdteeyggdaxccxewrtfdefrgvxcxsdikjme43gbj7gcf6tg64sfjioxjd
   access:
-    expiration: 10000
+    expiration: 100000000
     header: Authorization
   refresh:
     # 2 week expiration
     expiration: 129600000
     header: Authorization-refresh
+
+# choco bank base_url
+request:
+  chocobank:
+    base_url: http://localhost:8001
