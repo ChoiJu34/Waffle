@@ -59,7 +59,7 @@ const Signup = () => {
 
     window.scrollTo(0, 0)
     
-    navigate('/user/login');
+    navigate('/user/login', { state: { from: 'fromComplete'}});
   }
 
   // 이메일 입력 칸

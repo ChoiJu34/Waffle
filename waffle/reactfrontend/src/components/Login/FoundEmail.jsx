@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components';
 
@@ -7,6 +7,7 @@ const FindEmail = () => {
 
   // 로그인, 비밀번호 변경으로 이동하기
   const navigate = useNavigate()
+  const location = useLocation()
 
   const goToLogin = () => {
     navigate('/user/login', { state: { from: 'fromComplete'}})
@@ -17,7 +18,7 @@ const FindEmail = () => {
   }
 
   // 이메일 찾기 결과
-  const emailResult = 'nutella@waffle.com'
+  const emailResult = location.state.emailResult
 
   return (
     <FindEmailWrapper>

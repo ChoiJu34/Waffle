@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
 
-const FindEmail = () => {
+const FindPassword = () => {
   const [formData, setFormData] = useState({
     email: '',
     tel: ''
@@ -339,4 +339,4 @@ const StyledLink = styled(Link)`
   }
 `;
 
-export default FindEmail
+export default FindPassword
