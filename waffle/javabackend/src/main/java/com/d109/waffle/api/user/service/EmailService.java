@@ -13,4 +13,7 @@ public interface EmailService {
 
 	public Boolean verifyToken(String token) throws Exception;
 
+	// public Boolean verifyPasswordToken(String token, Boolean flag) throws Exception;
+
+	Boolean verifyPasswordToken(String token, Boolean flag) throws Exception;
 }
