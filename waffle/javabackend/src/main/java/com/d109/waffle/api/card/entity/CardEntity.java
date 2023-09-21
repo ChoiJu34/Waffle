@@ -36,9 +36,6 @@ public class CardEntity {
 	@Column(name="usage_fee")
 	private Double usageFee;
 
-	@Column(name="exchange_fee")
-	private Double exchangeFee;
-
 	@Column(name="annual_fee")
 	private Integer annualFee;
 

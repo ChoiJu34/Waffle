@@ -4,8 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-public interface UserCardDto {
+import javax.persistence.Column;
 
+public interface UserCardDto {
     int getId();
     String getName();
     String getCompany();
