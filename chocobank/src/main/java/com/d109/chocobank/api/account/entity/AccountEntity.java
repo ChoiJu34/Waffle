@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -43,6 +44,7 @@ public class AccountEntity {
 	@Column(name = "account_number")
 	private String accountNumber;
 
+	@CreationTimestamp
 	@Column(name = "start_date")
 	private LocalDateTime startDate;
 }
