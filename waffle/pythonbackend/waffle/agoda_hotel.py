@@ -103,6 +103,5 @@ def multi_threading(planHotel, memberCnt):
         if origin[len(origin)-1]=='본 사이트 객실 판매 완료':
             continue
         origin = [origin[0], origin[len(origin)-1], href_element.get_attribute('href'), src_element.get_attribute('src')]
-        result.append(origin)
-    return result
+    return origin
     driver.quit()

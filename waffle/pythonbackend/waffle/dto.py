@@ -15,15 +15,20 @@ class Plane:
         self.site = site
 
     def __lt__(self, other):
-        return self.discountPrice > other.discountPrice
+        return self.discountPrice < other.discountPrice
 
 
 class Hotel:
-    def __init__(self, name, price, url, img):
+    def __init__(self, name, start, end, card, originPrice, discountPrice, url, img, site):
         self.name = name
-        self.price = price
+        self.start = start
+        self.end = end
+        self.card = card
+        self.originPrice = originPrice
+        self.discountPrice = discountPrice
         self.url = url
         self.img = img
+        self.site = site
 
     def __lt__(self, other):
-        return self.price > other.price
+        return self.discountPrice < other.discountPrice

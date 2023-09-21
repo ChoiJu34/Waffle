@@ -1,44 +1,33 @@
-from multiprocessing import Pool, Manager
-import json
-from django.http import HttpResponse
-from rest_framework.decorators import api_view
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import re
-import time
-import threading
-import logging
-from waffle.dto import Plane
-import queue
 import datetime
-import copy
-import multiprocessing
-multiprocessing.set_start_method('spawn')
-from multiprocessing import Pool, get_context
+import logging
+import queue
+import re
+import threading
+import time
+
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+from waffle.dto import Plane
 
 # 로깅 설정
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# 로그 기록 예시
-logger.debug(f"스레드 {threading.current_thread().name}: 데이터 스크랩 중...")
-
 result = []
 q_list = []
 
-manager = get_context('spawn').Manager()
-multi_list = manager.list()
-@api_view(['POST'])
-def plane(request):
-    logger.debug(f"start")
-    data = json.loads(request.body)
+# multi_list = manager.list()
+multi_list = []
+
+def plane(data):
 
     memberCnt = data["memberCnt"]
 
-    multi_list[:] = [manager.Queue() for _ in data["planPlane"]]
+    multi_list[:] = [queue.PriorityQueue() for _ in data["planPlane"]]
 
     threads = []
     for k, plan in enumerate(data["planPlane"]):
@@ -56,11 +45,28 @@ def plane(request):
 
     for k in range(len(data["planPlane"])):
         top = multi_list[k].get()
-        best = [top.date, top.name, top.startPlace, top.startTime, top.endPlace, top.endTime, top.card, top.originPrice, top.discountPrice, top.layover, top.long, top.site]
+        best = {
+            "planeDate" : top.date,
+            "company" : top.name,
+            "startPlace" : top.startPlace,
+            "startTime" : top.startTime,
+            "endPlace" : top.endPlace,
+            "endTime" : top.endTime,
+            "card" : top.card,
+            "originPrice" : top.originPrice,
+            "discountPrice" : top.discountPrice,
+            "layover" : top.layover,
+            "long" : top.long,
+            "site" : top.site
+        }
         result.append(best)
+    # while not multi_list[0].empty():
+    #     top = multi_list[0].get()
+    #     best = [top.date, top.name, top.startPlace, top.startTime, top.endPlace, top.endTime, top.card,
+    #             top.originPrice, top.discountPrice, top.layover, top.long, top.site]
+    #     result.append(best)
 
-    json_response = json.dumps(result, ensure_ascii=False).encode('utf-8')
-    return HttpResponse(json_response, content_type="application/json;charset=utf-8")
+    return result
 
 def multi_threading(info):
     k, planPlane, memberCnt = info
@@ -87,8 +93,8 @@ def crawling_multi_thread(info):
 
     if i==0:
         interpark_crawling(info)
-    # elif i==1:
-    #     trip_crawling(info)
+    elif i==1:
+        trip_crawling(info)
 
 
 def interpark_crawling(info):
@@ -124,7 +130,7 @@ def interpark_crawling(info):
         origin = cards[len(cards)-1]
         del cards[len(cards)-1]
         if len(cards)==0:
-            q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
+            q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin, int(origin), p[5], p[6], '인터파크'))
 
         pt = int(planeTime[0])
         uts = int(userTimeS[0])
@@ -135,7 +141,6 @@ def interpark_crawling(info):
         for card in cards:
             card_info = card.split(' ')
             discount = int(card_info[1].split('장애인')[0])
-            logger.debug(f'{card_info}, {discount}')
             if n == 0:
                 if pt > uts:  # 비행기H>설정H
                     q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
@@ -157,6 +162,8 @@ def trip_crawling(info):
     options.add_argument("--headless")
     options.add_argument("--disable-gpu")
     driver = webdriver.Chrome()
+
+    today = int(startStart) + int(n)
 
     url = f'https://kr.trip.com/flights/{placeStart}-to-{placeEnd}/tickets-{placeStart}-{placeEnd}?dcity={placeStart}&acity={placeEnd}&ddate={int(startStart) + int(n)}&rdate=&flighttype=ow&class=y&lowpricesource=searchform&quantity={memberCnt}&searchboxarg=t&locale=ko-KR&curr=KRW'
     xpath1 = '//*[@id="main"]/div[2]/div[7]/div[1]/div[2]/div[4]/div[1]/div[1]/div/div[2]'# 낮은가격순 버튼
@@ -192,7 +199,6 @@ def trip_crawling(info):
         planeTime = p[1].split(":")
         userTimeS = planPlane["startStart"].split()[1].split(":")
         userTimeE = planPlane["startEnd"].split()[1].split(":")
-        logger.debug(f'{planeTime}, ?????????, {p[1]}, {p}')
         pt = int(planeTime[0])
         uts = int(userTimeS[0])
         ute = int(userTimeE[0])
@@ -201,15 +207,15 @@ def trip_crawling(info):
         ute1 = int(userTimeE[1])
         if n == 0:
             if pt > uts:  # 비행기H>설정H
-                q.put(Plane(p[0], p[2], p[1], p[6], p[5], p[7], p[4], p[3], '트립닷컴'))
+                q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
             elif pt == uts and pt1 >= uts1:
-                q.put(Plane(p[0], p[2], p[1], p[6], p[5], p[7], p[4], p[3], '트립닷컴'))
+                q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
         elif n == (day - 1):
             if pt < ute:
-                q.put(Plane(p[0], p[2], p[1], p[6], p[5], p[7], p[4], p[3], '트립닷컴'))
+                q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
             elif pt == ute and pt1 <= ute1:
-                q.put(Plane(p[0], p[2], p[1], p[6], p[5], p[7], p[4], p[3], '트립닷컴'))
+                q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
         else:
-            q.put(Plane(p[0], p[2], p[1], p[6], p[5], p[7], p[4], p[3], '트립닷컴'))
+            q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
     multi_list[k] = q
     driver.quit()
