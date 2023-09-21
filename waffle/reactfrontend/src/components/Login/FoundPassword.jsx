@@ -1,117 +1,122 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import React, { useState, useRef, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const FoundPassword = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    tel: ''
-  })
 
-  // 뒤로가기
+  const location = useLocation()
   const navigate = useNavigate()
 
-  const handleGoBack = () => {
+  const [formData, setFormData] = useState({
+    token: location.state.token,
+    newPassword: '',
+  })
 
-    window.scrollTo(0, 0)
+  // 비밀번호 입력 칸
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isPasswordComplete, setIsPasswordComplete] = useState(false);
+  const inputPasswordRef = useRef(null);
 
-    navigate('/user/login', { state: { from: 'fromComplete'}});
-  }
-
-  // 이름 입력 칸 애니메이션
-  const [isNameFocused, setIsNameFocused] = useState(false);
-  const [isNameComplete, setIsNameComplete] = useState(false);
-  const inputNameRef = useRef(null);
-
-  const handleNameFocus = () => {
-    setIsNameFocused(true);
+  const handlePasswordFocus = () => {
+    setIsPasswordFocused(true);
   };
 
-  const handleNameBlur = (event) => {
-    setIsNameFocused(false);
+  const handlePasswordBlur = (event) => {
+    setIsPasswordFocused(false);
     if (event.target.value === "") {
-      setIsNameComplete(false);
+      setIsPasswordComplete(false);
     } else {
-      setIsNameComplete(true);
+      setIsPasswordComplete(true);
     }
   };
 
-  const handleName = (e) => {
-    setFormData(prevState => ({
-      ...prevState,
-      name: e.target.value
-    }))
-  }
- 
-  // 연락처 칸
-  const [isTelFocused, setIsTelFocused] = useState(false);
-  const [isTelComplete, setIsTelComplete] = useState(false);
-  const inputTelRef = useRef(null);
+  const showPasswordPlaceholder = isPasswordFocused && !inputPasswordRef.current?.value
 
-  const handleTelFocus = () => {
-    setIsTelFocused(true);
+  // 비밀번호 확인 칸
+  const [isPasswordVerifyFocused, setIsPasswordVerifyFocused] = useState(false);
+  const [isPasswordVerifyComplete, setIsPasswordVerifyComplete] = useState(false);
+  const inputPasswordVerifyRef = useRef(null);
+
+  const handlePasswordVerifyFocus = () => {
+    setIsPasswordVerifyFocused(true);
   };
 
-  const handleTelBlur = (event) => {
-    setIsTelFocused(false);
+  const handlePasswordVerifyBlur = (event) => {
+    setIsPasswordVerifyFocused(false);
     if (event.target.value === "") {
-      setIsTelComplete(false);
+      setIsPasswordVerifyComplete(false);
     } else {
-      setIsTelComplete(true);
+      setIsPasswordVerifyComplete(true);
     }
   };
+  
+  const showPasswordVerifyPlaceholder = isPasswordVerifyFocused && !inputPasswordVerifyRef.current?.value
 
-  // 연락처 자동 하이픈 추가
-  const handleTel = (e) => {
+  //비밀번호, 비밀번호 확인
+  const [newPassword, setPassword] = useState('')
+  const [passwordVerify, setPasswordVerify] = useState('')
 
-    setFormData(prevState => ({
-      ...prevState,
-      tel: e.target.value
-    }))
+  // 유효성 검사
+  const [isPassword, setIsPassword] = useState(null)
+  const [isPasswordVerify, setIsPasswordVerify] = useState(null)
 
-    const value = inputTelRef.current.value.replace(/\D+/g, "");
-    const numberLength = 11;
+  // 비밀번호
+  const onChangePassword = useCallback((e) => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
+    const newPasswordCurrent = e.target.value
+    setPassword(newPasswordCurrent)
 
-    let result;
-    result = "";  
+    if (newPasswordCurrent === "") {
+      setIsPassword(null);
+    } else if (!passwordRegex.test(newPasswordCurrent)) {
+      setIsPassword(false);
+    } else {
+      setIsPassword(true);
+    }
+  }, []);
 
-    for (let i = 0; i < value.length && i < numberLength; i++) {
-      switch (i) {
-        case 3:
-          result += "-";
-          break;
-        case 7:
-          result += "-";
-          break;
+  // 비밀번호 확인
+  const onChangePasswordVerify = useCallback(
+    (e) => {
+      const passwordVerifyCurrent = e.target.value
+      setPasswordVerify(passwordVerifyCurrent)
 
-        default:
-          break;
+      if (passwordVerifyCurrent === "") {
+        setIsPasswordVerify(null);
+      } else if (newPassword === passwordVerifyCurrent) {
+        setIsPasswordVerify(true);
+      } else {
+        setIsPasswordVerify(false);
       }
+    },
+    [newPassword]
+  )
 
-      result += value[i];
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => {
+        const newData = { ...prevData, [name]: value };
+        return newData;
+    });
+  }
 
-    inputTelRef.current.value = result;
-
-  };
-
-  // 이메일 찾기 결과로 이동
-  const findEmailResult = () => {
-    axios.post('/user/find-email', formData)
+  // 비밀번호 변경 요청
+  const changePassword = () => {
+    axios.put('/user/update-password', formData)
       .then(response => {
         if (response.data.message === "SUCCESS") {
-          navigate('/user/found-email', { state: { emailResult: response.data.email }})}
+          alert('비밀번호가 변경되었습니다')
+          navigate('/user/login', { state: { from : "fromComplete" }})}
         else {
-          alert('해당 정보로 가입된 사용자가 없습니다')
+          console.log('뭔가 잘못됨')
         }
       })
       .catch(error => {
         console.error('서버탓이야')
-        alert('이메일 찾기 실패')
+        alert('비밀번호 변경 실패')
       })
   }
 
@@ -119,29 +124,27 @@ const FoundPassword = () => {
 
   return (
     <FindEmailWrapper>
-      <div className="find-email-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
-      <div className="find-email-title">이메일 찾기</div>
-      <div className="find-email-title-underline"></div>
+      <div className="found-password-header"></div>
+      <div className="found-password-title">비밀번호 변경</div>
+      <div className="found-password-title-underline"></div>
 
-      <div className={`find-email-name ${isNameFocused ? 'focus' : ''} ${isNameComplete ? 'complete' : ''}`} id="name-container">
-        <label id="name-label">이름</label>
-        <input type="text" id="name-input" ref={inputNameRef} onFocus={handleNameFocus} onBlur={handleNameBlur} onChange={handleName} value={formData.name}/>
-      </div>
-      <div className={`find-email-tel ${isTelFocused ? 'focus' : ''} ${isTelComplete ? 'complete' : ''}`}>
-        <label id="find-email-tel-label">연락처</label>
-        <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={handleTel} value={formData.tel}/>
+      <div className={`found-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
+          <label id="found-password-label">새 비밀번호</label>
+          <input type="password" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {onChangePassword(e); handleChange(e)}} placeholder={showPasswordPlaceholder ? "영문, 숫자, 특수문자를 포함한 8자리 이상" : ""} value={formData.newPassword} name="newPassword"/>
+          {isPassword === null ? null : (isPassword ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
+        </div>
+
+        <div className={`found-password-verify ${isPasswordVerifyFocused ? 'focus' : ''} ${isPasswordVerifyComplete ? 'complete' : ''}`}>
+          <label id="signup-label">비밀번호 확인</label>
+          <input type="password" id="signup-input" ref={inputPasswordVerifyRef} onFocus={handlePasswordVerifyFocus} onBlur={handlePasswordVerifyBlur} onChange={onChangePasswordVerify} placeholder={showPasswordVerifyPlaceholder ? "" : ""} />
+          {isPasswordVerify === null ? null : (isPasswordVerify ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
+        </div>
+
+      <div className="found-password-button-container">
+        <button className="found-password-button" onClick={changePassword} disabled={!(isPassword && isPasswordVerify)}>비밀번호 변경</button>
       </div>
 
-      <div className="find-email-button-container">
-        <button className="find-email-button" onClick={findEmailResult}>이메일 찾기</button>
-      </div>
-
-      <div className="find-email-underline"></div>
-      <div className="find-email-extra">
-        <div className="find-email-find-email"><StyledLink to="/user/login">로그인</StyledLink></div>
-        <div className="find-email-change-password">비밀번호 변경</div>
-        <div className="find-email-signup"><StyledLink to="/user/sign-up">회원가입</StyledLink></div>
-      </div>
+      <div className="found-password-underline"></div>
     </FindEmailWrapper>
   )
 }
@@ -149,12 +152,12 @@ const FoundPassword = () => {
 const FindEmailWrapper = styled.div`
   min-height: 100vh;
 
-.find-email-header {
+.found-password-header {
   display: flex;
-  margin: 3vh 2vh;
+  margin: 4.8vh 2vh;
 }
 
-.find-email-title {
+.found-password-title {
   font-size: 4vh;
   margin-top: 3vh;
   margin-left: 3vh;
@@ -162,18 +165,18 @@ const FindEmailWrapper = styled.div`
   color: #000004;
 }
 
-.find-email-title-underline {
+.found-password-title-underline {
   height: 0.3vh;
   width: 80%;
   margin: 1.5vh auto;
   background-color: #000004;
 }
 
-.find-email-name {
+.found-password {
     padding: 2vh 7vh;
   }
 
-  .find-email-name > input{
+  .found-password > input{
 	    display: block;
 	    width: 100%;
 	    color: #909090;
@@ -193,14 +196,14 @@ const FindEmailWrapper = styled.div`
 	    margin:0;
 	}
 
-    .find-email-name > input:focus{
+    .found-password > input:focus{
         outline:0;
         border-color:#76A8DE;
         border-width: 2px;
         color:#76A8DE;
     }
 
-    .find-email-name > label{
+    .found-password > label{
         top: 19vh;
         position: absolute;
         left: 9vh;
@@ -220,7 +223,7 @@ const FindEmailWrapper = styled.div`
         transform-origin: left top;
     }
 
-    .find-email-name.focus > label{
+    .found-password.focus > label{
         top: 17vh;
         left: 8vh;
         font-size: 12px;
@@ -228,18 +231,18 @@ const FindEmailWrapper = styled.div`
         color: #76A8DE;
     }
 
-    .find-email-name.complete > label{
+    .found-password.complete > label{
         top: 17vh;
         left: 8vh;
         font-size: 12px;
         line-height: 1.33;
     }
 
-    .find-email-tel {
+    .found-password-verify {
     padding: 2vh 7vh;
   }
 
-  .find-email-tel > input{
+  .found-password-verify > input{
 	    display: block;
 	    width: 100%;
 	    color: #909090;
@@ -259,14 +262,14 @@ const FindEmailWrapper = styled.div`
 	    margin:0;
 	}
 
-    .find-email-tel > input:focus{
+    .found-password-verify > input:focus{
         outline:0;
         border-color:#76A8DE;
         border-width: 2px;
         color:#76A8DE;
     }
 
-    .find-email-tel > label{
+    .found-password-verify > label{
         top: 27vh;
         position: absolute;
         left: 9vh;
@@ -286,7 +289,7 @@ const FindEmailWrapper = styled.div`
         transform-origin: left top;
     }
 
-    .find-email-tel.focus > label{
+    .found-password-verify.focus > label{
         top: 25vh;
         left: 8vh;
         font-size: 12px;
@@ -294,26 +297,30 @@ const FindEmailWrapper = styled.div`
         color: #76A8DE;
     }
 
-    .find-email-tel.complete > label{
+    .found-password-verify.complete > label{
         top: 25vh;
         left: 8vh;
         font-size: 12px;
         line-height: 1.33;
     }
 
-    .find-email-button {
-      width: 15vh;
+    .found-password-button {
+      width: 16vh;
       height: 5vh;
       border-radius: 15px;
       border: none;
       background-color: #9AC5F4;
       color: white;
       font-weight: 800;
-      font-size: 2.3vh;
+      font-size: 2.1vh;
       margin-top: 2vh;
+      &:disabled {
+      background-color: #ddd;
+      cursor: not-allowed;
+  }
     }
 
-    .find-email-underline {
+    .found-password-underline {
     height: 0.1vh;
     width: 80%;
     margin: 1.5vh auto;
@@ -321,22 +328,10 @@ const FindEmailWrapper = styled.div`
     background-color: #000004;
   }
 
-  .find-email-extra {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 1vh 8vh;
-    font-size: 1.4vh;
+  input::placeholder {
+    color: #90909061;
+    font-size: 1.3vh;
   }
 `
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
-  
-  &:hover, &:active, &:visited {
-    color: inherit;
-  }
-`;
 
 export default FoundPassword

@@ -101,7 +101,11 @@ const Login = () => {
 
     axios.post('/user/login', formData)
       .then(response => {
+        console.log(response)
+        localStorage.setItem('token', response.headers['authorization'])
+        localStorage.setItem('refresh-token', response.headers['authorization-refresh'])
         navigate('/')
+        window.location.reload()
       })
       .catch(error => {
         console.error('로그인 실패')
@@ -136,7 +140,7 @@ const Login = () => {
       <div className="login-underline"></div>
       <div className="login-extra">
         <div className="login-find-email"><StyledLink to="/user/find-email">이메일 찾기</StyledLink></div>
-        <div className="login-change-password">비밀번호 변경</div>
+        <div className="login-change-password"><StyledLink to="/user/find-password">비밀번호 변경</StyledLink></div>
         <div className="login-signup"><StyledLink to="/user/sign-up">회원가입</StyledLink></div>
       </div>
 

@@ -29,7 +29,9 @@ const FindEmail = () => {
       <div className="found-email-result">
         회원님이 가입한 이메일은
         <div className="found-email-result-spacer"></div>
-        {emailResult} 입니다
+        {emailResult}
+        <div className="found-email-result-spacer"></div>
+        입니다
       </div>
 
       <div className="found-email-button-container">

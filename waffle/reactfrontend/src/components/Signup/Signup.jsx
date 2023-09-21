@@ -420,6 +420,11 @@ const handleChange = (e) => {
 
     axios.post(`/user/verify-email`, { email: formData.email })
       .then((response) => {
+        if (response.data.message === "DUPLICATE") {
+          alert('이미 가입된 이메일입니다')
+          return
+        }
+        alert('입력하신 메일로 인증코드가 전송되었습니다')
         navigate('/user/verify-email', {state: { email: formData.email, name: formData.name, birthday: formData.birthday, tel: formData.tel }})
       })
       .catch((error) => {

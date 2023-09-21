@@ -14,6 +14,13 @@ const [isToggled, setIsToggled] = useState(false);
 const [userToggled, setUserToggled] = useState(false);
 // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+// 로그아웃
+const handleLogout = () => {
+  localStorage.removeItem('token')
+  localStorage.removeItem('refresh-token')
+  window.location.reload()
+}
+
   return (
     <HeaderWrapper isToggled={isToggled} userToggled={userToggled}>
       {/* 세부 메뉴 햄버거 버튼 */}
@@ -44,7 +51,7 @@ const [userToggled, setUserToggled] = useState(false);
       <ul className="header-menulist-user">
         {isLoggedIn? (
         <>
-          <li>로그아웃</li>
+          <li onClick={handleLogout}>로그아웃</li>
           <li>마이페이지</li>
         </>
         ) : (
