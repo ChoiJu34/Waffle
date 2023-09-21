@@ -147,6 +147,8 @@ const saverecocardboard = async () => {
       if (MG) company.push('MG새마을금고');
       if (SH) company.push('신한카드');
       if (IBK) company.push('IBK기업은행');
+      // if (SS) company.push('삼성카드');
+      // if (KB) company.push('국민카드');
       console.log(company)
       const params = {
         card: creditCard+checkCard,

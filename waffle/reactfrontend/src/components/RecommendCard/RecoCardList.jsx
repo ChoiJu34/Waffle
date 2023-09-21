@@ -9,7 +9,9 @@ const RecoCardList = (props) => {
 
     const location = useLocation()
     const data = location.state?.value.result
+    const count = location.state?.value.length
     console.log(data)
+    console.log(count)
     return (
       <Container>
        {data && data.map(({ recommendNumber, cardId, cardCompany, cardName,discountPrice}) => (

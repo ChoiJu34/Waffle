@@ -14,13 +14,23 @@ const Layout = () => {
   return (
     <SLayout>
       {!isUserRoute && <Header/>}
-      <Outlet/>
+      <SContent isUserRoute={isUserRoute}>
+        <Outlet/>
+      </SContent>
       {!isUserRoute && <Footer/>}
     </SLayout>
   )
 }
 
 const SLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`
+
+const SContent = styled.div`
+  flex: 1;
+  margin-top: ${(props) => (props.isUserRoute ? '0' : '6vh')};
 `
 
 export default Layout
