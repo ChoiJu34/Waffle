@@ -109,7 +109,7 @@ const MainPage = () => {
                 <div className="main-body-text-spacer"></div>
                 당신의 여행에 딱 맞는 카드를 추천받으세요
               </div>
-              <button className="main-body-card-button">카드 추천 받기</button>
+              <button className="main-body-card-button" >카드 추천 받기</button>
             </div>
           </div>
         </div>
