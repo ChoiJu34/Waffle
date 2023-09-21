@@ -15,6 +15,7 @@ import VerifyEmail from '../components/Signup/VerifyEmail'
 import Signup from '../components/Signup/Signup'
 import SignupComplete from '../components/Signup/SignupComplete'
 import RecoCardList from '../components/RecommendCard/RecoCardList';
+import TeamAccount from '../components/TeamAccount/TeamAccount'
 
 const RootNavigation = () => {
   return (
@@ -35,6 +36,7 @@ const RootNavigation = () => {
           <Route path="/user/found-password" element={<FoundPassword/>} />
           <Route path="/user/password-token" element={<PasswordToken/>} />
           <Route path="/recocard/main" element={<ProtectedRoute><RecoCardMain /></ProtectedRoute>} />
+          <Route path="/teamaccount/main" element={<ProtectedRoute><TeamAccount /></ProtectedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>
