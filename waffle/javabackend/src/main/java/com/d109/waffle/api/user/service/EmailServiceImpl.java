@@ -71,4 +71,18 @@ public class EmailServiceImpl implements EmailService {
 			return false;
 		}
 	}
+
+	@Override
+	public Boolean verifyPasswordToken(String token, Boolean flag) throws Exception {
+		Optional<EmailTokenEntity> emailToken = emailTokenRepository
+			.findByIdAndExpirationDateAfterAndExpiredAndHoldExpired(token, LocalDateTime.now(), false, flag);
+		log.info("emailToken {}", emailToken);
+		if(emailToken.isPresent()) {
+			log.info("setTokenToHold");
+			emailToken.get().setTokenToHold();
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
