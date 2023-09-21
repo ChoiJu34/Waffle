@@ -72,7 +72,7 @@ def multi_threading(planHotel, memberCnt):
     wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
     elements1 = driver.find_elements(By.XPATH, xpath1)
     wait = WebDriverWait(driver, 120)
-    wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
+    wait.until(EC.presence_of_element_located((By.XPATH, xpath2)))
     elements2 = driver.find_elements(By.XPATH, xpath2)
 
     for element1, element2 in zip(elements1, elements2):
