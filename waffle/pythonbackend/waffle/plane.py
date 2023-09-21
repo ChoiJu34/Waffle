@@ -60,6 +60,9 @@ def plane(data):
             "site" : top.site
         }
         result.append(best)
+
+    # result.append(multi_list)
+
     # while not multi_list[0].empty():
     #     top = multi_list[0].get()
     #     best = [top.date, top.name, top.startPlace, top.startTime, top.endPlace, top.endTime, top.card,
@@ -90,10 +93,9 @@ def multi_threading(info):
 
 def crawling_multi_thread(info):
     i, k, n, memberCnt, placeStart, placeEnd, startStart, planPlane, day = info
-
-    if i==0:
+    if i == 0:
         interpark_crawling(info)
-    elif i==1:
+    elif i == 1:
         trip_crawling(info)
 
 
@@ -116,7 +118,6 @@ def interpark_crawling(info):
     elements = driver.find_elements(By.XPATH, xpath)
 
     # n일째의 i번째 비행기
-    q = multi_list[k]
     for element in elements:
         pattern = r'공동운항.*?입니다.|Best'
         origin = re.sub(pattern, "", element.get_attribute('textContent')).split('팝업닫기')
@@ -130,7 +131,7 @@ def interpark_crawling(info):
         origin = cards[len(cards)-1]
         del cards[len(cards)-1]
         if len(cards)==0:
-            q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin, int(origin), p[5], p[6], '인터파크'))
+            multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin, int(origin), p[5], p[6], '인터파크'))
 
         pt = int(planeTime[0])
         uts = int(userTimeS[0])
@@ -143,17 +144,16 @@ def interpark_crawling(info):
             discount = int(card_info[1].split('장애인')[0])
             if n == 0:
                 if pt > uts:  # 비행기H>설정H
-                    q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
+                    multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
                 elif pt == uts and pt1 >= uts1:
-                    q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
+                    multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
             elif n == (day - 1):
                 if pt < ute:
-                    q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
+                    multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
                 elif pt == ute and pt1 <= ute1:
-                    q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
+                    multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
             else:
-                q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
-    multi_list[k] = q
+                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
     driver.quit()
 
 def trip_crawling(info):
@@ -190,7 +190,6 @@ def trip_crawling(info):
     elements = driver.find_elements(By.XPATH, xpath2)
 
     # n일째의 i번째 비행기
-    q = multi_list[k]
     for element in elements:
         pattern = r'항공사|선택|원|,|저비용|공동운항편|\s\+\d+\n'
         origin = re.sub(pattern, "", element.get_attribute('innerText'))
@@ -207,15 +206,14 @@ def trip_crawling(info):
         ute1 = int(userTimeE[1])
         if n == 0:
             if pt > uts:  # 비행기H>설정H
-                q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
+                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
             elif pt == uts and pt1 >= uts1:
-                q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
+                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
         elif n == (day - 1):
             if pt < ute:
-                q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
+                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
             elif pt == ute and pt1 <= ute1:
-                q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
+                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
         else:
-            q.put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
-    multi_list[k] = q
+            multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", p[7], int(p[7]), p[5], p[6], '트립닷컴'))
     driver.quit()

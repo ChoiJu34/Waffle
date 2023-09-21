@@ -12,11 +12,14 @@ from waffle import plane
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-result = []
 q_list = []
+plane_infos = []
+hotel_infos = []
 
-hotel_info = []
-plane_info = []
+result={
+    "plane": "",
+    "hotel": ""
+}
 
 @api_view(['POST'])
 def crawling(request):
@@ -32,8 +35,8 @@ def crawling(request):
         thread.join()
 
     result = {
-        "plane" : plane_info[0],
-        "hotel" : hotel_info[0]
+        "plane": plane_infos,
+        "hotel": hotel_infos
     }
 
     json_response = json.dumps(result, ensure_ascii=False).encode('utf-8')
@@ -42,7 +45,30 @@ def crawling(request):
 
 def hotel_or_plane(info):
     k, data = info
+
     if k==0:
-        hotel_info.append(hotel.hotel(data))
+        plane_infos.append(plane.plane(data))
     elif k==1:
-        plane_info.append(plane.plane(data))
+        hotel_infos.append(hotel.hotel(data))
+
+    # find_lowest_package(data, plane_infos, hotel_infos)
+
+
+# def find_lowest_package(data, plane_infos, hotel_infos):
+#     planePlane_cnt = len(data["planPlane"])
+#     planeHotel_cnt = len(data["planHotel"])
+#
+#     hotel_info = []
+#     plane_info = []
+#
+#     logger.debug(f"?????????????????????????????????{plane_infos}")
+#     logger.debug(f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!{hotel_infos}")
+#
+#     for pp in range(planePlane_cnt):
+#         plane_info.append(plane_infos[pp].get())
+#
+#     for ph in range(planeHotel_cnt):
+#         hotel_info.append(hotel_infos[ph].get())
+#
+#     result["plane"] = plane_info
+#     result["hotel"] = hotel_info

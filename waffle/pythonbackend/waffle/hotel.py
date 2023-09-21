@@ -44,8 +44,21 @@ def hotel(data):
 
     for k in range(len(data["planHotel"])):
         top = multi_list[k].get()
-        best = [top.name, top.start, top.end, top.card, top.originPrice, top.discountPrice, top.url, top.img, top.site]
+        best = {
+            "hotelName" : top.name,
+            "start" : top.start,
+            "end" : top.end,
+            "card" : top.card,
+            "originPrice" : top.originPrice,
+            "discountPrice" : top.discountPrice,
+            "url" : top.url,
+            "img" : top.img,
+            "site" : top.site
+        }
         result.append(best)
+
+    # result.append(multi_list)
+
     # while not multi_list[0].empty():
     #     top = multi_list[0].get()
     #     best = [top.name, top.start, top.end, top.card, top.originPrice, top.discountPrice, top.url, top.img, top.site]
@@ -202,8 +215,6 @@ def agoda_crawling(info):
         except Exception:
             src_element = '이미지를 가지고 오지 못했습니다.'
         origin = re.sub(r'\n예약 무료 취소|,|₩\s|페이지.*?\n', '', element.get_attribute('innerText'))
-        if k==0:
-            result.append(origin + start + end)
 
         if '모두 보기' in origin:
             origin = origin.split('모두 보기\n')[1]
