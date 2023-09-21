@@ -10,7 +10,7 @@ public interface UserService {
 
 	public String findEmail(String name, String tel) throws Exception;
 
-	public void findPassword(String email) throws Exception;
+	public void findPassword(String email, String name, String tel) throws Exception;
 
 	public void updatePassword(String token, String newPassword) throws Exception;
 
