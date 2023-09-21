@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "NanumSquare-ExtraBold";
+  font-weight: normal;
+  src: url("./fonts/NanumSquareEB.ttf") format("truetype");
+}
+
+body {
+  font-family: "NanumSquare-Extrabold";
+}
+
+html, body {
+  min-height: 100vh;
+}
