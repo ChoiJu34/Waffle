@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ProtectedRoute } from '../components/Commons/ProtectedRoute'
 import Layout from '../pages/Layout';
 import ScrollTop from '../components/Commons/ScrollTop'
 import RecoCardMain from '../components/RecommendCard/RecoCardMain';
@@ -25,6 +26,8 @@ const RootNavigation = () => {
           <Route path="/user/sign-up/complete" element={<SignupComplete/>} />
           <Route path="/user/find-email" element={<FindEmail/>} />
           <Route path="/user/found-email" element={<FoundEmail/>} />
+          <Route path="/user/verify-email" element={<VerifyEmail/>} />
+          <Route path="/recocard/main" element={<ProtectedRoute><RecoCardMain /></ProtectedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>

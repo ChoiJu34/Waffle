@@ -4,12 +4,15 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
 import WaffleLogo from '../../../assets/WaffleLogo.png'
+import { useAuth } from '../AuthProvider'
 
 const Header = () => {
 
+const isLoggedIn = useAuth()
+
 const [isToggled, setIsToggled] = useState(false);
 const [userToggled, setUserToggled] = useState(false);
-const [isLoggedIn, setIsLoggedIn] = useState(false);
+// const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <HeaderWrapper isToggled={isToggled} userToggled={userToggled}>

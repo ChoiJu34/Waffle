@@ -1,11 +1,56 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
+import 'animate.css'
+import SignupCompleteWaffle from '../../assets/SignupCompleteWaffle.png'
 
 const Signup = () => {
+
+  useEffect (() => {
+    onChangeEmail()
+    handleEmailBlur()
+    onChangeName()
+    handleNameBlur()
+    onChangeBirthdate()
+    handleBirthdateBlur()
+    onChangeTel()
+    handleTelBlur()
+  }, [])
+
+  const location = useLocation()
+
+  const emailFromPrevious = location.state?.email || '';
+  const nameFromPrevious = location.state?.name || '';
+  const birthdayFromPrevious = location.state?.birthday || '';
+  const telFromPrevious = location.state?.tel || '';
+  const isVerified = location.state?.isVerified || false;
+
+  const [formData, setFormData] = useState({
+    email: emailFromPrevious,
+    name: nameFromPrevious,
+    password: '',
+    birthday: birthdayFromPrevious,
+    tel: telFromPrevious
+  })
+
+  useEffect (() => {
+    onChangeName()
+  }, [formData.name])
+
+  useEffect (() => {
+    onChangeEmail()
+  }, [formData.email])
+
+  useEffect (() => {
+    onChangeTel()
+  }, [formData.tel])
+
+  useEffect (() => {
+    onChangeBirthdate()
+  }, [formData.birthday])
 
   // 뒤로가기
   const navigate = useNavigate();
@@ -14,7 +59,7 @@ const Signup = () => {
 
     window.scrollTo(0, 0)
     
-    navigate(-1);
+    navigate('/user/login', { state: { from: 'fromComplete'}});
   }
 
   // 이메일 입력 칸
@@ -26,16 +71,18 @@ const Signup = () => {
     setIsEmailFocused(true);
   };
 
-  const handleEmailBlur = (event) => {
+  const handleEmailBlur = useCallback(() => {
+    const emailValue = formData.email
+
     setIsEmailFocused(false);
-    if (event.target.value === "") {
+    if (emailValue === "") {
       setIsEmailComplete(false);
     } else {
       setIsEmailComplete(true);
     }
-  };
+  }, [formData.email]);
 
-  const showEmailPlaceholder = isEmailFocused && !inputEmailRef.current?.value
+  const showEmailPlaceholder = isEmailFocused && !formData.email
 
   // 비밀번호 입력 칸
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
@@ -86,14 +133,16 @@ const Signup = () => {
     setIsNameFocused(true);
   };
 
-  const handleNameBlur = (event) => {
+  const handleNameBlur = useCallback(() => {
+
+    const nameValue = formData.name
     setIsNameFocused(false);
-    if (event.target.value === "") {
+    if (nameValue === "") {
       setIsNameComplete(false);
     } else {
       setIsNameComplete(true);
     }
-  };
+  }, [formData.name]);
 
   const showNamePlaceholder = isNameFocused && !inputNameRef.current?.value
 
@@ -106,14 +155,16 @@ const Signup = () => {
     setIsBirthdateFocused(true);
   };
 
-  const handleBirthdateBlur = (event) => {
+  const handleBirthdateBlur = useCallback(() => {
     setIsBirthdateFocused(false);
-    if (event.target.value === "") {
+
+    const birthdateValue = formData.birthday
+    if (birthdateValue === "") {
       setIsBirthdateComplete(false);
     } else {
       setIsBirthdateComplete(true);
     }
-  };
+  }, [formData.birthday]);
 
   const showBirthdatePlaceholder = isBirthdateFocused && !inputBirthdateRef.current?.value
 
@@ -154,14 +205,16 @@ const Signup = () => {
     setIsTelFocused(true);
   };
 
-  const handleTelBlur = (event) => {
+  const handleTelBlur = useCallback(() => {
+
+    const telValue = formData.tel
     setIsTelFocused(false);
-    if (event.target.value === "") {
+    if (telValue === "") {
       setIsTelComplete(false);
     } else {
       setIsTelComplete(true);
     }
-  };
+  }, [formData.tel]);
 
   const showTelPlaceholder = isTelFocused && !inputTelRef.current?.value
 
@@ -205,54 +258,32 @@ const Signup = () => {
   const [isBirthdate, setIsBirthdate] = useState(null)
   const [isTel, setIsTel] = useState(null)
 
-  // const onSubmit = useCallback(
-  //   async (e) => {
-  //     e.preventDefault()
-  //     try {
-  //       await axios
-  //         .post(REGISTER_USERS_URL, {
-  //           username: name,
-  //           password: password,
-  //           email: email,
-  //         })
-  //         .then((res) => {
-  //           console.log('response:', res)
-  //           if (res.status === 200) {
-  //             navigate('/sign_up/profile_start')
-  //           }
-  //         })
-  //     } catch (err) {
-  //       console.error(err)
-  //     }
-  //   },
-  //   [email, name, password, navigate]
-  // )
-
   // 이름
-  const onChangeName = useCallback((e) => {
+  const onChangeName = () => {
     const koreanNameRegex = /^[가-힣]+$/;
+    const nameCurrent = formData.name
 
-    if (e.target.value === "") {
+    if (nameCurrent === "") {
         setIsName(null);
-    } else if (!koreanNameRegex.test(e.target.value) || e.target.value.length < 2 || e.target.value.length > 5) {
+    } else if (!koreanNameRegex.test(nameCurrent) || nameCurrent.length < 2 || nameCurrent.length > 5) {
         setIsName(false);
     } else {
         setIsName(true);
     }
-  }, []);
+  };
 
   // 이메일
-  const onChangeEmail = useCallback((e) => {
+  const onChangeEmail = useCallback(() => {
     const emailRegex =
       /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
-    const emailCurrent = e.target.value
+    const emailCurrent = formData.email
 
     if (!emailRegex.test(emailCurrent)) {
       setIsEmail(false)
     } else {
       setIsEmail(true)
     }
-  }, [])
+  }, [formData.email])
 
   // 비밀번호
   const onChangePassword = useCallback((e) => {
@@ -286,9 +317,9 @@ const Signup = () => {
     [password]
   )
 
-  const onChangeBirthdate = useCallback((e) => {
+  const onChangeBirthdate = useCallback(() => {
     const birthdateRegex = /^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/;
-    const birthdateCurrent = e.target.value;
+    const birthdateCurrent = formData.birthday
 
     if (birthdateCurrent === "") {
       setIsBirthdate(null);
@@ -316,12 +347,12 @@ const Signup = () => {
     } else {
       setIsBirthdate(false);
     }
-}, []);
+}, [formData.birthday]);
 
   // 연락처
-  const onChangeTel = useCallback((e) => {
+  const onChangeTel = useCallback(() => {
   const telRegex = /^01[016789]-\d{3,4}-\d{4}$/
-  const telCurrent = e.target.value
+  const telCurrent = formData.tel
 
   if (telCurrent === "") {
     setIsTel(null);
@@ -330,22 +361,73 @@ const Signup = () => {
   } else {
     setIsTel(true);
   }
-}, [])
+}, [formData.tel])
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prevData) => {
+      const newData = { ...prevData, [name]: value };
+      return newData;
+  });
+}
 
   // Birthdate와 Tel onChange에 함수 두 개 넣기 위한 함수 세트 지정
+  const functionSetEmail = (e) => {
+    handleChange(e);
+    onChangeEmail(e);
+  }
+
   const functionSetBirthdate = (e) => {
     handleBirthdate(e);
     onChangeBirthdate(e);
+    handleChange(e);
   }
 
   const functionSetTel = (e) => {
     handleTel(e);
     onChangeTel(e);
+    handleChange(e);
   }
 
-  // 가입하기 버튼 누르면 완료 페이지로
-  const goToSignupComplete = () => {
-    navigate('/user/sign-up/complete')
+  // 회원가입
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const forSubmitFormData = {
+      ...formData,
+      birthday: `${formData.birthday} 00:00`
+    }
+
+    axios.post('/user/sign-up', forSubmitFormData)
+      .then(response => {
+        navigate('/user/sign-up/complete')
+      })
+      .catch(error => {
+        console.error('회원가입 실패')
+        alert('회원가입에 실패했습니다')
+      })
+  }
+
+  // 이메일 인증
+  const [loading, setLoading] = useState(false)
+
+  const handleEmailVerification = (e) => {
+
+    e.preventDefault()
+
+    setLoading(true)
+
+    axios.post(`/user/verify-email`, { email: formData.email })
+      .then((response) => {
+        navigate('/user/verify-email', {state: { email: formData.email, name: formData.name, birthday: formData.birthday, tel: formData.tel }})
+      })
+      .catch((error) => {
+        console.log('이메일 인증 메일 전송 실패')
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   return (
@@ -354,45 +436,57 @@ const Signup = () => {
       <div className="signup-title">회원가입</div>
       <div className="signup-title-underline"></div>
 
-      <div className={`signup-email ${isEmailFocused ? 'focus' : ''} ${isEmailComplete ? 'complete' : ''}`}>
-        <label id="signup-label">이메일</label>
-        <input type="text" id="signup-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} onChange={onChangeEmail} placeholder={showEmailPlaceholder ? "ex) nutella@waffle.com" : ""} inputmode="email" />
-        <button className="signup-emailverify">인증</button>
-      </div>
+      <form>
+        <div className={`signup-email ${isEmailFocused ? 'focus' : ''} ${isEmailComplete ? 'complete' : ''}`}>
+          <label id="signup-label">이메일</label>
+          <input type="text" id="signup-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} onChange={functionSetEmail} placeholder={showEmailPlaceholder ? "ex) nutella@waffle.com" : ""} inputmode="email" value={formData.email} name="email"/>
+          {isVerified ? (
+          <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" />
+          ) : (
+          <button className="signup-emailverify" disabled={!isEmail} onClick={handleEmailVerification}>인증</button>
+          )}
+        </div>
 
-      <div className={`signup-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
-        <label id="signup-label">비밀번호</label>
-        <input type="password" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={onChangePassword} placeholder={showPasswordPlaceholder ? "영문, 숫자, 특수문자를 포함한 8자리 이상" : ""} />
-        {isPassword === null ? null : (isPassword ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
-      </div>
+        <div className={`signup-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
+          <label id="signup-label">비밀번호</label>
+          <input type="password" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {onChangePassword(e); handleChange(e)}} placeholder={showPasswordPlaceholder ? "영문, 숫자, 특수문자를 포함한 8자리 이상" : ""} value={formData.password} name="password"/>
+          {isPassword === null ? null : (isPassword ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
+        </div>
 
-      <div className={`signup-password-verify ${isPasswordVerifyFocused ? 'focus' : ''} ${isPasswordVerifyComplete ? 'complete' : ''}`}>
-        <label id="signup-label">비밀번호 확인</label>
-        <input type="password" id="signup-input" ref={inputPasswordVerifyRef} onFocus={handlePasswordVerifyFocus} onBlur={handlePasswordVerifyBlur} onChange={onChangePasswordVerify} placeholder={showPasswordVerifyPlaceholder ? "" : ""} />
-        {isPasswordVerify === null ? null : (isPasswordVerify ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
-      </div>
+        <div className={`signup-password-verify ${isPasswordVerifyFocused ? 'focus' : ''} ${isPasswordVerifyComplete ? 'complete' : ''}`}>
+          <label id="signup-label">비밀번호 확인</label>
+          <input type="password" id="signup-input" ref={inputPasswordVerifyRef} onFocus={handlePasswordVerifyFocus} onBlur={handlePasswordVerifyBlur} onChange={onChangePasswordVerify} placeholder={showPasswordVerifyPlaceholder ? "" : ""} />
+          {isPasswordVerify === null ? null : (isPasswordVerify ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
+        </div>
 
-      <div className={`signup-name ${isNameFocused ? 'focus' : ''} ${isNameComplete ? 'complete' : ''}`}>
-        <label id="signup-label">이름</label>
-        <input type="text" id="signup-input" ref={inputNameRef} onFocus={handleNameFocus} onBlur={handleNameBlur} onChange={onChangeName} placeholder={showNamePlaceholder ? "ex) 이재용" : ""} />
-        {isName === null ? null : (isName ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
-      </div>
+        <div className={`signup-name ${isNameFocused ? 'focus' : ''} ${isNameComplete ? 'complete' : ''}`}>
+          <label id="signup-label">이름</label>
+          <input type="text" id="signup-input" ref={inputNameRef} onFocus={handleNameFocus} onBlur={handleNameBlur} onChange={(e) => {onChangeName(e); handleChange(e)}} placeholder={showNamePlaceholder ? "ex) 이재용" : ""} value={formData.name} name="name"/>
+          {isName === null ? null : (isName ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
+        </div>
 
-      <div className={`signup-birthdate ${isBirthdateFocused ? 'focus' : ''} ${isBirthdateComplete ? 'complete' : ''}`}>
-        <label id="signup-label">생년월일</label>
-        <input type="text" id="signup-input" ref={inputBirthdateRef} onFocus={handleBirthdateFocus} onBlur={handleBirthdateBlur} onChange={functionSetBirthdate} placeholder={showBirthdatePlaceholder ? "ex) 19900101" : ""} inputmode="numeric" />
-        {isBirthdate === null ? null : (isBirthdate ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
-      </div>
+        <div className={`signup-birthdate ${isBirthdateFocused ? 'focus' : ''} ${isBirthdateComplete ? 'complete' : ''}`}>
+          <label id="signup-label">생년월일</label>
+          <input type="text" id="signup-input" ref={inputBirthdateRef} onFocus={handleBirthdateFocus} onBlur={handleBirthdateBlur} onChange={functionSetBirthdate} placeholder={showBirthdatePlaceholder ? "ex) 19900101" : ""} inputmode="numeric" value={formData.birthday} name="birthday"/>
+          {isBirthdate === null ? null : (isBirthdate ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
+        </div>
 
-      <div className={`signup-tel ${isTelFocused ? 'focus' : ''} ${isTelComplete ? 'complete' : ''}`}>
-        <label id="signup-label">연락처</label>
-        <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={functionSetTel} placeholder={showTelPlaceholder ? "ex) 01012345678" : ""} />
-        {isTel === null ? null : (isTel ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
-      </div>
+        <div className={`signup-tel ${isTelFocused ? 'focus' : ''} ${isTelComplete ? 'complete' : ''}`}>
+          <label id="signup-label">연락처</label>
+          <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={functionSetTel} placeholder={showTelPlaceholder ? "ex) 01012345678" : ""} value={formData.tel} name="tel"/>
+          {isTel === null ? null : (isTel ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
+        </div>
 
-      <div className="signup-button-container">
-        <SignupButton className="signup-button" disabled={!(isEmail && isName && isBirthdate && isPassword && isPasswordVerify && isTel)} onClick={goToSignupComplete}>가입하기</SignupButton>
-      </div>
+        <div className="signup-button-container">
+          <SignupButton type="submit" className="signup-button" disabled={!(isVerified && isName && isBirthdate && isPassword && isPasswordVerify && isTel)} onClick={handleSubmit}>가입하기</SignupButton>
+        </div>
+      </form>
+
+      {loading && (
+      <LoadingOverlay>
+        <LoadingImage className="animate__animated animate__bounce animate__slow animate__infinite" src={SignupCompleteWaffle} alt="LoadingWaffle" />
+      </LoadingOverlay>
+      )}
     </SignupWrapper>
   )
 }
@@ -500,6 +594,11 @@ const SignupWrapper = styled.div`
     color: white;
     font-weight: 600;
     font-size: 1.5vh;
+  }
+
+  .signup-emailverify:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
   }
 
   .signup-password {
@@ -866,6 +965,24 @@ const SignupButton = styled.button`
     background-color: #ddd;
     cursor: not-allowed;
   }
+`;
+
+const LoadingOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoadingImage = styled.img`
+  width: 20vh;
+  height: 20vh;
 `;
 
 export default Signup
