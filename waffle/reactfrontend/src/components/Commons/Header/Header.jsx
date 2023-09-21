@@ -38,11 +38,11 @@ const goToMain = () => {
 //   setUserToggled(false)
 // }
 
-// const goToCard = () => {
-//   navigate('')
-//   setIsToggled(false)
-//   setUserToggled(false)
-// }
+const goToCard = () => {
+  navigate('/recocard/main')
+  setIsToggled(false)
+  setUserToggled(false)
+}
 
 // const goToExchange = () => {
 //   navigate('')
@@ -96,7 +96,7 @@ const goToSignup = () => {
       {/* 세부 메뉴 리스트 */}
       <ul className="header-menulist">
         <li>패키지</li>
-        <li>카드</li>
+        <li onClick={goToCard}>카드</li>
         <li>환율</li>
         <li onClick={goToTeamAccount}>모임통장</li>
       </ul>
