@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import axios from 'axios'
 
 const Login = () => {
   
@@ -81,30 +82,65 @@ const Login = () => {
     }
   }
 
+  // 로그인
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => {
+        const newData = { ...prevData, [name]: value };
+        return newData;
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    axios.post('/user/login', formData)
+      .then(response => {
+        console.log(response)
+        localStorage.setItem('token', response.headers['authorization'])
+        localStorage.setItem('refresh-token', response.headers['authorization-refresh'])
+        navigate('/')
+        window.location.reload()
+      })
+      .catch(error => {
+        console.error('로그인 실패')
+        alert('로그인에 실패했습니다')
+      })
+  }
+
   return (
     <LoginWrapper>
       <div className="login-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
       <div className="login-title">로그인</div>
       <div className="login-title-underline"></div>
-      <div className={`login-email ${isEmailFocused ? 'focus' : ''} ${isEmailComplete ? 'complete' : ''}`} id="email-container">
-        <label id="email-label">이메일</label>
-        <input type="text" id="email-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} value={email} onChange={e => setEmail(e.target.value)}/>
-      </div>
-      <div className={`login-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`} id="password-container">
-        <label id="password-label">비밀번호</label>
-        <input type="password" id="password-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur}/>
-      </div>
-      <label className="loginPage_text">
-        <input type="checkbox" onChange={handleOnChange} checked={isRemember}/>
-        이메일 저장
-      </label>
-      <div className="login-button-container">
-        <button className="login-button">로그인</button>
-      </div>
+
+      <form onSubmit={handleSubmit}>
+        <div className={`login-email ${isEmailFocused ? 'focus' : ''} ${isEmailComplete ? 'complete' : ''}`} id="email-container">
+          <label id="email-label">이메일</label>
+          <input type="text" id="email-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} value={formData.email} onChange={(e) => {setEmail(e.target.value); handleChange(e)}} name="email"/>
+        </div>
+        <div className={`login-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`} id="password-container">
+          <label id="password-label">비밀번호</label>
+          <input type="password" id="password-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} value={formData.password} name="password" onChange={handleChange}/>
+        </div>
+        <label className="loginPage_text">
+          <input type="checkbox" onChange={handleOnChange} checked={isRemember}/>
+          이메일 저장
+        </label>
+        <div className="login-button-container">
+          <button className="login-button" type="submit">로그인</button>
+        </div>
+      </form>
+
       <div className="login-underline"></div>
       <div className="login-extra">
         <div className="login-find-email"><StyledLink to="/user/find-email">이메일 찾기</StyledLink></div>
-        <div className="login-change-password">비밀번호 변경</div>
+        <div className="login-change-password"><StyledLink to="/user/find-password">비밀번호 변경</StyledLink></div>
         <div className="login-signup"><StyledLink to="/user/sign-up">회원가입</StyledLink></div>
       </div>
 
