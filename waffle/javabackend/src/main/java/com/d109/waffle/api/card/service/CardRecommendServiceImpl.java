@@ -36,10 +36,10 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 		List<String> company = surveyDto.getFavoriteCompany();
 
 		// 특정 국가 Dto 설정해두기
-		RecommendCardDto chinaPriceRecommendCardDto = new RecommendCardDto();
-		RecommendCardDto japanPriceRecommendCardDto = new RecommendCardDto();
-		RecommendCardDto chinaOtherRecommendCardDto = new RecommendCardDto();
-		RecommendCardDto japanOtherRecommendCardDto = new RecommendCardDto();
+		RecommendCardDto chinaPriceRecommendCardDto = RecommendCardDto.builder().build();
+		RecommendCardDto japanPriceRecommendCardDto = RecommendCardDto.builder().build();
+		RecommendCardDto chinaOtherRecommendCardDto = RecommendCardDto.builder().build();
+		RecommendCardDto japanOtherRecommendCardDto = RecommendCardDto.builder().build();
 
 		List<CardEntity> cardList;
 
@@ -288,18 +288,18 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			discountPrice.put("annualFee", originalPrice.get("annualFee"));
 			discountPrice.put("total", discountPrice.get("dutyFree") + discountPrice.get("use") + discountPrice.get("annualFee"));
 
-			RecommendCardDto recommendCardDto = new RecommendCardDto();
-
-			recommendCardDto.setCardId(card.getId());
-			recommendCardDto.setCardCompany(card.getCompany());
-			recommendCardDto.setCardBrand(card.getBrand());
-			recommendCardDto.setCardName(card.getName());
-			recommendCardDto.setOriginalPrice(originalPrice);
-			recommendCardDto.setGetPrice(getPrice);
-			recommendCardDto.setDiscountPrice(discountPrice);
-			recommendCardDto.setGetBenefit(getBenefit);
-			recommendCardDto.setOtherBenefit(otherBenefit);
-			recommendCardDto.setLink(card.getLink());
+			RecommendCardDto recommendCardDto = RecommendCardDto.builder()
+				.cardId(card.getId())
+				.cardCompany(card.getCompany())
+				.cardBrand(card.getBrand())
+				.cardName(card.getName())
+				.originalPrice(originalPrice)
+				.getPrice(getPrice)
+				.discountPrice(discountPrice)
+				.getBenefit(getBenefit)
+				.otherBenefit(otherBenefit)
+				.link(card.getLink())
+				.build();
 
 			// pq에 RecommendCard 넣어주기 (jcb랑 unionpay는 특별취급)
 			if (card.getBrand().equals("mastercard") || card.getBrand().equals("visa")) {
@@ -366,10 +366,23 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 		}
 
 		RecommendCardDto priceRecommendCard = pricePQ.poll(); // 순수 가격 추천
-		RecommendCardDto otherRecommendCard = null;
+		RecommendCardDto otherRecommendCard = null; // 서비스 가격 추천
 
 		if (!benefitPQ.isEmpty()) {
-			otherRecommendCard = benefitPQ.poll(); // 혜택이 가장 많은 카드 추천 (같으면 가격이 가장 낮은 거)
+			RecommendCardDto benefitPQDto = benefitPQ.poll(); // 혜택이 가장 많은 카드 추천 (같으면 가격이 가장 낮은 거)
+
+			otherRecommendCard = RecommendCardDto.builder()
+				.cardId(benefitPQDto.getCardId())
+				.cardCompany(benefitPQDto.getCardCompany())
+				.cardBrand(benefitPQDto.getCardBrand())
+				.cardName(benefitPQDto.getCardName())
+				.originalPrice(benefitPQDto.getOriginalPrice())
+				.getPrice(benefitPQDto.getGetPrice())
+				.discountPrice(benefitPQDto.getDiscountPrice())
+				.getBenefit(benefitPQDto.getGetBenefit())
+				.otherBenefit(benefitPQDto.getOtherBenefit())
+				.link(benefitPQDto.getLink())
+				.build();
 		}
 
 		if (surveyDto.getCountry().equals("Japan") && japanPriceRecommendCardDto.getCardName() != null) {
@@ -377,7 +390,18 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 		}
 
 		if (surveyDto.getCountry().equals("Japan") && japanOtherRecommendCardDto.getCardName() != null) {
-			otherRecommendCard = japanOtherRecommendCardDto;
+			otherRecommendCard = RecommendCardDto.builder()
+				.cardId(japanOtherRecommendCardDto.getCardId())
+				.cardCompany(japanOtherRecommendCardDto.getCardCompany())
+				.cardBrand(japanOtherRecommendCardDto.getCardBrand())
+				.cardName(japanOtherRecommendCardDto.getCardName())
+				.originalPrice(japanOtherRecommendCardDto.getOriginalPrice())
+				.getPrice(japanOtherRecommendCardDto.getGetPrice())
+				.discountPrice(japanOtherRecommendCardDto.getDiscountPrice())
+				.getBenefit(japanOtherRecommendCardDto.getGetBenefit())
+				.otherBenefit(japanOtherRecommendCardDto.getOtherBenefit())
+				.link(japanOtherRecommendCardDto.getLink())
+				.build();
 		}
 
 		if (surveyDto.getCountry().equals("China") && chinaPriceRecommendCardDto.getCardName() != null) {
@@ -385,7 +409,18 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 		}
 
 		if (surveyDto.getCountry().equals("China") && chinaOtherRecommendCardDto.getCardName() != null) {
-			otherRecommendCard = chinaOtherRecommendCardDto;
+			otherRecommendCard = RecommendCardDto.builder()
+				.cardId(chinaOtherRecommendCardDto.getCardId())
+				.cardCompany(chinaOtherRecommendCardDto.getCardCompany())
+				.cardBrand(chinaOtherRecommendCardDto.getCardBrand())
+				.cardName(chinaOtherRecommendCardDto.getCardName())
+				.originalPrice(chinaOtherRecommendCardDto.getOriginalPrice())
+				.getPrice(chinaOtherRecommendCardDto.getGetPrice())
+				.discountPrice(chinaOtherRecommendCardDto.getDiscountPrice())
+				.getBenefit(chinaOtherRecommendCardDto.getGetBenefit())
+				.otherBenefit(chinaOtherRecommendCardDto.getOtherBenefit())
+				.link(chinaOtherRecommendCardDto.getLink())
+				.build();
 		}
 
 		List<RecommendCardDto> result = new ArrayList<>();
@@ -398,7 +433,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			result.add(otherRecommendCard);
 		}
 
-		RecommendCardDto exchangeRecommendCard = new RecommendCardDto();
+		RecommendCardDto exchangeRecommendCard = RecommendCardDto.builder().build();
 
 		double[] exchange = exchangeValue.get(surveyDto.getCountry());
 		exchangeRecommendCard.setRecommendNumber(3);

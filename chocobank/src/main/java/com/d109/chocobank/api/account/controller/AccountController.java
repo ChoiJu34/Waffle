@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.d109.chocobank.api.account.entity.AccountHistoryEntity;
+import com.d109.chocobank.api.card.dto.AccountDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -102,6 +104,36 @@ public class AccountController {
 			log.error(e.getMessage());
 			result.put("message", "FAIL");
 			return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
+
+	@GetMapping("/service")
+	public ResponseEntity<?> getServiceAccountList(@RequestHeader("Authorization-uuid") String uuid) throws Exception {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			List<AccountDto> accountList = accountService.getServiceAccountList(uuid);
+			result.put("message", "SUCCESS");
+			result.put("result", accountList);
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+
+	@GetMapping("/service/history")
+	public ResponseEntity<?> getServiceAccountHistory(@RequestHeader("Authorization-uuid") String uuid, @RequestBody Map<String, String> map) throws Exception {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			List<AccountHistoryEntity> accountList = accountService.getServiceAccountHistory(uuid, map.get("accountNumber"));
+			result.put("message", "SUCCESS");
+			result.put("result", accountList);
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
 	}
 }
