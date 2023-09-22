@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -129,6 +130,20 @@ public class AccountController {
 			List<AccountHistoryEntity> accountList = accountService.getServiceAccountHistory(uuid, map.get("accountNumber"));
 			result.put("message", "SUCCESS");
 			result.put("result", accountList);
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+
+	@PutMapping("/account-transfer")
+	public ResponseEntity<?> createAccountTransfer(@RequestHeader("Authorization") String authorization, @RequestBody Map<String, String> map) throws Exception {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			accountService.createAccountTransfer(authorization, map.get("senderName"), map.get("receiverName"), map.get("senderAccountNumber"), map.get("receiverAccountNumber"), Integer.parseInt(map.get("money")));
+			result.put("message", "SUCCESS");
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());

@@ -184,7 +184,7 @@ const FindPassword = () => {
   return (
     <FindEmailWrapper>
       <div className="find-email-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
-      <div className="find-email-title">비밀번호 변경</div>
+      <div className="find-email-title">비밀번호 찾기</div>
       <div className="find-email-title-underline"></div>
 
       <div className={`signup-email ${isEmailFocused ? 'focus' : ''} ${isEmailComplete ? 'complete' : ''}`}>

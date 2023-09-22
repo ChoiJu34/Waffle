@@ -1,6 +1,7 @@
 package com.d109.waffle.api.user.service;
 
 import java.security.InvalidKeyException;
+import java.util.EmptyStackException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -88,8 +89,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updatePassword(String token, String newPassword) throws Exception {
 		if(emailService.verifyPasswordToken(token, true)){
-			Optional<EmailTokenEntity> emailToken = emailService.findValidToken(token);
-			UserEntity user = userRepository.findById(emailToken.get().getUserId()).orElseThrow();
+			EmailTokenEntity emailToken = emailService.findValidToken(token).orElseThrow(()-> new Exception("토큰이 유효하지 않습니다."));
+			emailToken.setTokenToUsed();
+			UserEntity user = userRepository.findById(emailToken.getUserId()).orElseThrow();
 			user.setPassword(newPassword);
 			user.encodePassword(passwordEncoder);
 			userRepository.save(user);

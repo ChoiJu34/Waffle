@@ -140,7 +140,7 @@ const Login = () => {
       <div className="login-underline"></div>
       <div className="login-extra">
         <div className="login-find-email"><StyledLink to="/user/find-email">이메일 찾기</StyledLink></div>
-        <div className="login-change-password"><StyledLink to="/user/find-password">비밀번호 변경</StyledLink></div>
+        <div className="login-change-password"><StyledLink to="/user/find-password">비밀번호 찾기</StyledLink></div>
         <div className="login-signup"><StyledLink to="/user/sign-up">회원가입</StyledLink></div>
       </div>
 
