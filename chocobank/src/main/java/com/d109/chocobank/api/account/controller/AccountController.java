@@ -136,4 +136,18 @@ public class AccountController {
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
 	}
+
+	@PostMapping("/account-transfer")
+	public ResponseEntity<?> createAccountTransfer(@RequestHeader("Authorization") String authorization, @RequestBody Map<String, String> map) throws Exception {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			accountService.createAccountTransfer(authorization, map.get("senderName"), map.get("receiverName"), map.get("senderAccountNumber"), map.get("receiverAccountNumber"), Integer.parseInt(map.get("money")));
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
 }

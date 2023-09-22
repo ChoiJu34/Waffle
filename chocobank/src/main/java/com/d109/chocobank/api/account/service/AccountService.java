@@ -14,4 +14,6 @@ public interface AccountService {
     List<AccountDto> getServiceAccountList(String uuid) throws Exception;
 
 	List<AccountHistoryEntity> getServiceAccountHistory(String uuid, String accountNumber) throws Exception;
+
+	void createAccountTransfer(String authorization, String senderName, String receiverName, String senderAccountNumber, String receiverAccountNumber, int cost) throws Exception;
 }
