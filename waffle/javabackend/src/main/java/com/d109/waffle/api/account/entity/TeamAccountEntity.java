@@ -1,4 +1,4 @@
-package com.d109.chocobank.api.account.entity;
+package com.d109.waffle.api.account.entity;
 
 import java.time.LocalDateTime;
 
@@ -7,16 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.d109.chocobank.api.user.entity.UserEntity;
-import com.d109.chocobank.common.auth.Role;
-
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,41 +20,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "account")
+@Entity(name = "team_account")
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class AccountEntity {
+public class TeamAccountEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private UserEntity userEntity;
+	private String name;
+
+	private String company;
 
 	@Column(name = "account_number")
 	private String accountNumber;
 
+	@Column(name = "end_day")
+	private LocalDateTime endDate;
+
+	@Column(name = "create_date")
 	@CreationTimestamp
-	@Column(name = "start_date")
-	private LocalDateTime startDate;
+	private LocalDateTime createDate;
 
-	private int balance;
-
-	public int sendTransfer(int money) {
-		this.balance -= money;
-		return this.balance;
-	}
-
-	public int receiveTransfer(int money) {
-		this.balance += money;
-		return this.balance;
-	}
-
+	private int goal;
 }
