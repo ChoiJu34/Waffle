@@ -139,7 +139,7 @@ const FindEmail = () => {
       <div className="find-email-underline"></div>
       <div className="find-email-extra">
         <div className="find-email-find-email"><StyledLink to="/user/login">로그인</StyledLink></div>
-        <div className="find-email-change-password"><StyledLink to="/user/find-password">비밀번호 변경</StyledLink></div>
+        <div className="find-email-change-password"><StyledLink to="/user/find-password">비밀번호 찾기</StyledLink></div>
         <div className="find-email-signup"><StyledLink to="/user/sign-up">회원가입</StyledLink></div>
       </div>
     </FindEmailWrapper>

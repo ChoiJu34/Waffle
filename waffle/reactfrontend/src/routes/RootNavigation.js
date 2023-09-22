@@ -16,6 +16,7 @@ import Signup from '../components/Signup/Signup'
 import SignupComplete from '../components/Signup/SignupComplete'
 import RecoCardList from '../components/RecommendCard/RecoCardList';
 import TeamAccount from '../components/TeamAccount/TeamAccount'
+import TeamAccountDetail from '../components/TeamAccount/TeamAccountDetail'
 
 const RootNavigation = () => {
   return (
@@ -23,7 +24,6 @@ const RootNavigation = () => {
       <ScrollTop />
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/recocard/main" element={<RecoCardMain />} />
           <Route path="/recocard/list" element={<RecoCardList />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/user/login" element={<Login/>} />
@@ -37,6 +37,8 @@ const RootNavigation = () => {
           <Route path="/user/password-token" element={<PasswordToken/>} />
           <Route path="/recocard/main" element={<ProtectedRoute><RecoCardMain /></ProtectedRoute>} />
           <Route path="/teamaccount/main" element={<ProtectedRoute><TeamAccount /></ProtectedRoute>} />
+          {/* "detail"은 나중에 각 모임통장의 id로 바꿀 예정 */}
+          <Route path="/teamaccount/detail" element={<TeamAccountDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>
