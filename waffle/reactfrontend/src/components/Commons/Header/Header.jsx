@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -74,18 +74,72 @@ const goToSignup = () => {
 //   setUserToggled(false)
 // }
 
+// 현재 페이지에 따라 헤더 가운데 변경
+const location = useLocation();
+
+const [nowPage, setNowPage] = useState()
+
+useEffect(() => {
+  if (/^\/package\//.test(location.pathname)) {
+    setNowPage('package')
+  } else if (/^\/recocard\//.test(location.pathname)) {
+    setNowPage('recocard')
+  } else if (/^\/exchange\//.test(location.pathname)) {
+    setNowPage('exchange')
+  } else if (/^\/teamaccount\//.test(location.pathname)) {
+    setNowPage('teamaccount')
+  } else if (/^\/mypage\//.test(location.pathname)) {
+    setNowPage('mypage')
+  } else {
+    setNowPage('main')
+  }
+}, [location.pathname])
+
+
   return (
-    <HeaderWrapper isToggled={isToggled} userToggled={userToggled}>
+    <HeaderWrapper isToggled={isToggled} userToggled={userToggled} nowPage={nowPage}>
       <div className="header-buttons-container">
       {/* 세부 메뉴 햄버거 버튼 */}
       <div className="header-toggle" onClick={() => {setIsToggled(!isToggled); userToggled ? setUserToggled(!userToggled) : setUserToggled(false)}}>
         <FontAwesomeIcon icon={!isToggled ? faBars : faTimes} color="black"/>
       </div>
     
-      {/* 로고 */}
-      <div className="logo">
-        <img onClick={goToMain} src={WaffleLogo} alt="WaffleLogo" className="header-logo" />
-      </div>
+      {/* 현재 페이지에 따라 달라지는 헤더 가운데 */}
+      {nowPage === 'main' && (
+        <div className="logo">
+          <img onClick={goToMain} src={WaffleLogo} alt="WaffleLogo" className="header-logo" />
+        </div>
+      )}
+
+      {nowPage === 'package' && (
+        <div className="header-now-where">
+          패키지 추천
+        </div>
+      )}
+
+      {nowPage === 'recocard' && (
+        <div className="header-now-where">
+         카드 추천
+        </div>
+      )}
+
+      {nowPage === 'exchange' && (
+        <div className="header-now-where">
+          환율
+       </div>
+      )}
+
+      {nowPage === 'teamaccount' && (
+        <div className="header-now-where">
+          모임 통장
+        </div>
+      )}
+
+      {nowPage === 'mypage' && (
+        <div className="header-now-where">
+          마이페이지
+       </div>
+      )}
 
       {/* 회원 관리 세부 메뉴 버튼 */}
       <div className="header-user" onClick={() => {setUserToggled(!userToggled); isToggled ? setIsToggled(!isToggled) : setIsToggled(false)}}>
@@ -95,10 +149,13 @@ const goToSignup = () => {
 
       {/* 세부 메뉴 리스트 */}
       <ul className="header-menulist">
-        <li>패키지</li>
-        <li onClick={goToCard}>카드</li>
-        <li>환율</li>
-        <li onClick={goToTeamAccount}>모임통장</li>
+        {nowPage !== 'main' && (
+          <li onClick={goToMain}>홈</li>
+        )}
+        <li className="sebu-package">패키지 추천</li>
+        <li className="sebu-recocard" onClick={goToCard}>카드 추천</li>
+        <li className="sebu-exchange">환율</li>
+        <li className="sebu-teamaccount" onClick={goToTeamAccount}>모임통장</li>
       </ul>
 
       {/* 회원 관리 세부 메뉴 리스트 */}
@@ -145,6 +202,24 @@ const HeaderWrapper = styled.div`
   .header-menulist {
     list-style: none;
     display: flex;
+
+    li {
+      &.sebu-package {
+        color: ${(props) => (props.nowPage === 'package' ? '#9AC5F4' : 'black')};
+      }  
+
+      &.sebu-recocard {
+        color: ${(props) => (props.nowPage === 'recocard' ? '#9AC5F4' : 'black')};
+      }  
+
+      &.sebu-exchange {
+        color: ${(props) => (props.nowPage === 'exchange' ? '#9AC5F4' : 'black')};
+      }  
+
+      &.sebu-teamaccount {
+        color: ${(props) => (props.nowPage === 'teamaccount' ? '#9AC5F4' : 'black')};
+      }  
+    }
   }
 
   .header-menulist-user {
@@ -171,6 +246,11 @@ const HeaderWrapper = styled.div`
     display: none;
     font-size: 1.5rem;
     padding: 1rem 1rem;
+  }
+
+  .header-now-where {
+    color: black;
+    font-size: 2.3vh;
   }
 
   @media screen and (max-width: 768px) {
@@ -224,6 +304,7 @@ const HeaderWrapper = styled.div`
     width: 100%;
     margin: 0 1vh;
   }
+
 `;
 
 const StyledLink = styled(Link)`
