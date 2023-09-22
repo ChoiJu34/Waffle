@@ -6,6 +6,7 @@ const TeamAccountItem = () => {
   return (
     <TeamAccountItemWrapper>
       <div className="team-account-item-container">
+        {/* 모임 통장 관리자 여부 확인 가능해지면 리본은 조건부 렌더링 예정 */}
         <img className="team-account-ribbon" src={TeamAccountRibbon} alt="TeamAccountRibbon" />
         <div className="team-account-item-title">텅장</div>
         <div className="team-account-item-departure">
@@ -20,6 +21,8 @@ const TeamAccountItem = () => {
 }
 
 const TeamAccountItemWrapper = styled.div`
+
+  margin-bottom: 5vh;
 
   .team-account-item-container {
     width: 80vw;

@@ -365,7 +365,12 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			}
 		}
 
-		RecommendCardDto priceRecommendCard = pricePQ.poll(); // 순수 가격 추천
+		RecommendCardDto priceRecommendCard = null; // 순수 가격 추천
+
+		if (!pricePQ.isEmpty()) {
+			priceRecommendCard = pricePQ.poll();
+		}
+
 		RecommendCardDto otherRecommendCard = null; // 서비스 가격 추천
 
 		if (!benefitPQ.isEmpty()) {
@@ -425,8 +430,10 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 
 		List<RecommendCardDto> result = new ArrayList<>();
 
-		priceRecommendCard.setRecommendNumber(1);
-		result.add(priceRecommendCard);
+		if (priceRecommendCard != null) {
+			priceRecommendCard.setRecommendNumber(1);
+			result.add(priceRecommendCard);
+		}
 
 		if (otherRecommendCard != null) {
 			otherRecommendCard.setRecommendNumber(2);

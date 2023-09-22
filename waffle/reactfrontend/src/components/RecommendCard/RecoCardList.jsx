@@ -1,17 +1,64 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components';
-import RecoCardMain from './RecoCardMain'
+import Slider from "react-slick";
 
 const RecoCardList = (props) => {
-      // 이후 res를 활용하여 데이터를 렌더링하는 로직을 작성합니다.
 
-
+  
     const location = useLocation()
     const data = location.state?.value.result
     const count = location.state?.value.length
     console.log(data)
     console.log(count)
+    const Section: React.FunctionComponent<Props> = ({ slide, title, children }) => {
+      const settings = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 9,
+        slidesToScroll: 9,
+        initialSlide: 0,
+        responsive: [
+            {
+                breakpoint: 1440,
+                settings: {
+                    slidesToShow: 7,
+                    slidesToScroll: 7
+                }
+            },
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 5,
+                    slidesToScroll: 5
+                }
+            },
+            {
+                breakpoint: 720,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+            },
+            {
+                breakpoint: 320,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+      };
+      };
+
     return (
       <Container>
        {data && data.map(({ recommendNumber, cardId, cardCompany, cardName,discountPrice}) => (
@@ -25,18 +72,16 @@ const RecoCardList = (props) => {
     );
   };
 
+  
+
 export default RecoCardList
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 30px;
-  width: 400px;
-  height: 100%;
-
-`
+    margin-top: 10px;
+    :not(:last-child) {
+        margin-bottom: 50px;
+    }
+`;
 const CardList = styled.div`
   width: 340px;
   border: 1px solid #B3B1B1;
@@ -60,3 +105,23 @@ const Contentbox = styled.div`
 
   }
 `
+
+
+ 
+const Title = styled.span`
+    font-size: 20px;
+    font-weight: 600;
+`;
+ 
+const Grid = styled.div`
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+    grid-gap: 25px;
+`;
+ 
+const Wrapper = styled.div`
+    margin: 40px auto; 
+    width: 95%;
+`;
+ 

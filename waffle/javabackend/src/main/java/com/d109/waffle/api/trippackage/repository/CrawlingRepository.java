@@ -39,4 +39,20 @@ public class CrawlingRepository {
 		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
 		return new AsyncResult<>(dataMap);
 	}
+	@Async("multiAsync")
+	public ListenableFuture<Map<String, Object>> tripPlane(RecommendDto recommendDto) throws
+		JsonProcessingException {
+		String s = restTemplate.postForObject("http://127.0.0.1:8000/tripPlane", recommendDto, String.class);
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
+		return new AsyncResult<>(dataMap);
+	}
+	@Async("multiAsync")
+	public ListenableFuture<Map<String, Object>> agodaHotel(RecommendDto recommendDto) throws
+		JsonProcessingException {
+		String s = restTemplate.postForObject("http://127.0.0.1:8000/agodaHotel", recommendDto, String.class);
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
+		return new AsyncResult<>(dataMap);
+	}
 }
