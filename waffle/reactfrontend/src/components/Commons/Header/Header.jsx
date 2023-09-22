@@ -63,7 +63,7 @@ const goToLogin = () => {
 }
 
 const goToSignup = () => {
-  navigate('/user/signup')
+  navigate('/user/sign-up')
   setIsToggled(false)
   setUserToggled(false)
 }
@@ -81,7 +81,6 @@ const goToSignup = () => {
       <div className="header-toggle" onClick={() => {setIsToggled(!isToggled); userToggled ? setUserToggled(!userToggled) : setUserToggled(false)}}>
         <FontAwesomeIcon icon={!isToggled ? faBars : faTimes} color="black"/>
       </div>
-    
       {/* 로고 */}
       <div className="logo">
         <img onClick={goToMain} src={WaffleLogo} alt="WaffleLogo" className="header-logo" />
@@ -100,7 +99,7 @@ const goToSignup = () => {
         <li>환율</li>
         <li onClick={goToTeamAccount}>모임통장</li>
       </ul>
-
+      
       {/* 회원 관리 세부 메뉴 리스트 */}
       {/* 로그인 여부에 따라 출력되는 세부 메뉴 다르게 처리 */}
       <ul className="header-menulist-user">

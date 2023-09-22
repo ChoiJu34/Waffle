@@ -7,12 +7,14 @@ import MainCardImg from '../../assets/MainCardImg.png'
 import MainExchangeImg from '../../assets/MainExchangeImg.png'
 import MainAccountImg from '../../assets/MainAccountImg.png'
 import MainChecklistImg from '../../assets/MainChecklistImg.png'
+import { useNavigate } from 'react-router-dom';
 
 const MainPage = () => {
 
   // 이미지 회전하는 속도에 맞춰 글자 변환
   const [text, setText] = useState('최저가 항공권');
   const texts = ['최저가 항공권', '맞춤 카드', '환율 예측', '모임 통장'];
+  const navigate = useNavigate()
 
   useEffect(() => {
     let index = 1;
@@ -35,6 +37,10 @@ const MainPage = () => {
       behavior: "smooth"
     });
   };
+
+  const goToCard = () => {
+    navigate('/recocard/main')
+  }
 
   // 일정 수준 스크롤되어야 요소가 나타나도록 하기
   const [showPackage, setShowPackage] = useState(false);
@@ -109,7 +115,7 @@ const MainPage = () => {
                 <div className="main-body-text-spacer"></div>
                 당신의 여행에 딱 맞는 카드를 추천받으세요
               </div>
-              <button className="main-body-card-button" >카드 추천 받기</button>
+              <button className="main-body-card-button" onClick={goToCard} >카드 추천 받기</button>
             </div>
           </div>
         </div>

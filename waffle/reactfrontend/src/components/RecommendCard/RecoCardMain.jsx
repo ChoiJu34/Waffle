@@ -180,7 +180,6 @@ const saverecocardboard = async () => {
 
   return (
     <Container>
-      <Maintext>여행카드추천</Maintext>
       <Creditbox>
         <Cardtext>카드 종류</Cardtext>
         <Checkcardline>
@@ -382,10 +381,6 @@ const Container = styled.div`
   width: 400px;
   height: 100%;
 
-`
-const Maintext = styled.div`
-  padding-bottom: 10px;
-  font-size: 20px;
 `
 
 const Creditbox = styled.div`
