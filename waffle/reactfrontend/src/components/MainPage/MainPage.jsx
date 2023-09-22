@@ -7,12 +7,13 @@ import MainCardImg from '../../assets/MainCardImg.png'
 import MainExchangeImg from '../../assets/MainExchangeImg.png'
 import MainAccountImg from '../../assets/MainAccountImg.png'
 import MainChecklistImg from '../../assets/MainChecklistImg.png'
-
+import { useNavigate } from 'react-router-dom';
 const MainPage = () => {
 
   // 이미지 회전하는 속도에 맞춰 글자 변환
   const [text, setText] = useState('최저가 항공권');
   const texts = ['최저가 항공권', '맞춤 카드', '환율 예측', '모임 통장'];
+  const navigate = useNavigate()
 
   useEffect(() => {
     let index = 1;
@@ -42,6 +43,7 @@ const MainPage = () => {
   const [showExchange, setShowExchange] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const [showChecklist, setShowChecklist] = useState(false);
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,6 +70,27 @@ const MainPage = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // const goToPackage = () => {
+//   navigate('')
+//   setIsToggled(false)
+//   setUserToggled(false)
+// }
+
+const goToCard = () => {
+  navigate('/recocard/main')
+
+}
+
+// const goToExchange = () => {
+//   navigate('')
+//   setIsToggled(false)
+//   setUserToggled(false)
+// }
+
+const goToTeamAccount = () => {
+  navigate('/teamaccount/main')
+}
 
   return (
       <MainPageWrapper>
@@ -109,7 +132,7 @@ const MainPage = () => {
                 <div className="main-body-text-spacer"></div>
                 당신의 여행에 딱 맞는 카드를 추천받으세요
               </div>
-              <button className="main-body-card-button">카드 추천 받기</button>
+              <button className="main-body-card-button" onClick={goToCard}>카드 추천 받기</button>
             </div>
           </div>
         </div>
@@ -142,7 +165,7 @@ const MainPage = () => {
                 <div className="main-body-text-spacer"></div>
                 단체 여행 비용을 한 번에 관리해보세요
               </div>
-              <button className="main-body-account-button">모임 통장 보기</button>
+              <button className="main-body-account-button" onClick={goToTeamAccount}>모임 통장 보기</button>
             </div>
           </div>
 
