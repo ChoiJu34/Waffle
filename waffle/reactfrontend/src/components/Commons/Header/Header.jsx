@@ -97,7 +97,7 @@ useEffect(() => {
 
 
   return (
-    <HeaderWrapper isToggled={isToggled} userToggled={userToggled}>
+    <HeaderWrapper isToggled={isToggled} userToggled={userToggled} nowPage={nowPage}>
       <div className="header-buttons-container">
       {/* 세부 메뉴 햄버거 버튼 */}
       <div className="header-toggle" onClick={() => {setIsToggled(!isToggled); userToggled ? setUserToggled(!userToggled) : setUserToggled(false)}}>
@@ -152,10 +152,10 @@ useEffect(() => {
         {nowPage !== 'main' && (
           <li onClick={goToMain}>홈</li>
         )}
-        <li>패키지 추천</li>
-        <li onClick={goToCard}>카드 추천</li>
-        <li>환율</li>
-        <li onClick={goToTeamAccount}>모임통장</li>
+        <li className="sebu-package">패키지 추천</li>
+        <li className="sebu-recocard" onClick={goToCard}>카드 추천</li>
+        <li className="sebu-exchange">환율</li>
+        <li className="sebu-teamaccount" onClick={goToTeamAccount}>모임통장</li>
       </ul>
 
       {/* 회원 관리 세부 메뉴 리스트 */}
@@ -202,6 +202,24 @@ const HeaderWrapper = styled.div`
   .header-menulist {
     list-style: none;
     display: flex;
+
+    li {
+      &.sebu-package {
+        color: ${(props) => (props.nowPage === 'package' ? '#9AC5F4' : 'black')};
+      }  
+
+      &.sebu-recocard {
+        color: ${(props) => (props.nowPage === 'recocard' ? '#9AC5F4' : 'black')};
+      }  
+
+      &.sebu-exchange {
+        color: ${(props) => (props.nowPage === 'exchange' ? '#9AC5F4' : 'black')};
+      }  
+
+      &.sebu-teamaccount {
+        color: ${(props) => (props.nowPage === 'teamaccount' ? '#9AC5F4' : 'black')};
+      }  
+    }
   }
 
   .header-menulist-user {
