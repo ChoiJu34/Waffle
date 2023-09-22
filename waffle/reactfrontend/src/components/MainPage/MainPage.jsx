@@ -37,6 +37,7 @@ const MainPage = () => {
     });
   };
 
+
   // 일정 수준 스크롤되어야 요소가 나타나도록 하기
   const [showPackage, setShowPackage] = useState(false);
   const [showCard, setShowCard] = useState(false);
@@ -47,19 +48,19 @@ const MainPage = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
+      if (window.scrollY > 70) {
         setShowPackage(true);
       }
-      if (window.scrollY > 500) {
+      if (window.scrollY > 300) {
         setShowCard(true);
       }
-      if (window.scrollY > 900) {
+      if (window.scrollY > 700) {
         setShowExchange(true);
       }
-      if (window.scrollY > 1300) {
+      if (window.scrollY > 1100) {
         setShowAccount(true);
       }
-      if (window.scrollY > 1500) {
+      if (window.scrollY > 1300) {
         setShowChecklist(true);
       }
     };
