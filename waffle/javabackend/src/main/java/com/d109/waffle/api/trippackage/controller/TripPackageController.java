@@ -28,10 +28,4 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class TripPackageController {
 	private final TripPackageService tripPackageService;
-
-	@PostMapping("/test")
-	public ResponseEntity<?> test(@RequestBody RecommendDto recommendDto) throws JsonProcessingException {
-		Map<String, Object> all = tripPackageService.all(recommendDto);
-		return new ResponseEntity<Map<String, Object>>(all, HttpStatus.OK);
-	}
 }
