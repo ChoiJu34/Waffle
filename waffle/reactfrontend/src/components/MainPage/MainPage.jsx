@@ -37,6 +37,10 @@ const MainPage = () => {
     });
   };
 
+  const goToCard = () => {
+    navigate('/recocard/main')
+  }
+
   // 일정 수준 스크롤되어야 요소가 나타나도록 하기
   const [showPackage, setShowPackage] = useState(false);
   const [showCard, setShowCard] = useState(false);
