@@ -1,11 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import TeamAccountRibbon from '../../assets/TeamAccountRibbon.png'
+import { useNavigate } from 'react-router-dom'
 
 const TeamAccountItem = () => {
+
+  const navigate = useNavigate()
+
+  const goToDetail = () => {
+    navigate('/teamaccount/detail')
+  }
+
   return (
     <TeamAccountItemWrapper>
-      <div className="team-account-item-container">
+      <div className="team-account-item-container" onClick={goToDetail}>
         {/* 모임 통장 관리자 여부 확인 가능해지면 리본은 조건부 렌더링 예정 */}
         <img className="team-account-ribbon" src={TeamAccountRibbon} alt="TeamAccountRibbon" />
         <div className="team-account-item-title">텅장</div>
