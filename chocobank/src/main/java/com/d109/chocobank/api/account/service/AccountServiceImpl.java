@@ -69,11 +69,11 @@ public class AccountServiceImpl implements AccountService {
 			.orElseThrow(() -> new NoSuchElementException("계좌 정보를 찾을 수 없습니다."));
 
 
-		if(receiverAccountEntity.getUserEntity().getId() != userEntity.get().getId()) {
+		if(senderAccountEntity.getUserEntity().getId() != userEntity.get().getId()) {
 			throw new Exception("계좌 소유주가 아닙니다.");
 		}
 
-		if(receiverAccountEntity.getBalance() < money) {
+		if(senderAccountEntity.getBalance() < money) {
 			throw new Exception("잔액이 부족합니다.");
 		}
 
