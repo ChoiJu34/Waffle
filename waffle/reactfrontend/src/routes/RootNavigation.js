@@ -23,7 +23,6 @@ const RootNavigation = () => {
       <ScrollTop />
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/recocard/main" element={<RecoCardMain />} />
           <Route path="/recocard/list" element={<RecoCardList />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/user/login" element={<Login/>} />
