@@ -149,7 +149,7 @@ const saverecocardboard = async () => {
       if (IBK) company.push('IBK기업은행');
       // if (SS) company.push('삼성카드');
       // if (KB) company.push('국민카드');
-      console.log(company)
+
       const params = {
         card: creditCard+checkCard,
         favoriteCompany: company,
@@ -158,12 +158,19 @@ const saverecocardboard = async () => {
         use : use,
         country : nation,
       }
-      console.log(creditCard+checkCard)
       // 서버에 보낼 데이터 구조를 맞추기 위해 board 객체를 변경합니다.
       const response = await axios.post(`/recommend-card/recommend`, params);
       alert('등록되었습니다.');
-      
-      navigate('/recocard/list', {state : {value : response.data}})
+
+      if (response.data.result[0]["cardId"] === response.data.result[1]["cardId"]){
+        console.log("카드아이디",response.data.result[0]["cardId"])
+       let res = response.data.result.shift()
+       console.log(response)
+       navigate('/recocard/list', {state : {value : response.data}})
+       
+      } else {
+        navigate('/recocard/list', {state : {value : response.data}})
+      }
       
     } catch (error) {
       console.error('포스트에러', error);
