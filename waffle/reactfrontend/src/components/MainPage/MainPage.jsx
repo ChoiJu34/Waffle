@@ -45,19 +45,19 @@ const MainPage = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
+      if (window.scrollY > 70) {
         setShowPackage(true);
       }
-      if (window.scrollY > 500) {
+      if (window.scrollY > 300) {
         setShowCard(true);
       }
-      if (window.scrollY > 900) {
+      if (window.scrollY > 700) {
         setShowExchange(true);
       }
-      if (window.scrollY > 1300) {
+      if (window.scrollY > 1100) {
         setShowAccount(true);
       }
-      if (window.scrollY > 1500) {
+      if (window.scrollY > 1300) {
         setShowChecklist(true);
       }
     };
