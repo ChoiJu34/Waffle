@@ -8,7 +8,6 @@ import MainExchangeImg from '../../assets/MainExchangeImg.png'
 import MainAccountImg from '../../assets/MainAccountImg.png'
 import MainChecklistImg from '../../assets/MainChecklistImg.png'
 import { useNavigate } from 'react-router-dom';
-
 const MainPage = () => {
 
   // 이미지 회전하는 속도에 맞춰 글자 변환
@@ -48,22 +47,23 @@ const MainPage = () => {
   const [showExchange, setShowExchange] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const [showChecklist, setShowChecklist] = useState(false);
+  
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
+      if (window.scrollY > 70) {
         setShowPackage(true);
       }
-      if (window.scrollY > 500) {
+      if (window.scrollY > 300) {
         setShowCard(true);
       }
-      if (window.scrollY > 900) {
+      if (window.scrollY > 700) {
         setShowExchange(true);
       }
-      if (window.scrollY > 1300) {
+      if (window.scrollY > 1100) {
         setShowAccount(true);
       }
-      if (window.scrollY > 1500) {
+      if (window.scrollY > 1300) {
         setShowChecklist(true);
       }
     };
@@ -74,6 +74,27 @@ const MainPage = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // const goToPackage = () => {
+//   navigate('')
+//   setIsToggled(false)
+//   setUserToggled(false)
+// }
+
+const goToCard = () => {
+  navigate('/recocard/main')
+
+}
+
+// const goToExchange = () => {
+//   navigate('')
+//   setIsToggled(false)
+//   setUserToggled(false)
+// }
+
+const goToTeamAccount = () => {
+  navigate('/teamaccount/main')
+}
 
   return (
       <MainPageWrapper>
@@ -115,7 +136,7 @@ const MainPage = () => {
                 <div className="main-body-text-spacer"></div>
                 당신의 여행에 딱 맞는 카드를 추천받으세요
               </div>
-              <button className="main-body-card-button" onClick={goToCard} >카드 추천 받기</button>
+              <button className="main-body-card-button" onClick={goToCard}>카드 추천 받기</button>
             </div>
           </div>
         </div>
@@ -148,7 +169,7 @@ const MainPage = () => {
                 <div className="main-body-text-spacer"></div>
                 단체 여행 비용을 한 번에 관리해보세요
               </div>
-              <button className="main-body-account-button">모임 통장 보기</button>
+              <button className="main-body-account-button" onClick={goToTeamAccount}>모임 통장 보기</button>
             </div>
           </div>
 

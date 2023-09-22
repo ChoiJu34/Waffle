@@ -3,12 +3,16 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import TeamAccountItem from './TeamAccountItem'
+import NoTeamAccount from '../../assets/NoTeamAccount.png'
 
 const TeamAccountList = () => {
   return (
     <TeamAccountListWrapper>
       <TeamAccountItem />
       <div className="team-account-add"><FontAwesomeIcon icon={faPlus} color="black" size="2x"/></div>
+      {/* 백엔드 구현되면 사용할 모임 통장 없을 때 렌더링할 부분 */}
+      <img className="no-team-account" alt="NoTeamAccount" src={NoTeamAccount} />
+      <div className="no-team-account-text">등록된 모임 통장이 없어요</div>
     </TeamAccountListWrapper>
   )
 }
@@ -28,7 +32,17 @@ const TeamAccountListWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 5vh;
+  }
+
+  .no-team-account {
+    width: 50%;
+    height: 25%;
+    margin-top: 6vh;
+    margin-bottom: 2vh;
+  }
+
+  .no-team-account-text {
+    font-size: 3vh;
   }
 `
 
