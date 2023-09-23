@@ -1,5 +1,8 @@
 package com.d109.waffle.api.card.entity;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,25 +40,25 @@ public class BenefitEntity {
 	private String at;
 
 	@Column(name="if")
-	private Integer benefitIf;
+	private BigInteger benefitIf;
 
 	private String what;
 
 	@Column(name="get_percent")
-	private Double percent;
+	private BigDecimal percent;
 
 	@Column(name="get_price")
-	private Integer price;
+	private BigInteger price;
 
 	@Column(name="base_price")
-	private Integer base;
+	private BigInteger base;
 
 	@Column(name="base_price_per")
-	private Integer basePer;
+	private BigInteger basePer;
 
-	private Integer type;
+	private int type;
 
-	private Integer max;
+	private BigInteger max;
 
 	private String limit;
 }

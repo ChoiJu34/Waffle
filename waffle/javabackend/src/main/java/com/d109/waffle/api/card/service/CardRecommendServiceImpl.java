@@ -1,5 +1,7 @@
 package com.d109.waffle.api.card.service;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -67,7 +69,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 		PriorityQueue<RecommendCardDto> pricePQ = new PriorityQueue<>(new Comparator<RecommendCardDto>() { // 순수 가격
 			@Override
 			public int compare(RecommendCardDto r1, RecommendCardDto r2) {
-				return r1.getDiscountPrice().get("total") - r2.getDiscountPrice().get("total");
+				return r1.getDiscountPrice().get("total").compareTo(r2.getDiscountPrice().get("total"));
 			}
 		});
 
@@ -75,7 +77,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			@Override
 			public int compare(RecommendCardDto r1, RecommendCardDto r2) {
 				if ((r1.getGetBenefit().size() + r1.getOtherBenefit().size()) == (r2.getGetBenefit().size() + r2.getOtherBenefit().size())) {
-					return r1.getDiscountPrice().get("total") - r2.getDiscountPrice().get("total");
+					return r1.getDiscountPrice().get("total").compareTo(r2.getDiscountPrice().get("total"));
 				}
 
 				return -((r1.getGetBenefit().size() + r1.getOtherBenefit().size()) - (r2.getGetBenefit().size() + r2.getOtherBenefit().size()));
@@ -84,14 +86,19 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 
 		for (CardEntity card : cardList) {
 			// 원가
-			Map<String, Integer> originalPrice = new HashMap<>();
+			Map<String, BigInteger> originalPrice = new HashMap<>();
 			originalPrice.put("dutyFree", surveyDto.getDutyFree());
-			originalPrice.put("use", surveyDto.getUse() + (int) (surveyDto.getUse() * card.getUsageFee()));
+
+			BigDecimal use = new BigDecimal(surveyDto.getUse().toString());
+			BigDecimal usageFee = card.getUsageFee();
+			BigDecimal totalUse = use.add(use.multiply(usageFee));
+
+			originalPrice.put("use", totalUse.toBigInteger());
 			originalPrice.put("annualFee", card.getAnnualFee());
-			originalPrice.put("total", originalPrice.get("dutyFree") + originalPrice.get("use") + originalPrice.get("annualFee"));
+			originalPrice.put("total", originalPrice.get("dutyFree").add(originalPrice.get("use")).add(originalPrice.get("annualFee")));
 
 			// 할인 가격
-			Map<String, Integer> getPrice = new HashMap<>();
+			Map<String, BigInteger> getPrice = new HashMap<>();
 
 			// 할인 혜택
 			List<String[]> getBenefit = new ArrayList<>();
@@ -108,7 +115,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 					otherBenefit.add(benefit.getAt() + " " + benefit.getBenefitCase() + " 무료 이용");
 				} else { // 해외 여행과 상관있고 가격과 상관있는 서비스
 					if (benefit.getBenefitCase().equals("면세점")) { // 면세점 혜택
-						int price = 0;
+						BigInteger price = BigInteger.ZERO;
 						String content = "면세점";
 
 						if (benefit.getBase() == null) {
@@ -116,11 +123,13 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 								price = benefit.getPrice();
 								content += " " + benefit.getPrice() + "원";
 							} else { // 금액이 %로 까질 때
-								price = (int) (surveyDto.getDutyFree() * benefit.getPercent());
-								content += " " + benefit.getPercent() * 100 + "%";
+								BigDecimal dutyFree = new BigDecimal(surveyDto.getDutyFree().toString());
+								BigDecimal totalPrice = dutyFree.multiply(benefit.getPercent());
+								price = totalPrice.toBigInteger();
+								content += " " + benefit.getPercent().multiply(new BigDecimal("100")) + "%";
 							}
 						} else { // 금액이 단위 금액으로 까질 때
-							price = (int) (surveyDto.getDutyFree() / benefit.getBase()) * benefit.getBasePer();
+							price = surveyDto.getDutyFree().divide(benefit.getBase()).multiply(benefit.getBasePer());
 							content += " " + benefit.getBase() + "원 당 " + benefit.getBasePer() + "원";
 						}
 
@@ -137,11 +146,13 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 						}
 
 						if (benefit.getMax() != null) { // 최대 금액 한도가 있으면
-							price = Math.min(price, benefit.getMax());
+							price = price.min(benefit.getMax());
 						}
 
-						if (surveyDto.getDutyFree() - price < 0) { // 결과 금액이 0보다 작을 때
-							price = price - Math.abs(surveyDto.getDutyFree() - price);
+						if (surveyDto.getDutyFree().subtract(price).compareTo(BigInteger.ZERO) < 0) { // 결과 금액이 0보다 작을 때
+							BigInteger priceDifference = surveyDto.getDutyFree().subtract(price); // getDutyFree() - price 계산
+							BigInteger absPriceDifference = priceDifference.abs(); // 절댓값 계산
+							price = price.subtract(absPriceDifference);
 						}
 
 						getPrice.put("dutyFree", price);
@@ -154,20 +165,27 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 
 						getBenefit.add(tempStr);
 
-					} else if (benefit.getBenefitCase().equals("해외가맹점")) { // 해외가맹점 혜택
-						int price = 0;
-						String content = "해외가맹점";
+					} else if (benefit.getBenefitCase().equals("해외가맹점") || benefit.getBenefitCase().equals("해외이용액")) { // 해외가맹점 & 해외이용액 혜택
+						BigInteger price = BigInteger.ZERO;
+						String content = new String();
+						if (benefit.getBenefitCase().equals("해외가맹점")) {
+							content = "해외가맹점";
+						} else {
+							content = "해외이용액";
+						}
 						
 						if (benefit.getBase() == null) {
 							if (benefit.getPercent() == null) { // 금액이 원으로 까질 때
 								price = benefit.getPrice();
 								content += " " + benefit.getPrice() + "원";
 							} else { // 금액이 %로 까질 때
-								price = (int) (surveyDto.getUse() * benefit.getPercent());
-								content += " " + benefit.getPercent() * 100 + "%";
+								BigDecimal dutyFree = new BigDecimal(surveyDto.getUse().toString());
+								BigDecimal totalPrice = dutyFree.multiply(benefit.getPercent());
+								price = totalPrice.toBigInteger();
+								content += " " + benefit.getPercent().multiply(new BigDecimal("100")) + "%";
 							}
 						} else {
-							price = (int) (surveyDto.getUse() / benefit.getBase()) * benefit.getBasePer();
+							price = surveyDto.getUse().divide(benefit.getBase()).multiply(benefit.getBasePer());
 							content += " " + benefit.getBase() + "원 당 " + benefit.getBasePer() + "원";
 						}
 
@@ -184,18 +202,20 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 						}
 
 						if (benefit.getMax() != null) { // 최대 금액 한도가 있으면
-							price = Math.min(price, benefit.getMax());
+							price = price.min(benefit.getMax());
 						}
 
-						if (surveyDto.getUse() - price < 0) { // 결과 금액이 0보다 작을 때
-							price -= Math.abs(surveyDto.getUse() - price);
+						if (surveyDto.getDutyFree().subtract(price).compareTo(BigInteger.ZERO) < 0) { // 결과 금액이 0보다 작을 때
+							BigInteger priceDifference = surveyDto.getUse().subtract(price); // getDutyFree() - price 계산
+							BigInteger absPriceDifference = priceDifference.abs(); // 절댓값 계산
+							price = price.subtract(absPriceDifference);
 						}
 
 						if (getPrice.containsKey("use")) {
-							if (surveyDto.getUse() - (getPrice.get("use") + price) < 0) { // 현재 use와 price 합이 0보다 작을 떄
-								price = price - Math.abs(surveyDto.getUse() - (getPrice.get("use") + price));
+							if (surveyDto.getUse().subtract(getPrice.get("use").add(price)).compareTo(BigInteger.ZERO) < 0) { // 현재 use와 price 합이 0보다 작을 떄
+								price = price.subtract(surveyDto.getUse().subtract(getPrice.get("use").add(price)).abs());
 							}
-							getPrice.put("use", getPrice.get("use") + price);
+							getPrice.put("use", getPrice.get("use").add(price));
 						} else {
 							getPrice.put("use", price);
 						}
@@ -208,85 +228,32 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 
 						getBenefit.add(tempStr);
 
-					} else if (benefit.getBenefitCase().equals("해외이용액")) { // 해외이용액 혜택
-						int price = 0;
-						String content = "해외이용액";
-
-						if (benefit.getBase() == null) {
-							if (benefit.getPercent() == null) { // 금액이 원으로 까질 때
-								price = benefit.getPrice();
-								content += " " + benefit.getPrice() + "원";
-							} else { // 금액이 %로 까질 때
-								price = (int) (surveyDto.getUse() * benefit.getPercent());
-								content += " " + benefit.getPercent() * 100 + "%";
-							}
-						} else {
-							price = (int) (surveyDto.getUse() / benefit.getBase()) * benefit.getBasePer();
-							content += " " + benefit.getBase() + "원 당 " + benefit.getBasePer() + "원";
-						}
-
-						if (benefit.getType() == 1) {
-							content += " 청구할인";
-						} else if (benefit.getType() == 2)
-							content += " 결제일할인";
-						else if (benefit.getType() == 3) {
-							content += " 캐시백";
-						} else if (benefit.getType() == 4) {
-							content += " 마일리지 적립";
-						} else if (benefit.getType() == 6) {
-							content += " 바우처 제공";
-						}
-
-						if (benefit.getMax() != null) { // 최대 금액 한도가 있으면
-							price = Math.min(price, benefit.getMax());
-						}
-
-						if (surveyDto.getUse() - price < 0) { // 결과 금액이 0보다 작을 때
-							price -= Math.abs(surveyDto.getUse() - price);
-						}
-
-						if (getPrice.containsKey("use")) {
-							if (surveyDto.getUse() - (getPrice.get("use") + price) < 0) { // 현재 use와 price 합이 0보다 작을 떄
-								price = price - Math.abs(surveyDto.getUse() - (getPrice.get("use") + price));
-							}
-							getPrice.put("use", getPrice.get("use") + price);
-						} else {
-							getPrice.put("use", price);
-						}
-
-						String[] tempStr = new String[3];
-
-						tempStr[0] = "use";
-						tempStr[1] = content;
-						tempStr[2] = String.valueOf(price);
-
-						getBenefit.add(tempStr);
 					}
 				}
 			}
 
 			if (!getPrice.containsKey("dutyFree")) {
-				getPrice.put("dutyFree", 0);
+				getPrice.put("dutyFree", BigInteger.ZERO);
 			}
 
 			if (!getPrice.containsKey("use")) {
-				getPrice.put("use", 0);
+				getPrice.put("use", BigInteger.ZERO);
 			}
 
-			int total = 0;
+			BigInteger total = BigInteger.ZERO;
 
-			for (Map.Entry<String, Integer> entry : getPrice.entrySet()) {
-				total += entry.getValue();
+			for (Map.Entry<String, BigInteger> entry : getPrice.entrySet()) {
+				total.add(entry.getValue());
 			}
 
 			getPrice.put("total", total);
 
-			Map<String, Integer> discountPrice = new HashMap<>();
+			Map<String, BigInteger> discountPrice = new HashMap<>();
 
-			discountPrice.put("dutyFree", originalPrice.get("dutyFree") - getPrice.get("dutyFree"));
-			discountPrice.put("use", originalPrice.get("use") - getPrice.get("use"));
+			discountPrice.put("dutyFree", originalPrice.get("dutyFree").subtract(getPrice.get("dutyFree")));
+			discountPrice.put("use", originalPrice.get("use").subtract(getPrice.get("use")));
 			discountPrice.put("annualFee", originalPrice.get("annualFee"));
-			discountPrice.put("total", discountPrice.get("dutyFree") + discountPrice.get("use") + discountPrice.get("annualFee"));
+			discountPrice.put("total", discountPrice.get("dutyFree").add(discountPrice.get("use")).add(discountPrice.get("annualFee")));
 
 			RecommendCardDto recommendCardDto = RecommendCardDto.builder()
 				.cardId(card.getId())
@@ -305,7 +272,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			if (card.getBrand().equals("mastercard") || card.getBrand().equals("visa")) {
 				pricePQ.offer(recommendCardDto);
 
-				if (card.getAnnualFee() <= surveyDto.getAnnualFee()) {
+				if (card.getAnnualFee().compareTo(surveyDto.getAnnualFee()) <= 0) {
 					benefitPQ.offer(recommendCardDto);
 				}
 			}
@@ -313,11 +280,11 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			if (surveyDto.getCountry().equals("Japan") && card.getBrand().equals("jcb")) {
 				if (japanPriceRecommendCardDto.getCardName() == null) {
 					japanPriceRecommendCardDto = recommendCardDto;
-				} else if (japanPriceRecommendCardDto.getCardName() != null && recommendCardDto.getDiscountPrice().get("total") < japanPriceRecommendCardDto.getDiscountPrice().get("total")) {
+				} else if (japanPriceRecommendCardDto.getCardName() != null && recommendCardDto.getDiscountPrice().get("total").compareTo(japanPriceRecommendCardDto.getDiscountPrice().get("total")) < 0) {
 					japanPriceRecommendCardDto = recommendCardDto;
 				}
 
-				if (card.getAnnualFee() <= surveyDto.getAnnualFee()) {
+				if (card.getAnnualFee().compareTo(surveyDto.getAnnualFee()) <= 0) {
 					if (japanOtherRecommendCardDto.getCardName() == null) {
 						japanOtherRecommendCardDto = recommendCardDto;
 					} else if (japanOtherRecommendCardDto.getCardName() != null
@@ -327,8 +294,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 						if ((recommendCardDto.getGetBenefit().size() + recommendCardDto.getOtherBenefit().size()) == (
 							japanOtherRecommendCardDto.getGetBenefit().size()
 								+ japanOtherRecommendCardDto.getOtherBenefit().size())
-							&& recommendCardDto.getDiscountPrice().get("total")
-							< japanOtherRecommendCardDto.getDiscountPrice().get("total")) {
+							&& recommendCardDto.getDiscountPrice().get("total").compareTo(japanOtherRecommendCardDto.getDiscountPrice().get("total")) < 0) {
 							japanOtherRecommendCardDto = recommendCardDto;
 						} else {
 							japanOtherRecommendCardDto = recommendCardDto;
@@ -340,11 +306,11 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			if (surveyDto.getCountry().equals("China") && card.getBrand().equals("unionpay")) {
 				if (chinaPriceRecommendCardDto.getCardName() == null) {
 					chinaPriceRecommendCardDto = recommendCardDto;
-				} else if (chinaPriceRecommendCardDto.getCardName() != null && recommendCardDto.getDiscountPrice().get("total") < chinaPriceRecommendCardDto.getDiscountPrice().get("total")) {
+				} else if (chinaPriceRecommendCardDto.getCardName() != null && recommendCardDto.getDiscountPrice().get("total").compareTo(chinaPriceRecommendCardDto.getDiscountPrice().get("total")) < 0) {
 					chinaPriceRecommendCardDto = recommendCardDto;
 				}
 
-				if (card.getAnnualFee() <= surveyDto.getAnnualFee()) {
+				if (card.getAnnualFee().compareTo(surveyDto.getAnnualFee()) <= 0) {
 					if (chinaOtherRecommendCardDto.getCardName() == null) {
 						chinaOtherRecommendCardDto = recommendCardDto;
 					} else if (chinaOtherRecommendCardDto.getCardName() != null
@@ -354,8 +320,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 						if ((recommendCardDto.getGetBenefit().size() + recommendCardDto.getOtherBenefit().size()) == (
 							chinaOtherRecommendCardDto.getGetBenefit().size()
 								+ chinaOtherRecommendCardDto.getOtherBenefit().size())
-							&& recommendCardDto.getDiscountPrice().get("total")
-							< chinaOtherRecommendCardDto.getDiscountPrice().get("total")) {
+							&& recommendCardDto.getDiscountPrice().get("total").compareTo(chinaOtherRecommendCardDto.getDiscountPrice().get("total")) < 0) {
 							chinaOtherRecommendCardDto = recommendCardDto;
 						} else {
 							chinaOtherRecommendCardDto = recommendCardDto;

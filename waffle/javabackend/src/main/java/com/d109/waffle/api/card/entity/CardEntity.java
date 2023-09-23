@@ -1,5 +1,8 @@
 package com.d109.waffle.api.card.entity;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,10 +37,10 @@ public class CardEntity {
 	private Boolean credit;
 
 	@Column(name="usage_fee")
-	private Double usageFee;
+	private BigDecimal usageFee;
 
 	@Column(name="annual_fee")
-	private Integer annualFee;
+	private BigInteger annualFee;
 
 	private String link;
 }
