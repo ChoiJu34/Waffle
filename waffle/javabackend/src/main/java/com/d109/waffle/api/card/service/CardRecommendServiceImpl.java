@@ -46,19 +46,19 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 		List<CardEntity> cardList;
 
 		// 조건에 맞는 card List에 넣기
-		if (credit == 1) {
+		if (credit == 1) { // 신용카드
 			if (company.isEmpty()) {
 				cardList = cardRecommendRepository.findByCreditTrue();
 			} else {
 				cardList = cardRecommendRepository.findByCreditTrueAndCompanyIsIn(company);
 			}
-		} else if (credit == 2) {
+		} else if (credit == 2) { // 체크카드
 			if (company.isEmpty()) {
 				cardList = cardRecommendRepository.findByCreditFalse();
 			} else {
         		cardList = cardRecommendRepository.findByCreditFalseAndCompanyIsIn(company);
 			}
-		} else {
+		} else { // 전체
 			if (company.isEmpty()) {
 				cardList = cardRecommendRepository.findAll();
 			} else {
@@ -179,8 +179,8 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 								price = benefit.getPrice();
 								content += " " + benefit.getPrice() + "원";
 							} else { // 금액이 %로 까질 때
-								BigDecimal dutyFree = new BigDecimal(surveyDto.getUse().toString());
-								BigDecimal totalPrice = dutyFree.multiply(benefit.getPercent());
+								BigDecimal useFree = new BigDecimal(surveyDto.getUse().toString());
+								BigDecimal totalPrice = useFree.multiply(benefit.getPercent());
 								price = totalPrice.toBigInteger();
 								content += " " + benefit.getPercent().multiply(new BigDecimal("100")) + "%";
 							}
@@ -205,7 +205,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 							price = price.min(benefit.getMax());
 						}
 
-						if (surveyDto.getDutyFree().subtract(price).compareTo(BigInteger.ZERO) < 0) { // 결과 금액이 0보다 작을 때
+						if (surveyDto.getUse().subtract(price).compareTo(BigInteger.ZERO) < 0) { // 결과 금액이 0보다 작을 때
 							BigInteger priceDifference = surveyDto.getUse().subtract(price); // getDutyFree() - price 계산
 							BigInteger absPriceDifference = priceDifference.abs(); // 절댓값 계산
 							price = price.subtract(absPriceDifference);
