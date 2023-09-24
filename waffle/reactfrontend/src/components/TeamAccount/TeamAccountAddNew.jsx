@@ -6,6 +6,16 @@ import { faArrowLeft, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons
 import axios from 'axios'
 import 'animate.css'
 import SignupCompleteWaffle from '../../assets/SignupCompleteWaffle.png'
+import dgbLogo from '../../assets/dgblogo.png'
+import ibkLogo from '../../assets/ibklogo.png'
+import kakaoBankLogo from '../../assets/kakaobanklogo.png'
+import kbLogo from '../../assets/kblogo.png'
+import nonghyupLogo from '../../assets/nonghyuplogo.png'
+import postLogo from '../../assets/postlogo.png'
+import shinhanLogo from '../../assets/shinhanlogo.png'
+import tossBankLogo from '../../assets/tossbanklogo.png'
+import wooriLogo from '../../assets/woorilogo.png'
+
 
 const Signup = () => {
 
@@ -16,8 +26,7 @@ const openModal = () => {
   setIsModalOpen(true);
 };
 
-const closeModal = (e) => {
-  e.preventDefault()
+const closeModal = () => {
   setIsModalOpen(false);
 };
 
@@ -38,6 +47,19 @@ const closeModal = (e) => {
   useEffect = (() => {
     onChangeBirthdate()
   }, [formData.birthday])
+
+  useEffect = (() => {
+    handleBankSelect()
+    handleTelBlur()
+  }, [formData.tel])
+
+  useEffect = (() => {
+    if (formData.tel !== "") {
+      setIsTelComplete(true);
+    } else {
+      setIsTelComplete(false);
+    }
+  }, [formData.tel]);
 
   // 뒤로가기
   const navigate = useNavigate();
@@ -88,6 +110,14 @@ const closeModal = (e) => {
       setIsPasswordComplete(true);
     }
   };
+
+  const onChangePassword = useCallback((passwordValue) => {
+    const passwordRegex = /^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/;
+    const passwordCurrent = passwordValue
+
+    const [year, month, day] = passwordCurrent.split("-").map((str) => parseInt(str, 10))
+  
+    }, [formData.password]);
 
   const showPasswordPlaceholder = isPasswordFocused && !inputPasswordRef.current?.value
 
@@ -193,7 +223,6 @@ const closeModal = (e) => {
   };
 
   const handleTelBlur = useCallback(() => {
-
     const telValue = formData.tel
     setIsTelFocused(false);
     if (telValue === "") {
@@ -201,7 +230,7 @@ const closeModal = (e) => {
     } else {
       setIsTelComplete(true);
     }
-  }, [formData.tel]);
+  }, [formData]);
 
   const showTelPlaceholder = isTelFocused && !inputTelRef.current?.value
 
@@ -240,7 +269,7 @@ const closeModal = (e) => {
     } else {
       setIsBirthdate(false);
     }
-}, [formData.birthday]);
+    }, [formData.birthday]);
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -316,6 +345,60 @@ const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [name]: value }));
 };
 
+// 선택한 은행 반영
+
+const [chosenBank, setChosenBank] = useState("");
+
+// value값은 api 반환값에 따라 변경 필요
+const BANK_INFO = {
+  "KB국민": { display: "KB국민", value: "KB" },
+  "NH은행": { display: "NH은행", value: "NH" },
+  "카카오뱅크": { display: "카카오뱅크", value: "Kakao" },
+  "신한은행": { display: "신한은행", value: "Shinhan" },
+  "기업은행": { display: "기업은행", value: "IBK" },
+  "토스뱅크": { display: "토스뱅크", value: "Toss" },
+  "대구은행": { display: "대구은행", value: "Daegu" },
+  "우체국": { display: "우체국", value: "Post" },
+  "우리은행": { display: "우리은행", value: "Woori" },
+};
+
+const handleBankSelect = (bankInfo) => () => { 
+  setChosenBank(bankInfo.display);
+  
+  setFormData(prevData => ({ ...prevData, tel: bankInfo.value }));
+
+  if (bankInfo.value !== "") {
+    setIsTelComplete(true);
+  } else {
+    setIsTelComplete(false);
+  }
+  closeModal();
+};
+
+const [displayValue, setDisplayValue] = useState('');
+
+const handleTargetValue = (e) => {
+
+  const value = e.target.value.replace(/\D+/g, "");
+  
+  let formattedValue = "";  
+
+
+  for (let i = 0; i < value.length; i++) {
+      if (i > 0 && i % 3 === 0) {
+          formattedValue += ",";
+      }
+      formattedValue += value[i];
+  }
+
+  setDisplayValue(formattedValue);
+
+  setFormData(prevData => ({
+    ...prevData,
+    password: value
+  }));
+}
+console.log(formData.password)
   return (
     <SignupWrapper>
       <div className="signup-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
@@ -325,34 +408,80 @@ const handleChange = (e) => {
       <form>
         <div className={`signup-email ${isEmailFocused ? 'focus' : ''} ${isEmailComplete ? 'complete' : ''}`}>
           <label id="signup-label">통장 이름</label>
-          <input type="text" id="signup-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} onChange={(e) => {functionSetEmail(e); handleInputChange(e)}} placeholder={showEmailPlaceholder ? "ex) nutella@waffle.com" : ""} inputmode="email" value={formData.email} name="email"/>
+          <input type="text" id="signup-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} onChange={(e) => {functionSetEmail(e); handleInputChange(e)}} inputmode="email" value={formData.email} name="email"/>
         </div>
 
         <div className={`signup-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
-          <label id="signup-label">목표액 설정</label>
-          <input type="text" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} placeholder={showPasswordPlaceholder ? "영문, 숫자, 특수문자를 포함한 8자리 이상" : ""} value={formData.password} name="password"/>
+          <label id="signup-label">목표액</label>
+          <input type="text" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {handleTargetValue(e)}} value={displayValue} name="password"/>
         </div>
 
         <div className={`signup-birthdate ${isBirthdateFocused ? 'focus' : ''} ${isBirthdateComplete ? 'complete' : ''}`}>
-          <label id="signup-label">종료일 설정</label>
+          <label id="signup-label">종료일</label>
           <input type="text" id="signup-input" ref={inputBirthdateRef} onFocus={handleBirthdateFocus} onBlur={handleBirthdateBlur} onChange={(e) => {functionSetBirthdate(e) ; handleInputChange(e)}} value={formData.birthday} name="birthday"/>
         </div>
 
         <div className={`signup-name ${isNameFocused ? 'focus' : ''} ${isNameComplete ? 'complete' : ''}`}>
-          <label id="signup-label">계좌번호 입력</label>
-          <input type="text" id="signup-input" ref={inputNameRef} onFocus={handleNameFocus} onBlur={handleNameBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} placeholder={showNamePlaceholder ? "ex) 이재용" : ""} value={formData.name} name="name"/>
+          <label id="signup-label">계좌번호</label>
+          <input type="text" id="signup-input" ref={inputNameRef} onFocus={handleNameFocus} onBlur={handleNameBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} value={formData.name} name="name"/>
         </div>
         
-        <div className={`signup-password-verify ${isPasswordVerifyFocused ? 'focus' : ''} ${isPasswordVerifyComplete ? 'complete' : ''}`}>
+        <div className={`signup-password-verify ${isTelFocused ? 'focus' : ''} ${isTelComplete ? 'complete' : ''}`}>
           <label id="signup-label">은행</label>
-          <input type="text" id="signup-input" ref={inputPasswordVerifyRef} onFocus={handlePasswordVerifyFocus} onBlur={handlePasswordVerifyBlur} placeholder={showPasswordVerifyPlaceholder ? "" : ""} onChange={(e) => {handleChange(e); handleInputChange(e)}} name="tel" onClick={openModal}/>
+          <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} name="tel" onClick={openModal} autoComplete='off' value={chosenBank}/>
         </div>
 
-        <ModalOverlay isOpen={isModalOpen} onClick={closeModal}/>
+        <ModalOverlay isOpen={isModalOpen} onClick={closeModal} />
         <ModalWrapper isOpen={isModalOpen}>
           <ModalContent>
-            모달
-            <button onClick={closeModal}>닫기</button>
+            <div className="modal-title">은행 선택</div>
+            <BankLogos>
+              <BankItem onClick={handleBankSelect(BANK_INFO["KB국민"])}>
+                <Image src={kbLogo} alt="kbLogo" />
+                <BankLabel>KB국민</BankLabel>
+              </BankItem>
+
+              <BankItem onClick={handleBankSelect(BANK_INFO["NH은행"])}>
+                <Image src={nonghyupLogo} alt="nonghyupLogo" />
+                <BankLabel>NH은행</BankLabel>
+              </BankItem>
+
+              <BankItem onClick={handleBankSelect(BANK_INFO["카카오뱅크"])}>
+                <Image src={kakaoBankLogo} alt="kakaoBankLogo" />
+                <BankLabel>카카오뱅크</BankLabel>
+              </BankItem>
+
+              <BankItem onClick={handleBankSelect(BANK_INFO["신한은행"])}>
+                <Image src={shinhanLogo} alt="shinhanLogo" />
+                <BankLabel>신한은행</BankLabel>
+              </BankItem>
+
+              <BankItem onClick={handleBankSelect(BANK_INFO["기업은행"])}>
+                <Image src={ibkLogo} alt="ibkLogo" />
+                <BankLabel>기업은행</BankLabel>
+              </BankItem>
+
+              <BankItem onClick={handleBankSelect(BANK_INFO["토스뱅크"])}>
+                <Image src={tossBankLogo} alt="tossBankLogo" />
+                <BankLabel>토스뱅크</BankLabel>
+              </BankItem>
+
+              <BankItem onClick={handleBankSelect(BANK_INFO["대구은행"])}>
+                <Image src={dgbLogo} alt="dgbLogo" />
+                <BankLabel>대구은행</BankLabel>
+              </BankItem>
+
+              <BankItem onClick={handleBankSelect(BANK_INFO["우체국"])}>
+                <Image src={postLogo} alt="postLogo" />
+                <BankLabel>우체국</BankLabel>
+              </BankItem>
+
+              <BankItem onClick={handleBankSelect(BANK_INFO["우리은행"])}>
+                <Image src={wooriLogo} alt="wooriLogo" />
+                <BankLabel>우리은행</BankLabel>
+              </BankItem>
+
+            </BankLogos>
           </ModalContent>
         </ModalWrapper>
 
@@ -405,6 +534,7 @@ const SignupWrapper = styled.div`
 	  height: 36px;
 	  line-height: 1.33;
 	  font-size: 2vh;
+    font-weight: 800;
   }
 
   .signup-email > input:focus{
@@ -488,6 +618,7 @@ const SignupWrapper = styled.div`
 	  height: 36px;
 	  line-height: 1.33;
     font-size: 2vh;
+    font-weight:620;
   }
 
   .signup-password > input:focus{
@@ -550,6 +681,7 @@ const SignupWrapper = styled.div`
 	  height: 36px;
 	  line-height: 1.33;
 	  font-size: 2vh;
+    font-weight: 800;
   }
 
   .signup-password-verify > input:focus{
@@ -847,7 +979,7 @@ const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7); 
-  z-index: 10;  
+  z-index: 1000;  
   display: ${props => props.isOpen ? 'block' : 'none'}; 
 `;
 
@@ -860,13 +992,67 @@ const ModalWrapper = styled.div`
   background-color: white;
   overflow: hidden;
   transition: height 0.2s ease-in-out;
-  z-index: 20;
+  z-index: 2000;
+  border-radius: 20px;
 `;
 
 const ModalContent = styled.div`
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;   // 세로 방향으로 내용 배치
+  justify-content: center;  // 세로 방향으로 내용 중앙 정렬
+  align-items: center;      // 가로 방향으로 내용 중앙 정렬
+  overflow-y: auto;
+
+  .modal-title {
+    margin-top: 3vh;
+    margin-bottom: 5vh;
+    align-self: flex-start;  // 제목만 왼쪽 정렬
+    width: 100%;             // 전체 너비 차지
+    text-align: center;      // 텍스트 중앙 정렬
+    font-size: 2.3vh;
+  }
+`;
+
+const BankLogos = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4vh;
+  grid-row-gap: 5vh;
+  width: 90%;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding-bottom: 2vh;
+`;
+
+const BankItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  position: relative;
+`
+
+const Image = styled.img`
+  max-width: 100%;    // 최대 너비를 그리드 크기로 제한
+  max-height: 80%;    // 최대 높이를 그리드 높이의 80%로 제한 (라벨을 고려하여)
+  object-fit: cover;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+`;
+
+const BankLabel = styled.p`
+  font-size: 1.5vh;
+  position: absolute; // 절대 위치 지정
+  bottom: -3vh;          // 하단에 고정
+  left: 50%;          // 왼쪽에서 50% 위치
+  transform: translateX(-50%); // X축으로 -50% 이동하여 중앙 정렬
+  width: 100%;
 `;
 
 export default Signup
