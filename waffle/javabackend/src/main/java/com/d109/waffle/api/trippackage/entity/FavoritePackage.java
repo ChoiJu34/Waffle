@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "favorit_package")
+@Entity(name = "favorite_package")
 @Getter
 @Setter
 @ToString

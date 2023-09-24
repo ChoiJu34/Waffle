@@ -49,7 +49,7 @@ public class TripPackageController {
 	}
 
 	@PostMapping("/add-favorite")
-	public ResponseEntity<?> addFavorite(RecommendDto recommendDto, @RequestHeader("Authorization") String authorization){
+	public ResponseEntity<?> addFavorite(@RequestBody RecommendDto recommendDto, @RequestHeader("Authorization") String authorization){
 		Map<String, String> result = new HashMap<>();
 		if(tripPackageService.addFavorite(recommendDto, authorization)) {
 			result.put("message", success);

@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.d109.waffle.api.trippackage.entity.FavoritePackage;
+import com.d109.waffle.api.user.entity.UserEntity;
 
 public interface FavoritePackageRepository extends JpaRepository<FavoritePackage, Integer> {
-	List<FavoritePackage> findByUserId(int userId);
+	List<FavoritePackage> findAllByUserEntity_Id(int id);
 }

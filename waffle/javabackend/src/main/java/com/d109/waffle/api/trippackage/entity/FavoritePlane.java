@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "favorite_hotel")
+@Entity(name = "favorite_plane")
 @Getter
 @Setter
 @ToString

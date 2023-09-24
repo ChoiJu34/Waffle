@@ -25,10 +25,10 @@ import com.d109.waffle.api.user.repository.UserRepository;
 import com.d109.waffle.common.auth.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class TripPackageService {
 	private final AirplaneRepository airplaneRepository;
 	private final FavoritePackageRepository favoritePackageRepository;
@@ -114,11 +114,11 @@ public class TripPackageService {
 			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
 		}
 		UserEntity user = userEntity.get();
-		List<FavoritePackage> list = favoritePackageRepository.findByUserId(user.getId());
+		List<FavoritePackage> list = favoritePackageRepository.findAllByUserEntity_Id(user.getId());
 		List<RecommendDto> result = new ArrayList<>();
 		for(FavoritePackage favoritePackage : list){
-			List<FavoritePlane> planeList = favoritePlaneRepository.findByPackageId(favoritePackage.getId());
-			List<FavoriteHotel> hotelList = favoriteHotelRepository.findByPackageId(favoritePackage.getId());
+			List<FavoritePlane> planeList = favoritePlaneRepository.findAllByFavoritePackage_Id(favoritePackage.getId());
+			List<FavoriteHotel> hotelList = favoriteHotelRepository.findAllByFavoritePackage_Id(favoritePackage.getId());
 			List<PackagePlaneDto> packagePlaneDtos = new ArrayList<>();
 			List<PackageHotelDto> packageHotelDtos = new ArrayList<>();
 			for(FavoritePlane favoritePlane : planeList){
@@ -134,6 +134,7 @@ public class TripPackageService {
 				packagePlaneDto.setDuring(favoritePlane.getDuring());
 				packagePlaneDto.setSite(favoritePlane.getSite());
 				packagePlaneDto.setCard(favoritePlane.getCard());
+				packagePlaneDtos.add(packagePlaneDto);
 			}
 			for(FavoriteHotel favoriteHotel : hotelList){
 				PackageHotelDto packageHotelDto = new PackageHotelDto();
@@ -146,6 +147,7 @@ public class TripPackageService {
 				packageHotelDto.setUrl(favoriteHotel.getUrl());
 				packageHotelDto.setImg(favoriteHotel.getImg());
 				packageHotelDto.setSite(favoriteHotel.getSite());
+				packageHotelDtos.add(packageHotelDto);
 			}
 			RecommendDto recommendDto = RecommendDto.builder()
 				.memberCnt(favoritePackage.getMemberCnt())
