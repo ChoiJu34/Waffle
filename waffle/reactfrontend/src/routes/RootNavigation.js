@@ -17,6 +17,7 @@ import SignupComplete from '../components/Signup/SignupComplete'
 import RecoCardList from '../components/RecommendCard/RecoCardList';
 import TeamAccount from '../components/TeamAccount/TeamAccount'
 import TeamAccountDetail from '../components/TeamAccount/TeamAccountDetail'
+import PackageMain from '../components/RecommendPackage/PackageMain';
 
 const RootNavigation = () => {
   return (
@@ -37,6 +38,7 @@ const RootNavigation = () => {
           <Route path="/user/password-token" element={<PasswordToken/>} />
           <Route path="/recocard/main" element={<ProtectedRoute><RecoCardMain /></ProtectedRoute>} />
           <Route path="/teamaccount/main" element={<ProtectedRoute><TeamAccount /></ProtectedRoute>} />
+          <Route path="/package/main" element={<ProtectedRoute><PackageMain /></ProtectedRoute>} />
           {/* "detail"은 나중에 각 모임통장의 id로 바꿀 예정 */}
           <Route path="/teamaccount/detail" element={<TeamAccountDetail />} />
         </Route>

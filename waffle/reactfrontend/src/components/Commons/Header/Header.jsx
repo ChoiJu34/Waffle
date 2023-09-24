@@ -32,11 +32,11 @@ const goToMain = () => {
   setUserToggled(false)
 }
 
-// const goToPackage = () => {
-//   navigate('')
-//   setIsToggled(false)
-//   setUserToggled(false)
-// }
+const goToPackage = () => {
+  navigate('/package/main')
+  setIsToggled(false)
+  setUserToggled(false)
+}
 
 const goToCard = () => {
   navigate('/recocard/main')
@@ -152,7 +152,7 @@ useEffect(() => {
         {nowPage !== 'main' && (
           <li onClick={goToMain}>홈</li>
         )}
-        <li className="sebu-package">패키지 추천</li>
+        <li className="sebu-package" onClick={goToPackage}>패키지 추천</li>
         <li className="sebu-recocard" onClick={goToCard}>카드 추천</li>
         <li className="sebu-exchange">환율</li>
         <li className="sebu-teamaccount" onClick={goToTeamAccount}>모임통장</li>
