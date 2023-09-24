@@ -1,7 +1,5 @@
 package com.d109.waffle.api.trippackage.dto;
 
-import java.util.List;
-
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -20,9 +18,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class RecommendDto {
-	int memberCnt;
+public class PackagePlaneDto {
+	String planeDate;
+	String company;
+	String startPlace;
+	String startTime;
+	String endPlace;
+	String endTime;
+	String originPrice;
+	String discountPirce;
+	String layover;
+	String during;
+	String site;
 	String card;
-	List<PackagePlaneDto> plane;
-	List<PackageHotelDto> hotel;
 }

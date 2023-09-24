@@ -1,13 +1,12 @@
-package com.d109.waffle.api.card.entity;
+package com.d109.waffle.api.trippackage.entity;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,31 +15,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Entity(name = "airplane")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@Entity(name = "card")
-public class CardEntity {
+@DynamicInsert
+@DynamicUpdate
+public class Airplane {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-
-	private String company;
-
-	private String brand;
-
-	private String name;
-
-	private Boolean credit;
-
-	@Column(name="usage_fee")
-	private BigDecimal usageFee;
-
-	@Column(name="annual_fee")
-	private BigInteger annualFee;
-
-	private String link;
+	int id;
+	String name;
+	String code;
+	String city;
 }
