@@ -335,7 +335,7 @@ const handleChange = (e) => {
 
         <div className={`signup-birthdate ${isBirthdateFocused ? 'focus' : ''} ${isBirthdateComplete ? 'complete' : ''}`}>
           <label id="signup-label">종료일 설정</label>
-          <input type="text" id="signup-input" ref={inputBirthdateRef} onFocus={handleBirthdateFocus} onBlur={handleBirthdateBlur} onChange={(e) => {functionSetBirthdate(e) ; handleInputChange(e)}} value={formData.birthday} name="birthday" onClick={openModal}/>
+          <input type="text" id="signup-input" ref={inputBirthdateRef} onFocus={handleBirthdateFocus} onBlur={handleBirthdateBlur} onChange={(e) => {functionSetBirthdate(e) ; handleInputChange(e)}} value={formData.birthday} name="birthday"/>
         </div>
 
         <div className={`signup-name ${isNameFocused ? 'focus' : ''} ${isNameComplete ? 'complete' : ''}`}>
