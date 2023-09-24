@@ -73,7 +73,6 @@ def find_lowest_package(data):
 
     for pp in range(planePlane_cnt):
         info = plane_infos[pp].get()
-        logger.info(f'-----------{info.card}, {info.discountPrice}')
         plane_infos_save[pp].put(info)
         while info.card != '' and plane_infos[pp]:
             if '하나' in info.card and not card_company[0][1]:
@@ -109,7 +108,6 @@ def find_lowest_package(data):
 
     for ph in range(planeHotel_cnt):
         info = hotel_infos[ph].get()
-        logger.info(f'-----------{info.card}, {info.discountPrice}')
         hotel_infos_save[ph].put(info)
         while info.card != '' and plane_infos[pp]:
             if '하나' in info.card and not card_company[0][1]:
@@ -150,7 +148,7 @@ def find_lowest_package(data):
     for pp in range(planePlane_cnt):
         info = plane_infos_save[pp].get()
         while True:
-            if info.card=='':
+            if info.card=='' or set_card[2] in info.card:
                 plane_info.append({
                     "planeDate": info.date,
                     "company": info.name,
@@ -168,45 +166,12 @@ def find_lowest_package(data):
                 if len(card_name)<len(info.card):
                     card_name = info.card
                 break
-            elif set_card[2] in info.card:
-                plane_info.append({
-                    "planeDate" : info.date,
-                    "company" : info.name,
-                    "startPlace" : info.startPlace,
-                    "startTime" : info.startTime,
-                    "endPlace" : info.endPlace,
-                    "endTime" : info.endTime,
-                    "originPrice" : info.originPrice,
-                    "discountPrice" : info.discountPrice,
-                    "layover" : info.layover,
-                    "during" : info.long,
-                    "site" : info.site,
-                    "card": info.card
-                })
-                if len(card_name)<len(info.card):
-                    card_name = info.card
-                break
             info = plane_infos_save[pp].get()
 
     for ph in range(planeHotel_cnt):
         info = hotel_infos_save[ph].get()
         while True:
-            if info.card=='':
-                hotel_info.append({
-                    "hotelName" : info.name,
-                    "start" : info.start,
-                    "end" : info.end,
-                    "card" : info.card,
-                    "originPrice" : info.originPrice,
-                    "discountPrice" : info.discountPrice,
-                    "url" : info.url,
-                    "img" : info.img,
-                    "site" : info.site,
-                })
-                if len(card_name)<len(info.card):
-                    card_name = info.card
-                break
-            if set_card[2] in info.card:
+            if info.card=='' or set_card[2] in info.card:
                 hotel_info.append({
                     "hotelName" : info.name,
                     "start" : info.start,
@@ -227,5 +192,3 @@ def find_lowest_package(data):
     result["hotel"] = hotel_info
     result["card"] = card_name
     result["memberCnt"] = data["memberCnt"]
-
-
