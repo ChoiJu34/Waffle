@@ -11,4 +11,29 @@
     이번주에 jira에 진행할 공통업무와 개인 업무를 작성 및 등록하였음
 
 
+## 2023/09/05
 
+1. ERD
+    ERD 전체 확인 및 환율 TABLE작성
+
+2. 설문조사
+    설문조사 내용 선정 회의
+
+3. 모임통장
+    모임통장 api 조사
+
+
+## 2023/09/06
+
+1. GIT
+    git branch 나눔과 권한 정리
+    git switch, checkout, rebase, reset 공부
+
+2. INFRA
+    jenkins pipeline 조사
+
+
+## 2023/09/07
+
+1. 모임통장
+    add-list 기능 구현

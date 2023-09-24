@@ -1,12 +1,12 @@
 package com.d109.waffle.api.user.service;
 
 import java.security.InvalidKeyException;
+import java.util.EmptyStackException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.apache.catalina.User;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,9 +73,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void findPassword(String email) throws Exception {
+	public void findPassword(String email, String name, String tel) throws Exception {
 		Optional<UserEntity> userEntity = userRepository.findByEmail(email);
 		if(userEntity.isPresent()) {
+			UserEntity user = userEntity.get();
+			if(!user.getName().equals(name) || !user.getTel().equals(tel)) {
+				throw new NoSuchElementException("사용자 정보가 잘못되었습니다.");
+			}
 			emailService.createEmailToken(email, userEntity.get().getId());
 		} else {
 			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
@@ -84,9 +88,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updatePassword(String token, String newPassword) throws Exception {
-		if(emailService.verifyToken(token)){
-			Optional<EmailTokenEntity> emailToken = emailService.findValidToken(token);
-			UserEntity user = userRepository.findById(emailToken.get().getUserId()).orElseThrow();
+		if(emailService.verifyPasswordToken(token, true)){
+			EmailTokenEntity emailToken = emailService.findValidToken(token).orElseThrow(()-> new Exception("토큰이 유효하지 않습니다."));
+			emailToken.setTokenToUsed();
+			UserEntity user = userRepository.findById(emailToken.getUserId()).orElseThrow();
 			user.setPassword(newPassword);
 			user.encodePassword(passwordEncoder);
 			userRepository.save(user);

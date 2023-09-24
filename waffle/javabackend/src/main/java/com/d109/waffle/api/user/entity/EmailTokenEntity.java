@@ -46,6 +46,9 @@ public class EmailTokenEntity {
 	@Column(name = "user_id")
 	private Integer userId;
 
+	@Column(name = "hold_expired")
+	private Boolean holdExpired;
+
 	public static EmailTokenEntity createEmailToken() {
 		EmailTokenEntity emailToken = new EmailTokenEntity();
 		emailToken.expirationDate = LocalDateTime
@@ -69,6 +72,10 @@ public class EmailTokenEntity {
 
 	public void setTokenToUsed() {
 		this.expired = true;
+	}
+
+	public void setTokenToHold() {
+		this.holdExpired = true;
 	}
 
 }
