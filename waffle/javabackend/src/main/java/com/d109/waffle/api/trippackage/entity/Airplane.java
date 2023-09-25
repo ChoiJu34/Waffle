@@ -1,6 +1,9 @@
-package com.d109.waffle.api.trippackage.dto;
+package com.d109.waffle.api.trippackage.entity;
 
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -12,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Entity(name = "airplane")
 @Getter
 @Setter
 @ToString
@@ -20,9 +24,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class RecommendDto {
-	int memberCnt;
-	String card;
-	List<PackagePlaneDto> plane;
-	List<PackageHotelDto> hotel;
+public class Airplane {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	int id;
+	String name;
+	String code;
+	String city;
 }

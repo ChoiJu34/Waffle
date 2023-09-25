@@ -33,6 +33,10 @@ spring :
           starttls:
             enable: true
           auth: true
+#     swagger
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 # hibernate logging
 logging:

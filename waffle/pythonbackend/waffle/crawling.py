@@ -22,6 +22,7 @@ result={
     "plane" : "",
     "hotel" : "",
     "card" : "",
+    "memberCnt" : ""
 }
 
 @api_view(['POST'])
@@ -160,7 +161,7 @@ def find_lowest_package(data):
                     "originPrice": info.originPrice,
                     "discountPrice": info.discountPrice,
                     "layover": info.layover,
-                    "long": info.long,
+                    "during": info.long,
                     "site": info.site,
                     "card": info.card
                 })
@@ -178,7 +179,7 @@ def find_lowest_package(data):
                     "originPrice" : info.originPrice,
                     "discountPrice" : info.discountPrice,
                     "layover" : info.layover,
-                    "long" : info.long,
+                    "during" : info.long,
                     "site" : info.site,
                     "card": info.card
                 })
@@ -201,7 +202,6 @@ def find_lowest_package(data):
                     "url" : info.url,
                     "img" : info.img,
                     "site" : info.site,
-                    "card": info.card
                 })
                 if len(card_name)<len(info.card):
                     card_name = info.card
@@ -217,7 +217,6 @@ def find_lowest_package(data):
                     "url" : info.url,
                     "img" : info.img,
                     "site" : info.site,
-                    "card": info.card
                 })
                 if len(card_name)<len(info.card):
                     card_name = info.card
@@ -227,5 +226,6 @@ def find_lowest_package(data):
     result["plane"] = plane_info
     result["hotel"] = hotel_info
     result["card"] = card_name
+    result["memberCnt"] = data["memberCnt"]
 
 
