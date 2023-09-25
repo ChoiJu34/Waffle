@@ -15,4 +15,8 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
 	List<AccountDto> findByUserEntity_Uuid(String userEntity_uuid);
 
 	Optional<AccountEntity> findByAccountNumber(String accountNumber);
+
+	// Optional<AccountDto> findByAccountNumber(String accountNumber);
+
+
 }

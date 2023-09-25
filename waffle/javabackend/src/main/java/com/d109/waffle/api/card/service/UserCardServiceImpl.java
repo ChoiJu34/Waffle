@@ -58,7 +58,7 @@ public class UserCardServiceImpl implements UserCardService {
         body.put("cardNumber", cardNumber);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
-        headers.add("Authorization-uuid", user.getUuid());
+        // headers.add("Authorization-uuid", user.getUuid());
         HttpEntity<HashMap<String, String>> entity = new HttpEntity<>(body, headers);
 
         RestTemplate restTemplate = new RestTemplate();
