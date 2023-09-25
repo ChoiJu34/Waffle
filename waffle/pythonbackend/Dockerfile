@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy the requirements.txt file to the container
 COPY requirements.txt ./
 
+RUN apk add gcc musl-dev
+
 # Install the application dependencies
 RUN sudo apt-get install pip
 RUN pip install --upgrade pip
