@@ -19,6 +19,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.d109.chocobank.common.auth.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -51,6 +52,7 @@ public class UserEntity {
 
 	private String tel;
 
+	@JsonIgnore
 	@Column(name = "refresh_token")
 	private String refreshToken;
 
@@ -65,6 +67,7 @@ public class UserEntity {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	@JsonIgnore
 	private String uuid;
 
 	// user role setting

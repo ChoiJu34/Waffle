@@ -117,11 +117,14 @@ public class UserController {
 		}
 	}
 
+	// 비밀번호 찾기 시도
+	// 이메일, 이름, 전화번호 모두 일치하는 사용자가 존재할 경우
+	// 이메일로 토큰 전송
 	@PostMapping("/find-password")
 	public ResponseEntity<?> findPassword(@RequestBody Map<String, String> map) {
 		Map<String, String> result = new HashMap<>();
 		try {
-			userService.findPassword(map.get("email"));
+			userService.findPassword(map.get("email"), map.get("name"), map.get("tel"));
 			result.put("message", "SUCCESS");
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (NoSuchElementException nse) {
@@ -136,6 +139,22 @@ public class UserController {
 		}
 	}
 
+	// 이메일로 전송한 토큰의 유효성을 검증한다.
+	@PutMapping("/verify-password-token")
+	public ResponseEntity<?> verifyPasswordToken(@RequestBody Map<String, String> map) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			result.put("validation", emailService.verifyPasswordToken(map.get("token"), false).toString());
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+
+	// 앞서 verify-password-token 을 통해 인증한 토큰, 변경할 새 비밀번호
 	@PutMapping("/update-password")
 	public ResponseEntity<?> updatePassword(@RequestBody Map<String, String> map) {
 		Map<String, String> result = new HashMap<>();

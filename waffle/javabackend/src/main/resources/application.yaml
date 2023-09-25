@@ -7,9 +7,9 @@ spring :
   datasource:
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      username: root
+      username: chocobar
       password: ssafy
-    url: jdbc:mysql://localhost:3306/mydb?useUniCode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://j9d109.p.ssafy.io/mydb?useUniCode=yes&characterEncoding=UTF-8
 
   # JPA setting
   jpa:
@@ -33,6 +33,10 @@ spring :
           starttls:
             enable: true
           auth: true
+#     swagger
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 # hibernate logging
 logging:
