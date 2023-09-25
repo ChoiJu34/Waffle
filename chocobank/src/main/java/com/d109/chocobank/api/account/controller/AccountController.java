@@ -108,13 +108,28 @@ public class AccountController {
 		}
 	}
 
+	// @GetMapping("/service/list")
+	// public ResponseEntity<?> getServiceAccountList(@RequestHeader("Authorization-uuid") String uuid) throws Exception {
+	// 	Map<String, Object> result = new HashMap<>();
+	// 	try {
+	// 		List<AccountDto> accountList = accountService.getServiceAccountList(uuid);
+	// 		result.put("message", "SUCCESS");
+	// 		result.put("result", accountList);
+	// 		return new ResponseEntity<>(result, HttpStatus.OK);
+	// 	} catch (Exception e) {
+	// 		log.error(e.getMessage());
+	// 		result.put("message", "FAIL");
+	// 		return new ResponseEntity<>(result, HttpStatus.OK);
+	// 	}
+	// }
+
 	@GetMapping("/service")
-	public ResponseEntity<?> getServiceAccountList(@RequestHeader("Authorization-uuid") String uuid) throws Exception {
+	public ResponseEntity<?> getServiceAccount(@RequestBody Map<String, String> map) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		try {
-			List<AccountDto> accountList = accountService.getServiceAccountList(uuid);
+			AccountEntity account = accountService.getServiceAccount(map.get("accountNumber"));
 			result.put("message", "SUCCESS");
-			result.put("result", accountList);
+			result.put("result", account);
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -123,11 +138,26 @@ public class AccountController {
 		}
 	}
 
+	// @GetMapping("/service/history")
+	// public ResponseEntity<?> getServiceAccountHistory(@RequestHeader("Authorization-uuid") String uuid, @RequestBody Map<String, String> map) throws Exception {
+	// 	Map<String, Object> result = new HashMap<>();
+	// 	try {
+	// 		List<AccountHistoryEntity> accountList = accountService.getServiceAccountHistory(uuid, map.get("accountNumber"));
+	// 		result.put("message", "SUCCESS");
+	// 		result.put("result", accountList);
+	// 		return new ResponseEntity<>(result, HttpStatus.OK);
+	// 	} catch (Exception e) {
+	// 		log.error(e.getMessage());
+	// 		result.put("message", "FAIL");
+	// 		return new ResponseEntity<>(result, HttpStatus.OK);
+	// 	}
+	// }
+
 	@GetMapping("/service/history")
-	public ResponseEntity<?> getServiceAccountHistory(@RequestHeader("Authorization-uuid") String uuid, @RequestBody Map<String, String> map) throws Exception {
+	public ResponseEntity<?> getServiceAccountHistory(@RequestBody Map<String, String> map) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		try {
-			List<AccountHistoryEntity> accountList = accountService.getServiceAccountHistory(uuid, map.get("accountNumber"));
+			List<AccountHistoryEntity> accountList = accountService.getServiceAccountHistory(map.get("accountNumber"));
 			result.put("message", "SUCCESS");
 			result.put("result", accountList);
 			return new ResponseEntity<>(result, HttpStatus.OK);

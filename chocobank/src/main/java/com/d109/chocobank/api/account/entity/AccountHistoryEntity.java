@@ -42,7 +42,7 @@ public class AccountHistoryEntity {
     private String receiverAccountNumber;
 
     // 이체 금액 + / -
-    private String money;
+    private int money;
 
     // 남은 잔액
     private int balance;
