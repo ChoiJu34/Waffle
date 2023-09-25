@@ -1,8 +1,11 @@
 package com.d109.waffle.api.teamaccount.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="team_account")
@@ -26,10 +29,14 @@ public class TeamAccountEntity {
     @Column(length=45)
     private String account_number;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(length=45)
-    private String end_day;
+    private LocalDateTime end_day;
 
     @Column
     private int goal;
 
+    @Column(name="invite_code")
+    private String inviteCode;
 }

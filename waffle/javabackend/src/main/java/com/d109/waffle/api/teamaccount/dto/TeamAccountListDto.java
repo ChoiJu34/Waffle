@@ -7,17 +7,16 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-
 @ToString
+@Builder
 @Getter
 @Setter
-@Builder
-public class TeamAccountDto {
+
+public class TeamAccountListDto {
     private int id;
     private String name;
-    private String company;
-    private String accountNumber;
+    private int percent;
     private LocalDateTime endDay;
-    private int goal;
-    private String inviteCode;
+    private Byte master;
+
 }
