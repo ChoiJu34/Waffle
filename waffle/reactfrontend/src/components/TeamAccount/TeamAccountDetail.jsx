@@ -120,6 +120,14 @@ const TeamAccountDetail = () => {
   }, [endDate]);
 
   // 개인 목표 수정
+  const temporaryData = [
+      {name: "대장", target: 500},
+      {name: "부부젤라", target: 1500}
+    ]
+
+  const goToUpdateIndividual = () => {
+    navigate('/teamaccount/update/individual', { state: temporaryData })
+  }
 
 
   return (
@@ -131,7 +139,7 @@ const TeamAccountDetail = () => {
         {isMenuOpen && (
           <div className="menu">
            <div className="menu-item" onClick={goToUpdate}>통장 정보 수정</div>
-           <div className="menu-item">개인 목표 수정</div>
+           <div className="menu-item" onClick={goToUpdateIndividual}>개인 목표 수정</div>
            <div className="menu-item-delete">모임 통장 삭제</div>
           </div>
         )}
