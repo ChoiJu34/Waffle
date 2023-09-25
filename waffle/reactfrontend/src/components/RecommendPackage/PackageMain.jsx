@@ -6,6 +6,10 @@ import Select from "react-select";
 import CustomCalendar from './Component/CustomCalendar';
 import moment from "moment";
 import axios from 'axios';
+import Calender from './Component/Calender'
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+
 
 const PackageMain = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,6 +24,8 @@ const PackageMain = () => {
   const [Airid, setAirid] = useState(0)
   const [startDay, setStartDay] = useState("")
   const [endDay, setEndDay] = useState("")
+  const [startTime, setStartTime] = useState("")
+  const [endTime, setEndTime] = useState("")
   const [start, setStart] = useState("")
   const [end, setEnd] = useState("")
   const [hotelId, setHotelId] = useState(0)
@@ -72,6 +78,58 @@ const PackageMain = () => {
     {value: "HKT", label: "푸켓, 태국 HKT" },
     {value: "PQC", label: "푸꾸옥, 베트남 PQC" },
     {value: "MFM", label: "마카오, 마카오 MFM" },
+    {value: "PVG", label: '상해/푸동, 중국 PVG' },
+    {value: "BJS", label: '북경, 중국 PVG' },
+    {value: "DLC", label: '대련, 중국 DLC' },
+    {value: "TAO", label: '청도, 중국 TAO' },
+    {value: "WEH", label: '위해, 중국 WEH' },
+    {value: "YNJ", label: '연길, 중국 YNJ' },
+    {value: "TSN", label: '천진, 중국 TSN' },
+    {value: "XMN", label: '하문, 중국 XMN' },
+    {value: "KMG", label: '곤명, 중국 KMG' },
+    {value: "HGH", label: '항저우, 중국 HGH' },
+    {value: "VTE", label: '비엔티엔, 라오스 VTE' },
+    {value: "JFK", label: '뉴욕, 미국 JFK' },
+    {value: "SAO", label: '싱파울로, 브라질 SAO' },
+    {value: "LAX", label: '로스앤젤레스, 미국 LAX'},
+    {value: "YVR", label: '밴쿠버, 캐나다 YVR' },
+    {value: "SFO", label: '샌프란시스코, 미국 SFO' },
+    {value: "SEA", label: '시애틀, 미국 SEA' },
+    {value: "YTO", label: '토론토, 미국 YTO' },
+    {value: "YTO", label: '토론토, 캐나다 YTO' },
+    {value: "HNL", label: '하와이, 미국 HNL' },
+    {value: "CUN", label: '칸쿤, 멕시코 CUN' },
+    {value: "LIM", label: '리마, 피루 LIM' },
+    {value: "LON", label: '런던, 영국 LON' },
+    {value: "ROM", label: '로마, 이탈리아 ROM' },
+    {value: "PAR", label: '파리, 프랑스 PAR' },
+    {value: "IST", label: '이스탄불, 튀르키예 IST' },
+    {value: "PRG", label: '프라하, 체코 PRG' },
+    {value: "FRA", label: '프랑크푸르트, 독일 FRA' },
+    {value: "MOW", label: '모스크바, 러시아 MOW' },
+    {value: "AMS", label: '암스테르담, 러시아 AMS' },
+    {value: "ZRH", label: '취리히, 스위스 ZRH' },
+    {value: "BCN", label: '바르셀로나, 스페인 BCN' },
+    {value: "GUM", label: '괌, 미국 GUM' },
+    {value: "SYD", label: '시드니, 호주 SYD' },
+    {value: "BNE", label: '브리즈번, 오스트레일리아 BNE' },
+    {value: "MEL", label: '멜버른, 오스트레일리아 MEL' },
+    {value: "AKL", label: '오클랜드, 뉴질랜드 AKL' },
+    {value: "SPN", label: '사이판, 미국 SPN' },
+    {value: "PER", label: '퍼스, 오스트레일리아 PER' },
+    {value: "HC", label: '크라이스트처치, 뉴질랜드 HC' },
+    {value: "ROR", label: '코로르, 팔라우 ROR' },
+    {value: "DXB", label: '두바이, 아랍에미리트 DXB' },
+    {value: "NBO", label: '나이로비, 케냐 NBO' },
+    {value: "JNB", label: '요하네스버그, 남아프리카 공화국 JNB' },
+    {value: "CAI", label: '카이로, 이집트 CAI' },
+    {value: "DOH", label: '도하, 카타르 DOH' },
+    {value: "AUH", label: '아부다비, 아랍에미리트 AUH' },
+    {value: "THR", label: '테헤란, 아랍에미리트 THR' },
+    {value: "THR", label: '테헤란, 이란 THR' },
+    {value: "AMM", label: '암만, 요르단 AMM' },
+    {value: "CPT", label: '케이프타운, 남아프리카 공화국 CPT' },
+
   ]
 
   const handleAirButton = () => {
@@ -180,15 +238,19 @@ const PackageMain = () => {
                 onChange={(e) => setEndAir(e.value)}
               />
               <span>최소 출발시간</span>
-              <CustomCalendar onChange={(selectedDate) => setStartDay(selectedDate)} value={startDay} />
+              <Calender 
+                // onChange={(selectedDate) => setStartDay(selectedDate)} 
+                // value={startDay}
+                 />
               <span>최대 출발시간</span>
-              <CustomCalendar 
-              onChange={(selectedDate) => setEndDay(selectedDate)} 
-              value={endDay} 
-              />
-              <button onClick={handleAirButton}>확인</button>
+                <Calender 
+                  // onChange={(selectedDate) => setEndDay(selectedDate)} 
+                  // value={endDay} 
+                />
+                <button onClick={handleAirButton}>확인</button>
             </AirModal>
         )}
+
         {isModalOpen2 && (
             <AirModal title={hotelModalTitle} closeModal={() => setIsModalOpen2(false)} >
              <span>장소</span>
@@ -201,8 +263,7 @@ const PackageMain = () => {
               <CustomCalendar 
                 onChange={(selectedDate) => setEnd(selectedDate)} 
                 value={end}
-              />
-              
+              />  
               <button onClick={handleHotelButton}>확인</button>
             </AirModal>
             
@@ -266,5 +327,5 @@ const customStyles = {
     ...provided,
     display: "none"
   }),
-  menuPortal: (provided) => ({ ...provided, border: `1px solid red`, zIndex: 9999 }),
+  menuPortal: (provided) => ({ ...provided, border: `1px solid red`, zIndex: 8888 }),
 }
