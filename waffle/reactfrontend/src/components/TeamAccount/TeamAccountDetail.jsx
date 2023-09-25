@@ -125,6 +125,15 @@ const swingAnimation = keyframes`
   }
 `;
 
+const wipeAnimation = keyframes`
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+`;
+
 const TeamAccountDetailWrapper = styled.div`
  .teamaccount-detail-title {
   font-size: 3vh;
@@ -235,6 +244,8 @@ const TeamAccountDetailWrapper = styled.div`
     animation: ${swingAnimation} 2s infinite alternate;
     animation-delay: 2s;
   }
+
+
 `
 
 export default TeamAccountDetail
