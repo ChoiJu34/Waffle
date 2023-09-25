@@ -6,6 +6,10 @@ import Select from "react-select";
 import CustomCalendar from './Component/CustomCalendar';
 import moment from "moment";
 import axios from 'axios';
+import Calender from './Component/Calender'
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+
 
 const PackageMain = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,6 +24,8 @@ const PackageMain = () => {
   const [Airid, setAirid] = useState(0)
   const [startDay, setStartDay] = useState("")
   const [endDay, setEndDay] = useState("")
+  const [startTime, setStartTime] = useState("")
+  const [endTime, setEndTime] = useState("")
   const [start, setStart] = useState("")
   const [end, setEnd] = useState("")
   const [hotelId, setHotelId] = useState(0)
@@ -232,15 +238,19 @@ const PackageMain = () => {
                 onChange={(e) => setEndAir(e.value)}
               />
               <span>최소 출발시간</span>
-              <CustomCalendar onChange={(selectedDate) => setStartDay(selectedDate)} value={startDay} />
+              <Calender 
+                // onChange={(selectedDate) => setStartDay(selectedDate)} 
+                // value={startDay}
+                 />
               <span>최대 출발시간</span>
-              <CustomCalendar 
-              onChange={(selectedDate) => setEndDay(selectedDate)} 
-              value={endDay} 
-              />
-              <button onClick={handleAirButton}>확인</button>
+                <Calender 
+                  // onChange={(selectedDate) => setEndDay(selectedDate)} 
+                  // value={endDay} 
+                />
+                <button onClick={handleAirButton}>확인</button>
             </AirModal>
         )}
+
         {isModalOpen2 && (
             <AirModal title={hotelModalTitle} closeModal={() => setIsModalOpen2(false)} >
              <span>장소</span>
@@ -253,8 +263,7 @@ const PackageMain = () => {
               <CustomCalendar 
                 onChange={(selectedDate) => setEnd(selectedDate)} 
                 value={end}
-              />
-              
+              />  
               <button onClick={handleHotelButton}>확인</button>
             </AirModal>
             
@@ -318,5 +327,5 @@ const customStyles = {
     ...provided,
     display: "none"
   }),
-  menuPortal: (provided) => ({ ...provided, border: `1px solid red`, zIndex: 9999 }),
+  menuPortal: (provided) => ({ ...provided, border: `1px solid red`, zIndex: 8888 }),
 }
