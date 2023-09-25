@@ -8,6 +8,7 @@ WORKDIR /app
 COPY requirements.txt ./
 
 # Install the application dependencies
+RUN sudo apt-get install pip
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
