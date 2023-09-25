@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import InputContainer from './InputContainer';
 import AirModal from './AirModal';
 import Select from "react-select";
-import CustomCalendar from './Component/CustomCalendar';
 import moment from "moment";
 import axios from 'axios';
 import Calender from './Component/Calender'
+import HotelCalender from './Component/HotelCalender'
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
@@ -193,6 +193,16 @@ const PackageMain = () => {
     console.log(saveHotelBoard)
   }
 
+  const handleHotelDateSelection = (startDate, endDate) => {
+    setStartDay(startDate); // 선택된 startDate를 저장
+    setEndDay(endDate); // 선택된 endDate를 저장
+};
+
+  const handleAirDateSelection = (startDate, endDate) => {
+    setStartAir(startDate); // 선택된 startDate를 저장
+    setEndAir(endDate); // 선택된 endDate를 저장
+};
+
   return (
     <Container>
         <Airbox>
@@ -239,14 +249,8 @@ const PackageMain = () => {
               />
               <span>최소 출발시간</span>
               <Calender 
-                // onChange={(selectedDate) => setStartDay(selectedDate)} 
-                // value={startDay}
-                 />
-              <span>최대 출발시간</span>
-                <Calender 
-                  // onChange={(selectedDate) => setEndDay(selectedDate)} 
-                  // value={endDay} 
-                />
+                onChange={(selectedDate) => handleHotelDateSelection(selectedDate, selectedDate)}
+                value={startAir}/>
                 <button onClick={handleAirButton}>확인</button>
             </AirModal>
         )}
@@ -256,14 +260,9 @@ const PackageMain = () => {
              <span>장소</span>
               <input type="text" onChange={(e) => setWhere(e.target.value)}/>
               <span>최소 출발시간</span>
-              <CustomCalendar 
-                onChange={(selectedDate) => setStart(selectedDate)} 
-                value={start} />
-              <span>최대 출발시간</span>
-              <CustomCalendar 
-                onChange={(selectedDate) => setEnd(selectedDate)} 
-                value={end}
-              />  
+              <HotelCalender 
+                onChange={(selectedDate) => handleHotelDateSelection(selectedDate, selectedDate)}
+                value={startAir}/>
               <button onClick={handleHotelButton}>확인</button>
             </AirModal>
             
