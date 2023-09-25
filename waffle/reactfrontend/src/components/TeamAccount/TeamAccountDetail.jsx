@@ -1,10 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 import MainGraphBackpack from '../../assets/MainGraphBackpack.png'
 import MainGraphPlane from '../../assets/MainGraphPlane.png'
 import 'animate.css';
+import TeamAccountDetailIndividualList from './TeamAccountDetailIndividualList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisVertical, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom'
 
 const TeamAccountDetail = () => {
+
+  const navigate = useNavigate()
+
+  const handleGoBack = () => {
+
+    window.scrollTo(0, 0)
+
+    navigate(-1);
+  }
 
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 })
 
@@ -51,12 +64,50 @@ const TeamAccountDetail = () => {
     setShowDetail({ target: false, raised: false, spent: false });
   }
 
+  const spentValue = 500
   const raisedValue = 1900
   const targetValue = 3000
 
+  const spentRatio = spentValue / targetValue * 100
+  const raisedRatio = raisedValue / targetValue * 100
+
+  // 메뉴
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(prev => !prev);
+  };
+
+  useEffect(() => {
+    const hideMenu = e => {
+        if (isMenuOpen && !e.target.closest('.hamburger-dot') && !e.target.closest('.menu')) {
+            setIsMenuOpen(false);
+        }
+    };
+    window.addEventListener('click', hideMenu);
+
+    return () => {
+        window.removeEventListener('click', hideMenu);
+    };
+  }, [isMenuOpen]);
+
+
+
+
   return (
-    <TeamAccountDetailWrapper>
-      <div className="teamaccount-detail-title">텅장</div>
+    <TeamAccountDetailWrapper spentRatio={spentRatio} raisedRatio={raisedRatio}>
+      <div className="teamaccount-detail-title">
+      <div className="login-header"><FontAwesomeIcon icon={faArrowLeft} color="black" onClick={handleGoBack}/></div>
+        <div className="teamaccount-detail-title-text">텅장</div>
+        <FontAwesomeIcon icon={faEllipsisVertical} color="black" className="hamburger-dot" onClick={toggleMenu}/>
+        {isMenuOpen && (
+          <div className="menu">
+           <div className="menu-item">통장 정보 수정</div>
+           <div className="menu-item">개인 목표 수정</div>
+           <div className="menu-item-delete">모임 통장 삭제</div>
+          </div>
+)}
+      </div>
 
       <div className="teamaccount-detail-maingraph-container">
         <div className="teamaccount-detail-maingraph-category">
@@ -102,6 +153,11 @@ const TeamAccountDetail = () => {
             >{showDetail.spent && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>지출 금액<br />500원</div>}</div>
           </div>
         </div>
+        <div className="team-account-detail-individual-head-container">
+          <div className="team-account-detail-individual-head"></div>
+        </div>
+        <div className="team-account-detail-individual-title">개인별 목표 금액</div>
+        <TeamAccountDetailIndividualList />
       </div>
     </TeamAccountDetailWrapper>
   )
@@ -109,16 +165,16 @@ const TeamAccountDetail = () => {
 
 const swingAnimation = keyframes`
   20% {
-    transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 10deg);
   }
   40% {
-    transform: rotate3d(0, 0, 1, -4deg);
+    transform: rotate3d(0, 0, 1, -8deg);
   }
   60% {
-    transform: rotate3d(0, 0, 1, 2deg);
+    transform: rotate3d(0, 0, 1, 4deg);
   }
   80% {
-    transform: rotate3d(0, 0, 1, -2deg);
+    transform: rotate3d(0, 0, 1, -4deg);
   }
   100% {
     transform: rotate3d(0, 0, 1, 0deg);
@@ -135,10 +191,19 @@ const wipeAnimation = keyframes`
 `;
 
 const TeamAccountDetailWrapper = styled.div`
- .teamaccount-detail-title {
-  font-size: 3vh;
-  margin-top: 4vh;
- }
+.teamaccount-detail-title {
+    font-size: 3vh;
+    margin-top: 4vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hamburger-dot {
+    position: absolute;
+    right: 1.5vh;
+}
 
  .teamaccount-detail-maingraph-category {
   display: flex;
@@ -198,7 +263,7 @@ const TeamAccountDetailWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 26%;
+  width: ${props => props.spentRatio}%;
   height: 7vh;
   background-color: #B0BDCB;
   border-radius: 15px;
@@ -209,7 +274,7 @@ const TeamAccountDetailWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 75%;
+  width: ${props => props.raisedRatio}%;
   height: 7vh;
   background-color: #9AC5F4;
   border-radius: 15px;
@@ -245,7 +310,51 @@ const TeamAccountDetailWrapper = styled.div`
     animation-delay: 2s;
   }
 
+.team-account-detail-individual-head-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2vh;
+  overflow: hidden;
+  height: 2vh;
+}
 
+.team-account-detail-individual-head {
+  border: 3px solid #9AC5F4;
+  height: 5vh;
+  border-radius: 15px;
+  width: 85vw;
+}
+
+.team-account-detail-individual-title {
+  font-size: 2.5vh;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 40000;
+  font-size: 2vh;
+}
+
+.menu-item {
+  padding: 10px 15px;
+}
+
+.menu-item-delete {
+    padding: 10px 15px;
+    color: #e71111;
+  }
+
+.login-header {
+  position: absolute;
+  left: 0.1vw;
+  margin: 1.2vh 2vh;
+}
 `
 
 export default TeamAccountDetail

@@ -6,32 +6,52 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const RecoCardList = (props) => {
-
-  
-    const location = useLocation()
-    const data = location.state?.value.result
-    const count = location.state?.value.result.length
-
-  
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1
-    };
+  const location = useLocation()
+  const data = location.state?.value.result
+  const count = location.state?.value.result.length
+  console.log(data)
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
 
     return (
       <Container>
         <Slider {...settings}>
-       {data && data.map(({ recommendNumber, cardId, cardCompany, cardName,discountPrice,getPrice}) => (
+        {data && data.map(({ recommendNumber, cardId, cardCompany, cardName,discountPrice,getPrice, originalPrice}) => (
         <Contentbox id={recommendNumber}>
-          <Cardimgbox>
-
-          <img src={`https://j9d109.p.ssafy.io/downloads/${cardId}.png`}  alt="카드사진" />
+          {(recommendNumber === 1 ? (
+            <Cardboxtitle>최적의 카드</Cardboxtitle>
+          ) : 
+          (recommendNumber === 2 ? (<Cardboxtitle>많은 혜택</Cardboxtitle>) : (<Cardboxtitle>환전</Cardboxtitle>))
+          )}
+          <Cardimgbox>       
+            <img src={`https://j9d109.p.ssafy.io/downloads/${cardId}.png`}  alt="카드사진" />
           </Cardimgbox>
-          <div>{cardName}</div>
-          <div>{getPrice?.['total']}</div>
+          <Cardnamefont>{cardName}</Cardnamefont>
+          <Getbox>
+            <Getsmallbox>
+              <div>면세점 혜택</div>
+              <div>{getPrice?.['dutyFree'].toLocaleString('ko-KR')}원</div>
+            </Getsmallbox>
+            <Getsmallbox>
+              <div>이용금 혜택</div>
+              <div>{getPrice?.['use'].toLocaleString('ko-KR')}원</div>
+            </Getsmallbox>
+            <Getsmallbox>
+              <p>총 혜택</p>
+              <p>{getPrice?.['total'].toLocaleString('ko-KR')}원</p>
+            </Getsmallbox>
+          </Getbox>
+          <Totalbox>
+            <p className='origintotal'>{originalPrice?.['total'].toLocaleString('ko-KR')}원</p>
+            <div>
+              <div className='distotal'>{discountPrice?.['total'].toLocaleString('ko-KR')}원</div>
+            </div>
+          </Totalbox>
         </Contentbox>
         ))}
         </Slider>
@@ -43,10 +63,9 @@ export default RecoCardList
 
 const Container = styled.div`
     margin-top: 30px;
-    :not(:last-child) {
-        margin-bottom: 50px;
-    }
+    margin-bottom: 20px;
 `;
+
 const CardList = styled.div`
   width: 330px;
   border: 1px solid #B3B1B1;
@@ -57,17 +76,15 @@ const CardList = styled.div`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `
 const Contentbox = styled.div`
-  width: 350px;
-  border: 1px solid #B3B1B1;
-  border-radius: 7px;
+  /* border: 1px solid #B3B1B1;
+  border-radius: 7px; */
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
   & > img {
     width: 300px;
-
   }
 `
 
@@ -89,13 +106,71 @@ const Wrapper = styled.div`
 `;
  
 const Cardimgbox = styled.div`
+  height: 300px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
   & > img {
-    width: 350px;
-    padding: 10px;
-
+    max-width: 300px;
+    max-height: 300px;
   }
+`
+const Cardboxtitle = styled.div`
+  font-size: 20px;
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: start;
+`
+
+const Cardnamefont = styled.div`
+  font-size: 30px;
+  margin: 20px;
+`
+const Getbox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 20px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+`
+const Totalbox = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: end;
+  margin-bottom: 10px;
+  & > p {
+    font-size: 17px;
+    text-decoration: line-through ;
+    margin-bottom: 3px;
+    margin-right: 22px;
+    color: #898989;
+}
+  & > div {
+    font-size: 25px;
+    display: flex;
+  }
+
+`
+const Getsmallbox = styled.div`
+  width: 80%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: space-around;
+  & > p {
+    font-size: 25px;
+  }
+`
+const Per = styled.p`
+  
 `

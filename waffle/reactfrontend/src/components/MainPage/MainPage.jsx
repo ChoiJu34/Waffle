@@ -72,11 +72,9 @@ const MainPage = () => {
     };
   }, []);
 
-  // const goToPackage = () => {
-//   navigate('')
-//   setIsToggled(false)
-//   setUserToggled(false)
-// }
+  const goToPackage = () => {
+  navigate('/package/main')
+}
 
 const goToCard = () => {
   navigate('/recocard/main')

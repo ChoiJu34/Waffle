@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from '../components/Commons/ProtectedRoute'
 import Layout from '../pages/Layout';
-import ScrollTop from '../components/Commons/ScrollTop'
+// import ScrollTop from '../components/Commons/ScrollTop'
 import RecoCardMain from '../components/RecommendCard/RecoCardMain';
 import MainPage from '../components/MainPage/MainPage';
 import Login from '../components/Login/Login'
@@ -17,11 +17,13 @@ import SignupComplete from '../components/Signup/SignupComplete'
 import RecoCardList from '../components/RecommendCard/RecoCardList';
 import TeamAccount from '../components/TeamAccount/TeamAccount'
 import TeamAccountDetail from '../components/TeamAccount/TeamAccountDetail'
+import PackageMain from '../components/RecommendPackage/PackageMain';
+import TeamAccountAddCode from '../components/TeamAccount/TeamAccountAddCode'
+import TeamAccountAddNew from '../components/TeamAccount/TeamAccountAddNew'
 
 const RootNavigation = () => {
   return (
     <BrowserRouter>
-      <ScrollTop />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/recocard/list" element={<RecoCardList />} />
@@ -37,8 +39,11 @@ const RootNavigation = () => {
           <Route path="/user/password-token" element={<PasswordToken/>} />
           <Route path="/recocard/main" element={<ProtectedRoute><RecoCardMain /></ProtectedRoute>} />
           <Route path="/teamaccount/main" element={<ProtectedRoute><TeamAccount /></ProtectedRoute>} />
+          <Route path="/package/main" element={<ProtectedRoute><PackageMain /></ProtectedRoute>} />
           {/* "detail"은 나중에 각 모임통장의 id로 바꿀 예정 */}
           <Route path="/teamaccount/detail" element={<TeamAccountDetail />} />
+          <Route path="/teamaccount/add/code" element={<TeamAccountAddCode />} />
+          <Route path="/teamaccount/add/new" element={<TeamAccountAddNew />} />
         </Route>
       </Routes>
     </BrowserRouter>
