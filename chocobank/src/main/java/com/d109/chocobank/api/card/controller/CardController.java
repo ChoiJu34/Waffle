@@ -21,19 +21,19 @@ public class CardController {
     private final CardServiceImpl cardService;
 
     // 서비스에서 사용자 카드 리스트 조회
-    @GetMapping("/service/list")
-    public ResponseEntity<?> getServiceUserCardList(@RequestHeader("Authorization-uuid") String uuid) throws Exception {
-        Map<String, Object> result = new HashMap<>();
-        try {
-            result.put("userCardDtoList", cardService.getUserCardList(uuid));
-            result.put("message", "SUCCESS");
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            result.put("message", "FAIL");
-            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    // @GetMapping("/service/list")
+    // public ResponseEntity<?> getServiceUserCardList(@RequestHeader("Authorization-uuid") String uuid) throws Exception {
+    //     Map<String, Object> result = new HashMap<>();
+    //     try {
+    //         result.put("userCardDtoList", cardService.getUserCardList(uuid));
+    //         result.put("message", "SUCCESS");
+    //         return new ResponseEntity<>(result, HttpStatus.OK);
+    //     } catch (Exception e) {
+    //         log.error(e.getMessage());
+    //         result.put("message", "FAIL");
+    //         return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
 
     // 서비스에서 카드 번호로 카드 정보 조회
     @PostMapping("/service")
@@ -89,7 +89,7 @@ public class CardController {
 
     // 은행에서 단일 카드 조회
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCard() throws Exception {
+    public ResponseEntity<?> getCard(@PathVariable int id) throws Exception {
         return null;
     }
 
