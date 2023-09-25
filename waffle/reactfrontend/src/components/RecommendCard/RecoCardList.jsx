@@ -76,8 +76,8 @@ const CardList = styled.div`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `
 const Contentbox = styled.div`
-  /* border: 1px solid #B3B1B1;
-  border-radius: 7px; */
+  /* border: 1px solid #B3B1B1; */
+  border-radius: 7px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;

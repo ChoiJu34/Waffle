@@ -37,7 +37,7 @@ const StyledBottomSheet = styled.div`
   z-index: 2;
   position: fixed;
   width: 100%;
-  /* height: fit-content; */
+  transition: height 0.2s ease-in-out;
   max-height: 90%;
   overflow-y: scroll;
   &::-webkit-scrollbar {
