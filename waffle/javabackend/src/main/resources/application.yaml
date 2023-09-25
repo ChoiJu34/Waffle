@@ -56,7 +56,9 @@ jwt:
     expiration: 129600000
     header: Authorization-refresh
 
-# choco bank base_url
+# http request base_url
 request:
   chocobank:
     base_url: http://localhost:8001
+  exchange_open_api:
+    base_url: https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EExqPGr9A5oLm4EtBTNMhAJ2OEeQFKiM&data=AP01
