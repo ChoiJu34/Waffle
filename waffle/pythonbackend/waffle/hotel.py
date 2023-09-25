@@ -199,7 +199,7 @@ def agoda_crawling(info):
         try:
             href_element = element.find_element(By.XPATH, xpath6)
         except Exception:
-            href_element = url
+            href_element = "https://www.agoda.com"
         try:
             src_element = element.find_element(By.XPATH, xpath7)
         except Exception:
