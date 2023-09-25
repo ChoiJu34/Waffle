@@ -20,6 +20,7 @@ import TeamAccountDetail from '../components/TeamAccount/TeamAccountDetail'
 import PackageMain from '../components/RecommendPackage/PackageMain';
 import TeamAccountAddCode from '../components/TeamAccount/TeamAccountAddCode'
 import TeamAccountAddNew from '../components/TeamAccount/TeamAccountAddNew'
+import TeamAccountUpdate from '../components/TeamAccount/TeamAccountUpdate'
 
 const RootNavigation = () => {
   return (
@@ -44,6 +45,7 @@ const RootNavigation = () => {
           <Route path="/teamaccount/detail" element={<TeamAccountDetail />} />
           <Route path="/teamaccount/add/code" element={<TeamAccountAddCode />} />
           <Route path="/teamaccount/add/new" element={<TeamAccountAddNew />} />
+          <Route path="/teamaccount/update" element={<TeamAccountUpdate />} />
         </Route>
       </Routes>
     </BrowserRouter>

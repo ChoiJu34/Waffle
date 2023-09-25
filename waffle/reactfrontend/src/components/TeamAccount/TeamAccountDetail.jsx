@@ -64,6 +64,9 @@ const TeamAccountDetail = () => {
     setShowDetail({ target: false, raised: false, spent: false });
   }
 
+  const accountName = "텅장"
+  const endDate = "2023-11-30"
+
   const spentValue = 500
   const raisedValue = 1900
   const targetValue = 3000
@@ -91,22 +94,50 @@ const TeamAccountDetail = () => {
     };
   }, [isMenuOpen]);
 
+  // 수정 화면으로 보낼 데이터
+  const dataToUpdate = {
+    accountName: accountName,
+    target: targetValue,
+    endDate: endDate
+  }
 
+  const goToUpdate = () => {
+    navigate('/teamaccount/update', { state: dataToUpdate })
+  }
+
+  const [dDay, setDDay] = useState(null);
+
+  useEffect(() => {
+    if (endDate) {
+      const targetDate = new Date(endDate);
+      const currentDate = new Date();
+
+      const differenceInTime = targetDate - currentDate;
+      const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
+      setDDay(differenceInDays);
+    }
+  }, [endDate]);
+
+  // 개인 목표 수정
+  const temporaryData = {
+    
+  }
 
 
   return (
     <TeamAccountDetailWrapper spentRatio={spentRatio} raisedRatio={raisedRatio}>
       <div className="teamaccount-detail-title">
       <div className="login-header"><FontAwesomeIcon icon={faArrowLeft} color="black" onClick={handleGoBack}/></div>
-        <div className="teamaccount-detail-title-text">텅장</div>
+        <div className="teamaccount-detail-title-text">{accountName}</div>
         <FontAwesomeIcon icon={faEllipsisVertical} color="black" className="hamburger-dot" onClick={toggleMenu}/>
         {isMenuOpen && (
           <div className="menu">
-           <div className="menu-item">통장 정보 수정</div>
+           <div className="menu-item" onClick={goToUpdate}>통장 정보 수정</div>
            <div className="menu-item">개인 목표 수정</div>
            <div className="menu-item-delete">모임 통장 삭제</div>
           </div>
-)}
+        )}
       </div>
 
       <div className="teamaccount-detail-maingraph-container">
@@ -114,6 +145,13 @@ const TeamAccountDetail = () => {
           <div className="teamaccount-detail-maingraph-category-spent">지출액</div>
           <div className="teamaccount-detail-maingraph-category-raised">모금액</div>
           <div className="teamaccount-detail-maingraph-category-target">목표액</div>
+          <div className="teamaccount-detail-maingraph-dday">
+            {dDay !== null && (
+              <p>
+                {dDay > 0 ? `D-${dDay}` : "모금 종료"}
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="teamaccout-detail-maingraph">
@@ -309,6 +347,17 @@ const TeamAccountDetailWrapper = styled.div`
     animation: ${swingAnimation} 2s infinite alternate;
     animation-delay: 2s;
   }
+
+.teamaccount-detail-maingraph-dday {
+  position: absolute;
+  right: 1vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15vw;
+  height: 2.8vh;
+  border-radius: 50px;
+}
 
 .team-account-detail-individual-head-container {
   display: flex;

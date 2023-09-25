@@ -1,0 +1,507 @@
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import styled from 'styled-components'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import axios from 'axios'
+
+const TeamAccountUpdate = () => {
+
+  const location = useLocation()
+
+  const [formData, setFormData] = useState({
+    accountName: location.state?.accountName,
+    target: location.state?.target,
+    endDate: location.state?.endDate,
+  })
+
+  useEffect(() => {
+    if (location.state?.target) {
+      const value = String(location.state.target)
+  
+      let formattedValue = "";
+      let reversedValue = value.split('').reverse().join('');
+  
+      for (let i = 0; i < reversedValue.length; i++) {
+        if (i > 0 && i % 3 === 0) {
+            formattedValue += ",";
+        }
+        formattedValue += reversedValue[i];
+      }
+    
+      formattedValue = formattedValue.split('').reverse().join('');
+      setDisplayValue(formattedValue);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    if (location.state?.accountName && location.state.accountName !== "") {
+      setIsAccountNameComplete(true);
+    }
+  
+    if (location.state?.target && location.state.target !== "") {
+      setIsTargetComplete(true);
+    }
+  
+    if (location.state?.endDate && location.state.endDate !== "") {
+      setIsEndDateComplete(true);
+    }
+
+    if (location.state?.endDate) {
+      onChangeEndDate(location.state.endDate);
+    }
+  }, [location.state]);
+
+  // 뒤로가기
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+
+    window.scrollTo(0, 0)
+    
+    navigate(-1);
+  }
+
+  // 통장 이름 입력 칸
+  const [isAccountNameFocused, setIsAccountNameFocused] = useState(false);
+  const [isAccountNameComplete, setIsAccountNameComplete] = useState(false);
+  const inputAccountNameRef = useRef(null);
+
+  const handleAccountNameFocus = () => {
+    setIsAccountNameFocused(true);
+  };
+
+  const handleAccountNameBlur = useCallback(() => {
+    const accountNameValue = formData.accountName
+
+    setIsAccountNameFocused(false);
+    if (accountNameValue === "") {
+      setIsAccountNameComplete(false);
+    } else {
+      setIsAccountNameComplete(true);
+    }
+  }, [formData.accountName]);
+
+  // 목표 금액 입력 칸
+  const [isTargetFocused, setIsTargetFocused] = useState(false);
+  const [isTargetComplete, setIsTargetComplete] = useState(false);
+  const inputTargetRef = useRef(null);
+
+  const handleTargetFocus = () => {
+    setIsTargetFocused(true);
+  };
+
+  const handleTargetBlur = (event) => {
+    setIsTargetFocused(false);
+    if (event.target.value === "") {
+      setIsTargetComplete(false);
+    } else {
+      setIsTargetComplete(true);
+    }
+  };
+
+  // 생년월일 칸
+  const [isEndDateFocused, setIsEndDateFocused] = useState(false);
+  const [isEndDateComplete, setIsEndDateComplete] = useState(false);
+  const inputEndDateRef = useRef(null);
+
+  const handleEndDateFocus = () => {
+    setIsEndDateFocused(true);
+  };
+
+  const handleEndDateBlur = useCallback(() => {
+    setIsEndDateFocused(false);
+
+    const endDateValue = formData.endDate
+    if (endDateValue === "") {
+      setIsEndDateComplete(false);
+    } else {
+      setIsEndDateComplete(true);
+    }
+  }, [formData.endDate]);
+
+  const showEndDatePlaceholder = isEndDateFocused && !inputEndDateRef.current?.value
+
+  // 생년월일 자동 하이픈 추가
+  const handleEndDate = () => {
+    const value = inputEndDateRef.current.value.replace(/\D+/g, "");
+    const numberLength = 8;
+
+    let result;
+    result = "";  
+
+    for (let i = 0; i < value.length && i < numberLength; i++) {
+      switch (i) {
+        case 4:
+          result += "-";
+          break;
+        case 6:
+          result += "-";
+          break;
+
+        default:
+          break;
+      }
+
+      result += value[i];
+    }
+
+    inputEndDateRef.current.value = result;
+
+  };
+
+  // 유효성 검사
+  const [isEndDate, setIsEndDate] = useState(null)
+
+  const onChangeEndDate = useCallback((endDateValue) => {
+    const endDateRegex = /^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/;
+    const endDateCurrent = endDateValue
+
+    if (endDateCurrent === "") {
+      setIsEndDate(null);
+      return;
+    } else if (!endDateRegex.test(endDateCurrent)) {
+      setIsEndDate(false);
+      return;
+    } else {
+      setIsEndDate(true);
+    }
+
+    const [year, month, day] = endDateCurrent.split("-").map((str) => parseInt(str, 10))
+  
+    // 윤년 체크
+    const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+  
+    // 각 월의 최대 일수를 저장
+    const monthDays = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  
+    if (isLeapYear) {
+      monthDays[2] = 29
+    }
+  
+    // 해당 월의 일수보다 작거나 같은지 확인
+    if (day <= monthDays[month]) {
+      setIsEndDate(true);
+    } else {
+      setIsEndDate(false);
+    }
+    }, [formData.endDate]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => {
+        const newData = { ...prevData, [name]: value };
+        return newData;
+    });
+  }
+
+  const functionSetAccountName = (e) => {
+    handleChange(e);
+  }
+
+  const functionSetEndDate = (e) => {
+    handleEndDate(e);
+    onChangeEndDate(e.target.value);
+    handleChange(e);
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+};
+
+const [displayValue, setDisplayValue] = useState('');
+
+const handleTargetValue = (e) => {
+
+  const value = e.target.value.replace(/\D+/g, "");
+  
+  let formattedValue = "";  
+
+
+  let reversedValue = value.split('').reverse().join('');
+
+  for (let i = 0; i < reversedValue.length; i++) {
+      if (i > 0 && i % 3 === 0) {
+          formattedValue += ",";
+      }
+      formattedValue += reversedValue[i];
+  }
+  
+  // 다시 문자열 뒤집기
+  formattedValue = formattedValue.split('').reverse().join('');
+
+  setDisplayValue(formattedValue);
+
+  setFormData(prevData => ({
+    ...prevData,
+    target: value
+  }));
+}
+
+  return (
+    <TeamAccountUpdateWrapper>
+      <div className="teamaccount-update-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
+      <div className="teamaccount-update-title">모임 통장 정보 수정</div>
+      <div className="teamaccount-update-title-underline"></div>
+
+      <form>
+        <div className={`teamaccount-update-accountname ${isAccountNameFocused ? 'focus' : ''} ${isAccountNameComplete ? 'complete' : ''}`}>
+          <label id="signup-label">통장 이름</label>
+          <input type="text" id="signup-input" ref={inputAccountNameRef} onFocus={handleAccountNameFocus} onBlur={handleAccountNameBlur} onChange={(e) => {functionSetAccountName(e); handleInputChange(e)}} value={formData.accountName} name="accountName"/>
+        </div>
+
+        <div className={`teamaccount-update-target ${isTargetFocused ? 'focus' : ''} ${isTargetComplete ? 'complete' : ''}`}>
+          <label id="signup-label">목표액</label>
+          <input type="text" id="signup-input" ref={inputTargetRef} onFocus={handleTargetFocus} onBlur={handleTargetBlur} onChange={(e) => {handleTargetValue(e)}} value={displayValue} name="target"/>
+        </div>
+
+        <div className={`teamaccount-update-enddate ${isEndDateFocused ? 'focus' : ''} ${isEndDateComplete ? 'complete' : ''}`}>
+          <label id="signup-label">종료일</label>
+          <input type="text" id="signup-input" ref={inputEndDateRef} onFocus={handleEndDateFocus} onBlur={handleEndDateBlur} onChange={(e) => {functionSetEndDate(e) ; handleInputChange(e)}} value={formData.endDate} name="endDate" placeholder={showEndDatePlaceholder ? "ex) 20231130" : ""}/>
+        </div>
+
+        <div className="signup-button-container">
+          <TeamAccountUpdateButton type="submit" className="signup-button" disabled={!(formData.accountName && formData.target && formData.endDate && isEndDate)}>수정하기</TeamAccountUpdateButton>
+        </div>
+      </form>
+    </TeamAccountUpdateWrapper>
+  )
+}
+
+const TeamAccountUpdateWrapper = styled.div`
+  min-height: 100vh;
+
+  .teamaccount-update-header {
+    display: flex;
+    margin: 3vh 2vh;
+  }
+
+  .teamaccount-update-title {
+    font-size: 2.8vh;
+    margin-top: 3vh;
+    margin-left: 3vh;
+    text-align: left;
+    color: #000004;
+  }
+
+  .teamaccount-update-title-underline {
+    height: 0.3vh;
+    width: 80%;
+    margin: 1.5vh auto;
+    background-color: #000004;
+  }
+
+  .teamaccount-update-accountname {
+    padding: 2vh 7vh;
+    display: flex;
+  }
+
+  .teamaccount-update-accountname > input{
+    display: block;
+	  width: 80%;
+	  color: #909090;
+	  border:0;
+	  border-bottom: 1px solid #8c8c8c;
+	  background-color: transparent;
+	  box-sizing: border-box;
+	  border-radius: 0;
+	  padding: 0;
+	  height: 36px;
+	  line-height: 1.33;
+	  font-size: 2vh;
+    font-weight: 800;
+  }
+
+  .teamaccount-update-accountname > input:focus{
+      outline:0;
+      border-color:#76A8DE;
+      border-width: 2px;
+      color:#76A8DE;
+  }
+
+  .teamaccount-update-accountname > label{
+      top: 19vh;
+      position: absolute;
+      left: 9vh;
+      max-width: 100%;
+      height: 2.7em;
+      line-height: 1.33;
+      color: #909090;
+      font-size: 2vh;
+      cursor: text;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: all .2s;
+      pointer-events: none;
+      -webkit-font-smoothing: antialiased;
+      transform: translate3d(0, 3px, 0) scale(1);
+      transform-origin: left top;
+  }
+
+  .teamaccount-update-accountname.focus > label{
+      top: 17vh;
+      left: 8vh;
+      font-size: 12px;
+      line-height: 1.33;
+      color: #76A8DE;
+  }
+
+  .teamaccount-update-accountname.complete > label{
+      top: 17vh;
+      left: 8vh;
+      font-size: 12px;
+      line-height: 1.33;
+  }
+
+  input::placeholder {
+    color: #90909061;
+    font-size: 1.3vh;
+  }
+
+  .teamaccount-update-target {
+    padding: 2vh 7vh;
+    display: flex;
+  }
+
+  .teamaccount-update-target > input{
+    display: block;
+	  width: 80%;
+	  color: #909090;
+	  border:0;
+	  border-bottom: 1px solid #8c8c8c;
+	  background-color: transparent;
+	  box-sizing: border-box;
+	  border-radius: 0;
+	  padding: 0;
+	  height: 36px;
+	  line-height: 1.33;
+    font-size: 2vh;
+    font-weight:620;
+  }
+
+  .teamaccount-update-target > input:focus{
+      outline:0;
+      border-color:#76A8DE;
+      border-width: 2px;
+      color:#76A8DE;
+  }
+
+  .teamaccount-update-target > label{
+      top: 27vh;
+      position: absolute;
+      left: 9vh;
+      max-width: 100%;
+      height: 2.7em;
+      line-height: 1.33;
+      color: #909090;
+      font-size: 2vh;
+      cursor: text;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: all .2s;
+      pointer-events: none;
+      -webkit-font-smoothing: antialiased;
+      transform: translate3d(0, 3px, 0) scale(1);
+      transform-origin: left top;
+  }
+
+  .teamaccount-update-target.focus > label{
+      top: 25vh;
+      left: 8vh;
+      font-size: 12px;
+      line-height: 1.33;
+      color: #76A8DE;
+  }
+
+  .teamaccount-update-target.complete > label{
+      top: 25vh;
+      left: 8vh;
+      font-size: 12px;
+      line-height: 1.33;
+  }
+
+  .teamaccount-update-enddate {
+    padding: 2vh 7vh;
+    display: flex;
+  }
+
+  .teamaccount-update-enddate > input{
+    display: block;
+	  width: 80%;
+	  color: #909090;
+	  border:0;
+	  border-bottom: 1px solid #8c8c8c;
+	  background-color: transparent;
+	  box-sizing: border-box;
+	  border-radius: 0;
+	  padding: 0;
+	  height: 36px;
+	  line-height: 1.33;
+	  font-size: 2vh;
+    font-weight: 700;
+  }
+
+  .teamaccount-update-enddate > input:focus{
+      outline:0;
+      border-color:#76A8DE;
+      border-width: 2px;
+      color:#76A8DE;
+  }
+
+  .teamaccount-update-enddate > label{
+      top: 35vh;
+      position: absolute;
+      left: 9vh;
+      max-width: 100%;
+      height: 2.7em;
+      line-height: 1.33;
+      color: #909090;
+      font-size: 2vh;
+      cursor: text;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: all .2s;
+      pointer-events: none;
+      -webkit-font-smoothing: antialiased;
+      transform: translate3d(0, 3px, 0) scale(1);
+      transform-origin: left top;
+  }
+
+  .teamaccount-update-enddate.focus > label{
+      top: 33vh;
+      left: 8vh;
+      font-size: 12px;
+      line-height: 1.33;
+      color: #76A8DE;
+  }
+
+  .teamaccount-update-enddate.complete > label{
+      top: 33vh;
+      left: 8vh;
+      font-size: 12px;
+      line-height: 1.33;
+  }
+`
+
+const TeamAccountUpdateButton = styled.button`
+  width: 12.5vh;
+  height: 5vh;
+  border-radius: 15px;
+  border: none;
+  background-color: #9AC5F4;
+  color: white;
+  font-weight: 800;
+  font-size: 2.3vh;
+  margin-top: 2vh;
+
+  &:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+`;
+
+export default TeamAccountUpdate
