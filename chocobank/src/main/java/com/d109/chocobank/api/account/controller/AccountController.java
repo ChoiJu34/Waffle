@@ -123,7 +123,7 @@ public class AccountController {
 	// 	}
 	// }
 
-	@GetMapping("/service")
+	@PostMapping("/service")
 	public ResponseEntity<?> getServiceAccount(@RequestBody Map<String, String> map) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		try {
@@ -153,7 +153,7 @@ public class AccountController {
 	// 	}
 	// }
 
-	@GetMapping("/service/history")
+	@PostMapping("/service/history")
 	public ResponseEntity<?> getServiceAccountHistory(@RequestBody Map<String, String> map) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		try {
