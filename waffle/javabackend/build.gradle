@@ -44,4 +44,8 @@ dependencies {
 	//json->map
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
 
+	//swagger
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
 }
