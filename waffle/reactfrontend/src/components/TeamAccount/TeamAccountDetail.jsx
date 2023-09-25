@@ -120,9 +120,6 @@ const TeamAccountDetail = () => {
   }, [endDate]);
 
   // 개인 목표 수정
-  const temporaryData = {
-    
-  }
 
 
   return (
