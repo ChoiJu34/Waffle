@@ -1,11 +1,14 @@
 import copy
 import logging
+import os
 import queue
 import re
 import threading
 import time
 
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options as ChromeOptions, Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,6 +22,8 @@ logger = logging.getLogger(__name__)
 result = []
 q_list = []
 
+current_directory = os.path.dirname(__file__)
+file_path = os.path.join(current_directory, '..', '..', 'chromedriver.exe')
 # multi_list = manager.list()
 multi_list = []
 
@@ -76,13 +81,19 @@ def multi_threading(info):
 
 def crawling_multi_thread(info):
     i, k, memberCnt, where, start, end = info
+    service = Service()
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    chrome_options.add_argument('window-size=1920x1080')
+    chrome_options.add_argument("disable-gpu")
+
     if i == 0:
-        interpark_crawling(info)
+        interpark_crawling(info, chrome_options, service)
     elif i == 1:
-        agoda_crawling(info)
+        agoda_crawling(info, chrome_options, service)
 
 
-def interpark_crawling(info):
+def interpark_crawling(info, chrome_options, service):
     i, k, memberCnt, where, start, end = info
 
     url = f'https://travel.interpark.com/hotel/search?q={where}&checkin={start}&checkout={end}&searchType=keyword&occupancies={memberCnt}&typeKey='
@@ -92,7 +103,8 @@ def interpark_crawling(info):
     xpath4 = '//*[@id="__next"]/div/main/div[2]/div[2]/div[2]/div[2]/div/button[2]'
     xpath5 = '//*[@id="__next"]/div/main/div[2]/div[2]/div[4]/button'
 
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+
     driver.get(url)
     # time.sleep(0.2)
     wait = WebDriverWait(driver, 20)
@@ -140,7 +152,7 @@ def interpark_crawling(info):
     driver.quit()
 
 
-def agoda_crawling(info):
+def agoda_crawling(info, chrome_options, service):
     i, k, memberCnt, where, start, end = info
     url = f'https://www.agoda.com/ko-kr/search?city=1&checkIn={start}&checkOut={end}&rooms=1&adults={memberCnt}&children=0&sort=reviewAll'
     xpath1 = '//*[@id="textInput"]'
@@ -151,7 +163,8 @@ def agoda_crawling(info):
     xpath6 = '//*[@id="contentContainer"]/div[3]/ol/li/div/a'
     xpath7 = '//*[@id="contentContainer"]/div[3]/ol/li/div/a/div/div[1]/div/div[3]/img'
 
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+
     driver.get(url)
     time.sleep(0.5)
     wait = WebDriverWait(driver, 20)
@@ -217,7 +230,7 @@ def agoda_crawling(info):
         origin = origin.split('\n')
         if '일정에 여유가 있으시다면 다음의 대체 날짜들도 고려해 보시기 바랍니다' in origin[0]:
             continue
-        if href_element != url:
+        if href_element != 'https://www.agoda.com':
             href_element = href_element.get_attribute('href')
         if src_element != '이미지를 가지고 오지 못했습니다.':
             src_element = src_element.get_attribute('src')

@@ -29,7 +29,6 @@ package = {
 have_card_package = {
     "plane" : "",
     "hotel" : "",
-    "card" : "",
     "memberCnt" : ""
 }
 
@@ -43,7 +42,7 @@ def crawling(request):
     data = json.loads(request.body)
     authorization = request.META.get('HTTP_AUTHORIZATION')
     logger.info(authorization)
-    spring_boot_api_url = "http://localhost:8080/user-card/list"
+    spring_boot_api_url = "http://j9d109.p.ssafy.io:8080/user-card/list"
 
     headers = {
         'Authorization': authorization,  # 예시: 인증 토큰을 설정하세요
@@ -53,9 +52,10 @@ def crawling(request):
     # Spring Boot API에 GET 요청을 보냅니다.
     response = requests.get(spring_boot_api_url, headers=headers)
 
+    user_cards = []
     # 요청이 성공하면 JSON 응답을 파싱합니다.
     if response.status_code == 200:
-        user_cards = response.json()['result'];
+        user_cards = response.json()['result']
 
     threads = []
     for k in range(2):
@@ -373,7 +373,6 @@ def find_lowest_package(data, user_cards):
 
     have_card_package["plane"] = user_plane_info
     have_card_package["hotel"] = user_hotel_info
-    package["card"] = card_name
-    package["memberCnt"] = data["memberCnt"]
+    have_card_package["memberCnt"] = data["memberCnt"]
 
 
