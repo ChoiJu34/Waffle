@@ -58,7 +58,7 @@ public class ChecklistService {
 			.build();
 		try {
 			checklistList.setId(checklistListRepository.save(checklistList).getId());
-			List<CountryChecklist> list = countryChecklistRepository.findByCountry(checkListDto.getCountry());
+			List<CountryChecklist> list = countryChecklistRepository.findByCountryOrCountry("", checkListDto.getCountry());
 			for(CountryChecklist countryChecklist : list){
 				Checklist checklist = Checklist.builder()
 					.content(countryChecklist.getContent())
@@ -94,7 +94,6 @@ public class ChecklistService {
 			map.put("content", checklist.getContent());
 			map.put("price", checklist.getPrice());
 			map.put("currency", checklist.getCurrency());
-			map.put("order", checklist.getOrder());
 			map.put("when", checklist.getWhen());
 			result.add(map);
 		}
