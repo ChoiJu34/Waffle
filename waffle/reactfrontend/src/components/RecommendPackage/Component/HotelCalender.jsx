@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 
-class CalendarComponent extends Component {
+class HotelCalendarComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,7 +22,9 @@ class CalendarComponent extends Component {
         }
 
         this.setState({ startDate: start, endDate: end, maxDate: maxDate });
-    };
+    const handleDateChange = (startDate, endDate) => {
+            this.props.onDateChange(startDate, endDate);
+        };
 
     render() {
         return (
@@ -37,10 +39,11 @@ class CalendarComponent extends Component {
                     endDate={this.state.endDate}
                     minDate={new Date()}
                     maxDate={this.state.maxDate}
-                    onChange={(dates) => this.setChangeDate(dates)}
+                    onChange={(dates) => { const { startDate, endDate } = this.setChangeDate(dates);
+                    this.handleDateChange(startDate, endDate);}}
                 />
             </div>
         );
     }
 }
-export default CalendarComponent;
+export default HotelCalendarComponent;
