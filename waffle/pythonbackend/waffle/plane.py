@@ -104,7 +104,7 @@ def interpark_crawling(info):
     xpath = '//ul[@id="schedule0List"]/li'
 
     driver.get(url)
-    time.sleep(0.17)
+    # time.sleep(0.17)
     wait = WebDriverWait(driver, 20)
     wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
     elements = driver.find_elements(By.XPATH, xpath)
@@ -164,7 +164,7 @@ def trip_crawling(info):
 
     driver.get(url)
 
-    time.sleep(0.7)
+    # time.sleep(0.7)
     wait = WebDriverWait(driver, 20)
     wait.until(EC.element_to_be_clickable((By.XPATH, xpath1)))
     driver.find_element(By.XPATH, xpath1).click()
@@ -177,7 +177,7 @@ def trip_crawling(info):
     #     if datetime.datetime.now() > end:
     #         break
 
-    time.sleep(0.6)
+    # time.sleep(0.6)
     before_location = driver.execute_script("return window.pageYOffset")
     while True:
         driver.execute_script("window.scrollTo(0,{})".format(before_location + 600))
@@ -188,7 +188,7 @@ def trip_crawling(info):
         else:
             before_location = driver.execute_script("return window.pageYOffset")
 
-    time.sleep(0.8)
+    # time.sleep(0.8)
     wait = WebDriverWait(driver, 20)
     wait.until(EC.presence_of_element_located((By.XPATH, xpath2)))
     elements = driver.find_elements(By.XPATH, xpath2)

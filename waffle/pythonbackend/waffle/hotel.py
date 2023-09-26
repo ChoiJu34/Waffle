@@ -94,31 +94,31 @@ def interpark_crawling(info):
 
     driver = webdriver.Chrome()
     driver.get(url)
-    time.sleep(0.2)
+    # time.sleep(0.2)
     wait = WebDriverWait(driver, 20)
     wait.until(EC.presence_of_element_located((By.XPATH, xpath3)))
     driver.find_element(By.XPATH, xpath3).click()
 
     wait = WebDriverWait(driver, 20)
-    time.sleep(0.2)
+    # time.sleep(0.2)
     wait.until(EC.presence_of_element_located((By.XPATH, xpath4)))
     driver.find_element(By.XPATH, xpath4).click()
 
     for i in range(5):
-        time.sleep(0.2)
+        # time.sleep(0.2)
         wait = WebDriverWait(driver, 20)
         wait.until(EC.element_to_be_clickable((By.XPATH, xpath5)))
         driver.find_element(By.XPATH, xpath5).click()
 
-    time.sleep(0.7)
+    # time.sleep(0.7)
     wait = WebDriverWait(driver, 20)
     wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
     elements1 = driver.find_elements(By.XPATH, xpath1)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.presence_of_element_located((By.XPATH, xpath2)))
-    elements2 = driver.find_elements(By.XPATH, xpath2)
+    # wait = WebDriverWait(driver, 20)
+    # wait.until(EC.presence_of_element_located((By.XPATH, xpath2)))
 
-    for element1, element2 in zip(elements1, elements2):
+    for element1 in elements1:
+        element2 = driver.find_elements(By.XPATH, xpath2)
         # 추출한 데이터를 딕셔너리로 추가
         origin = re.sub(r'\+', "", element1.get_attribute('textContent'))
         pattern = r'청구할인|추천|항공할인|05267.*?가|원~정상가|(\d+)성급.*?가|~로그인.*?확인|(\d+)(\d+)(\d+)(\d+)(\d+)판매가|%할인판매가'
@@ -199,7 +199,7 @@ def agoda_crawling(info):
         try:
             href_element = element.find_element(By.XPATH, xpath6)
         except Exception:
-            href_element = url
+            href_element = "https://www.agoda.com"
         try:
             src_element = element.find_element(By.XPATH, xpath7)
         except Exception:
