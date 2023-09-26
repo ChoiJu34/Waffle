@@ -1,5 +1,6 @@
 package com.d109.waffle.api.checklist.Entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,7 +36,7 @@ public class Checklist {
 	String content;
 	int price;
 	String currency;
-	boolean check;
+	byte check;
 	@ManyToOne
 	@JoinColumn(name = "checklist_list_id")
 	private ChecklistList checklistList;

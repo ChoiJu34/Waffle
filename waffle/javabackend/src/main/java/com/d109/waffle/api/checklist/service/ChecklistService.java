@@ -122,7 +122,11 @@ public class ChecklistService {
 	public boolean checkChecklistItem(int id){
 		try {
 			Checklist checklist = checklistRepository.findById(id).get();
-			checklist.setCheck(!checklist.isCheck());
+			if (checklist.getCheck()==0) {
+				checklist.setCheck((byte)1);
+			}else{
+				checklist.setCheck((byte)0);
+			}
 			checklistRepository.save(checklist);
 			return true;
 		}catch (Exception e){
