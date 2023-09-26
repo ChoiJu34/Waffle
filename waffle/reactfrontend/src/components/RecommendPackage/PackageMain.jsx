@@ -7,8 +7,14 @@ import moment from "moment";
 import axios from 'axios';
 import Calender from './Component/Calender'
 import HotelCalender from './Component/HotelCalender'
+import Time from './Component/Time';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import {setToken} from '../../lib/api';
+
 
 
 const PackageMain = () => {
@@ -24,12 +30,22 @@ const PackageMain = () => {
   const [Airid, setAirid] = useState(0)
   const [startDay, setStartDay] = useState("")
   const [endDay, setEndDay] = useState("")
-  const [startTime, setStartTime] = useState("")
-  const [endTime, setEndTime] = useState("")
+  const [startTime, setStartTime] = useState("00:00")
+  const [endTime, setEndTime] = useState("24:00")
   const [start, setStart] = useState("")
   const [end, setEnd] = useState("")
   const [hotelId, setHotelId] = useState(0)
   const [where, setWhere] = useState("")
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 100,
+    slidesToShow: 1,  // 여기를 2로 변경
+    slidesToScroll: 1,
+    draggable : true
+  };
+
 
 // 로컬 스토리지에서 데이터 가져오기
 
@@ -60,7 +76,6 @@ const PackageMain = () => {
     {value: "FUX", label: "후쿠오카, 일본 FUX" },
     {value: "OKA", label: "오키나와, 일본 OKA" },
     {value: "CTS", label: "삿포로, 일본 CTS" },
-    {value: "NGO", label: "나고야, 일본 NGO" },
     {value: "NGO", label: "나고야, 일본 NGO" },
     {value: "BKK", label: "방콕, 태국 BKK" },
     {value: "DAD", label: "다낭, 베트남 DAD" },
@@ -131,6 +146,7 @@ const PackageMain = () => {
     {value: "CPT", label: '케이프타운, 남아프리카 공화국 CPT' },
 
   ]
+  
 
   const handleAirButton = () => {
     const params = {
@@ -139,6 +155,8 @@ const PackageMain = () => {
       placeEnd: endtAir,
       startStart: moment(startDay).format("YYYY-MM-DD"), // 날짜를 원하는 형식으로 포맷팅
       startEnd: moment(endDay).format("YYYY-MM-DD"), // 날짜를 원하는 형식으로 포맷팅
+      startTime: moment(startTime).format("HH:mm"),
+      endTime: moment(endTime).format("HH:mm"),
     };
   
     setSaveAirBoard([...saveAirBoard, params]);
@@ -169,6 +187,7 @@ const PackageMain = () => {
     setIsModalOpen2(false);
   };
 
+
   const PostData = async () => {
     try {
       const params2 = {
@@ -177,11 +196,11 @@ const PackageMain = () => {
         planHotel : saveHotelBoard,
       }
       // 서버에 보낼 데이터 구조를 맞추기 위해 board 객체를 변경합니다.
-      const response = await axios.post(`/package/recommend`, params2);
+      const response = await axios.post(`https://j9d109.p.ssafy.io:8001/package/recommend`, params2);
       alert('등록되었습니다.');
       console.log(params2)
       console.log(response)
-      
+
     } catch (error) {
       console.error('포스트에러', error);
     }
@@ -193,40 +212,67 @@ const PackageMain = () => {
   }
 
   const handleHotelDateSelection = (e) => {
-    setStartDay(e.start); // 선택된 startDate를 저장
-    console.log("11",e)
-    console.log("22",e)
-    setEndDay(e.end); // 선택된 endDate를 저장
+    setStart(e.start); // 선택된 startDate를 저장
+    setEnd(e.end); // 선택된 endDate를 저장
 };
 
   const handleAirDateSelection = (e) => {
-    setStartAir(e.startDate); // 선택된 startDate를 저장
-    setEndAir(e.endDate); // 선택된 endDate를 저장
+    setStartDay(e.start); // 선택된 startDate를 저장
+    setEndDay(e.end); // 선택된 endDate를 저장
+};
+const handleTimeChange = (startTime, endTime) => {
+  setStartTime(startTime);
+  setEndTime(endTime);
 };
 
+useEffect(() => {
+  setToken()
+}, []);
 
   return (
     <Container>
         <Airbox>
           <p>항공권검색</p>
-          <div>
-          {saveAirBoard && saveAirBoard.map(({ id,placeStart,placeEnd,startStart,startEnd}) => (
-            <div id={id}>
-            <div>{placeStart}</div>
-            <div>{placeEnd}</div>
-            </div>
-          ))}
-          </div>
-          <button onClick={() => setIsModalOpen(!isModalOpen)}>+</button>
-          </Airbox>
+          {(saveAirBoard.length > 0 ? (
+              <Slider {...settings}>
+                {saveAirBoard.map(({ id, placeStart, placeEnd, startStart, startEnd, startTime, endTime }) => (
+                  <Contentbox key={id}>
+                      <div>{options[options.findIndex(e => e.value === placeStart)].label.split(',')[0]}</div>
+                      <div>{options[options.findIndex(e => e.value === placeEnd)].label.split(',')[0]}</div>
+                      <Airstartbox>
+                        <div>
+                          <div>최소 출발시간</div>
+                          <div>{startStart}</div>
+                          <div>{startTime}</div>
+                        </div>
+                        <div>
+                          <div>최대출발시간</div>
+                          <div>{startEnd}</div>      
+                          <div>{endTime}</div>
+                        </div>
+                      </Airstartbox>
+                  </Contentbox>
+                ))}
+            </Slider>) : (<div>항공권을 입력해주세요</div>))}
+          <Button onClick={() => setIsModalOpen(!isModalOpen)}>+</Button>
+        </Airbox>
         <Hotelbox>
             <p>숙박 검색</p>
-            <button onClick={() => setIsModalOpen2(!isModalOpen2)}>+</button>
-            <InputContainer />
-            
+            {(saveHotelBoard.length > 0 ? (
+            <div>
+              {saveHotelBoard && saveHotelBoard.map(({ id,where,start,end}) => (
+              <div id={id}>
+              <div>{where}</div>
+              <div>{start}</div>
+              <div>{end}</div>
+              </div>
+          ))}
+          </div>
+            ) : (<div>숙박을 입력해주세요</div>))}
+            <Button onClick={() => setIsModalOpen2(!isModalOpen2)}>+</Button>
         </Hotelbox>
         <button onClick={PostData}>확인</button>
-        <button onClick={() => Consol()}>확인222222222222</button>
+        <button onClick={console.log(saveAirBoard)}>콘솔</button>
         {isModalOpen && (
             <AirModal title={airModalTitle} closeModal={() => setIsModalOpen(false)} >
               <span>출발</span>
@@ -249,11 +295,14 @@ const PackageMain = () => {
                 styles={customStyles}
                 onChange={(e) => setEndAir(e.value)}
               />
-              <span>최소 출발시간</span>
+              <span>출발날짜선택</span>
               <Calender 
                 onChange={handleAirDateSelection}
                 value={start}
                 end={end}/>
+                <Time
+                  onChange={handleTimeChange}
+                />
                 <button onClick={handleAirButton}>확인</button>
             </AirModal>
         )}
@@ -284,20 +333,20 @@ const Container = styled.div`
   justify-content: center;
   margin-top: 30px;
   width: 400px;
-  height: 100%;
 `
 const Airbox = styled.div`
-  width: 340px;
-  height: 100px;
+  width: 340px; // 고정된 컨테이너 너비
+  height: 200px; // 고정된 컨테이너 높이
   border: 1px solid #B3B1B1;
   border-radius: 7px;
-  margin-bottom: 10px;
   margin-bottom: 30px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `
 const Hotelbox = styled.div`
   width: 340px;
-  height: 100px;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin-bottom: 10px;
@@ -306,6 +355,17 @@ const Hotelbox = styled.div`
   margin-bottom: 30px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     
+`
+const Contentbox = styled.div`
+  width: 340px;
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
 `
 
 const Inputbox = styled.div`
@@ -332,3 +392,33 @@ const customStyles = {
   }),
   menuPortal: (provided) => ({ ...provided, border: `1px solid red`, zIndex: 8888 }),
 }
+
+const Airboard = styled.div`
+  width: 100%; // 슬라이드 아이템을 컨테이너 너비에 맞춤
+  height: 100%; // 슬라이드 아이템을 컨테이너 높이에 맞춤
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+`
+
+const Button = styled.button`
+  width: 80px;
+  border-radius: 7px;
+  border: 1px dashed;
+  margin: 10px;
+  background-color: white;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+`
+
+const minAir = styled.div`
+  width: 100%;
+  height: 100%;
+`
+const Airstartbox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 100px;
+`
