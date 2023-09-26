@@ -72,8 +72,8 @@ def multi_threading(info):
 
     placeStart = planPlane["placeStart"]
     placeEnd = planPlane["placeEnd"]
-    startStart = planPlane["startStart"].split()[0].replace("-", "")
-    startEnd = planPlane["startEnd"].split()[0].replace("-", "")
+    startStart = planPlane["startStart"].replace("-", "")
+    startEnd = planPlane["startEnd"].replace("-", "")
 
     day = int(startEnd) - int(startStart) + 1
 
@@ -121,8 +121,8 @@ def interpark_crawling(info, chrome_options, service):
         pattern = r'공동운항.*?입니다.|Best|위탁수하물제공 '
         origin = re.sub(pattern, "", element.get_attribute('textContent')).split('팝업닫기')
         planeTime = origin[0].replace(" 경유", "경유").split()[2].split(":")
-        userTimeS = planPlane["startStart"].split()[1].split(":")
-        userTimeE = planPlane["startEnd"].split()[1].split(":")
+        userTimeS = planPlane["startTime"].split(":")
+        userTimeE = planPlane["endTime"].split(":")
         p = re.sub("(,|원~|\+1)", "", origin[0]).replace(" 경유", "경유").replace('시간 ','시간').split()
 
         cards = re.sub("( |~|원|,|요금선택|조건)", "", origin[1]).replace('(', '').replace(')', ' ').split("성인")
@@ -207,8 +207,8 @@ def trip_crawling(info, chrome_options, service):
         if p[0]=='':
             continue
         planeTime = p[1].split(":")
-        userTimeS = planPlane["startStart"].split()[1].split(":")
-        userTimeE = planPlane["startEnd"].split()[1].split(":")
+        userTimeS = planPlane["startTime"].split(":")
+        userTimeE = planPlane["endTime"].split(":")
         pt = int(planeTime[0])
         uts = int(userTimeS[0])
         ute = int(userTimeE[0])

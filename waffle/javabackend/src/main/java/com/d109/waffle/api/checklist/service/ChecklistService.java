@@ -14,6 +14,8 @@ import com.d109.waffle.api.checklist.Entity.ChecklistList;
 import com.d109.waffle.api.checklist.Entity.CountryChecklist;
 import com.d109.waffle.api.checklist.dto.ChecklistDto;
 import com.d109.waffle.api.checklist.dto.ChecklistListDto;
+import com.d109.waffle.api.checklist.dto.ModifyChecklistDto;
+import com.d109.waffle.api.checklist.dto.ModifyChecklistItemDto;
 import com.d109.waffle.api.checklist.repository.ChecklistListRepository;
 import com.d109.waffle.api.checklist.repository.ChecklistRepository;
 import com.d109.waffle.api.checklist.repository.CountryChecklistRepository;
@@ -56,13 +58,15 @@ public class ChecklistService {
 			.build();
 		try {
 			checklistList.setId(checklistListRepository.save(checklistList).getId());
-			List<CountryChecklist> list = countryChecklistRepository.findByCountry(checkListDto.getCountry());
+			List<CountryChecklist> list = countryChecklistRepository.findByCountryOrCountry("", checkListDto.getCountry());
 			for(CountryChecklist countryChecklist : list){
 				Checklist checklist = Checklist.builder()
 					.content(countryChecklist.getContent())
 					.price(countryChecklist.getPrice())
 					.currency(countryChecklist.getCurrency())
 					.checklistList(checklistList)
+					.order(countryChecklist.getOrder())
+					.when(0)
 					.build();
 				checklistRepository.save(checklist);
 			}
@@ -82,7 +86,7 @@ public class ChecklistService {
 	}
 
 	public List<Map<String,Object>> getChecklist(String authorization, int id){
-		List<Checklist> list = checklistRepository.findByChecklistList_Id(id);
+		List<Checklist> list = checklistRepository.findByChecklistList_IdOrderByOrderAsc(id);
 		List<Map<String, Object>> result = new ArrayList<>();
 		for(Checklist checklist: list){
 			Map<String, Object> map = new HashMap<>();
@@ -90,6 +94,7 @@ public class ChecklistService {
 			map.put("content", checklist.getContent());
 			map.put("price", checklist.getPrice());
 			map.put("currency", checklist.getCurrency());
+			map.put("when", checklist.getWhen());
 			result.add(map);
 		}
 		return result;
@@ -130,6 +135,29 @@ public class ChecklistService {
 			checklistRepository.save(checklist);
 			return true;
 		}catch (Exception e){
+			return false;
+		}
+	}
+
+	public boolean modifyChecklist(ModifyChecklistDto modifyChecklistDto){
+		try {
+			ChecklistList checklistList = checklistListRepository.findById(modifyChecklistDto.getId()).get();
+			checklistList.setStart(modifyChecklistDto.getStart());
+			checklistList.setEnd(modifyChecklistDto.getEnd());
+			checklistList.setName(modifyChecklistDto.getName());
+			checklistListRepository.save(checklistList);
+			List<ModifyChecklistItemDto> list = modifyChecklistDto.getList();
+			for (ModifyChecklistItemDto modifyChecklistItemDto : list) {
+				Checklist checklist = checklistRepository.findById(modifyChecklistItemDto.getId()).get();
+				checklist.setContent(modifyChecklistItemDto.getContent());
+				checklist.setPrice(modifyChecklistItemDto.getPrice());
+				checklist.setCurrency(modifyChecklistItemDto.getCurrency());
+				checklist.setOrder(modifyChecklistItemDto.getOrder());
+				checklist.setWhen(modifyChecklistItemDto.getWhen());
+				checklistRepository.save(checklist);
+			}
+			return true;
+		}catch(Exception e){
 			return false;
 		}
 	}
