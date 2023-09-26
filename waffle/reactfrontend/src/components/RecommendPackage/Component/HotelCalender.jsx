@@ -7,8 +7,8 @@ class CalendarComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            start: null,
-            end: null,
+            startDate: null,
+            endDate: null,
         };
     }
 
@@ -21,7 +21,7 @@ class CalendarComponent extends Component {
             maxDate.setDate(maxDate.getDate() + 2);
         }
 
-        this.setState({ start: start, end: end, maxDate: maxDate });
+        this.setState({ startDate: start, endDate: end, maxDate: maxDate });
     };
 
     render() {
@@ -32,8 +32,8 @@ class CalendarComponent extends Component {
                     className="datepicker"
                     locale={ko}
                     dateFormat="yyyy년 MM월 dd일"
-                    selected={this.state.start}
-                    startDate={this.state.start}
+                    selected={this.state.startDate}
+                    startDate={this.state.startDate}
                     endDate={this.state.endDate}
                     minDate={new Date()}
                     maxDate={this.state.maxDate}

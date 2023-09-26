@@ -193,14 +193,16 @@ const PackageMain = () => {
     console.log(saveHotelBoard)
   }
 
-  const handleHotelDateSelection = (startDate, endDate) => {
-    setStartDay(startDate); // 선택된 startDate를 저장
-    setEndDay(endDate); // 선택된 endDate를 저장
+  const handleHotelDateSelection = (e) => {
+    setStartDay(e.start); // 선택된 startDate를 저장
+    console.log("11",e)
+    console.log("22",e)
+    setEndDay(e.end); // 선택된 endDate를 저장
 };
 
-  const handleAirDateSelection = (startDate, endDate) => {
-    setStartAir(startDate); // 선택된 startDate를 저장
-    setEndAir(endDate); // 선택된 endDate를 저장
+  const handleAirDateSelection = (e) => {
+    setStartAir(e.startDate); // 선택된 startDate를 저장
+    setEndAir(e.endDate); // 선택된 endDate를 저장
 };
 
   return (
@@ -249,8 +251,9 @@ const PackageMain = () => {
               />
               <span>최소 출발시간</span>
               <Calender 
-                onChange={(selectedDate) => handleHotelDateSelection(selectedDate, selectedDate)}
-                value={startAir}/>
+                onChange={(selectedDate) => handleAirDateSelection(selectedDate.target.value)}
+                value={start}
+                end={end}/>
                 <button onClick={handleAirButton}>확인</button>
             </AirModal>
         )}
@@ -261,8 +264,9 @@ const PackageMain = () => {
               <input type="text" onChange={(e) => setWhere(e.target.value)}/>
               <span>최소 출발시간</span>
               <HotelCalender 
-                onChange={(selectedDate) => handleHotelDateSelection(selectedDate, selectedDate)}
-                value={startAir}/>
+                onChange={(selectedDate) => handleHotelDateSelection(selectedDate)}
+                value={start}
+               />
               <button onClick={handleHotelButton}>확인</button>
             </AirModal>
             
