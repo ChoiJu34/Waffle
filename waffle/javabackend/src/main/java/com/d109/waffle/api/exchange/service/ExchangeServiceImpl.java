@@ -95,6 +95,6 @@ public class ExchangeServiceImpl implements ExchangeService{
 		log.info("1년 전 localdatetime {}", yearAgoDate);
 		int countryId = CountryEnum.valueOf(currencyCode).getId();
 		log.info("country id {}", countryId);
-		return exchangeRepository.findByCountryIdAndDateAfter(countryId, yearAgoDate);
+		return exchangeRepository.findByCountryIdAndDateGreaterThanEqual(countryId, yearAgoDate);
 	}
 }
