@@ -1,12 +1,14 @@
 package com.d109.waffle.api.exchange.service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import javax.swing.*;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -84,5 +86,15 @@ public class ExchangeServiceImpl implements ExchangeService{
 
 			}
 		}
+	}
+
+	@Override
+	public List<ExchangeEntity> getYearExchangeData(String currencyCode) throws Exception {
+		ZoneId zoneId = ZoneId.of("Asia/Seoul");
+		LocalDateTime yearAgoDate = LocalDateTime.now(zoneId).minusYears(1);
+		log.info("1년 전 localdatetime {}", yearAgoDate);
+		int countryId = CountryEnum.valueOf(currencyCode).getId();
+		log.info("country id {}", countryId);
+		return exchangeRepository.findByCountryIdAndDateAfter(countryId, yearAgoDate);
 	}
 }
