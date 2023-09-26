@@ -1,13 +1,15 @@
 import copy
 import datetime
 import logging
+import os
 import queue
 import re
 import threading
 import time
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options as ChromeOptions, Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -21,6 +23,8 @@ logger = logging.getLogger(__name__)
 result = []
 q_list = []
 
+current_directory = os.path.dirname(__file__)
+file_path = os.path.join(current_directory, '..', '..', 'chromedriver.exe')
 # multi_list = manager.list()
 multi_list = []
 
@@ -85,26 +89,29 @@ def multi_threading(info):
 
 def crawling_multi_thread(info):
     i, k, n, memberCnt, placeStart, placeEnd, startStart, planPlane, day = info
+    service = Service()
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    chrome_options.add_argument('window-size=1920x1080')
+    chrome_options.add_argument("disable-gpu")
+
     if i == 0:
-        interpark_crawling(info)
+        interpark_crawling(info, chrome_options, service)
     elif i == 1:
-        trip_crawling(info)
+        trip_crawling(info, chrome_options, service)
 
 
-def interpark_crawling(info):
+def interpark_crawling(info, chrome_options, service):
     i, k, n, memberCnt, placeStart, placeEnd, startStart, planPlane, day = info
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--disable-gpu")
-    driver = webdriver.Chrome()
 
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     today = int(startStart) + int(n)
 
     url = f'https://fly.interpark.com/booking/mainFlights.do?tripType=OW&sdate0={int(startStart) + int(n)}&sdate1=&dep0={placeStart}&arr0={placeEnd}&dep1=&arr1=&adt={memberCnt}&chd=0&inf=0&val=&comp=Y&via=#list'
     xpath = '//ul[@id="schedule0List"]/li'
 
     driver.get(url)
-    time.sleep(0.17)
+    # time.sleep(0.17)
     wait = WebDriverWait(driver, 20)
     wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
     elements = driver.find_elements(By.XPATH, xpath)
@@ -123,7 +130,7 @@ def interpark_crawling(info):
         origin = cards[len(cards)-1]
         del cards[len(cards)-1]
         if len(cards)==0:
-            multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin, int(origin), p[5], p[6], '인터파크'))
+            multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin, int(origin.replace("위탁수하물제공 ", "")), p[5], p[6], '인터파크'))
 
         pt = int(planeTime[0])
         uts = int(userTimeS[0])
@@ -149,12 +156,10 @@ def interpark_crawling(info):
             # logger.info(f'{today}, {p[0]}, {p[1]}, {p[2]}, {p[3]}, {p[4]}, {card_info[0]}, {origin}, {discount}, {p[5]}, {p[6]}, 인터파크')
     driver.quit()
 
-def trip_crawling(info):
+def trip_crawling(info, chrome_options, service):
     i, k, n, memberCnt, placeStart, placeEnd, startStart, planPlane, day = info
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--disable-gpu")
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome(service=service, options=chrome_options)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
     today = int(startStart) + int(n)
 
@@ -164,7 +169,7 @@ def trip_crawling(info):
 
     driver.get(url)
 
-    time.sleep(0.7)
+    # time.sleep(0.7)
     wait = WebDriverWait(driver, 20)
     wait.until(EC.element_to_be_clickable((By.XPATH, xpath1)))
     driver.find_element(By.XPATH, xpath1).click()
@@ -177,7 +182,7 @@ def trip_crawling(info):
     #     if datetime.datetime.now() > end:
     #         break
 
-    time.sleep(0.6)
+    # time.sleep(0.6)
     before_location = driver.execute_script("return window.pageYOffset")
     while True:
         driver.execute_script("window.scrollTo(0,{})".format(before_location + 600))
@@ -188,7 +193,7 @@ def trip_crawling(info):
         else:
             before_location = driver.execute_script("return window.pageYOffset")
 
-    time.sleep(0.8)
+    # time.sleep(0.8)
     wait = WebDriverWait(driver, 20)
     wait.until(EC.presence_of_element_located((By.XPATH, xpath2)))
     elements = driver.find_elements(By.XPATH, xpath2)
