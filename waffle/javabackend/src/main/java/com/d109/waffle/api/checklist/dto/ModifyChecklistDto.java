@@ -1,5 +1,7 @@
 package com.d109.waffle.api.checklist.dto;
 
+import java.util.List;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -18,10 +20,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class ChecklistDto {
-	int checklistListId;
-	int price;
-	String currency;
-	String content;
-	int order;
+public class ModifyChecklistDto {
+	int id;
+	String start;
+	String end;
+	String name;
+	List<ModifyChecklistItemDto> list;
 }

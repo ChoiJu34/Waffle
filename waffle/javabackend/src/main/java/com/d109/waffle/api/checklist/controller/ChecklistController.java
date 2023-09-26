@@ -23,6 +23,7 @@ import com.d109.waffle.api.checklist.Entity.Checklist;
 import com.d109.waffle.api.checklist.Entity.ChecklistList;
 import com.d109.waffle.api.checklist.dto.ChecklistDto;
 import com.d109.waffle.api.checklist.dto.ChecklistListDto;
+import com.d109.waffle.api.checklist.dto.ModifyChecklistDto;
 import com.d109.waffle.api.checklist.service.ChecklistService;
 
 import io.swagger.models.Response;
@@ -106,6 +107,17 @@ public class ChecklistController {
 	public ResponseEntity<?> checkChecklistItem(@PathVariable("checklist-item-id") int id){
 		Map<String, Object> result = new HashMap<>();
 		if(checklistService.checkChecklistItem(id)){
+			result.put("message", success);
+		}else{
+			result.put("message", fail);
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@PutMapping("modify-checklist")
+	public ResponseEntity<?> modifyChecklist(@RequestBody ModifyChecklistDto modifyChecklistDto){
+		Map<String, Object> result = new HashMap<>();
+		if(checklistService.modifyChecklist(modifyChecklistDto)){
 			result.put("message", success);
 		}else{
 			result.put("message", fail);
