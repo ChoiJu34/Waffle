@@ -8,5 +8,5 @@ import com.d109.waffle.api.checklist.Entity.Checklist;
 import com.d109.waffle.api.checklist.Entity.ChecklistList;
 
 public interface ChecklistRepository extends JpaRepository<Checklist, Integer>{
-	List<Checklist> findByChecklistList_Id(int id);
+	List<Checklist> findByChecklistList_IdOrderByOrderAsc(int id);
 }

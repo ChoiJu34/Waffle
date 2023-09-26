@@ -1,9 +1,4 @@
-package com.d109.waffle.api.checklist.Entity;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+package com.d109.waffle.api.checklist.dto;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -15,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "country_checklist")
 @Getter
 @Setter
 @ToString
@@ -24,13 +18,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class CountryChecklist {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ModifyChecklistItemDto {
 	int id;
-	String country;
 	String content;
 	int price;
-	String currency;
 	int order;
+	String currency;
+	int when;
 }

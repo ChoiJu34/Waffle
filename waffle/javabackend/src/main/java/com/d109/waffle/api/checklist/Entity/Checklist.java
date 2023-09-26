@@ -37,6 +37,8 @@ public class Checklist {
 	int price;
 	String currency;
 	byte check;
+	int order;
+	int when;
 	@ManyToOne
 	@JoinColumn(name = "checklist_list_id")
 	private ChecklistList checklistList;
