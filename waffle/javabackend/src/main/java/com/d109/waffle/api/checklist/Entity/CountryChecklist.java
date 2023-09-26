@@ -4,13 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import com.d109.waffle.api.user.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "checklist")
+@Entity(name = "country_checklist")
 @Getter
 @Setter
 @ToString
@@ -28,15 +24,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class Checklist {
+public class CountryChecklist {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
+	String country;
 	String content;
 	int price;
 	String currency;
-	boolean check;
-	@ManyToOne
-	@JoinColumn(name = "checklist_list_id")
-	private ChecklistList checklistList;
 }

@@ -1,6 +1,9 @@
 package com.d109.waffle.api.checklist.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -8,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import com.d109.waffle.api.checklist.Entity.Checklist;
 import com.d109.waffle.api.checklist.Entity.ChecklistList;
+import com.d109.waffle.api.checklist.Entity.CountryChecklist;
+import com.d109.waffle.api.checklist.dto.ChecklistDto;
 import com.d109.waffle.api.checklist.dto.ChecklistListDto;
 import com.d109.waffle.api.checklist.repository.ChecklistListRepository;
 import com.d109.waffle.api.checklist.repository.ChecklistRepository;
+import com.d109.waffle.api.checklist.repository.CountryChecklistRepository;
 import com.d109.waffle.api.user.entity.UserEntity;
 import com.d109.waffle.common.auth.service.JwtService;
 
@@ -21,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class ChecklistService {
 	private final ChecklistListRepository checklistListRepository;
 	private final ChecklistRepository checklistRepository;
+	private final CountryChecklistRepository countryChecklistRepository;
 	private final JwtService jwtService;
 
 	public List<ChecklistList> getChecklistList(String authorization){
@@ -48,17 +55,78 @@ public class ChecklistService {
 			.userEntity(user)
 			.build();
 		try {
-			//나라별 체크리스트 엔티티 만들고 나라로 리스트 뽑은 뒤 사용자 체크리스트에 저장해야해
-			checklistListRepository.save(checklistList);
-			// checklistRepository.save(checklist);
+			checklistList.setId(checklistListRepository.save(checklistList).getId());
+			List<CountryChecklist> list = countryChecklistRepository.findByCountry(checkListDto.getCountry());
+			for(CountryChecklist countryChecklist : list){
+				Checklist checklist = Checklist.builder()
+					.content(countryChecklist.getContent())
+					.price(countryChecklist.getPrice())
+					.currency(countryChecklist.getCurrency())
+					.checklistList(checklistList)
+					.build();
+				checklistRepository.save(checklist);
+			}
 		} catch (Exception e){
 			return false;
 		}
 		return true;
 	}
 
-	public List<Checklist> getChecklist(String authorization, int id){
-		List<Checklist> result = checklistRepository.findAllByChecklistList_Id(id);
+	public boolean deleteChecklistList(String authorization, int id){
+		try {
+			checklistListRepository.deleteById(id);
+		}catch (Exception e){
+			return false;
+		}
+		return true;
+	}
+
+	public List<Map<String,Object>> getChecklist(String authorization, int id){
+		List<Checklist> list = checklistRepository.findByChecklistList_Id(id);
+		List<Map<String, Object>> result = new ArrayList<>();
+		for(Checklist checklist: list){
+			Map<String, Object> map = new HashMap<>();
+			map.put("id", checklist.getId());
+			map.put("content", checklist.getContent());
+			map.put("price", checklist.getPrice());
+			map.put("currency", checklist.getCurrency());
+			result.add(map);
+		}
 		return result;
+	}
+
+	public boolean addChecklistItem(ChecklistDto checklistDto){
+		try {
+			Checklist checklist = Checklist.builder()
+				.content(checklistDto.getContent())
+				.price(checklistDto.getPrice())
+				.currency(checklistDto.getCurrency())
+				.checklistList(checklistListRepository.findById(checklistDto.getChecklistListId()).get())
+				.build();
+			checklistRepository.save(checklist);
+			return true;
+		}catch (Exception e){
+			return false;
+		}
+	}
+
+	public boolean deleteChecklistItem(int id){
+		try {
+			checklistRepository.deleteById(id);
+			return true;
+		}catch (Exception e){
+			return false;
+		}
+	}
+
+	public boolean checkChecklistItem(int id){
+		try {
+			Checklist checklist = checklistRepository.findById(id).get();
+			checklist.setCheck(!checklist.isCheck());
+			checklistRepository.save(checklist);
+			return true;
+		}catch (Exception e){
+			return false;
+		}
 	}
 }
