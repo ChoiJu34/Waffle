@@ -56,7 +56,7 @@ public class ScheduledExchange {
 
 		LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-		log.info("now midnight {}", now.with(LocalTime.MIDNIGHT));
+		// log.info("now midnight {}", now.with(LocalTime.MIDNIGHT));
 
 		LocalDateTime today = now.with(LocalTime.MIDNIGHT);
 
@@ -68,11 +68,11 @@ public class ScheduledExchange {
 		);
 
 		if(response.getBody().isEmpty()) {
-			log.info("empty response");
+			// log.info("empty response");
 			return;
 		}
 
-		log.info("recent exchange res {}", response.getBody());
+		// log.info("recent exchange res {}", response.getBody());
 
 
 		List<RecentExchangeDto> list = response.getBody();
@@ -81,23 +81,23 @@ public class ScheduledExchange {
 
 			List<ExchangeEntity> exchangeEntity = exchangeRepository.findByCountryIdAndDateGreaterThanEqual(CountryEnum.valueOf(unit).getId(), today);
 
-			log.info("get today rate {}", exchangeEntity);
+			// log.info("get today rate {}", exchangeEntity);
 
 			ExchangeEntity exchange;
 			if(exchangeEntity.isEmpty()) {
-				log.info("empty exchange entity");
+				// log.info("empty exchange entity");
 				exchange = ExchangeEntity.builder()
 					.date(today)
 					.countryId(CountryEnum.valueOf(unit).getId())
 					.price(dto.getBasePrice())
 					.build();
 			} else {
-				log.info("exist");
+				// log.info("exist");
 				exchange = exchangeEntity.get(0);
 				exchange.setPrice(dto.getBasePrice());
 			}
 
-			log.info("save exchange entity {}", exchange);
+			// log.info("save exchange entity {}", exchange);
 
 			exchangeRepository.save(exchange);
 
