@@ -62,3 +62,5 @@ request:
     base_url: http://localhost:8001
   exchange_open_api:
     base_url: https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EExqPGr9A5oLm4EtBTNMhAJ2OEeQFKiM&data=AP01
+  recent_exchange_open_api:
+    base_url: https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD,FRX.KRWCNH,FRX.KRWSGD,FRX.KRWJPY,FRX.KRWEUR,FRX.KRWHKD,FRX.KRWTHB,FRX.KRWGBP
