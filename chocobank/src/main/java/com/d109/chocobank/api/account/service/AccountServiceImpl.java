@@ -42,18 +42,23 @@ public class AccountServiceImpl implements AccountService {
 		accountRepository.save(accountEntity);
 	}
 
+// 	@Override
+// 	public List<AccountDto> getServiceAccountList(String uuid) throws Exception {
+// //		Optional<UserEntity> userEntity = userRepository.findByUuid(uuid);
+// //		if(userEntity.isEmpty()) {
+// //			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+// //		}
+// 		List<AccountDto> accountDtoList = accountRepository.findByUserEntity_Uuid(uuid);
+// 		return accountDtoList;
+// 	}
+
 	@Override
-	public List<AccountDto> getServiceAccountList(String uuid) throws Exception {
-//		Optional<UserEntity> userEntity = userRepository.findByUuid(uuid);
-//		if(userEntity.isEmpty()) {
-//			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
-//		}
-		List<AccountDto> accountDtoList = accountRepository.findByUserEntity_Uuid(uuid);
-		return accountDtoList;
+	public AccountEntity getServiceAccount(String accountNumber) throws Exception {
+		return accountRepository.findByAccountNumber(accountNumber).orElseThrow();
 	}
 
 	@Override
-	public List<AccountHistoryEntity> getServiceAccountHistory(String uuid, String accountNumber) throws Exception {
+	public List<AccountHistoryEntity> getServiceAccountHistory(String accountNumber) throws Exception {
 		return accountHistoryRepository.findByAccountEntity_AccountNumber(accountNumber);
 	}
 
@@ -81,7 +86,7 @@ public class AccountServiceImpl implements AccountService {
 		AccountHistoryEntity sendHistory = AccountHistoryEntity.builder()
 			.accountEntity(senderAccountEntity)
 			.balance(senderAccountEntity.sendTransfer(money))
-			.money("- "+money)
+			.money(money)
 			.senderName(Optional.ofNullable(senderName).orElse(senderAccountEntity.getUserEntity().getName()))
 			.receiverName(Optional.ofNullable(receiverName).orElse(receiverAccountEntity.getUserEntity().getName()))
 			.senderAccountNumber(senderAccountNumber)
@@ -92,7 +97,7 @@ public class AccountServiceImpl implements AccountService {
 		AccountHistoryEntity receiveHistory = AccountHistoryEntity.builder()
 			.accountEntity(receiverAccountEntity)
 			.balance(receiverAccountEntity.receiveTransfer(money))
-			.money("+ "+money)
+			.money(money)
 			.senderName(Optional.ofNullable(senderName).orElse(senderAccountEntity.getUserEntity().getName()))
 			.receiverName(Optional.ofNullable(receiverName).orElse(receiverAccountEntity.getUserEntity().getName()))
 			.senderAccountNumber(senderAccountNumber)
