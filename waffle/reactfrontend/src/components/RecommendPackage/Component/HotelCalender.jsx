@@ -22,6 +22,8 @@ class CalendarComponent extends Component {
         }
 
         this.setState({ startDate: start, endDate: end, maxDate: maxDate });
+
+        this.props.onChange({ start, end })
     };
 
     render() {

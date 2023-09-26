@@ -141,7 +141,6 @@ const PackageMain = () => {
       startEnd: moment(endDay).format("YYYY-MM-DD"), // 날짜를 원하는 형식으로 포맷팅
     };
   
-
     setSaveAirBoard([...saveAirBoard, params]);
 
     setStartAir("");
@@ -205,6 +204,7 @@ const PackageMain = () => {
     setEndAir(e.endDate); // 선택된 endDate를 저장
 };
 
+
   return (
     <Container>
         <Airbox>
@@ -251,7 +251,7 @@ const PackageMain = () => {
               />
               <span>최소 출발시간</span>
               <Calender 
-                onChange={(selectedDate) => handleAirDateSelection(selectedDate.target.value)}
+                onChange={handleAirDateSelection}
                 value={start}
                 end={end}/>
                 <button onClick={handleAirButton}>확인</button>
@@ -264,7 +264,7 @@ const PackageMain = () => {
               <input type="text" onChange={(e) => setWhere(e.target.value)}/>
               <span>최소 출발시간</span>
               <HotelCalender 
-                onChange={(selectedDate) => handleHotelDateSelection(selectedDate)}
+                onChange={handleHotelDateSelection}
                 value={start}
                />
               <button onClick={handleHotelButton}>확인</button>
