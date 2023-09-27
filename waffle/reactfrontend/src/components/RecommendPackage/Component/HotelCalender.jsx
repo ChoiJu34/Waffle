@@ -22,9 +22,9 @@ class HotelCalendarComponent extends Component {
         }
 
         this.setState({ startDate: start, endDate: end, maxDate: maxDate });
-    const handleDateChange = (startDate, endDate) => {
-            this.props.onDateChange(startDate, endDate);
-        };
+
+        this.props.onChange({ start, end })
+    };
 
     render() {
         return (
@@ -38,9 +38,12 @@ class HotelCalendarComponent extends Component {
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
                     minDate={new Date()}
-                    maxDate={this.state.maxDate}
-                    onChange={(dates) => { const { startDate, endDate } = this.setChangeDate(dates);
-                    this.handleDateChange(startDate, endDate);}}
+                    onChange={(dates) => this.setChangeDate(dates)}
+                    placeholderText="View blur callbacks in console"
+                    showIcon
+                    showDisabledMonthNavigation
+
+                    
                 />
             </div>
         );

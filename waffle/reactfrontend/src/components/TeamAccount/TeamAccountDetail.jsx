@@ -7,6 +7,8 @@ import TeamAccountDetailIndividualList from './TeamAccountDetailIndividualList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from 'react-router-dom'
+import IndividualDataContext from '../Commons/IndividualDataContext';
+import TeamAccountUpdateIndividual from './TeamAccountUpdateIndividual';
 
 const TeamAccountDetail = () => {
 
@@ -68,7 +70,7 @@ const TeamAccountDetail = () => {
   const endDate = "2023-11-30"
 
   const spentValue = 500
-  const raisedValue = 1900
+  const raisedValue = 1300
   const targetValue = 3000
 
   const spentRatio = spentValue / targetValue * 100
@@ -120,18 +122,65 @@ const TeamAccountDetail = () => {
   }, [endDate]);
 
   // 개인 목표 수정
-  const temporaryData = [
-      {name: "대장", target: 500},
-      {name: "부부젤라", target: 1500}
-    ]
+  const [individualData, setIndividualData] = useState(
+      [
+        {name: "대장", target: 500},
+        {name: "부부젤라", target: 1500}
+      ])
 
-  const goToUpdateIndividual = () => {
-    navigate('/teamaccount/update/individual', { state: temporaryData })
+  const handleIndividualDataChange = (updatedData) => {
+    setIndividualData(updatedData)
   }
 
+  const goToUpdateIndividual = () => {
+    setShowIndividualUpdate(true)
+    // navigate('/teamaccount/update/individual', { state: individualData })
+  }
+
+  const [showIndividualUpdate, setShowIndividualUpdate] = useState(false);
+
+  // 스윙 이미지
+  const [swingAnimation, setSwingAnimation] = useState("animate__fadeInTopLeft");
+
+  useEffect(() => {
+      const initialTimeout = setTimeout(() => {
+          setSwingAnimation("animate__swing animate__slow");
+          const interval = setInterval(() => {
+              setSwingAnimation(""); 
+              setTimeout(() => {
+                  setSwingAnimation("animate__swing animate__slow");
+              }, 50); 
+          }, 4 * 1000 + 1000);
+  
+          return () => clearInterval(interval);
+      }, 1000); 
+  
+      return () => clearTimeout(initialTimeout);
+  }, []);
+
+    // 가방 이미지
+    const [backAnimation, setBackAnimation] = useState("animate__fadeInDown");
+
+    useEffect(() => {
+        const initialTimeout = setTimeout(() => {
+            setBackAnimation("animate__wobble");
+            const interval = setInterval(() => {
+                setBackAnimation(""); 
+                setTimeout(() => {
+                    setBackAnimation("animate__wobble");
+                }, 50); 
+            }, 4 * 1000 + 1000);
+    
+            return () => clearInterval(interval);
+        }, 1000); 
+    
+        return () => clearTimeout(initialTimeout);
+    }, []);
 
   return (
     <TeamAccountDetailWrapper spentRatio={spentRatio} raisedRatio={raisedRatio}>
+       {showIndividualUpdate ? (<TeamAccountUpdateIndividual handleIndividualDataChange={handleIndividualDataChange} individualData={individualData} setShowIndividualUpdate={setShowIndividualUpdate}/>) : 
+      (<>
       <div className="teamaccount-detail-title">
       <div className="login-header"><FontAwesomeIcon icon={faArrowLeft} color="black" onClick={handleGoBack}/></div>
         <div className="teamaccount-detail-title-text">{accountName}</div>
@@ -181,8 +230,8 @@ const TeamAccountDetail = () => {
               onTouchEnd={handleMouseUpOrLeave}
             >{showDetail.raised && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>모은 금액<br />1,900원</div>}
              {raisedValue < targetValue/2 ?
-              <img src={MainGraphBackpack} alt="MainGraphBackpack" className="raised-end" data-type="raised" /> :
-              <img src={MainGraphPlane} alt="MainGraphPlane" className="custom-swing  raised-end" data-type="raised" />}
+              <img src={MainGraphBackpack} alt="MainGraphBackpack" className={`animate__animated ${backAnimation} raised-end-back`} data-type="raised" /> :
+              <img src={MainGraphPlane} alt="MainGraphPlane" className={`animate__animated ${swingAnimation} raised-end`}  data-type="raised" />}
             </div>
 
           <div
@@ -202,6 +251,7 @@ const TeamAccountDetail = () => {
         <div className="team-account-detail-individual-title">개인별 목표 금액</div>
         <TeamAccountDetailIndividualList />
       </div>
+      </>)}
     </TeamAccountDetailWrapper>
   )
 }
@@ -232,6 +282,16 @@ const wipeAnimation = keyframes`
     width: 100%;
   }
 `;
+
+const LandingAnimation = keyframes`
+  0% {
+    transform: rotate(0deg) translateX(50px) rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg) translateX(50px) rotate(-360deg);
+  }
+`
 
 const TeamAccountDetailWrapper = styled.div`
 .teamaccount-detail-title {
@@ -346,12 +406,22 @@ const TeamAccountDetailWrapper = styled.div`
   width: auto;
   height: 60%;
   transform-origin: center;
+  z-index: 4;
 }
 
-.custom-swing {
-    animation: ${swingAnimation} 2s infinite alternate;
-    animation-delay: 2s;
-  }
+.raised-end-back {
+  position: absolute;
+  right: 0;
+  top: 25%;
+  width: auto;
+  height: 53%;
+  transform-origin: center;
+  z-index: 4;
+}
+
+/* .custom-swing {
+    animation: ${LandingAnimation} 2s forwards;
+  } */
 
 .teamaccount-detail-maingraph-dday {
   position: absolute;

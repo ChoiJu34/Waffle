@@ -14,7 +14,7 @@ class CalendarComponent extends Component {
 
     setChangeDate = (dates) => {
         const [start, end] = dates;
-        console.log(start, end)
+        
         // 첫 번째 선택일로부터 2일 후의 날짜 계산
         const maxDate = start ? new Date(start.getTime()) : null;
         if (maxDate) {
@@ -22,6 +22,8 @@ class CalendarComponent extends Component {
         }
 
         this.setState({ startDate: start, endDate: end, maxDate: maxDate });
+
+        this.props.onChange({ start, end })
     };
 
     render() {
@@ -38,6 +40,7 @@ class CalendarComponent extends Component {
                     minDate={new Date()}
                     maxDate={this.state.maxDate}
                     onChange={(dates) => this.setChangeDate(dates)}
+                   
                 />
             </div>
         );
