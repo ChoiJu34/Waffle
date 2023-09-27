@@ -7,7 +7,7 @@ const useAuth = () => {
 }
 
 const AuthProvider = ({ children }) => {
-    const isLoggedIn = !!localStorage.getItem('token');
+    const isLoggedIn = !!localStorage.getItem('access_token');
     return <AuthContext.Provider value={isLoggedIn}>{children}</AuthContext.Provider>;
 }
 
