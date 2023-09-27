@@ -109,12 +109,16 @@ def interpark_crawling(info, chrome_options, service):
 
     url = f'https://fly.interpark.com/booking/mainFlights.do?tripType=OW&sdate0={int(startStart) + int(n)}&sdate1=&dep0={placeStart}&arr0={placeEnd}&dep1=&arr1=&adt={memberCnt}&chd=0&inf=0&val=&comp=Y&via=#list'
     xpath = '//ul[@id="schedule0List"]/li'
-
-    driver.get(url)
-    # time.sleep(0.17)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
-    elements = driver.find_elements(By.XPATH, xpath)
+    
+    try:
+        driver.get(url)
+        # time.sleep(0.17)
+        wait = WebDriverWait(driver, 20)
+        wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        elements = driver.find_elements(By.XPATH, xpath)
+    except:
+        logger.info("인터파크 비행기 크롤링 에러")
+        return
 
     # n일째의 i번째 비행기
     for element in elements:
@@ -167,20 +171,24 @@ def trip_crawling(info, chrome_options, service):
     xpath1 = '//*[@id="main"]/div[2]/div[7]/div[1]/div[2]/div[4]/div[1]/div[1]/div/div[2]'# 낮은가격순 버튼
     xpath2 = '//*[@id="J_resultList"]/div/div/div[1]/div[2]'
 
-    driver.get(url)
+    try:
+        driver.get(url)
 
-    # time.sleep(0.7)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.element_to_be_clickable((By.XPATH, xpath1)))
-    driver.find_element(By.XPATH, xpath1).click()
+        # time.sleep(0.7)
+        wait = WebDriverWait(driver, 20)
+        wait.until(EC.element_to_be_clickable((By.XPATH, xpath1)))
+        driver.find_element(By.XPATH, xpath1).click()
 
-    start = datetime.datetime.now()
-    end = start + datetime.timedelta(seconds=0.5)
-    # while True:
-    #     driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
-    #     time.sleep(0.2)
-    #     if datetime.datetime.now() > end:
-    #         break
+        start = datetime.datetime.now()
+        end = start + datetime.timedelta(seconds=0.5)
+        # while True:
+        #     driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+        #     time.sleep(0.2)
+        #     if datetime.datetime.now() > end:
+        #         break
+    except:
+        logger.info("트립닷컴 비행기 크롤링 에러")
+        return
 
     # time.sleep(0.6)
     before_location = driver.execute_script("return window.pageYOffset")
