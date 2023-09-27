@@ -1,21 +1,24 @@
-# 베이스 이미지 명시
 FROM python:3.9
 
-# 컨테이너 실행 전 수행할 쉘 명령어
-WORKDIR /app
+RUN apt-get update && apt-get install -y \
+    curl unzip xvfb libxi6 libgconf-2-4
 
-# Copy the requirements.txt file to the container
-COPY requirements.txt ./
+RUN curl https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o /chrome.deb
+RUN dpkg -i /chrome.deb || apt-get install -yf
+RUN rm /chrome.deb
 
-# Install the application dependencies
+RUN curl -sS -o /tmp/chromedriver_linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/117.0.5938.92/linux64/chromedriver-linux64.zip && \
+    unzip -qq /tmp/chromedriver_linux64.zip -d /opt/ && \
+    rm /tmp/chromedriver_linux64.zip && \
+    chmod +x /opt/chromedriver-linux64/chromedriver && \
+    ln -fs /opt/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+
+# Python dependencies
+COPY requirements.txt .
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copy the application code to the container
+# Copy the rest of the application code
 COPY . .
 
-# 컨테이너가 시작되었을 때 실행할 쉘 명령어
-# 도커파일 내 1회만 실행할 수 있음
-EXPOSE 8000
-
-# Specify the command to run when the container starts
-CMD [ "python", "./manage.py", "runserver", "0.0.0.0:8000" ]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

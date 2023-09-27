@@ -2,9 +2,9 @@ DATABASES = {
     'default' : {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mydb',
-        'USER': 'root',
+        'USER': 'chocobar',
         'PASSWORD': 'ssafy',
-        'HOST': 'localhost',
+        'HOST': 'j9d109.p.ssafy.io',
         'PORT': 3306,
     }
 }
