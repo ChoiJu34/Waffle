@@ -38,8 +38,12 @@ class CalendarComponent extends Component {
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
                     minDate={new Date()}
-                    maxDate={this.state.maxDate}
                     onChange={(dates) => this.setChangeDate(dates)}
+                    placeholderText="View blur callbacks in console"
+                    showIcon
+                    showDisabledMonthNavigation
+
+                    
                 />
             </div>
         );

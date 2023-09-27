@@ -54,13 +54,13 @@ const MainPage = () => {
       if (window.scrollY > 300) {
         setShowCard(true);
       }
-      if (window.scrollY > 700) {
+      if (window.scrollY > 600) {
         setShowExchange(true);
       }
-      if (window.scrollY > 1100) {
+      if (window.scrollY > 900) {
         setShowAccount(true);
       }
-      if (window.scrollY > 1300) {
+      if (window.scrollY > 1200) {
         setShowChecklist(true);
       }
     };
