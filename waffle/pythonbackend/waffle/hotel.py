@@ -107,30 +107,34 @@ def interpark_crawling(info, chrome_options, service):
 
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
-    driver.get(url)
-    # time.sleep(0.2)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.presence_of_element_located((By.XPATH, xpath3)))
-    driver.find_element(By.XPATH, xpath3).click()
-
-    wait = WebDriverWait(driver, 20)
-    # time.sleep(0.2)
-    wait.until(EC.presence_of_element_located((By.XPATH, xpath4)))
-    driver.find_element(By.XPATH, xpath4).click()
-
-    for i in range(5):
+    try:
+        driver.get(url)
         # time.sleep(0.2)
         wait = WebDriverWait(driver, 20)
-        wait.until(EC.element_to_be_clickable((By.XPATH, xpath5)))
-        driver.find_element(By.XPATH, xpath5).click()
-
-    # time.sleep(0.7)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
-    elements1 = driver.find_elements(By.XPATH, xpath1)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.presence_of_element_located((By.XPATH, xpath2)))
-    elements2 = driver.find_elements(By.XPATH, xpath2)
+        wait.until(EC.presence_of_element_located((By.XPATH, xpath3)))
+        driver.find_element(By.XPATH, xpath3).click()
+    
+        wait = WebDriverWait(driver, 20)
+        # time.sleep(0.2)
+        wait.until(EC.presence_of_element_located((By.XPATH, xpath4)))
+        driver.find_element(By.XPATH, xpath4).click()
+    
+        for i in range(5):
+            # time.sleep(0.2)
+            wait = WebDriverWait(driver, 20)
+            wait.until(EC.element_to_be_clickable((By.XPATH, xpath5)))
+            driver.find_element(By.XPATH, xpath5).click()
+    
+        # time.sleep(0.7)
+        wait = WebDriverWait(driver, 20)
+        wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
+        elements1 = driver.find_elements(By.XPATH, xpath1)
+        wait = WebDriverWait(driver, 20)
+        wait.until(EC.presence_of_element_located((By.XPATH, xpath2)))
+        elements2 = driver.find_elements(By.XPATH, xpath2)
+    except:
+        logger.info("인터파크 호텔 클로링 에러")
+        return
 
     for element1, element2 in zip(elements1, elements2):
         # element2 = driver.find_elements(By.XPATH, xpath2)
@@ -173,48 +177,48 @@ def agoda_crawling(info, chrome_options, service):
     xpath7 = '//*[@id="contentContainer"]/div[3]/ol/li/div/a/div/div[1]/div/div[3]/img'
 
     driver = webdriver.Chrome(service=service, options=chrome_options)
-
-    driver.get(url)
-    time.sleep(0.5)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.element_to_be_clickable((By.XPATH, xpath3)))
-    driver.find_element(By.XPATH, xpath3).click()
-    time.sleep(0.5)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
-    driver.find_element(By.XPATH, xpath1).clear()
-    time.sleep(0.5)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
-    driver.find_element(By.XPATH, xpath1).send_keys(where)
-    time.sleep(0.6)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.element_to_be_clickable((By.XPATH, xpath2)))
-    driver.find_element(By.XPATH, xpath2).click()
-
-    time.sleep(0.6)
-    wait = WebDriverWait(driver, 20)
-    wait.until(EC.element_to_be_clickable((By.XPATH, xpath5)))
-    driver.find_element(By.XPATH, xpath5).click()
-
-    time.sleep(0.6)
-    before_location = driver.execute_script("return window.pageYOffset")
-    while True:
-        driver.execute_script("window.scrollTo(0,{})".format(before_location + 900))
-        time.sleep(0.07)
-        after_location = driver.execute_script("return window.pageYOffset")
-        if before_location == after_location:
-            break
-        else:
-            before_location = driver.execute_script("return window.pageYOffset")
-
-    time.sleep(0.7)
+    
     try:
+        driver.get(url)
+        time.sleep(0.5)
+        wait = WebDriverWait(driver, 20)
+        wait.until(EC.element_to_be_clickable((By.XPATH, xpath3)))
+        driver.find_element(By.XPATH, xpath3).click()
+        time.sleep(0.5)
+        wait = WebDriverWait(driver, 20)
+        wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
+        driver.find_element(By.XPATH, xpath1).clear()
+        time.sleep(0.5)
+        wait = WebDriverWait(driver, 20)
+        wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
+        driver.find_element(By.XPATH, xpath1).send_keys(where)
+        time.sleep(0.6)
+        wait = WebDriverWait(driver, 20)
+        wait.until(EC.element_to_be_clickable((By.XPATH, xpath2)))
+        driver.find_element(By.XPATH, xpath2).click()
+    
+        time.sleep(0.6)
+        wait = WebDriverWait(driver, 20)
+        wait.until(EC.element_to_be_clickable((By.XPATH, xpath5)))
+        driver.find_element(By.XPATH, xpath5).click()
+    
+        time.sleep(0.6)
+        before_location = driver.execute_script("return window.pageYOffset")
+        while True:
+            driver.execute_script("window.scrollTo(0,{})".format(before_location + 900))
+            time.sleep(0.07)
+            after_location = driver.execute_script("return window.pageYOffset")
+            if before_location == after_location:
+                break
+            else:
+                before_location = driver.execute_script("return window.pageYOffset")
+    
+        time.sleep(0.7)
         wait = WebDriverWait(driver, 20)
         wait.until(EC.presence_of_element_located((By.XPATH, xpath4)))
         elements = driver.find_elements(By.XPATH, xpath4)
-    except Exception:
-        logger.info(f'아고다 크롤링 xpath4에서 오류남')
+    except:
+        logger.info('아고다 호텔 크롤링 에러')
         return
 
     for element in elements:
