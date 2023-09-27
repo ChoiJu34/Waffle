@@ -8,6 +8,7 @@ import MainExchangeImg from '../../assets/MainExchangeImg.png'
 import MainAccountImg from '../../assets/MainAccountImg.png'
 import MainChecklistImg from '../../assets/MainChecklistImg.png'
 import { useNavigate } from 'react-router-dom';
+
 const MainPage = () => {
 
   // 이미지 회전하는 속도에 맞춰 글자 변환
