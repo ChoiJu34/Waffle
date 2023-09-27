@@ -19,5 +19,5 @@ from django.urls import path
 from waffle import crawling
 
 urlpatterns = [
-    path('crawling', crawling.crawling, name='convert_data'),
+    path('package/recommend', crawling.crawling, name='convert_data'),
 ]
