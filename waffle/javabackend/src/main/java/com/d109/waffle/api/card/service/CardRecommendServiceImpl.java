@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CardRecommendServiceImpl implements CardRecommendService {
-	private static final Logger logger = LoggerFactory.getLogger(CardRecommendController.class);
+	private static final Logger logger = LoggerFactory.getLogger(CardRecommendServiceImpl.class);
 	private final CardRecommendRepository cardRecommendRepository;
 	private final CardBenefitRepository cardBenefitRepository;
 	private final Map<String, double[]> exchangeValue = ExchangeValue.getExchangeValue();
