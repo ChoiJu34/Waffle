@@ -128,11 +128,12 @@ def interpark_crawling(info, chrome_options, service):
     wait = WebDriverWait(driver, 20)
     wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
     elements1 = driver.find_elements(By.XPATH, xpath1)
-    # wait = WebDriverWait(driver, 20)
-    # wait.until(EC.presence_of_element_located((By.XPATH, xpath2)))
+    wait = WebDriverWait(driver, 20)
+    wait.until(EC.presence_of_element_located((By.XPATH, xpath2)))
+    elements2 = driver.find_elements(By.XPATH, xpath2)
 
-    for element1 in elements1:
-        element2 = driver.find_elements(By.XPATH, xpath2)
+    for element1, element2 in zip(elements1, elements2):
+        # element2 = driver.find_elements(By.XPATH, xpath2)
         # 추출한 데이터를 딕셔너리로 추가
         origin = re.sub(r'\+', "", element1.get_attribute('textContent'))
         pattern = r'청구할인|추천|항공할인|05267.*?가|원~정상가|(\d+)성급.*?가|~로그인.*?확인|(\d+)(\d+)(\d+)(\d+)(\d+)판매가|%할인판매가'
@@ -148,8 +149,14 @@ def interpark_crawling(info, chrome_options, service):
             hotel_name = ''
             for h in hotel:
                 hotel_name += h
-            multi_list[k].put(Hotel(hotel_name, start, end, '', price, price, element1.get_attribute('href'),
-                        element2.get_attribute('src'), '인터파크'))
+            try:
+                img = element2.get_attribute('src')
+                multi_list[k].put(Hotel(hotel_name, start, end, '', price, price, element1.get_attribute('href'),
+                        img, '인터파크'))
+            except:
+                logger.info("인터파크 호텔 element2 에러")
+                multi_list[k].put(Hotel(hotel_name, start, end, '', price, price, element1.get_attribute('href'),
+                        '이미지를 가져오지 못했습니다', '인터파크'))
             # logger.info(f'{hotel_name}, {start}, {end}, , {price}, {price}, {element1}, 인터파크')
     driver.quit()
 
@@ -238,7 +245,6 @@ def agoda_crawling(info, chrome_options, service):
             src_element = src_element.get_attribute('src')
         if len(origin[0])==1:
             continue
-        logger.info(f"아고다 : {origin}")
         try:
             multi_list[k].put(Hotel(origin[0], start, end, '', origin[len(origin) - 1], int(origin[len(origin) - 1]), href_element, src_element, '아고다'))
         except:
