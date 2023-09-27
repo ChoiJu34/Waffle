@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 
 
-function BottomSheet({ title, closeModal, children }) {
+function AirModal({ title, closeModal, children }) {
   return (
     <>
       <StyledModalBackground />
@@ -17,7 +17,7 @@ function BottomSheet({ title, closeModal, children }) {
   );
 }
 
-export default BottomSheet;
+export default AirModal;
 
 const StyledModalBackground = styled.div`
   position: absolute;
@@ -37,7 +37,7 @@ const StyledBottomSheet = styled.div`
   z-index: 2;
   position: fixed;
   width: 100%;
-  transition: height 0.2s ease-in-out;
+  height: 600px;
   max-height: 90%;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -57,6 +57,7 @@ const StyledBottomSheetHeader = styled.div`
   position: sticky;
   top: 0;
   background: white;
+  z-index: 9999;
 
   & > img {
     cursor: pointer;
