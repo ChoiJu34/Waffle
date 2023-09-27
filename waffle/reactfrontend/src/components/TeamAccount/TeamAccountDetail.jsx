@@ -1,10 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 import MainGraphBackpack from '../../assets/MainGraphBackpack.png'
 import MainGraphPlane from '../../assets/MainGraphPlane.png'
 import 'animate.css';
+import TeamAccountDetailIndividualList from './TeamAccountDetailIndividualList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisVertical, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom'
+import IndividualDataContext from '../Commons/IndividualDataContext';
+import TeamAccountUpdateIndividual from './TeamAccountUpdateIndividual';
 
 const TeamAccountDetail = () => {
+
+  const navigate = useNavigate()
+
+  const handleGoBack = () => {
+
+    window.scrollTo(0, 0)
+
+    navigate(-1);
+  }
 
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 })
 
@@ -51,18 +66,146 @@ const TeamAccountDetail = () => {
     setShowDetail({ target: false, raised: false, spent: false });
   }
 
-  const raisedValue = 1900
+  const accountName = "텅장"
+  const endDate = "2023-11-30"
+
+  const spentValue = 500
+  const raisedValue = 1300
   const targetValue = 3000
 
+  const spentRatio = spentValue / targetValue * 100
+  const raisedRatio = raisedValue / targetValue * 100
+
+  // 메뉴
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(prev => !prev);
+  };
+
+  useEffect(() => {
+    const hideMenu = e => {
+        if (isMenuOpen && !e.target.closest('.hamburger-dot') && !e.target.closest('.menu')) {
+            setIsMenuOpen(false);
+        }
+    };
+    window.addEventListener('click', hideMenu);
+
+    return () => {
+        window.removeEventListener('click', hideMenu);
+    };
+  }, [isMenuOpen]);
+
+  // 수정 화면으로 보낼 데이터
+  const dataToUpdate = {
+    accountName: accountName,
+    target: targetValue,
+    endDate: endDate
+  }
+
+  const goToUpdate = () => {
+    navigate('/teamaccount/update', { state: dataToUpdate })
+  }
+
+  const [dDay, setDDay] = useState(null);
+
+  useEffect(() => {
+    if (endDate) {
+      const targetDate = new Date(endDate);
+      const currentDate = new Date();
+
+      const differenceInTime = targetDate - currentDate;
+      const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
+      setDDay(differenceInDays);
+    }
+  }, [endDate]);
+
+  // 개인 목표 수정
+  const [individualData, setIndividualData] = useState(
+      [
+        {name: "대장", target: 500},
+        {name: "부부젤라", target: 1500}
+      ])
+
+  const handleIndividualDataChange = (updatedData) => {
+    setIndividualData(updatedData)
+  }
+
+  const goToUpdateIndividual = () => {
+    setShowIndividualUpdate(true)
+    // navigate('/teamaccount/update/individual', { state: individualData })
+  }
+
+  const [showIndividualUpdate, setShowIndividualUpdate] = useState(false);
+
+  // 스윙 이미지
+  const [swingAnimation, setSwingAnimation] = useState("animate__fadeInTopLeft");
+
+  useEffect(() => {
+      const initialTimeout = setTimeout(() => {
+          setSwingAnimation("animate__swing animate__slow");
+          const interval = setInterval(() => {
+              setSwingAnimation(""); 
+              setTimeout(() => {
+                  setSwingAnimation("animate__swing animate__slow");
+              }, 50); 
+          }, 4 * 1000 + 1000);
+  
+          return () => clearInterval(interval);
+      }, 1000); 
+  
+      return () => clearTimeout(initialTimeout);
+  }, []);
+
+    // 가방 이미지
+    const [backAnimation, setBackAnimation] = useState("animate__fadeInDown");
+
+    useEffect(() => {
+        const initialTimeout = setTimeout(() => {
+            setBackAnimation("animate__wobble");
+            const interval = setInterval(() => {
+                setBackAnimation(""); 
+                setTimeout(() => {
+                    setBackAnimation("animate__wobble");
+                }, 50); 
+            }, 4 * 1000 + 1000);
+    
+            return () => clearInterval(interval);
+        }, 1000); 
+    
+        return () => clearTimeout(initialTimeout);
+    }, []);
+
   return (
-    <TeamAccountDetailWrapper>
-      <div className="teamaccount-detail-title">텅장</div>
+    <TeamAccountDetailWrapper spentRatio={spentRatio} raisedRatio={raisedRatio}>
+       {showIndividualUpdate ? (<TeamAccountUpdateIndividual handleIndividualDataChange={handleIndividualDataChange} individualData={individualData} setShowIndividualUpdate={setShowIndividualUpdate}/>) : 
+      (<>
+      <div className="teamaccount-detail-title">
+      <div className="login-header"><FontAwesomeIcon icon={faArrowLeft} color="black" onClick={handleGoBack}/></div>
+        <div className="teamaccount-detail-title-text">{accountName}</div>
+        <FontAwesomeIcon icon={faEllipsisVertical} color="black" className="hamburger-dot" onClick={toggleMenu}/>
+        {isMenuOpen && (
+          <div className="menu">
+           <div className="menu-item" onClick={goToUpdate}>통장 정보 수정</div>
+           <div className="menu-item" onClick={goToUpdateIndividual}>개인 목표 수정</div>
+           <div className="menu-item-delete">모임 통장 삭제</div>
+          </div>
+        )}
+      </div>
 
       <div className="teamaccount-detail-maingraph-container">
         <div className="teamaccount-detail-maingraph-category">
           <div className="teamaccount-detail-maingraph-category-spent">지출액</div>
           <div className="teamaccount-detail-maingraph-category-raised">모금액</div>
           <div className="teamaccount-detail-maingraph-category-target">목표액</div>
+          <div className="teamaccount-detail-maingraph-dday">
+            {dDay !== null && (
+              <p>
+                {dDay > 0 ? `D-${dDay}` : "모금 종료"}
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="teamaccout-detail-maingraph">
@@ -87,8 +230,8 @@ const TeamAccountDetail = () => {
               onTouchEnd={handleMouseUpOrLeave}
             >{showDetail.raised && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>모은 금액<br />1,900원</div>}
              {raisedValue < targetValue/2 ?
-              <img src={MainGraphBackpack} alt="MainGraphBackpack" className="raised-end" data-type="raised" /> :
-              <img src={MainGraphPlane} alt="MainGraphPlane" className="custom-swing  raised-end" data-type="raised" />}
+              <img src={MainGraphBackpack} alt="MainGraphBackpack" className={`animate__animated ${backAnimation} raised-end-back`} data-type="raised" /> :
+              <img src={MainGraphPlane} alt="MainGraphPlane" className={`animate__animated ${swingAnimation} raised-end`}  data-type="raised" />}
             </div>
 
           <div
@@ -102,34 +245,68 @@ const TeamAccountDetail = () => {
             >{showDetail.spent && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>지출 금액<br />500원</div>}</div>
           </div>
         </div>
+        <div className="team-account-detail-individual-head-container">
+          <div className="team-account-detail-individual-head"></div>
+        </div>
+        <div className="team-account-detail-individual-title">개인별 목표 금액</div>
+        <TeamAccountDetailIndividualList />
       </div>
+      </>)}
     </TeamAccountDetailWrapper>
   )
 }
 
 const swingAnimation = keyframes`
   20% {
-    transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 10deg);
   }
   40% {
-    transform: rotate3d(0, 0, 1, -4deg);
+    transform: rotate3d(0, 0, 1, -8deg);
   }
   60% {
-    transform: rotate3d(0, 0, 1, 2deg);
+    transform: rotate3d(0, 0, 1, 4deg);
   }
   80% {
-    transform: rotate3d(0, 0, 1, -2deg);
+    transform: rotate3d(0, 0, 1, -4deg);
   }
   100% {
     transform: rotate3d(0, 0, 1, 0deg);
   }
 `;
 
+const wipeAnimation = keyframes`
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+`;
+
+const LandingAnimation = keyframes`
+  0% {
+    transform: rotate(0deg) translateX(50px) rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg) translateX(50px) rotate(-360deg);
+  }
+`
+
 const TeamAccountDetailWrapper = styled.div`
- .teamaccount-detail-title {
-  font-size: 3vh;
-  margin-top: 4vh;
- }
+.teamaccount-detail-title {
+    font-size: 3vh;
+    margin-top: 4vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hamburger-dot {
+    position: absolute;
+    right: 1.5vh;
+}
 
  .teamaccount-detail-maingraph-category {
   display: flex;
@@ -189,7 +366,7 @@ const TeamAccountDetailWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 26%;
+  width: ${props => props.spentRatio}%;
   height: 7vh;
   background-color: #B0BDCB;
   border-radius: 15px;
@@ -200,7 +377,7 @@ const TeamAccountDetailWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 75%;
+  width: ${props => props.raisedRatio}%;
   height: 7vh;
   background-color: #9AC5F4;
   border-radius: 15px;
@@ -229,12 +406,79 @@ const TeamAccountDetailWrapper = styled.div`
   width: auto;
   height: 60%;
   transform-origin: center;
+  z-index: 4;
 }
 
-.custom-swing {
-    animation: ${swingAnimation} 2s infinite alternate;
-    animation-delay: 2s;
+.raised-end-back {
+  position: absolute;
+  right: 0;
+  top: 25%;
+  width: auto;
+  height: 53%;
+  transform-origin: center;
+  z-index: 4;
+}
+
+/* .custom-swing {
+    animation: ${LandingAnimation} 2s forwards;
+  } */
+
+.teamaccount-detail-maingraph-dday {
+  position: absolute;
+  right: 1vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15vw;
+  height: 2.8vh;
+  border-radius: 50px;
+}
+
+.team-account-detail-individual-head-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2vh;
+  overflow: hidden;
+  height: 2vh;
+}
+
+.team-account-detail-individual-head {
+  border: 3px solid #9AC5F4;
+  height: 5vh;
+  border-radius: 15px;
+  width: 85vw;
+}
+
+.team-account-detail-individual-title {
+  font-size: 2.5vh;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 40000;
+  font-size: 2vh;
+}
+
+.menu-item {
+  padding: 10px 15px;
+}
+
+.menu-item-delete {
+    padding: 10px 15px;
+    color: #e71111;
   }
+
+.login-header {
+  position: absolute;
+  left: 0.1vw;
+  margin: 1.2vh 2vh;
+}
 `
 
 export default TeamAccountDetail

@@ -368,7 +368,6 @@ const saverecocardboard = async () => {
             </Companyslay>
           </Cardsheetbox>
           <Companybutton onClick={() => setIsModalOpen2(false)}>확인</Companybutton>
-          <RecoCardList></RecoCardList>
         </BottomSheet>
       )}
     </Container>

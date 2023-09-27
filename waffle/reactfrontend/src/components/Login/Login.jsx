@@ -102,8 +102,8 @@ const Login = () => {
     axios.post('/user/login', formData)
       .then(response => {
         console.log(response)
-        localStorage.setItem('token', response.headers['authorization'])
-        localStorage.setItem('refresh-token', response.headers['authorization-refresh'])
+        localStorage.setItem('access_token', response.headers['authorization'])
+        localStorage.setItem('refresh_token', response.headers['authorization-refresh'])
         navigate('/')
         window.location.reload()
       })
