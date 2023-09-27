@@ -40,8 +40,8 @@ result={
 @api_view(['POST'])
 def crawling(request):
     data = json.loads(request.body)
-    authorization = request.META.get('HTTP_AUTHORIZATION')
     logger.info(f"request.body : {data}")
+    authorization = request.META.get('HTTP_AUTHORIZATION')
     logger.info(f"request.header : {authorization}")
     spring_boot_api_url = "https://j9d109.p.ssafy.io:8081/user-card/list"
 
@@ -51,12 +51,18 @@ def crawling(request):
     }
 
     # Spring Boot API에 GET 요청을 보냅니다.
-    response = requests.get(spring_boot_api_url, headers=headers)
+    try:
+        response = requests.get(spring_boot_api_url, headers=headers)
+    except:
+        logger.info(f"user-card/list 불러오지 못함")
+
 
     user_cards = []
     # 요청이 성공하면 JSON 응답을 파싱합니다.
     if response.status_code == 200:
         user_cards = response.json()['result']
+
+    logger.info(f"user_cards : {user_cards}")
 
     threads = []
     for k in range(2):

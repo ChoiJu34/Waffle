@@ -81,7 +81,6 @@ public class CardInfoServiceImpl implements CardInfoService {
 					tripBenefitMap.put("해외이용액", cardBenefitDtoList);
 				}
 			} else if (benefitEntity.getType() == 5) {
-				logger.info(benefitEntity.getBenefitCase().substring(0, 2));
 				if (benefitEntity.getBenefitCase().substring(0, 2).equals("공항")) {
 					if (tripBenefitMap.containsKey("공항서비스")) {
 						List<CardBenefitDto> cardBenefitDtoList = tripBenefitMap.get("공항서비스");

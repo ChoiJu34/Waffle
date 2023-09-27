@@ -238,6 +238,10 @@ def agoda_crawling(info, chrome_options, service):
             src_element = src_element.get_attribute('src')
         if len(origin[0])==1:
             continue
-        multi_list[k].put(Hotel(origin[0], start, end, '', origin[len(origin) - 1], int(origin[len(origin) - 1]), href_element, src_element, '아고다'))
+        logger.info(f"아고다 : {origin}")
+        try:
+            multi_list[k].put(Hotel(origin[0], start, end, '', origin[len(origin) - 1], int(origin[len(origin) - 1]), href_element, src_element, '아고다'))
+        except:
+            logger.info(f"아고다 호텔 multi_list의 put 실패")
         # logger.info(f'{origin[0]}, {start}, {end}, , {origin[len(origin) - 1]}, {int(origin[len(origin) - 1])}, {href_element}, {src_element}, 아고다')
     driver.quit()
