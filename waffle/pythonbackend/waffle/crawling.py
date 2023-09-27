@@ -41,8 +41,9 @@ result={
 def crawling(request):
     data = json.loads(request.body)
     authorization = request.META.get('HTTP_AUTHORIZATION')
-    logger.info(authorization)
-    spring_boot_api_url = "http://j9d109.p.ssafy.io:8080/user-card/list"
+    logger.info(f"request.body : {data}")
+    logger.info(f"request.header : {authorization}")
+    spring_boot_api_url = "https://j9d109.p.ssafy.io:8081/user-card/list"
 
     headers = {
         'Authorization': authorization,  # 예시: 인증 토큰을 설정하세요
