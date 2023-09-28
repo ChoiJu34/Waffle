@@ -1,17 +1,22 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import styled from 'styled-components';
-import axios from 'axios'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
-const ChecklistListItem = ({key, name, country, start, end, color}) =>{
+const ChecklistListItem = ({id, name, country, start, end, color}) =>{
     //code
-
+    //색 투명도 적용
+    color += "80";
+    //checklist로 페이지 이동
+    const navigate = useNavigate()
+    const goToChecklist = (id) => {
+        navigate(`/mypage/checklist/${id}`)
+    }
     // html
     return (
         <ChecklistListWrapper>
-                <article class="card" key={key} style={{ backgroundColor: color }}>
+                <article class="card" key={id} style={{ backgroundColor: color }} onClick={()=>goToChecklist(id)}>
                     <h3>{name}</h3>
-                    <p>{country}</p>
-                    <p>{start} ~ {end}</p>
+                    <p>{start}</p>
                 </article>
         </ChecklistListWrapper>
     );
@@ -27,13 +32,15 @@ const ChecklistListWrapper = styled.div`
         width: 75vw;
         height: 24vh;
         margin-bottom: 4vh;
-        color: #202020;
+        color: #000000;
     }
     h3{
         margin: 5px;
+        margin-bottom: 1vh;
     }
     p{
         margin: 5px;
+        margin-bottom: 1vh;
     }
 `
 

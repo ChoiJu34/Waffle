@@ -198,7 +198,7 @@ const PackageMain = () => {
         planHotel : saveHotelBoard,
       }
       // 서버에 보낼 데이터 구조를 맞추기 위해 board 객체를 변경합니다.
-      const response = await axios.post(`http://j9d109.p.ssafy.io:8000/package/recommend`, params2);
+      const response = await axios.post(`http://j9d109.p.ssafy.io:8003/package/recommend`, params2);
       alert('등록되었습니다.');
       console.log(params2)
       console.log(response)

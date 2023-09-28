@@ -22,7 +22,8 @@ import TeamAccountAddCode from '../components/TeamAccount/TeamAccountAddCode'
 import TeamAccountAddNew from '../components/TeamAccount/TeamAccountAddNew'
 import TeamAccountUpdate from '../components/TeamAccount/TeamAccountUpdate'
 import TeamAccountUpdateIndividual from '../components/TeamAccount/TeamAccountUpdateIndividual'
-import Checklist from '../components/Checklist/ChecklistMain'
+import ChecklistList from '../components/Checklist/ChecklistMain'
+import Checklist from '../components/Checklist/Checklist'
 const RootNavigation = () => {
   return (
     <BrowserRouter>
@@ -48,7 +49,8 @@ const RootNavigation = () => {
           <Route path="/teamaccount/add/new" element={<TeamAccountAddNew />} />
           <Route path="/teamaccount/update" element={<TeamAccountUpdate />} />
           <Route path="/teamaccount/update/individual" element={<TeamAccountUpdateIndividual/>} />
-          <Route path="/mypage/checklist" element={<Checklist/>} />
+          <Route path="/mypage/checklist" element={<ChecklistList/>} />
+          <Route path="/mypage/checklist/:id" element={<Checklist/>} />
         </Route>
       </Routes>
     </BrowserRouter>
