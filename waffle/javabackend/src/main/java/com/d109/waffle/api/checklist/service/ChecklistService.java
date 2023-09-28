@@ -42,6 +42,11 @@ public class ChecklistService {
 		return list;
 	}
 
+	public ChecklistList getChecklistListOne(int id){
+		ChecklistList checklistList = checklistListRepository.findById(id).get();
+		return checklistList;
+	}
+
 	public boolean addChecklistList(String authorization, ChecklistListDto checkListDto){
 		Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
 		if (!userEntity.isPresent()) {
