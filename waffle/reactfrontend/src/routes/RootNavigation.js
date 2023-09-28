@@ -24,6 +24,7 @@ import TeamAccountUpdate from "../components/TeamAccount/TeamAccountUpdate";
 import TeamAccountUpdateIndividual from "../components/TeamAccount/TeamAccountUpdateIndividual";
 import Checklist from "../components/Checklist/ChecklistMain";
 import CardInfo from "../components/CardInfo/CardInfo";
+import Favorite from "../components/MyPage/Favorite"
 const RootNavigation = () => {
   return (
     <BrowserRouter>
@@ -78,6 +79,7 @@ const RootNavigation = () => {
           />
           <Route path="/mypage/checklist" element={<Checklist />} />
           <Route path="/cardinfo/:cardId" element={<CardInfo />} />
+          <Route path="/mypage/favorite" element={<Favorite />} />
         </Route>
       </Routes>
     </BrowserRouter>
