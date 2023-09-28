@@ -15,6 +15,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.d109.chocobank.api.user.entity.UserEntity;
+import com.d109.chocobank.common.auth.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,4 +48,17 @@ public class AccountEntity {
 	@CreationTimestamp
 	@Column(name = "start_date")
 	private LocalDateTime startDate;
+
+	private int balance;
+
+	public int sendTransfer(int money) {
+		this.balance -= money;
+		return this.balance;
+	}
+
+	public int receiveTransfer(int money) {
+		this.balance += money;
+		return this.balance;
+	}
+
 }

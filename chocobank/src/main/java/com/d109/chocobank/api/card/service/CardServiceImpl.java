@@ -29,11 +29,11 @@ public class CardServiceImpl implements CardService {
     private final JwtService jwtService;
 
     @Override
-    public CardEntity getCard(String uuid, String cardNumber) throws Exception {
-        Optional<UserEntity> user = userRepository.findByUuid(uuid);
-        if(user.isEmpty()) {
-            throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
-        }
+    public CardEntity getCard(String cardNumber) throws Exception {
+        // Optional<UserEntity> user = userRepository.findByUuid(uuid);
+        // if(user.isEmpty()) {
+        //     throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+        // }
         log.info("cardNumber {}", cardNumber);
         Optional<CardEntity> cardEntity = cardRepository.findByCardNumber(cardNumber);
         if(cardEntity.isEmpty()) {
