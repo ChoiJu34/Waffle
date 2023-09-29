@@ -137,4 +137,10 @@ public class UserServiceImpl implements UserService {
 			throw new InvalidKeyException("비밀번호를 다시 입력해주세요.");
 		}
 	}
+
+	@Override
+	public UserEntity getUserInfo(String authorization) throws Exception {
+		return jwtService.accessHeaderToUser(authorization).orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+	}
+
 }

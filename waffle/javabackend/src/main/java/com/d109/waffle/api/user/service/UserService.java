@@ -19,4 +19,6 @@ public interface UserService {
 	void saveUserUuid(String authorization, String uuid) throws Exception;
 
 	void verifyPassword(String authorization, String password) throws Exception;
+
+	UserEntity getUserInfo(String authorization) throws Exception;
 }

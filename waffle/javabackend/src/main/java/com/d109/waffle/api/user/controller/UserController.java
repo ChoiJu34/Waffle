@@ -226,7 +226,19 @@ public class UserController {
 		}
 	}
 
-
+	@GetMapping("")
+	public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String authorization) {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			result.put("result", userService.getUserInfo(authorization));
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
 
 
 }
