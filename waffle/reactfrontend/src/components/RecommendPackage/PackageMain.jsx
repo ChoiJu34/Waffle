@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components';
-import InputContainer from './InputContainer';
 import AirModal from './AirModal';
 import Select from "react-select";
 import moment from "moment";
@@ -14,6 +13,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {setToken,requestPostNode, deleteToken} from '../../lib/api';
+import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { BsFillPeopleFill } from "react-icons/bs";
+import { IoAirplaneSharp } from "react-icons/io5";
+import { AiOutlineClose } from "react-icons/ai";
 
 
 
@@ -37,6 +40,8 @@ const PackageMain = () => {
   const [end, setEnd] = useState("")
   const [hotelId, setHotelId] = useState(0)
   const [where, setWhere] = useState("")
+  const [cntPeople, setCntPeople] = useState(1)
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const settings = {
     dots: true,
@@ -44,8 +49,30 @@ const PackageMain = () => {
     speed: 100,
     slidesToShow: 1,  // 여기를 2로 변경
     slidesToScroll: 1,
-    draggable : true
-  };
+    draggable : true,
+    beforeChange: (oldIndex, newIndex) => {
+      setCurrentSlideIndex(newIndex);
+  },
+  customPaging: function (i) {
+      const activeColor = "#000000";
+      const inactiveColor = "#CCCCCC";
+
+      const dotStyle = {
+          width: "10px",
+          height: "10px",
+          borderRadius: "50%",
+          backgroundColor: i === currentSlideIndex ? activeColor : inactiveColor,
+          marginTop: "-20px",
+      };
+
+      return <div style={dotStyle}></div>;
+  },
+};
+
+
+
+
+
 
 
 // 로컬 스토리지에서 데이터 가져오기
@@ -189,6 +216,10 @@ const PackageMain = () => {
     setIsModalOpen2(false);
   };
 
+  const handleHotelDelete = (id) => {
+    const updatedHotelBoard = saveHotelBoard.filter((item) => item.id !== id);
+    setSaveHotelBoard(updatedHotelBoard);
+  };
 
   const PostData = async () => {
     try {
@@ -205,6 +236,12 @@ const PackageMain = () => {
     } catch (error) { 
       console.error('포스트에러', error);
     }
+  };
+
+  const handleAirDelete = (id) => {
+    // 해당 id를 가진 요소를 제외한 나머지 요소로 배열을 필터링합니다.
+    const updatedAirBoard = saveAirBoard.filter((item) => item.id !== id);
+    setSaveAirBoard(updatedAirBoard);
   };
 
   function Consol() {
@@ -226,6 +263,18 @@ const handleTimeChange = (startTime, endTime) => {
   setEndTime(endTime);
 };
 
+
+const increasePeople = () => {
+  setCntPeople(cntPeople + 1);
+};
+
+// 인원을 감소시키는 함수
+const decreasePeople = () => {
+  if (cntPeople > 1) {
+    setCntPeople(cntPeople - 1);
+  }
+};
+
 useEffect(() => {
   deleteToken();
   setToken();
@@ -233,48 +282,75 @@ useEffect(() => {
 
   return (
     <Container>
+        <Peoplebox>
+        <Tripicon>인원</Tripicon>
+        <Plusbox>
+          <PlusMinusButton onClick={decreasePeople}>-</PlusMinusButton>
+          <span>{cntPeople}명</span>
+          <PlusMinusButton onClick={increasePeople}>+</PlusMinusButton>
+        </Plusbox>
+
+        </Peoplebox>
         <Airbox>
-          <p>항공권검색</p>
+          <Buttontitlebox>
+            <p>항공권검색</p>
+            <Button onClick={() => setIsModalOpen(!isModalOpen)}>추가</Button>
+          </Buttontitlebox>
           {(saveAirBoard.length > 0 ? (
               <Slider {...settings}>
                 {saveAirBoard.map(({ id, placeStart, placeEnd, startStart, startEnd, startTime, endTime }) => (
                   <Contentbox key={id}>
-                      <div>{options[options.findIndex(e => e.value === placeStart)].label.split(',')[0]}</div>
-                      <div>{options[options.findIndex(e => e.value === placeEnd)].label.split(',')[0]}</div>
+                    <Closebnt onClick={() => handleAirDelete(id)}></Closebnt>
+                      <Airplacebox>
+                        <div>{options[options.findIndex(e => e.value === placeStart)].label.split(',')[0]}</div>
+                        <IoAirplaneSharp size="30" color='#9AC5F4'/>
+                        <div>{options[options.findIndex(e => e.value === placeEnd)].label.split(',')[0]}</div>
+                      </Airplacebox>
                       <Airstartbox>
-                        <div>
+                        <Starttime>
                           <div>최소 출발시간</div>
+                          <Smalltime>
                           <div>{startStart}</div>
                           <div>{startTime}</div>
-                        </div>
-                        <div>
-                          <div>최대출발시간</div>
+                          </Smalltime>
+                        </Starttime>
+                        <Starttime>
+                          <div>최대 출발시간</div>
+                          <Smalltime>
                           <div>{startEnd}</div>      
                           <div>{endTime}</div>
-                        </div>
+                          </Smalltime>
+                        </Starttime>
                       </Airstartbox>
                   </Contentbox>
                 ))}
-            </Slider>) : (<div>항공권을 입력해주세요</div>))}
-          <Button onClick={() => setIsModalOpen(!isModalOpen)}>+</Button>
+            </Slider>
+            ) : (<div></div>))}
         </Airbox>
         <Hotelbox>
-            <p>숙박 검색</p>
+          <Buttontitlebox>
+            <p>숙박검색</p>
+            <Button onClick={() => setIsModalOpen2(!isModalOpen2)}>추가</Button>
+          </Buttontitlebox>
             {(saveHotelBoard.length > 0 ? (
-            <div>
+              <Slider {...settings}>
               {saveHotelBoard && saveHotelBoard.map(({ id,where,start,end}) => (
-              <div id={id}>
-              <div>{where}</div>
-              <div>{start}</div>
-              <div>{end}</div>
-              </div>
+              <Hotelcontent id={id}>
+                <Closebnt onClick={() => handleHotelDelete(id)}></Closebnt>
+                <Hotelserchbox>
+                <div>{where}</div>
+                <Hoteldaybox>
+                <div>{start}</div>
+                <div>{end}</div>
+                </Hoteldaybox>
+                </Hotelserchbox>
+              </Hotelcontent>
           ))}
-          </div>
-            ) : (<div>숙박을 입력해주세요</div>))}
-            <Button onClick={() => setIsModalOpen2(!isModalOpen2)}>+</Button>
+          </Slider>
+            ) : (<div></div>))}
         </Hotelbox>
         <button onClick={PostData}>확인</button>
-        <button onClick={console.log(saveAirBoard)}>콘솔</button>
+        <button onClick={() => Consol()}>콘솔</button>
         {isModalOpen && (
             <AirModal title={airModalTitle} closeModal={() => setIsModalOpen(false)} >
               <span>출발</span>
@@ -327,7 +403,80 @@ useEffect(() => {
 }
 
 export default PackageMain
+const Falsebox = styled.div`
+  height: 30px;
+`
+const Starttime = styled.div`
+  width: 320px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 
+
+`
+const Hoteldaybox = styled.div`
+  width: 340px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+`
+
+const Hotelserchbox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 20px;
+`
+
+const Hotelcontent  = styled.div`
+  width: 320px;
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  margin-bottom: 30px; /* 30px 아래 여백 추가 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  position: relative;
+`
+
+const Smalltime = styled.div`
+  width: 170px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+`
+
+const Closebnt = styled(AiOutlineClose)`
+  width: 600px;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  padding: 5px;
+`
+
+const Tripicon = styled(BsFillPeopleFill)`
+  font-size: 40px;
+  display: flex;
+  justify-items: center;
+  align-self: center;
+  color: #9AC5F4;
+`
+const Plusbox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 150px;
+  align-self: center;
+  & > span {
+  font-size: 25px;
+  }
+`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -335,10 +484,52 @@ const Container = styled.div`
   justify-content: center;
   margin-top: 30px;
   width: 400px;
+  padding-bottom: 20px;
 `
-const Airbox = styled.div`
+
+const Airplacebox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+  font-size: 25px;
+`
+
+const PlusMinusButton = styled.button`
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  background-color: white;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+const Peoplebox = styled.div`
   width: 340px; // 고정된 컨테이너 너비
-  height: 200px; // 고정된 컨테이너 높이
+  height: 100px;
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  margin-bottom: 30px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`
+
+const Airbox = styled.div`
+  width: 340px;
+  height: auto;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin-bottom: 30px;
@@ -346,7 +537,7 @@ const Airbox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-`
+`;
 const Hotelbox = styled.div`
   width: 340px;
   border: 1px solid #B3B1B1;
@@ -359,20 +550,16 @@ const Hotelbox = styled.div`
     
 `
 const Contentbox = styled.div`
-  width: 340px;
+  width: 320px;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
-  margin-bottom: 10px;
+  margin-bottom: 30px; /* 30px 아래 여백 추가 */
   display: flex;
   flex-direction: column;
   justify-content: center;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+`;
 
-`
-
-const Inputbox = styled.div`
-    
-`
 const customStyles = {
   control: (provided) => ({
     ...provided,
@@ -395,32 +582,32 @@ const customStyles = {
   menuPortal: (provided) => ({ ...provided, border: `1px solid red`, zIndex: 8888 }),
 }
 
-const Airboard = styled.div`
-  width: 100%; // 슬라이드 아이템을 컨테이너 너비에 맞춤
-  height: 100%; // 슬라이드 아이템을 컨테이너 높이에 맞춤
-  border: 1px solid #B3B1B1;
-  border-radius: 7px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-`
 
 const Button = styled.button`
   width: 80px;
   border-radius: 7px;
-  border: 1px dashed;
-  margin: 10px;
-  background-color: white;
+  border-color: #9AC5F4;
+  background-color: #9AC5F4;
   display: flex;
   align-self: center;
   justify-content: center;
-`
 
-const minAir = styled.div`
-  width: 100%;
-  height: 100%;
 `
-const Airstartbox = styled.div`
+const Buttontitlebox = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 20px;
+  width: 300px;
+`
+
+const Airstartbox = styled.div`
+  display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  align-items: center;
   height: 100px;
+  font-size: 17px;
 `
