@@ -11,7 +11,11 @@ public interface AccountService {
 	AccountEntity getAccount(int id) throws Exception;
 	void postAccount(AccountEntity accountEntity) throws Exception;
 
-    List<AccountDto> getServiceAccountList(String uuid) throws Exception;
+    // List<AccountDto> getServiceAccountList(String uuid) throws Exception;
 
-	List<AccountHistoryEntity> getServiceAccountHistory(String uuid, String accountNumber) throws Exception;
+	public AccountEntity getServiceAccount(String accountNumber) throws Exception;
+
+	List<AccountHistoryEntity> getServiceAccountHistory(String accountNumber) throws Exception;
+
+	void createAccountTransfer(String authorization, String senderName, String receiverName, String senderAccountNumber, String receiverAccountNumber, int cost) throws Exception;
 }

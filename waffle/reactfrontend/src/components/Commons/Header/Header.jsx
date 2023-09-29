@@ -68,11 +68,11 @@ const goToSignup = () => {
   setUserToggled(false)
 }
 
-// const goToMyPage = () => {
-//   navigate('')
-//   setIsToggled(false)
-//   setUserToggled(false)
-// }
+const goToMyPage = () => {
+  navigate('/mypage/favorite')
+  setIsToggled(false)
+  setUserToggled(false)
+}
 
 // 현재 페이지에 따라 헤더 가운데 변경
 const location = useLocation();
@@ -164,7 +164,7 @@ useEffect(() => {
         {isLoggedIn? (
         <>
           <li onClick={handleLogout}>로그아웃</li>
-          <li>마이페이지</li>
+          <li onClick={goToMyPage}>마이페이지</li>
         </>
         ) : (
         <>

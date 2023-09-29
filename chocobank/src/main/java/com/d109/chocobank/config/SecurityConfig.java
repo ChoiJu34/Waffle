@@ -75,6 +75,8 @@ public class SecurityConfig {
 			.permitAll()
 			.antMatchers("/user/sign-up", "/user/validate-email", "/user/find-email")
 			.permitAll()
+			.antMatchers("/user-card/**")
+			.permitAll()
 			// .antMatchers("/search/getAllGroup")
 			// .permitAll()
 			// .antMatchers(HttpMethod.GET, "/search/{group}")

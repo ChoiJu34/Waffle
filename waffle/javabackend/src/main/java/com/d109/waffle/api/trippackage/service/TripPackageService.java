@@ -1,170 +1,162 @@
 package com.d109.waffle.api.trippackage.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.client.RestTemplate;
 
+import com.d109.waffle.api.trippackage.dto.AirplaneDto;
+import com.d109.waffle.api.trippackage.dto.PackageHotelDto;
+import com.d109.waffle.api.trippackage.dto.PackagePlaneDto;
 import com.d109.waffle.api.trippackage.dto.RecommendDto;
-import com.d109.waffle.api.trippackage.repository.CrawlingRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.d109.waffle.api.trippackage.entity.Airplane;
+import com.d109.waffle.api.trippackage.entity.FavoriteHotel;
+import com.d109.waffle.api.trippackage.entity.FavoritePackage;
+import com.d109.waffle.api.trippackage.entity.FavoritePlane;
+import com.d109.waffle.api.trippackage.repository.AirplaneRepository;
+import com.d109.waffle.api.trippackage.repository.FavoriteHotelRepository;
+import com.d109.waffle.api.trippackage.repository.FavoritePackageRepository;
+import com.d109.waffle.api.trippackage.repository.FavoritePlaneRepository;
+import com.d109.waffle.api.user.entity.UserEntity;
+import com.d109.waffle.api.user.repository.UserRepository;
+import com.d109.waffle.common.auth.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class TripPackageService {
-	private final RestTemplate restTemplate;
-	private final CrawlingRepository crawlingRepository;
-	class cardpq{
-		String cardName;
-		int planePrice;
-		int originPirce;
-		int planeListJ;
-		int planeDateK;
-		public cardpq(String cardName, int planePrice, int originPrice, int planeListJ, int planeDateK){
-			this.cardName=cardName;
-			this.planePrice=planePrice;
-			this.originPirce = originPrice;
-			this.planeListJ = planeListJ;
-			this.planeDateK = planeDateK;
+	private final AirplaneRepository airplaneRepository;
+	private final FavoritePackageRepository favoritePackageRepository;
+	private final FavoritePlaneRepository favoritePlaneRepository;
+	private final FavoriteHotelRepository favoriteHotelRepository;
+	private final JwtService jwtService;
+
+
+	public List<AirplaneDto> getAirplaneList(){
+		List<AirplaneDto> airplaneList = new ArrayList<>();
+		List<Airplane> list = airplaneRepository.findAll();
+		for(Airplane airplane : list){
+			AirplaneDto plane = AirplaneDto.builder()
+				.name(airplane.getName())
+				.code(airplane.getCode())
+				.city(airplane.getCity())
+				.build();
+			airplaneList.add(plane);
 		}
+		return airplaneList;
 	}
 
-	class IHotel{
-		String img;
-		int price;
-		String name;
-		String url;
-		public IHotel(String img, int price, String name, String url){
-			this.img=img;
-			this.price = price;
-			this.name = name;
-			this.url = url;
-		}
-	}
-
-	public Map<String,Object> all(@RequestBody RecommendDto recommendDto) throws JsonProcessingException {
-		// ListenableFuture<Map<String, Object>> map1 = crawlingRepository.interparkPlane(recommendDto);
-		// ListenableFuture<Map<String, Object>> map2 = crawlingRepository.interparkHotel(recommendDto);
-		// ListenableFuture<Map<String, Object>> map3 = crawlingRepository.tripPlane(recommendDto);
-		ListenableFuture<Map<String, Object>> map4 = crawlingRepository.agodaHotel(recommendDto);
-		Map<String, Object> ans = new HashMap<>();
-		// while(!map1.isDone() || !map2.isDone() || !map3.isDone() || !map4.isDone()){
-		// }
-		while(!map4.isDone()){
-		}
-		// map1.addCallback(result -> ans.putAll(result), error -> System.out.println(error.getMessage()));
-		// map2.addCallback(result -> ans.putAll(result), error -> System.out.println(error.getMessage()));
-		// map3.addCallback(result -> ans.putAll(result), error -> System.out.println(error.getMessage()));
-		map4.addCallback(result -> ans.putAll(result), error -> System.out.println(error.getMessage()));
-		return ans;
-	}
-
-	@Async("multiAsync")
-	public ListenableFuture<Map<String, Object>> interparkPlane(RecommendDto recommendDto) throws JsonProcessingException {
-		System.out.println("start");
-		String s = restTemplate.postForObject("http://127.0.0.1:8000/interparkPlane", recommendDto, String.class);
-		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
-		Map<String, Object> planeInfo = new HashMap<>();
-		// data:[{
-		// 	plane:[[[],[],[],[]],[],[]]
-		// 	card:[[[],[],[],[],[]],[],[]]},{...}]
-		// for(int i=0; i<dataMap.size(); i++){//비행기 탑승 횟수
-		// 	PriorityQueue<cardpq> pq = new PriorityQueue<>((o1, o2) -> (o1.planePrice-o2.planePrice));
-		// 	List<Map<String,List<List<List<String>>>>> planPlane = (List<Map<String, List<List<List<String>>>>>)dataMap.get("data");
-		// 	for(int k=0; k<planPlane.get(i).get("plane").size(); k++){//비행기 출발 날짜 범위
-		// 		List<List<String>> planeList = planPlane.get(i).get("plane").get(k);//k번째 날 비행기 목록
-		// 		List<List<String>> cardList = planPlane.get(i).get("card").get(k);
-		// 		for(int j=0; j<planeList.size(); j++){//0:비행기 회사, 1:출발 위치, 2:시간, 3:도착위치, 4:시간, 5:경유, 6: 걸리는 시간, 7:걸리는 분
-		// 			for(int r=1; r<cardList.get(j).size()-1; r++) {
-		// 				pq.add(new cardpq(cardList.get(j).get(r).split(" ")[0], Integer.parseInt(cardList.get(j).get(r).split(" ")[1]),
-		// 					Integer.parseInt(cardList.get(j).get(cardList.get(j).size()-1)), j, k));
-		// 			}
-		// 		}
-		// 	}
-		// 	cardpq info = pq.peek();
-		// 	planeInfo.put("startPlace", planPlane.get(i).get("plane").get(info.planeDateK).get(info.planeListJ).get(1));
-		// 	planeInfo.put("startTime", planPlane.get(i).get("plane").get(info.planeDateK).get(info.planeListJ).get(2));
-		// 	planeInfo.put("endPlace", planPlane.get(i).get("plane").get(info.planeDateK).get(info.planeListJ).get(3));
-		// 	planeInfo.put("endTime", planPlane.get(i).get("plane").get(info.planeDateK).get(info.planeListJ).get(4));
-		// 	planeInfo.put("long", planPlane.get(i).get("plane").get(info.planeDateK).get(info.planeListJ).get(6) + planPlane.get(i).get("plane").get(info.planeDateK).get(info.planeListJ).get(6));
-		// 	planeInfo.put("endCompany", planPlane.get(i).get("plane").get(info.planeDateK).get(info.planeListJ).get(0));
-		// 	Map<String, Object> card = new HashMap<>();
-		// 	card.put("cardCompany", info.cardName);
-		// 	planeInfo.put("card", card);
-		// 	planeInfo.put("originPrice", info.originPirce);
-		// 	planeInfo.put("discountPrice", info.planePrice);
-		// 	planeInfo.put("discount", info.planePrice/info.originPirce*100);
-		// }
-		System.out.println("end");
-		return new AsyncResult<>(dataMap);
-	}
-
-
-
-	public Map<String, Object> interparkHotel(RecommendDto recommendDto) throws JsonProcessingException {
-		String cardName="신한카드";
-		int cardIf=200000;
-		int cardBenefitPercent=5;
-		int cardTop=100000;
-		String s = restTemplate.postForObject("http://127.0.0.1:8000/interparkHotel", recommendDto, String.class);
-		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Object> dataMap = objectMapper.readValue(s, new TypeReference<Map<String, Object>>() {});
-		List<List<String>> hotelList = (List<List<String>>) dataMap.get("hotel");
-		List<Map<String, String>> hotels = new ArrayList<>();
-		Map<String,Object> result = new HashMap<>();
-		PriorityQueue<IHotel> pq = new PriorityQueue<>((o1, o2) -> (o1.price-o2.price));
-		for(List<String> hotelInfo : hotelList){
-			Map<String, String> hotel = new HashMap<>();
-			int n = hotelInfo.size();
-			String name="";
-			int price = 0;
-			if(isInteger(hotelInfo.get(n-4))){
-				for(int i=0; i<n-4; i++){
-					name+= hotelInfo.get(i);
-				}
-				price = Integer.parseInt(hotelInfo.get(n-4));
-			}else {
-				for (int i = 0; i < n - 3; i++) {
-					name += hotelInfo.get(i);
-				}
-				price = Integer.parseInt(hotelInfo.get(n-3));
-			}
-			IHotel iHotel = new IHotel(hotelInfo.get(n-2), price, name, hotelInfo.get(n-1));
-			pq.add(iHotel);
-		}
-		IHotel pop = pq.peek();
-		result.put("hotelName", pop.name);
-		result.put("hotelUrl", pop.url);
-		result.put("hotelImg", pop.img);
-		result.put("hotelPrice", pop.price);
-		return result;
-	}
-
-	public static boolean isInteger(String strValue) {
+	public boolean addFavorite(RecommendDto recommendDto, String authorization){
 		try {
-			Integer.parseInt(strValue);
-			return true;
-		} catch (NumberFormatException ex) {
+			List<PackagePlaneDto> planeDtos = recommendDto.getPlane();
+			List<PackageHotelDto> hotelDtos = recommendDto.getHotel();
+			int memberCnt = recommendDto.getMemberCnt();
+			String card = recommendDto.getCard();
+			Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
+			if (!userEntity.isPresent()) {
+				throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+			}
+			UserEntity user = userEntity.get();
+			FavoritePackage favoritePackage = FavoritePackage.builder()
+				.memberCnt(memberCnt)
+				.card(card)
+				.userEntity(user)
+				.build();
+			favoritePackage.setId(favoritePackageRepository.save(favoritePackage).getId());
+			for (PackagePlaneDto planeDto : planeDtos) {
+				FavoritePlane favoritePlane = FavoritePlane.builder()
+					.planeDate(planeDto.getPlaneDate())
+					.company(planeDto.getCompany())
+					.startPlace(planeDto.getStartPlace())
+					.startTime(planeDto.getStartTime())
+					.endPlace(planeDto.getEndPlace())
+					.endTime(planeDto.getEndTime())
+					.originPrice(planeDto.getOriginPrice())
+					.discountPrice(planeDto.getDiscountPirce())
+					.layover(planeDto.getLayover())
+					.during(planeDto.getDuring())
+					.site(planeDto.getSite())
+					.card(planeDto.getCard())
+					.favoritePackage(favoritePackage)
+					.build();
+				favoritePlaneRepository.save(favoritePlane);
+			}
+			for (PackageHotelDto hotelDto : hotelDtos) {
+				FavoriteHotel favoriteHotel = FavoriteHotel.builder()
+					.hotelName(hotelDto.getHotelName())
+					.start(hotelDto.getStart())
+					.end(hotelDto.getEnd())
+					.card(hotelDto.getCard())
+					.originPrice(hotelDto.getOriginPrice())
+					.discountPrice(hotelDto.getDiscountPrice())
+					.url(hotelDto.getUrl())
+					.img(hotelDto.getImg())
+					.site(hotelDto.getSite())
+					.favoritePackage(favoritePackage)
+					.build();
+				favoriteHotelRepository.save(favoriteHotel);
+			}
+		}
+		catch (Exception e){
 			return false;
 		}
+		return true;
+	}
+
+	public List<RecommendDto> getFavoriteList(String authorization){
+		Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
+		if (!userEntity.isPresent()) {
+			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+		}
+		UserEntity user = userEntity.get();
+		List<FavoritePackage> list = favoritePackageRepository.findAllByUserEntity_Id(user.getId());
+		List<RecommendDto> result = new ArrayList<>();
+		for(FavoritePackage favoritePackage : list){
+			List<FavoritePlane> planeList = favoritePlaneRepository.findAllByFavoritePackage_Id(favoritePackage.getId());
+			List<FavoriteHotel> hotelList = favoriteHotelRepository.findAllByFavoritePackage_Id(favoritePackage.getId());
+			List<PackagePlaneDto> packagePlaneDtos = new ArrayList<>();
+			List<PackageHotelDto> packageHotelDtos = new ArrayList<>();
+			for(FavoritePlane favoritePlane : planeList){
+				PackagePlaneDto packagePlaneDto = new PackagePlaneDto();
+				packagePlaneDto.setCompany(favoritePlane.getCompany());
+				packagePlaneDto.setStartPlace(favoritePlane.getStartPlace());
+				packagePlaneDto.setStartTime(favoritePlane.getStartTime());
+				packagePlaneDto.setEndPlace(favoritePlane.getEndPlace());
+				packagePlaneDto.setEndTime(favoritePlane.getEndTime());
+				packagePlaneDto.setOriginPrice(favoritePlane.getOriginPrice());
+				packagePlaneDto.setDiscountPirce(favoritePlane.getDiscountPrice());
+				packagePlaneDto.setLayover(favoritePlane.getLayover());
+				packagePlaneDto.setDuring(favoritePlane.getDuring());
+				packagePlaneDto.setSite(favoritePlane.getSite());
+				packagePlaneDto.setCard(favoritePlane.getCard());
+				packagePlaneDtos.add(packagePlaneDto);
+			}
+			for(FavoriteHotel favoriteHotel : hotelList){
+				PackageHotelDto packageHotelDto = new PackageHotelDto();
+				packageHotelDto.setHotelName(favoriteHotel.getHotelName());
+				packageHotelDto.setStart(favoriteHotel.getStart());
+				packageHotelDto.setEnd(favoriteHotel.getEnd());
+				packageHotelDto.setCard(favoriteHotel.getCard());
+				packageHotelDto.setOriginPrice(favoriteHotel.getOriginPrice());
+				packageHotelDto.setDiscountPrice(favoriteHotel.getDiscountPrice());
+				packageHotelDto.setUrl(favoriteHotel.getUrl());
+				packageHotelDto.setImg(favoriteHotel.getImg());
+				packageHotelDto.setSite(favoriteHotel.getSite());
+				packageHotelDtos.add(packageHotelDto);
+			}
+			RecommendDto recommendDto = RecommendDto.builder()
+				.memberCnt(favoritePackage.getMemberCnt())
+				.card(favoritePackage.getCard())
+				.plane(packagePlaneDtos)
+				.hotel(packageHotelDtos)
+				.build();
+			result.add(recommendDto);
+		}
+		return result;
 	}
 }
