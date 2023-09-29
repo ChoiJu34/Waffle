@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 
 
-const ChecklistIcon = ({isListVisible, setListVisible, setModal}) =>{
+const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist}) =>{
     //code
 
     useEffect(() => {
@@ -29,7 +29,7 @@ const ChecklistIcon = ({isListVisible, setListVisible, setModal}) =>{
             >
                 {/* 리스트 내용 */}
                 <dl class="list">
-                    <li onClick={() => setModal(true)}>수정</li>
+                    <li onClick={() => setEditChecklist(true)}>수정</li>
                     <li>종료</li>
                 </dl>
             </div>

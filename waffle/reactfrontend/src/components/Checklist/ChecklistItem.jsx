@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 
-const ChecklistItem = ({checklistListId, id, price, currency, content, check}) =>{
+const ChecklistItem = ({checklistListId, id, price, currency, content, check, editChecklist, editChecklistData, setEditChecklistData}) =>{
     //code
     const [isCheck, setIsCheck] = useState(check)
     const checkHandled = () => {
         setIsCheck(!isCheck);
+    }
+    const deleteChecklistItem = () => {
+        setEditChecklistData(editChecklistData.filter(list => list.id !== id));
     }
     // html
     return (
@@ -15,9 +18,17 @@ const ChecklistItem = ({checklistListId, id, price, currency, content, check}) =
                     <input id={id} type="checkbox" checked={isCheck} onChange={() => checkHandled()}/>
                     {content}
                 </label>
-                <label class="checklistPrice">
-                    {price} {currency}
-                </label>
+                {
+                    editChecklist === false ?
+                    <label class="checklistPrice">
+                        {price} {currency}
+                    </label>
+                    :
+                    <label class="checklistPrice">
+                        {price} {currency}
+                        <button class="checklistDelete" onClick={()=>deleteChecklistItem()}>X</button>
+                    </label>
+                }
             </div>
         </ChecklistListWrapper>
     );
@@ -38,6 +49,16 @@ const ChecklistListWrapper = styled.div`
         display: flex;
         padding: 1vh;
         font-size: 2.5vh;
+    }
+    .checklistDelete{
+        border: none;
+        background-color: white;
+        color: red;
+        &:active{
+            border-radius: 100%;
+            background-color: red;
+            color: white;
+        }
     }
 `
 
