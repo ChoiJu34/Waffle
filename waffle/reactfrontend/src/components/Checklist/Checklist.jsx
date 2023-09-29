@@ -3,15 +3,21 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import ChecklistItem from './ChecklistItem'
+import { HiDotsVertical } from 'react-icons/hi';
+import ChecklistIcon from './ChecklistIcon';
+import AddChecklistListModal from './AddChecklistListModal';
 
 const ChecklistList = () =>{
     //code
     let { id } = useParams();
-    const [checklistData, setChecklistData] = useState("");
+    const [checklistData, setChecklistData] = useState();
     const [country, setCountry] = useState("");
     const [name, setName] = useState("");
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
+    const [modal, setModal] = useState(false);
+    const [restart, setRestart] = useState("");
+    const outside = useRef();
 
     useEffect(() => {
         axios.get(`/checklist/get-checklist/${id}`, {
@@ -32,22 +38,45 @@ const ChecklistList = () =>{
                 // setEnd(data5);
                 console.log(response.data);
             })
-    }, []);
+    }, [restart]);
+
+    const [isListVisible, setListVisible] = useState(false);
+
+    const toggleList = (e) => {
+        setListVisible(!isListVisible);
+        e.stopPropagation();
+    };
 
     // html
     return (
         <ChecklistListWrapper>
             <div class="head">
-                <div class="title">제목</div>
+                <div class="title"><label style={{width:"30px"}}/>제목<HiDotsVertical size="25" onClick={toggleList}/></div>
+                {
+                    isListVisible === true ?
+                    <div class="iconList">
+                        <ChecklistIcon isListVisible={isListVisible} setListVisible={setListVisible} setModal={setModal}/>
+                    </div>
+                    :
+                    null
+                }
                 <div class="date">날짜</div>
             </div>
             <div class="body">
-                <div class="columnAll">전체</div>
-                <div class="columnPrice">비용</div>
+                <div class="bodyColumn">
+                    <div class="columnAll">전체</div>
+                    <div class="columnPrice">비용</div>
+                </div>
                 {checklistData?.map((list) => (
-                    <ChecklistItem checklistListId={id} id={list.id} price={list.price} currency={list.currency} content={list.content}/>
+                    <ChecklistItem checklistListId={id} id={list.id} price={list.price} currency={list.currency} content={list.content} check={true}/>
                 ))}
             </div>
+            {
+                modal === true ?
+                <AddChecklistListModal setRestart={setRestart} setModal={setModal} ref={outside} onClick={(e) => {if(e.target == outside.current) setModal(false)}}/>
+                :
+                null
+            }
         </ChecklistListWrapper>
     );
 }
@@ -61,15 +90,26 @@ const ChecklistListWrapper = styled.div`
     .title{
         margin-top: 3vh;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         font-size: 4vh;
+    }
+    .iconList{
+        position: absolute;
+        z-index: 100;
+        right: 3vh;
+        background-color: white;
+        padding: 0vh 2vh 0vh 2vh;
+        border: 1px solid black;
+        border-radius: 15px;
     }
     .date{
         display: flex;
         justify-content: right;
     }
     .body{
-        padding:2vh;
+        padding: 2vh;
+    }
+    .bodyColumn{
         padding-top: 0;
         display: flex;
         justify-content: space-around;
@@ -84,6 +124,10 @@ const ChecklistListWrapper = styled.div`
         padding: 1.5vh;
         width:30%;
         border-top: 2px solid #76A8DE;
+    }
+    .threeDotIcon{
+        display: flex;
+        justify-content: right;
     }
 `
 
