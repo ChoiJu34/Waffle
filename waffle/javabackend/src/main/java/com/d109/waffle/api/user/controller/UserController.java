@@ -198,6 +198,20 @@ public class UserController {
 		}
 	}
 
+	@PutMapping("/verify-password")
+	public ResponseEntity<?> verifyPassword(@RequestHeader("Authorization") String authorization, @RequestBody Map<String, String> map) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			userService.verifyPassword(authorization, map.get("password"));
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+		}
+	}
+
 	@PostMapping("/save/uuid")
 	public ResponseEntity<?> saveUserUuid(@RequestHeader("Authorization") String authorization, @RequestBody String uuid) {
 		Map<String, String> result = new HashMap<>();

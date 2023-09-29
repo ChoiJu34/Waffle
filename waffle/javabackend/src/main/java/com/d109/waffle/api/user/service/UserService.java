@@ -17,4 +17,6 @@ public interface UserService {
 	void updateUser(String authorization, UpdateUserDto updateUserDto) throws Exception;
 
 	void saveUserUuid(String authorization, String uuid) throws Exception;
+
+	void verifyPassword(String authorization, String password) throws Exception;
 }
