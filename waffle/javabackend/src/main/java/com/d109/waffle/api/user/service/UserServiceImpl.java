@@ -106,9 +106,9 @@ public class UserServiceImpl implements UserService {
 		if(userEntity.isPresent()) {
 			UserEntity user = userEntity.get();
 
-			if(!passwordEncoder.matches(updateUserDto.getPassword(), user.getPassword())) {
-				throw new InvalidKeyException("비밀번호를 다시 입력해주세요.");
-			}
+			// if(!passwordEncoder.matches(updateUserDto.getPassword(), user.getPassword())) {
+			// 	throw new InvalidKeyException("비밀번호를 다시 입력해주세요.");
+			// }
 			user.setName(updateUserDto.getNewName());
 			user.setTel(updateUserDto.getNewTel());
 			user.setPassword(updateUserDto.getNewPassword());

@@ -181,11 +181,11 @@ public class UserController {
 			userService.updateUser(authorization, updateUserDto);
 			result.put("message", "SUCCESS");
 			return new ResponseEntity<>(result, HttpStatus.OK);
-		} catch (InvalidKeyException ike) {		// 비밀번호 오류
-			log.error(ike.getMessage());
-			result.put("message", "FAIL");
-			result.put("result", ike.getMessage());
-			return new ResponseEntity<>(result, HttpStatus.OK);
+		// } catch (InvalidKeyException ike) {		// 비밀번호 오류
+		// 	log.error(ike.getMessage());
+		// 	result.put("message", "FAIL");
+		// 	result.put("result", ike.getMessage());
+		// 	return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (AuthorizationServiceException ase) {	// 토큰 오류
 			log.error(ase.getMessage());
 			result.put("message", "FAIL");
