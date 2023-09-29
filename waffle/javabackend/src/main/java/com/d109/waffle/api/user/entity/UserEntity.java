@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.d109.waffle.common.auth.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -56,6 +57,7 @@ public class UserEntity {
 
 	private String tel;
 
+	@JsonIgnore
 	@Column(name = "refresh_token")
 	private String refreshToken;
 

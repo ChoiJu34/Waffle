@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class UpdateUserDto {
 	private String newName;
 	private String newTel;
-	private String password;
+	// private String password;
 	private String newPassword;
 
 }
