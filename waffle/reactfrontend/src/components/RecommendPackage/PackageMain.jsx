@@ -17,6 +17,7 @@ import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { IoAirplaneSharp } from "react-icons/io5";
 import { AiOutlineClose } from "react-icons/ai";
+import { AiFillCalendar } from "react-icons/ai";
 
 
 
@@ -175,14 +176,15 @@ const PackageMain = () => {
 
   ]
 
+  
 
   const handleAirButton = () => {
     const params = {
       id: Airid,
       placeStart: startAir,
       placeEnd: endtAir,
-      startStart: moment(startDay).format("YYYY-MM-DD"), // 날짜를 원하는 형식으로 포맷팅
-      startEnd: moment(endDay).format("YYYY-MM-DD"), // 날짜를 원하는 형식으로 포맷팅
+      startStart: moment(startDay).format("YYYY-MM-DD"),
+      startEnd: moment(endDay).format("YYYY-MM-DD"), 
       startTime: moment(startTime).format("HH:mm"),
       endTime: moment(endTime).format("HH:mm"),
     };
@@ -224,7 +226,7 @@ const PackageMain = () => {
   const PostData = async () => {
     try {
       const params2 = {
-        memberCnt: 1,
+        memberCnt: cntPeople,
         planPlane: saveAirBoard,
         planHotel : saveHotelBoard,
       }
@@ -247,6 +249,8 @@ const PackageMain = () => {
   function Consol() {
     console.log(saveAirBoard)
     console.log(saveHotelBoard)
+    console.log(endTime)
+    console.log(moment(endTime).format("HH:mm"))
   }
 
   const handleHotelDateSelection = (e) => {
@@ -349,11 +353,11 @@ useEffect(() => {
           </Slider>
             ) : (<div></div>))}
         </Hotelbox>
-        <button onClick={PostData}>확인</button>
-        <button onClick={() => Consol()}>콘솔</button>
+        <ClickButton onClick={PostData}>확인</ClickButton>
+
         {isModalOpen && (
             <AirModal title={airModalTitle} closeModal={() => setIsModalOpen(false)} >
-              <span>출발</span>
+              <Text>출발</Text>
               <Select
                 defaultValue={options[0]}
                 inClearable={false}
@@ -363,7 +367,7 @@ useEffect(() => {
                 styles={customStyles}
                 onChange={(e) => setStartAir(e.value)}
               />
-              <span>도착</span>
+              <Text>도착</Text>
               <Select
                 defaultValue={options[0]}
                 inClearable={false}
@@ -373,7 +377,7 @@ useEffect(() => {
                 styles={customStyles}
                 onChange={(e) => setEndAir(e.value)}
               />
-              <span>출발날짜선택</span>
+              <AiFillCalendar size={30}></AiFillCalendar>
               <Calender 
                 onChange={handleAirDateSelection}
                 value={start}
@@ -381,20 +385,30 @@ useEffect(() => {
                 <Time
                   onChange={handleTimeChange}
                 />
-                <button onClick={handleAirButton}>확인</button>
+                <ClickButton onClick={handleAirButton}>확인</ClickButton>
             </AirModal>
         )}
 
         {isModalOpen2 && (
             <AirModal title={hotelModalTitle} closeModal={() => setIsModalOpen2(false)} >
-             <span>장소</span>
-              <input type="text" onChange={(e) => setWhere(e.target.value)}/>
-              <span>최소 출발시간</span>
-              <HotelCalender 
+             <div className='Hotel-text'>장소</div>
+             <div className="input-container">
+                <input
+                    type="text"
+                    placeholder="장소 입력"
+                    value={where}
+                    onChange={(e) => setWhere(e.target.value)}
+                />
+              </div>
+              <div className='hotelday-box'>
+              <AiFillCalendar size={30}></AiFillCalendar>
+              <Calender 
                 onChange={handleHotelDateSelection}
                 value={start}
                />
-              <button onClick={handleHotelButton}>확인</button>
+               </div>
+              <ClickButton onClick={handleHotelButton}>확인</ClickButton>
+  
             </AirModal>
             
         )}
@@ -403,6 +417,14 @@ useEffect(() => {
 }
 
 export default PackageMain
+
+
+
+const Text = styled.div`
+  margin: 10px;
+  font-size: 20px;
+`
+
 const Falsebox = styled.div`
   height: 30px;
 `
@@ -412,6 +434,15 @@ const Starttime = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+
+
+`
+
+const ClickButton = styled.button`
+  width: 80px;
+  border-radius: 7px;
+  border: 2px solid #9AC5F4;
+  background-color: white;
 
 
 `
@@ -483,8 +514,42 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 30px;
-  width: 400px;
+  width: 410px;
   padding-bottom: 20px;
+  & > span {
+  font-size: 25px;
+  }
+
+  .input-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-container input {
+    width: 75%;
+    padding: 12px; /* 여백을 늘릴 수 있습니다. */
+    font-size: 16px;
+    border-radius: 5px;
+    outline: none;
+
+}
+
+.input-container input::placeholder {
+    color: #aaa;
+
+
+}
+.Hotel-text {
+  font-size: 20px;
+  margin: 10px;
+}
+
+/* 포커스 시 테두리 색상 변경 */
+.hotelday-box {
+  padding: 10px;
+  margin-bottom: 30px;
+}
+
 `
 
 const Airplacebox = styled.div`

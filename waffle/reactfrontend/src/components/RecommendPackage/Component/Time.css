@@ -1,0 +1,52 @@
+/* TimePicker 컨테이너 스타일 */
+.time-picker {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 30%;
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    margin-top: 10px;
+}
+.time-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    
+}
+.time-separator {
+    font-size: 25px;
+    
+}
+
+/* DatePicker 스타일 */
+.react-datepicker-wrapper {
+    display: inline-block;
+    width: 100%;
+}
+
+.react-datepicker__input-container {
+    width: 100%;
+}
+
+.react-datepicker__input-container input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.react-datepicker__input-container input::placeholder {
+    color: #aaa;
+}
+
+/* DatePicker 팝업 스타일 */
+.react-datepicker-popper {
+    z-index: 1; /* 다른 요소 위에 나타나도록 설정 */
+}
