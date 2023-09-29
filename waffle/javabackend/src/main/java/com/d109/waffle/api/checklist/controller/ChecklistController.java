@@ -81,6 +81,7 @@ public class ChecklistController {
 		result.put("start", checklistList.getStart());
 		result.put("end", checklistList.getEnd());
 		result.put("country", checklistList.getCountry());
+		result.put("color", checklistList.getColor());
 		result.put("list", list);
 		result.put("message", success);
 		return new ResponseEntity<>(result, HttpStatus.OK);
