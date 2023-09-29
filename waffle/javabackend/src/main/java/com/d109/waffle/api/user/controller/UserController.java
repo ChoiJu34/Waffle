@@ -181,11 +181,11 @@ public class UserController {
 			userService.updateUser(authorization, updateUserDto);
 			result.put("message", "SUCCESS");
 			return new ResponseEntity<>(result, HttpStatus.OK);
-		} catch (InvalidKeyException ike) {		// 비밀번호 오류
-			log.error(ike.getMessage());
-			result.put("message", "FAIL");
-			result.put("result", ike.getMessage());
-			return new ResponseEntity<>(result, HttpStatus.OK);
+		// } catch (InvalidKeyException ike) {		// 비밀번호 오류
+		// 	log.error(ike.getMessage());
+		// 	result.put("message", "FAIL");
+		// 	result.put("result", ike.getMessage());
+		// 	return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (AuthorizationServiceException ase) {	// 토큰 오류
 			log.error(ase.getMessage());
 			result.put("message", "FAIL");
@@ -195,6 +195,20 @@ public class UserController {
 			log.error(e.getMessage());
 			result.put("message", "FAIL");
 			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+
+	@PutMapping("/verify-password")
+	public ResponseEntity<?> verifyPassword(@RequestHeader("Authorization") String authorization, @RequestBody Map<String, String> map) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			userService.verifyPassword(authorization, map.get("password"));
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
 		}
 	}
 
@@ -212,7 +226,19 @@ public class UserController {
 		}
 	}
 
-
+	@GetMapping("")
+	public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String authorization) {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			result.put("result", userService.getUserInfo(authorization));
+			result.put("message", "SUCCESS");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			result.put("message", "FAIL");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
 
 
 }
