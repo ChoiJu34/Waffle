@@ -100,6 +100,7 @@ public class ChecklistService {
 			map.put("price", checklist.getPrice());
 			map.put("currency", checklist.getCurrency());
 			map.put("when", checklist.getWhen());
+			map.put("check", checklist.getCheck());
 			result.add(map);
 		}
 		return result;
