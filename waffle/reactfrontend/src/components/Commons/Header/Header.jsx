@@ -16,8 +16,8 @@ const [userToggled, setUserToggled] = useState(false);
 
 // 로그아웃
 const handleLogout = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('refresh-token')
+  localStorage.removeItem('access_token')
+  localStorage.removeItem('refresh_token')
   navigate('/')
   window.location.reload()
 }
