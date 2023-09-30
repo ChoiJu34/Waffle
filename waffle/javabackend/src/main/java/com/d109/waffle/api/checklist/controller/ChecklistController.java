@@ -44,7 +44,7 @@ public class ChecklistController {
 	@GetMapping("/get-checklist-list")
 	public ResponseEntity<?> getChecklistList(@RequestHeader("Authorization") String authorization){
 		Map<String, Object> result = new HashMap<>();
-		List<ChecklistList> list = checklistService.getChecklistList(authorization);
+		List<Map<String, Object>> list = checklistService.getChecklistList(authorization);
 		result.put("list", list);
 		result.put("message", success);
 		return new ResponseEntity<>(result, HttpStatus.OK);
@@ -124,6 +124,17 @@ public class ChecklistController {
 	public ResponseEntity<?> modifyChecklist(@RequestBody ModifyChecklistDto modifyChecklistDto){
 		Map<String, Object> result = new HashMap<>();
 		if(checklistService.modifyChecklist(modifyChecklistDto)){
+			result.put("message", success);
+		}else{
+			result.put("message", fail);
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@PutMapping("clear-checklist/{checklist-list-id}")
+	public ResponseEntity<?> clearChecklist(@PathVariable("checklist-list-id") int id){
+		Map<String, Object> result = new HashMap<>();
+		if(checklistService.clearChecklist(id)){
 			result.put("message", success);
 		}else{
 			result.put("message", fail);

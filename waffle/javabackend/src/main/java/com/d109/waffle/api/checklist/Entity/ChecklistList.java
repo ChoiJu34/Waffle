@@ -37,6 +37,7 @@ public class ChecklistList {
 	String start;
 	String end;
 	String color;
+	byte clear;
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private UserEntity userEntity;

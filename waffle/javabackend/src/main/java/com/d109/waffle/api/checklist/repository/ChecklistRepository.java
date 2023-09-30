@@ -9,4 +9,5 @@ import com.d109.waffle.api.checklist.Entity.ChecklistList;
 
 public interface ChecklistRepository extends JpaRepository<Checklist, Integer>{
 	List<Checklist> findByChecklistList_IdOrderByOrderAsc(int id);
+	void deleteByChecklistList_Id(int id);
 }
