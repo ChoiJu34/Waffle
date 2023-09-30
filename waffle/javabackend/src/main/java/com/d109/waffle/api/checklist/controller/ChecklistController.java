@@ -44,7 +44,7 @@ public class ChecklistController {
 	@GetMapping("/get-checklist-list")
 	public ResponseEntity<?> getChecklistList(@RequestHeader("Authorization") String authorization){
 		Map<String, Object> result = new HashMap<>();
-		List<ChecklistList> list = checklistService.getChecklistList(authorization);
+		List<Map<String, Object>> list = checklistService.getChecklistList(authorization);
 		result.put("list", list);
 		result.put("message", success);
 		return new ResponseEntity<>(result, HttpStatus.OK);

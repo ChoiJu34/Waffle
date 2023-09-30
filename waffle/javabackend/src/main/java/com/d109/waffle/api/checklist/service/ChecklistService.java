@@ -32,14 +32,26 @@ public class ChecklistService {
 	private final CountryChecklistRepository countryChecklistRepository;
 	private final JwtService jwtService;
 
-	public List<ChecklistList> getChecklistList(String authorization){
+	public List<Map<String, Object>> getChecklistList(String authorization){
 		Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
 		if (!userEntity.isPresent()) {
 			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
 		}
 		UserEntity user = userEntity.get();
-		List<ChecklistList> list = checklistListRepository.findAllByUserEntity_Id(user.getId());
-		return list;
+		List<ChecklistList> list = checklistListRepository.findByUserEntity_Id(user.getId());
+		List<Map<String, Object>> result = new ArrayList<>();
+		for(ChecklistList checklistList : list){
+			Map<String, Object> map = new HashMap<>();
+			map.put("id", checklistList.getId());
+			map.put("country", checklistList.getCountry());
+			map.put("name", checklistList.getName());
+			map.put("start", checklistList.getStart());
+			map.put("end", checklistList.getEnd());
+			map.put("color", checklistList.getColor());
+			map.put("clear", checklistList.getClear());
+			result.add(map);
+		}
+		return result;
 	}
 
 	public ChecklistList getChecklistListOne(int id){
