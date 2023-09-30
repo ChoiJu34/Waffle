@@ -234,11 +234,11 @@ const PackageMain = () => {
 
 
       const response = await requestPostNode(`package/recommend`, params2);
-      alert('등록되었습니다.'); 
+      alert('등록되었습니다.');
       console.log("res", response);
  
 
-    } catch (error) { 
+    } catch (error) {
       console.error('포스트에러', error);
     }
    
