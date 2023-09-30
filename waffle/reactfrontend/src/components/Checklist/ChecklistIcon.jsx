@@ -19,6 +19,10 @@ const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist}) =>{
         setListVisible(false);
     };
 
+    const setClearChecklist = () => {
+
+    }
+
     // html
     return (
         <ChecklistListWrapper>
@@ -29,8 +33,8 @@ const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist}) =>{
             >
                 {/* 리스트 내용 */}
                 <dl class="list">
-                    <li onClick={() => setEditChecklist(true)}>수정</li>
-                    <li>종료</li>
+                    <li key="0" onClick={() => setEditChecklist(true)}>수정</li>
+                    <li key="1" onClick={() => setClearChecklist()}>종료</li>
                 </dl>
             </div>
         </ChecklistListWrapper>

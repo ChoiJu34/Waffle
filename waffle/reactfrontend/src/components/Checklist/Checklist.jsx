@@ -16,8 +16,17 @@ const ChecklistList = () =>{
     const [end, setEnd] = useState("");
     const [color, setColor] = useState("");
 
+    const [editName, setEditName] = useState("");
+    const [editStart, setEditStart] = useState("");
+    const [editEnd, setEditEnd] = useState("");
     const [editChecklist, setEditChecklist] = useState(false);
-    const [editChecklistData, setEditChecklistData] = useState()
+    const [editChecklistData, setEditChecklistData] = useState();
+
+    const [addContent, setAddContent] = useState("");
+    const [addPrice, setAddPrice] = useState("");
+    const [addCurrency, setAddCurrency] = useState("");
+
+    const [restart, setRestart] = useState("");
 
     useEffect(() => {
         axios.get(`/checklist/get-checklist/${id}`, {
@@ -36,12 +45,15 @@ const ChecklistList = () =>{
                 setEditChecklistData(data1);
                 setCountry(data2);
                 setName(data3);
+                setEditName(data3);
                 setStart(data4);
+                setEditStart(data4);
                 setEnd(data5);
+                setEditEnd(data5);
                 setColor(data6);
                 console.log(response.data);
             })
-    }, []);
+    }, [restart]);
 
     const [isListVisible, setListVisible] = useState(false);
 
@@ -51,12 +63,13 @@ const ChecklistList = () =>{
     };
 
     const editClear = () => {
+        console.log(editChecklistData);
         axios.put('/checklist/modify-checklist', {
             "id": id,
-            "start": start,
-            "end": end,
-            "name": name,
-            "list": checklistData
+            "start": editStart,
+            "end": editEnd,
+            "name": editName,
+            "list": editChecklistData
         },{
             headers: {
                 'Authorization' : "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5NjE0NTU2NywiZW1haWwiOiJnbWx3bmNobEBuYXZlci5jb20iLCJyb2xlIjoiVVNFUiJ9.SIVs4-_ICSReVpwR654KGKpKiD_YyDvt_KbRnhY9G1hP0hYaCO_q0UkhRn3CVV1oXgoxg7p65pMLpvNzliNFcg"
@@ -65,12 +78,41 @@ const ChecklistList = () =>{
             .then((response) => {
                 console.log(response);
                 setEditChecklist(false);
+                setRestart(response);
             })
     }
 
     const editCancle = () => {
-        setEditChecklistData(checklistData)
+        setEditChecklistData(checklistData);
+        setEditName(name);
+        setEditStart(start);
+        setEditEnd(end);
         setEditChecklist(false);
+    }
+
+    const addChecklistItem = () => {
+        console.log(id);
+        console.log(addContent);
+        console.log(addCurrency);
+        console.log(addPrice);
+        axios.post('/checklist/add-checklist-item', {
+            "checklistListId": id,
+            "content": addContent,
+            "currency": addCurrency,
+            "order": 0,
+            "price": addPrice
+        },{
+            headers: {
+                'Authorization' : "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5NjE0NTU2NywiZW1haWwiOiJnbWx3bmNobEBuYXZlci5jb20iLCJyb2xlIjoiVVNFUiJ9.SIVs4-_ICSReVpwR654KGKpKiD_YyDvt_KbRnhY9G1hP0hYaCO_q0UkhRn3CVV1oXgoxg7p65pMLpvNzliNFcg"
+            },
+        })
+            .then((response) => {
+                console.log(response);
+                setAddContent("");
+                setAddCurrency("");
+                setAddPrice("");
+                setRestart(response);
+            })
     }
 
     // html
@@ -85,7 +127,7 @@ const ChecklistList = () =>{
                     </div>
                     :
                     <div class="title">
-                        <input type='text' class="editTitle" defaultValue={name}/>
+                        <input type='text' class="editTitle" defaultValue={editName} onChange={(e) => {setEditName(e.target.value);}}/>
                     </div>
                 }
                 {
@@ -101,8 +143,8 @@ const ChecklistList = () =>{
                     <div class="date">{start} ~ {end}</div>
                     :
                     <div class="editDate">
-                        <input type='text' class="editTitle" defaultValue={start} style={{width:"30vw"}}/>
-                        <input type='text' class="editTitle" defaultValue={end} style={{width:"30vw"}}/>
+                        <input type='text' class="editTitle" defaultValue={editStart} style={{width:"30vw"}} onChange={(e) => {setEditStart(e.target.value);}}/>
+                        <input type='text' class="editTitle" defaultValue={editEnd} style={{width:"30vw"}} onChange={(e) => {setEditEnd(e.target.value);}}/>
                     </div>
                 }
             </div>
@@ -112,14 +154,29 @@ const ChecklistList = () =>{
                     <div class="columnPrice">비용</div>
                 </div>
                 {editChecklistData?.map((list) => (
-                    <ChecklistItem checklistListId={id} id={list.id} price={list.price} currency={list.currency} content={list.content} check={true} editChecklist={editChecklist} editChecklistData={editChecklistData} setEditChecklistData={setEditChecklistData}/>
+                    <ChecklistItem key={list.id} checklistListId={id} id={list.id} price={list.price} currency={list.currency} content={list.content} check={list.check} editChecklist={editChecklist} editChecklistData={editChecklistData} setEditChecklistData={setEditChecklistData}/>
                 ))}
             </div>
             {
                 editChecklist === false ?
+                <div class="foot">
+                    <div class="addInput">
+                        <input type='text' value={addContent} class="addContent" onChange={(e) => {setAddContent(e.target.value);}}/>
+                        <input type='text' value={addPrice} class="addPrice" onChange={(e) => {setAddPrice(e.target.value);}}/>
+                        <input type='text' value={addCurrency} class="addCurrency" onChange={(e) => {setAddCurrency(e.target.value);}}/>
+                    </div>
+                    <div class="addButton">
+                        <button class="addBtn" onClick={() => addChecklistItem()}>+</button>
+                    </div>
+                </div>
+                :
+                null
+            }
+            {
+                editChecklist === false ?
                 null
                 :
-                <div style={{display:'flex', justifyContent: "space-around", position:"absolute", bottom:"4vh", left:"11vw"}}>
+                <div style={{display:'flex', justifyContent: "space-around", position:"absolute", left:"11vw", position: "sticky", bottom: "2vh"}}>
                     <button class="editBtn" onClick={() => editClear()}>저장</button>
                     <button class="editBtn" onClick={() => editCancle()}>취소</button>
                 </div>
@@ -215,11 +272,107 @@ const ChecklistListWrapper = styled.div`
         background-color: #9AC5F4;
         color: white;
         font-size: 2.3vh;
-        margin-bottom: 3vh;
         margin-right: 2vw;
         margin-left: 2vw;
         &:active{
             background-color: #56a2f4;
+        }
+    }
+    .foot{
+        border: 1px solid #69A768;
+        border-radius: 20px;
+        padding: 2vh;
+        position: sticky;
+        bottom: 2vh;
+        background-color: white;
+    }
+    .addInput{
+        margin-bottom: 2vh;
+        display: flex;
+        justify-content: space-around;
+    }
+    .addContent{
+        display: block;
+        color: #909090;
+        width: 46vw;
+        border:0;
+        border-bottom: 1px solid #8c8c8c;
+        background-color: transparent;
+        box-sizing: border-box;
+        border-radius: 0;
+        padding: 0;
+        height: 36px;
+        line-height: 1.33;
+        font-size: 18px;
+        font-family: inherit;
+        vertical-align: baseline;
+        -webkit-appearance: none;
+        overflow: visible;
+        margin:0;
+        &:focus{
+            outline:0;
+            border-color:#76A8DE;
+            border-width: 2px;
+            color:#76A8DE;
+        }
+    }
+    .addPrice{
+        display: block;
+        color: #909090;
+        width: 20vw;
+        border:0;
+        border-bottom: 1px solid #8c8c8c;
+        background-color: transparent;
+        box-sizing: border-box;
+        border-radius: 0;
+        padding: 0;
+        height: 36px;
+        line-height: 1.33;
+        font-size: 18px;
+        font-family: inherit;
+        vertical-align: baseline;
+        -webkit-appearance: none;
+        overflow: visible;
+        margin:0;
+        &:focus{
+            outline:0;
+            border-color:#76A8DE;
+            border-width: 2px;
+            color:#76A8DE;
+        }
+    }
+    .addCurrency{
+        display: block;
+        color: #909090;
+        width: 5vw;
+        border:0;
+        border-bottom: 1px solid #8c8c8c;
+        background-color: transparent;
+        box-sizing: border-box;
+        border-radius: 0;
+        padding: 0;
+        height: 36px;
+        line-height: 1.33;
+        font-size: 18px;
+        font-family: inherit;
+        vertical-align: baseline;
+        -webkit-appearance: none;
+        overflow: visible;
+        margin:0;
+        &:focus{
+            outline:0;
+            border-color:#76A8DE;
+            border-width: 2px;
+            color:#76A8DE;
+        }
+    }
+    .addBtn{
+        background-color: white;
+        border-radius: 5px;
+        border-width: 2px;
+        &:active{
+            border-color: #76A8DE;
+            color: #76A8DE;
         }
     }
 `

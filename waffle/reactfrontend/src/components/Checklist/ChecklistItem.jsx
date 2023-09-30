@@ -1,23 +1,45 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios'
 
-const ChecklistItem = ({checklistListId, id, price, currency, content, check, editChecklist, editChecklistData, setEditChecklistData}) =>{
+const ChecklistItem = ({key, checklistListId, id, price, currency, content, check, editChecklist, editChecklistData, setEditChecklistData}) =>{
     //code
     const [isCheck, setIsCheck] = useState(check)
     const checkHandled = () => {
-        setIsCheck(!isCheck);
+        axios.put(`/checklist/check-checklist-item/${id}`, {
+            headers: {
+                'Authorization' : "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5NTk4MjgyMiwiZW1haWwiOiJnbWx3bmNobEBuYXZlci5jb20iLCJyb2xlIjoiVVNFUiJ9.DhvgNZd-0htDBRE6s7zYqphSJQCJBWNaBoBv1dJEB_Ic_VRMbzzs5US-Akd5zH9m72WPQnGsOsI_thCApljgGw"
+            },
+        })
+            .then((response) => {
+                console.log(response);
+                setIsCheck(!isCheck);
+            })
     }
     const deleteChecklistItem = () => {
         setEditChecklistData(editChecklistData.filter(list => list.id !== id));
+        console.log(editChecklistData);
+        console.log(id);
     }
+
     // html
     return (
         <ChecklistListWrapper>
             <div class="line">
-                <label class="checklistItem">
-                    <input id={id} type="checkbox" checked={isCheck} onChange={() => checkHandled()}/>
-                    {content}
-                </label>
+                {
+                    editChecklist === false ?
+                    <label class="checklistItem">
+                        <input id={id} type="checkbox" checked={isCheck} onChange={() => checkHandled()}/>
+                        {content}
+                    </label>
+                    :
+                    <label class="checklistItem">
+                        <input id={id} type="checkbox" disabled={true} checked={isCheck} onChange={() => checkHandled()}/>
+                        <div class="content">
+                            <input type='text' class="editContent" defaultValue={content}/>
+                        </div>
+                    </label>
+                }
                 {
                     editChecklist === false ?
                     <label class="checklistPrice">
@@ -25,7 +47,10 @@ const ChecklistItem = ({checklistListId, id, price, currency, content, check, ed
                     </label>
                     :
                     <label class="checklistPrice">
-                        {price} {currency}
+                        <div class="price">
+                            <input type='text' class="editPrice" defaultValue={price}/>
+                            <input type='text' class="editCurrency" defaultValue={currency}/>
+                        </div>
                         <button class="checklistDelete" onClick={()=>deleteChecklistItem()}>X</button>
                     </label>
                 }
@@ -58,6 +83,95 @@ const ChecklistListWrapper = styled.div`
             border-radius: 100%;
             background-color: red;
             color: white;
+        }
+    }
+    .price{
+        display: flex;
+        justify-content: right;
+    }
+    .content{
+        display: flex;
+        justify-content: left;
+        font-size: 4vh;
+    }
+    .editContent{
+        display: block;
+        color: #909090;
+        width: 46vw;
+        border:0;
+        border-bottom: 1px solid #8c8c8c;
+        background-color: transparent;
+        box-sizing: border-box;
+        border-radius: 0;
+        padding: 0;
+        height: 36px;
+        line-height: 1.33;
+        font-size: 18px;
+        font-family: inherit;
+        vertical-align: baseline;
+        -webkit-appearance: none;
+        overflow: visible;
+        margin:0;
+        &:focus{
+            outline:0;
+            border-color:#76A8DE;
+            border-width: 2px;
+            color:#76A8DE;
+        }
+    }
+    .price{
+        display: flex;
+        justify-content: left;
+        font-size: 4vh;
+    }
+    .editPrice{
+        display: block;
+        color: #909090;
+        width: 20vw;
+        border:0;
+        border-bottom: 1px solid #8c8c8c;
+        background-color: transparent;
+        box-sizing: border-box;
+        border-radius: 0;
+        padding: 0;
+        height: 36px;
+        line-height: 1.33;
+        font-size: 18px;
+        font-family: inherit;
+        vertical-align: baseline;
+        -webkit-appearance: none;
+        overflow: visible;
+        margin:0;
+        &:focus{
+            outline:0;
+            border-color:#76A8DE;
+            border-width: 2px;
+            color:#76A8DE;
+        }
+    }
+    .editCurrency{
+        display: block;
+        color: #909090;
+        width: 5vw;
+        border:0;
+        border-bottom: 1px solid #8c8c8c;
+        background-color: transparent;
+        box-sizing: border-box;
+        border-radius: 0;
+        padding: 0;
+        height: 36px;
+        line-height: 1.33;
+        font-size: 18px;
+        font-family: inherit;
+        vertical-align: baseline;
+        -webkit-appearance: none;
+        overflow: visible;
+        margin:0;
+        &:focus{
+            outline:0;
+            border-color:#76A8DE;
+            border-width: 2px;
+            color:#76A8DE;
         }
     }
 `
