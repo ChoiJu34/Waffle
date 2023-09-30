@@ -27,6 +27,7 @@
 .react-datepicker-wrapper {
     display: inline-block;
     width: 100%;
+    z-index: 9999;
 }
 
 .react-datepicker__input-container {
@@ -48,5 +49,5 @@
 
 /* DatePicker 팝업 스타일 */
 .react-datepicker-popper {
-    z-index: 1; /* 다른 요소 위에 나타나도록 설정 */
+    z-index: 9999; /* 다른 요소 위에 나타나도록 설정 */
 }

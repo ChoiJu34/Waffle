@@ -223,6 +223,7 @@ const PackageMain = () => {
     setSaveHotelBoard(updatedHotelBoard);
   };
 
+  const [loading, setLoading] = useState(false);
   const PostData = async () => {
     try {
       const params2 = {
@@ -230,14 +231,17 @@ const PackageMain = () => {
         planPlane: saveAirBoard,
         planHotel : saveHotelBoard,
       }
-      // 서버에 보낼 데이터 구조를 맞추기 위해 board 객체를 변경합니다.
-      const response = requestPostNode(`package/recommend`, params2);
+
+
+      const response = await requestPostNode(`package/recommend`, params2);
       alert('등록되었습니다.'); 
       console.log("res", response);
+ 
 
     } catch (error) { 
       console.error('포스트에러', error);
     }
+   
   };
 
   const handleAirDelete = (id) => {
@@ -246,12 +250,6 @@ const PackageMain = () => {
     setSaveAirBoard(updatedAirBoard);
   };
 
-  function Consol() {
-    console.log(saveAirBoard)
-    console.log(saveHotelBoard)
-    console.log(endTime)
-    console.log(moment(endTime).format("HH:mm"))
-  }
 
   const handleHotelDateSelection = (e) => {
     setStart(e.start); // 선택된 startDate를 저장
@@ -279,9 +277,13 @@ const decreasePeople = () => {
   }
 };
 
+
+
+
 useEffect(() => {
   deleteToken();
   setToken();
+
 }, []);
 
   return (
@@ -412,12 +414,12 @@ useEffect(() => {
             </AirModal>
             
         )}
+
     </Container>
   )
 }
 
 export default PackageMain
-
 
 
 const Text = styled.div`
