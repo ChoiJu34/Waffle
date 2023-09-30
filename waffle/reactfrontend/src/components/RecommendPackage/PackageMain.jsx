@@ -13,7 +13,8 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import {setToken} from '../../lib/api';
+import {setToken,requestPostNode, deleteToken} from '../../lib/api';
+
 
 
 
@@ -191,19 +192,17 @@ const PackageMain = () => {
 
   const PostData = async () => {
     try {
-      setToken()
       const params2 = {
         memberCnt: 1,
         planPlane: saveAirBoard,
         planHotel : saveHotelBoard,
       }
       // 서버에 보낼 데이터 구조를 맞추기 위해 board 객체를 변경합니다.
-      const response = await axios.post(`http://j9d109.p.ssafy.io:8003/package/recommend`, params2);
-      alert('등록되었습니다.');
-      console.log(params2)
-      console.log(response)
+      const response = requestPostNode(`package/recommend`, params2);
+      alert('등록되었습니다.'); 
+      console.log("res", response);
 
-    } catch (error) {
+    } catch (error) { 
       console.error('포스트에러', error);
     }
   };
@@ -228,7 +227,8 @@ const handleTimeChange = (startTime, endTime) => {
 };
 
 useEffect(() => {
-  setToken()
+  deleteToken();
+  setToken();
 }, []);
 
   return (

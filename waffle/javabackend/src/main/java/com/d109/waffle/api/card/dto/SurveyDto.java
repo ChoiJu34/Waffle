@@ -1,5 +1,6 @@
 package com.d109.waffle.api.card.dto;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import lombok.Getter;
@@ -12,8 +13,8 @@ import lombok.ToString;
 public class SurveyDto {
 	private int card;
 	private List<String> favoriteCompany;
-	private int annualFee;
-	private int dutyFree;
-	private int use;
+	private BigInteger annualFee;
+	private BigInteger dutyFree;
+	private BigInteger use;
 	private String country;
 }
