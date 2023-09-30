@@ -124,6 +124,7 @@ public class ChecklistService {
 				.content(checklistDto.getContent())
 				.price(checklistDto.getPrice())
 				.currency(checklistDto.getCurrency())
+				.order(checklistDto.getOrder())
 				.checklistList(checklistListRepository.findById(checklistDto.getChecklistListId()).get())
 				.build();
 			checklistRepository.save(checklist);
