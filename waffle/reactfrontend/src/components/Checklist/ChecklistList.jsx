@@ -33,7 +33,7 @@ const ChecklistList = () =>{
         <ChecklistListWrapper>
             <div class="cardList">
                 {checklistListData?.map((list) => (
-                    <ChecklistListItem id={list.id} name={list.name} country={list.country} start={list.start} end={list.end} color={list.color} clear={1}/>
+                    <ChecklistListItem id={list.id} name={list.name} country={list.country} start={list.start} end={list.end} color={list.color} clear={list.clear}/>
                 ))}
                 <article class="addCard">
                     <button class="addCardBtn" onClick={() => setModal(true)}>+</button>

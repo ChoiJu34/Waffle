@@ -6,6 +6,9 @@ const ChecklistItem = ({key, checklistListId, id, price, currency, content, chec
     //code
     const token = localStorage.getItem('access_token')
     const [isCheck, setIsCheck] = useState(check)
+    const [editContent, setEditContent] = useState(content)
+    const [editPrice, setEditPrice] = useState(price)
+    const [editCurrency, setEditCurrency] = useState(currency)
     const checkHandled = () => {
         axios.put(`/checklist/check-checklist-item/${id}`, {
             headers: {
@@ -23,6 +26,36 @@ const ChecklistItem = ({key, checklistListId, id, price, currency, content, chec
         console.log(id);
     }
 
+    useEffect(() => {
+        const updatedData = editChecklistData.map(list => {
+            if (list.id === id) {
+                return { ...list, content: editContent };
+            }
+            return list;
+        });
+        setEditChecklistData(updatedData);
+    }, [editContent]);
+
+    useEffect(() => {
+        const updatedData = editChecklistData.map(list => {
+            if (list.id === id) {
+                return { ...list, price: editPrice };
+            }
+            return list;
+        });
+        setEditChecklistData(updatedData);
+    }, [editPrice]);
+
+    useEffect(() => {
+        const updatedData = editChecklistData.map(list => {
+            if (list.id === id) {
+                return { ...list, currency: editCurrency };
+            }
+            return list;
+        });
+        setEditChecklistData(updatedData);
+    }, [editCurrency]);
+
     // html
     return (
         <ChecklistListWrapper>
@@ -37,7 +70,7 @@ const ChecklistItem = ({key, checklistListId, id, price, currency, content, chec
                     <label class="checklistItem">
                         <input id={id} type="checkbox" disabled={true} checked={isCheck} onChange={() => checkHandled()}/>
                         <div class="content">
-                            <input type='text' class="editContent" defaultValue={content}/>
+                            <input type='text' class="editContent" defaultValue={content} value={editContent} onChange={(e) => setEditContent(e.target.value)}/>
                         </div>
                     </label>
                 }
@@ -49,8 +82,8 @@ const ChecklistItem = ({key, checklistListId, id, price, currency, content, chec
                     :
                     <label class="checklistPrice">
                         <div class="price">
-                            <input type='text' class="editPrice" defaultValue={price}/>
-                            <input type='text' class="editCurrency" defaultValue={currency}/>
+                            <input type='text' class="editPrice" defaultValue={price} value={editPrice} onChange={(e) => setEditPrice(e.target.value)}/>
+                            <input type='text' class="editCurrency" defaultValue={currency} value={editCurrency} onChange={(e) => setEditCurrency(e.target.value)}/>
                         </div>
                         <button class="checklistDelete" onClick={()=>deleteChecklistItem()}>X</button>
                     </label>

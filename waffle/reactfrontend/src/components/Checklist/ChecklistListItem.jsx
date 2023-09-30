@@ -23,7 +23,7 @@ const ChecklistListItem = ({id, name, country, start, end, color, clear}) =>{
                 </article>
                 :
                 <div class="oneCard">
-                    <article class="card" key={id} style={{ backgroundColor: color }} onClick={()=>goToChecklist(id)}>
+                    <article class="clearCard" key={id} style={{ backgroundColor: color }} onClick={()=>goToChecklist(id)}>
                         <h3>{name}</h3>
                         <p>{start}</p>
                     </article>
@@ -41,7 +41,17 @@ const ChecklistListWrapper = styled.div`
     .oneCard{
         position: relative;
     }
-    .card {
+    .card{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 15px;
+        width: 75vw;
+        height: 24vh;
+        margin-bottom: 4vh;
+        color: #000000;
+    }
+    .clearCard {
         display: flex;
         flex-direction: column;
         justify-content: center;

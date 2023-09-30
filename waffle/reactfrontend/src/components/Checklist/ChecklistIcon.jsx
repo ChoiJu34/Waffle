@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 
-const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist, id}) =>{
+const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist, id, clear}) =>{
     //code
     const token = localStorage.getItem('access_token')
     useEffect(() => {
@@ -54,12 +54,20 @@ const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist, id}) =>
                 ref={listRef}
                 style={{ display: isListVisible ? 'block' : 'none' }}
             >
-                {/* 리스트 내용 */}
-                <dl class="list">
-                    <li key="0" onClick={() => setEditChecklist(true)}>수정</li>
-                    <li key="1" onClick={() => ClearChecklist()}>종료</li>
-                    <li key="1" onClick={() => DeleteChecklist()}>삭제</li>
-                </dl>
+                {
+                    clear === 0?
+                    <dl class="list">
+                        <li key="0" onClick={() => setEditChecklist(true)}>수정</li>
+                        <li key="1" onClick={() => ClearChecklist()}>종료</li>
+                        <li key="1" onClick={() => DeleteChecklist()}>삭제</li>
+                    </dl>
+                    :
+                    <dl class="list">
+                        <li key="0" onClick={() => setEditChecklist(true)}>수정</li>
+                        <li key="1" onClick={() => ClearChecklist()}>재시작</li>
+                        <li key="1" onClick={() => DeleteChecklist()}>삭제</li>
+                    </dl>
+                }
             </div>
         </ChecklistListWrapper>
     );

@@ -16,6 +16,7 @@ const ChecklistList = () =>{
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
     const [color, setColor] = useState("");
+    const [clear, setClear] = useState("");
 
     const [editName, setEditName] = useState("");
     const [editStart, setEditStart] = useState("");
@@ -42,6 +43,7 @@ const ChecklistList = () =>{
                 const data4 = response.data.start;
                 const data5 = response.data.end;
                 const data6 = response.data.color;
+                const data7 = response.data.clear;
                 setChecklistData(data1);
                 setEditChecklistData(data1);
                 setCountry(data2);
@@ -52,6 +54,7 @@ const ChecklistList = () =>{
                 setEnd(data5);
                 setEditEnd(data5);
                 setColor(data6);
+                setClear(data7);
                 console.log(response.data);
             })
     }, [restart]);
@@ -100,7 +103,7 @@ const ChecklistList = () =>{
             "checklistListId": id,
             "content": addContent,
             "currency": addCurrency,
-            "order": 0,
+            "order": 1000,
             "price": addPrice
         },{
             headers: {
@@ -134,7 +137,7 @@ const ChecklistList = () =>{
                 {
                     isListVisible === true ?
                     <div class="iconList">
-                        <ChecklistIcon isListVisible={isListVisible} setListVisible={setListVisible} setEditChecklist={setEditChecklist} id={id}/>
+                        <ChecklistIcon isListVisible={isListVisible} setListVisible={setListVisible} setEditChecklist={setEditChecklist} id={id} clear={clear}/>
                     </div>
                     :
                     null
