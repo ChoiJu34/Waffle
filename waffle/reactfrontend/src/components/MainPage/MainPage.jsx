@@ -8,6 +8,7 @@ import MainExchangeImg from '../../assets/MainExchangeImg.png'
 import MainAccountImg from '../../assets/MainAccountImg.png'
 import MainChecklistImg from '../../assets/MainChecklistImg.png'
 import { useNavigate } from 'react-router-dom';
+
 const MainPage = () => {
 
   // 이미지 회전하는 속도에 맞춰 글자 변환
@@ -54,13 +55,13 @@ const MainPage = () => {
       if (window.scrollY > 300) {
         setShowCard(true);
       }
-      if (window.scrollY > 700) {
+      if (window.scrollY > 600) {
         setShowExchange(true);
       }
-      if (window.scrollY > 1100) {
+      if (window.scrollY > 900) {
         setShowAccount(true);
       }
-      if (window.scrollY > 1300) {
+      if (window.scrollY > 1200) {
         setShowChecklist(true);
       }
     };
@@ -72,11 +73,9 @@ const MainPage = () => {
     };
   }, []);
 
-  // const goToPackage = () => {
-//   navigate('')
-//   setIsToggled(false)
-//   setUserToggled(false)
-// }
+  const goToPackage = () => {
+  navigate('/package/main')
+}
 
 const goToCard = () => {
   navigate('/recocard/main')
