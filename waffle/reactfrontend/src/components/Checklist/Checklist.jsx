@@ -27,18 +27,18 @@ const ChecklistList = () =>{
         })
             .then((response) => {
                 const data1 = response.data.list;
-                // const data2 = response.data.country;
-                // const data3 = response.data.name;
-                // const data4 = response.data.start;
-                // const data5 = response.data.end;
-                // const data6 = response.data.color;
+                const data2 = response.data.country;
+                const data3 = response.data.name;
+                const data4 = response.data.start;
+                const data5 = response.data.end;
+                const data6 = response.data.color;
                 setChecklistData(data1);
                 setEditChecklistData(data1);
-                // setCountry(data2);
-                // setName(data3);
-                // setStart(data4);
-                // setEnd(data5);
-                // setEnd(data6);
+                setCountry(data2);
+                setName(data3);
+                setStart(data4);
+                setEnd(data5);
+                setEnd(data6);
                 console.log(response.data);
             })
     }, []);
@@ -80,12 +80,12 @@ const ChecklistList = () =>{
                 {
                     editChecklist === false ?
                     <div class="title">
-                        <label style={{width:"30px"}}/>제목
+                        <label style={{width:"30px"}}/>{name}
                         <HiDotsVertical size="25" onClick={toggleList}/>
                     </div>
                     :
                     <div class="title">
-                        <input type='text' class="editTitle" defaultValue={"제목"}/>
+                        <input type='text' class="editTitle" defaultValue={name}/>
                     </div>
                 }
                 {
@@ -98,7 +98,7 @@ const ChecklistList = () =>{
                 }
                 {
                     editChecklist === false ?
-                    <div class="date">날짜</div>
+                    <div class="date">{start} ~ {end}</div>
                     :
                     <div class="editDate">
                         <input type='text' class="editTitle" defaultValue="시작날짜" style={{width:"30vw"}}/>
