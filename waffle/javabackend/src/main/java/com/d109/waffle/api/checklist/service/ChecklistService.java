@@ -153,13 +153,16 @@ public class ChecklistService {
 			checklistList.setName(modifyChecklistDto.getName());
 			checklistListRepository.save(checklistList);
 			List<ModifyChecklistItemDto> list = modifyChecklistDto.getList();
+			checklistRepository.deleteByChecklistList_Id(modifyChecklistDto.getId());
 			for (ModifyChecklistItemDto modifyChecklistItemDto : list) {
-				Checklist checklist = checklistRepository.findById(modifyChecklistItemDto.getId()).get();
+				Checklist checklist = new Checklist();
 				checklist.setContent(modifyChecklistItemDto.getContent());
 				checklist.setPrice(modifyChecklistItemDto.getPrice());
 				checklist.setCurrency(modifyChecklistItemDto.getCurrency());
 				checklist.setOrder(modifyChecklistItemDto.getOrder());
 				checklist.setWhen(modifyChecklistItemDto.getWhen());
+				checklist.setCheck(modifyChecklistItemDto.getCheck());
+				checklist.setChecklistList(checklistList);
 				checklistRepository.save(checklist);
 			}
 			return true;
