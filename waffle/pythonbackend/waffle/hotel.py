@@ -135,31 +135,34 @@ def interpark_crawling(info, chrome_options, service):
         return
 
     for element1, element2 in zip(elements1, elements2):
-        # element2 = driver.find_elements(By.XPATH, xpath2)
-        # 추출한 데이터를 딕셔너리로 추가
-        origin = re.sub(r'\+', "", element1.get_attribute('textContent'))
-        pattern = r'청구할인|추천|항공할인|05267.*?가|원~정상가|(\d+)성급.*?가|~로그인.*?확인|(\d+)(\d+)(\d+)(\d+)(\d+)판매가|%할인판매가'
-        origin = re.sub(pattern, " ", origin)
-        origin = re.sub(r' +', " ", origin)
-        if "객실마감" not in origin:
-            hotel = re.sub(r',|청구할인|추천|항공할인', "", origin).split("원")[0].split(" ")
-            price = int(hotel[len(hotel) - 1])
-            del hotel[len(hotel) - 1]
-            if hotel[len(hotel) - 1].isdigit():
+        try:
+            # element2 = driver.find_elements(By.XPATH, xpath2)
+            # 추출한 데이터를 딕셔너리로 추가
+            origin = re.sub(r'\+', "", element1.get_attribute('textContent'))
+            pattern = r'청구할인|추천|항공할인|05267.*?가|원~정상가|(\d+)성급.*?가|~로그인.*?확인|(\d+)(\d+)(\d+)(\d+)(\d+)판매가|%할인판매가'
+            origin = re.sub(pattern, " ", origin)
+            origin = re.sub(r' +', " ", origin)
+            if "객실마감" not in origin:
+                hotel = re.sub(r',|청구할인|추천|항공할인', "", origin).split("원")[0].split(" ")
                 price = int(hotel[len(hotel) - 1])
                 del hotel[len(hotel) - 1]
-            hotel_name = ''
-            for h in hotel:
-                hotel_name += h
-            try:
-                img = element2.get_attribute('src')
-                multi_list[k].put(Hotel(hotel_name, start, end, '', price, price, element1.get_attribute('href'),
-                        img, '인터파크'))
-            except:
-                logger.info("인터파크 호텔 element2 에러")
-                multi_list[k].put(Hotel(hotel_name, start, end, '', price, price, element1.get_attribute('href'),
-                        '이미지를 가져오지 못했습니다', '인터파크'))
-            # logger.info(f'{hotel_name}, {start}, {end}, , {price}, {price}, {element1}, 인터파크')
+                if hotel[len(hotel) - 1].isdigit():
+                    price = int(hotel[len(hotel) - 1])
+                    del hotel[len(hotel) - 1]
+                hotel_name = ''
+                for h in hotel:
+                    hotel_name += h
+                try:
+                    img = element2.get_attribute('src')
+                    multi_list[k].put(Hotel(hotel_name, start, end, '', price, price, element1.get_attribute('href'),
+                            img, '인터파크'))
+                except:
+                    logger.info("인터파크 호텔 element2 에러")
+                    multi_list[k].put(Hotel(hotel_name, start, end, '', price, price, element1.get_attribute('href'),
+                            '이미지를 가져오지 못했습니다', '인터파크'))
+                # logger.info(f'{hotel_name}, {start}, {end}, , {price}, {price}, {element1}, 인터파크')
+        except:
+            logger.info("인터파크 호텔 데이터 정제화 중 에러")
     driver.quit()
 
 
@@ -228,25 +231,29 @@ def agoda_crawling(info, chrome_options, service):
             src_element = element.find_element(By.XPATH, xpath7)
         except Exception:
             src_element = '이미지를 가지고 오지 못했습니다.'
-        origin = re.sub(r'\n예약 무료 취소|,|₩\s|페이지.*?\n', '', element.get_attribute('innerText'))
 
-        if '모두 보기' in origin:
-            origin = origin.split('모두 보기\n')[1]
-        # origin = origin.split('모두 보기\n')[1].split('\n')
-        # result.append(origin)
-        if '판매 완료' in origin:
-            continue
-        # if origin[len(origin) - 1].isdigit() == False :
-        #     continue
-        origin = origin.split('\n')
-        if '일정에 여유가 있으시다면 다음의 대체 날짜들도 고려해 보시기 바랍니다' in origin[0]:
-            continue
-        if href_element != 'https://www.agoda.com':
-            href_element = href_element.get_attribute('href')
-        if src_element != '이미지를 가지고 오지 못했습니다.':
-            src_element = src_element.get_attribute('src')
-        if len(origin[0])==1:
-            continue
+        try:
+            origin = re.sub(r'\n예약 무료 취소|,|₩\s|페이지.*?\n', '', element.get_attribute('innerText'))
+
+            if '모두 보기' in origin:
+                origin = origin.split('모두 보기\n')[1]
+            # origin = origin.split('모두 보기\n')[1].split('\n')
+            # result.append(origin)
+            if '판매 완료' in origin:
+                continue
+            # if origin[len(origin) - 1].isdigit() == False :
+            #     continue
+            origin = origin.split('\n')
+            if '일정에 여유가 있으시다면 다음의 대체 날짜들도 고려해 보시기 바랍니다' in origin[0]:
+                continue
+            if href_element != 'https://www.agoda.com':
+                href_element = href_element.get_attribute('href')
+            if src_element != '이미지를 가지고 오지 못했습니다.':
+                src_element = src_element.get_attribute('src')
+            if len(origin[0])==1:
+                continue
+        except:
+            logger.info("아고다 호텔 데이터 정제화 중 에러")
         try:
             multi_list[k].put(Hotel(origin[0], start, end, '', origin[len(origin) - 1], int(origin[len(origin) - 1]), href_element, src_element, '아고다'))
         except:
