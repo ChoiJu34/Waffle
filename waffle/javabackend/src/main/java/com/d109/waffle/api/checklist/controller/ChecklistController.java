@@ -75,7 +75,13 @@ public class ChecklistController {
 	@GetMapping("/get-checklist/{checklist-list-id}")
 	public ResponseEntity<?> getChecklist(@RequestHeader("Authorization") String authorization, @PathVariable("checklist-list-id") int id){
 		Map<String, Object> result = new HashMap<>();
+		ChecklistList checklistList = checklistService.getChecklistListOne(id);
 		List<Map<String,Object>> list = checklistService.getChecklist(authorization, id);
+		result.put("name", checklistList.getName());
+		result.put("start", checklistList.getStart());
+		result.put("end", checklistList.getEnd());
+		result.put("country", checklistList.getCountry());
+		result.put("color", checklistList.getColor());
 		result.put("list", list);
 		result.put("message", success);
 		return new ResponseEntity<>(result, HttpStatus.OK);

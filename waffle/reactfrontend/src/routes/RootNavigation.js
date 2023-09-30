@@ -26,6 +26,7 @@ import ChecklistList from "../components/Checklist/ChecklistMain";
 import Checklist from '../components/Checklist/Checklist'
 import CardInfo from "../components/CardInfo/CardInfo";
 import Favorite from "../components/MyPage/Favorite"
+import UpdateUserInfo from "../components/MyPage/UpdateUserInfo"
 const RootNavigation = () => {
   return (
     <BrowserRouter>
@@ -82,6 +83,7 @@ const RootNavigation = () => {
           <Route path="/mypage/checklist/:id" element={<Checklist/>} />
           <Route path="/cardinfo/:cardId" element={<CardInfo />} />
           <Route path="/mypage/favorite" element={<Favorite />} />
+          <Route path="/mypage/update-userinfo" element={<UpdateUserInfo />} />
         </Route>
       </Routes>
     </BrowserRouter>
