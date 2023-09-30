@@ -6,7 +6,7 @@ import HotelCalender from '../RecommendPackage/Component/HotelCalender'
 
 const AddChecklistListModal = ({setRestart, setModal}) =>{
     //code
-
+    const token = localStorage.getItem('access_token')
     // 제목 입력 칸 애니메이션
     const [name, setName] = useState("");
     const [isNameFocused, setIsNameFocused] = useState(false);
@@ -109,7 +109,7 @@ const AddChecklistListModal = ({setRestart, setModal}) =>{
             "color": color
         },{
             headers: {
-                'Authorization' : "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5NTk4MjgyMiwiZW1haWwiOiJnbWx3bmNobEBuYXZlci5jb20iLCJyb2xlIjoiVVNFUiJ9.DhvgNZd-0htDBRE6s7zYqphSJQCJBWNaBoBv1dJEB_Ic_VRMbzzs5US-Akd5zH9m72WPQnGsOsI_thCApljgGw"
+                "Authorization": "Bearer " + token
             },
         })
             .then((response) => {

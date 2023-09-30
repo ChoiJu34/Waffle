@@ -7,6 +7,7 @@ import AddChecklistListModal from './AddChecklistListModal';
 const ChecklistList = () =>{
     //code
     //변수
+    const token = localStorage.getItem('access_token')
     const [checklistListData, setChecklistListData] = useState();
     const [modal, setModal] = useState(false);
     const [restart, setRestart] = useState("");
@@ -16,7 +17,7 @@ const ChecklistList = () =>{
     useEffect(() => {
         axios.get('/checklist/get-checklist-list', {
             headers: {
-                'Authorization' : "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5NjE0NTU2NywiZW1haWwiOiJnbWx3bmNobEBuYXZlci5jb20iLCJyb2xlIjoiVVNFUiJ9.SIVs4-_ICSReVpwR654KGKpKiD_YyDvt_KbRnhY9G1hP0hYaCO_q0UkhRn3CVV1oXgoxg7p65pMLpvNzliNFcg"
+                "Authorization": "Bearer " + token
             },
         })
             .then((response) => {
