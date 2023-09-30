@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 
-const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist}) =>{
+const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist, id}) =>{
     //code
 
     useEffect(() => {
@@ -19,8 +21,29 @@ const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist}) =>{
         setListVisible(false);
     };
 
-    const setClearChecklist = () => {
+    const navigate = useNavigate()
+    const ClearChecklist = () => {
+        axios.put(`/checklist/clear-checklist/${id}`, {
+            headers: {
+                'Authorization' : "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5NTk4MjgyMiwiZW1haWwiOiJnbWx3bmNobEBuYXZlci5jb20iLCJyb2xlIjoiVVNFUiJ9.DhvgNZd-0htDBRE6s7zYqphSJQCJBWNaBoBv1dJEB_Ic_VRMbzzs5US-Akd5zH9m72WPQnGsOsI_thCApljgGw"
+            },
+        })
+            .then((response) => {
+                console.log(response);
+                navigate(`/mypage/checklist`)
+            })
+    }
 
+    const DeleteChecklist = () =>{
+        axios.delete(`/checklist/delete-checklist-list/${id}`, {
+            headers: {
+                'Authorization' : "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5NTk4MjgyMiwiZW1haWwiOiJnbWx3bmNobEBuYXZlci5jb20iLCJyb2xlIjoiVVNFUiJ9.DhvgNZd-0htDBRE6s7zYqphSJQCJBWNaBoBv1dJEB_Ic_VRMbzzs5US-Akd5zH9m72WPQnGsOsI_thCApljgGw"
+            },
+        })
+            .then((response) => {
+                console.log(response);
+                navigate(`/mypage/checklist`)
+            })
     }
 
     // html
@@ -34,7 +57,8 @@ const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist}) =>{
                 {/* 리스트 내용 */}
                 <dl class="list">
                     <li key="0" onClick={() => setEditChecklist(true)}>수정</li>
-                    <li key="1" onClick={() => setClearChecklist()}>종료</li>
+                    <li key="1" onClick={() => ClearChecklist()}>종료</li>
+                    <li key="1" onClick={() => DeleteChecklist()}>삭제</li>
                 </dl>
             </div>
         </ChecklistListWrapper>

@@ -133,7 +133,7 @@ const ChecklistList = () =>{
                 {
                     isListVisible === true ?
                     <div class="iconList">
-                        <ChecklistIcon isListVisible={isListVisible} setListVisible={setListVisible} setEditChecklist={setEditChecklist}/>
+                        <ChecklistIcon isListVisible={isListVisible} setListVisible={setListVisible} setEditChecklist={setEditChecklist} id={id}/>
                     </div>
                     :
                     null
@@ -234,6 +234,7 @@ const ChecklistListWrapper = styled.div`
     .date{
         display: flex;
         justify-content: right;
+        margin-top: 1vh;
     }
     .editDate{
         margin-top: 1vh;
