@@ -243,7 +243,7 @@ public class CardRecommendServiceImpl implements CardRecommendService {
 			BigInteger total = BigInteger.ZERO;
 
 			for (Map.Entry<String, BigInteger> entry : getPrice.entrySet()) {
-				total.add(entry.getValue());
+				total = total.add(entry.getValue());
 			}
 
 			getPrice.put("total", total);
