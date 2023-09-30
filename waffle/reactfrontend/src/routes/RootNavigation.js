@@ -22,7 +22,7 @@ import TeamAccountAddCode from "../components/TeamAccount/TeamAccountAddCode";
 import TeamAccountAddNew from "../components/TeamAccount/TeamAccountAddNew";
 import TeamAccountUpdate from "../components/TeamAccount/TeamAccountUpdate";
 import TeamAccountUpdateIndividual from "../components/TeamAccount/TeamAccountUpdateIndividual";
-import Checklist from "../components/Checklist/ChecklistMain";
+import ChecklistList from "../components/Checklist/ChecklistMain";
 import Checklist from '../components/Checklist/Checklist'
 import CardInfo from "../components/CardInfo/CardInfo";
 import Favorite from "../components/MyPage/Favorite"
