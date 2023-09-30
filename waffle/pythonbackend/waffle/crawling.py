@@ -37,6 +37,8 @@ result={
     "userPackage" : have_card_package,
 }
 
+hotel_or_plane_lock = threading.Lock()
+
 @api_view(['POST'])
 def crawling(request):
     data = json.loads(request.body)
@@ -84,12 +86,17 @@ def hotel_or_plane(info):
     global plane_infos
     global hotel_infos
 
-    if k==0:
-        # plane_infos.append(plane.plane(data))
-        plane_infos = plane.plane(data)
-    elif k==1:
-        # hotel_infos.append(hotel.hotel(data))
-        hotel_infos = hotel.hotel(data)
+    hotel_or_plane_lock.acquire()
+
+    try:
+        if k==0:
+            # plane_infos.append(plane.plane(data))
+            plane_infos = plane.plane(data)
+        elif k==1:
+            # hotel_infos.append(hotel.hotel(data))
+            hotel_infos = hotel.hotel(data)
+    finally:
+        hotel_or_plane_lock.release()
 
 
 def find_lowest_package(data, user_cards):
