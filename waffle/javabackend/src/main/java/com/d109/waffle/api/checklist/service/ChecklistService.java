@@ -170,4 +170,19 @@ public class ChecklistService {
 			return false;
 		}
 	}
+
+	public boolean clearChecklist(int id){
+		try {
+			ChecklistList checklistList = checklistListRepository.findById(id).get();
+			if(checklistList.getClear()==0) {
+				checklistList.setClear((byte)1);
+			}else{
+				checklistList.setClear((byte)0);
+			}
+			checklistListRepository.save(checklistList);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
 }

@@ -130,4 +130,15 @@ public class ChecklistController {
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+
+	@PutMapping("clear-checklist/{checklist-list-id}")
+	public ResponseEntity<?> clearChecklist(@PathVariable("checklist-list-id") int id){
+		Map<String, Object> result = new HashMap<>();
+		if(checklistService.clearChecklist(id)){
+			result.put("message", success);
+		}else{
+			result.put("message", fail);
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 }
