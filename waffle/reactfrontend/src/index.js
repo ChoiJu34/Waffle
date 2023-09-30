@@ -6,10 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import axios from 'axios'
 
 // EC2 서버
-// axios.defaults.baseURL = "https://j9d109.p.ssafy.io:8081";
+axios.defaults.baseURL = "https://j9d109.p.ssafy.io:8081";
 // axios.defaults.baseURL = "https://j9d109.p.ssafy.io:8080";
 // 로컬
-axios.defaults.baseURL = "http://localhost:8080";
+// axios.defaults.baseURL = "http://localhost:8080";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
