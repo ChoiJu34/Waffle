@@ -18,6 +18,7 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { IoAirplaneSharp } from "react-icons/io5";
 import { AiOutlineClose } from "react-icons/ai";
 import { AiFillCalendar } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom'; 
 
 
 
@@ -43,6 +44,8 @@ const PackageMain = () => {
   const [where, setWhere] = useState("")
   const [cntPeople, setCntPeople] = useState(1)
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+  const navigate = useNavigate()
 
   const settings = {
     dots: true,
@@ -222,28 +225,35 @@ const PackageMain = () => {
     const updatedHotelBoard = saveHotelBoard.filter((item) => item.id !== id);
     setSaveHotelBoard(updatedHotelBoard);
   };
-
   const [loading, setLoading] = useState(false);
   const PostData = async () => {
     try {
       const params2 = {
         memberCnt: cntPeople,
         planPlane: saveAirBoard,
-        planHotel : saveHotelBoard,
+        planHotel: saveHotelBoard,
+      };
+  
+      setLoading(true);
+  
+      const resData = await requestPostNode(`package/recommend`, params2);
+  
+      if (!resData) { 
+        throw new Error("서버 응답 데이터가 없습니다.");
       }
 
-
-      const response = await requestPostNode(`package/recommend`, params2);
-      alert('등록되었습니다.'); 
-      console.log("res", response);
- 
-
-    } catch (error) { 
-      console.error('포스트에러', error);
-    }
-   
+  
+      console.log("res", resData);
+  
+    
+      setLoading(false);
+      navigate('/package/list', { state: { value: resData } }); 
+      
+  
+    } catch (error) {
+      console.error('포스트 에러', error);
+    } 
   };
-
   const handleAirDelete = (id) => {
     // 해당 id를 가진 요소를 제외한 나머지 요소로 배열을 필터링합니다.
     const updatedAirBoard = saveAirBoard.filter((item) => item.id !== id);
@@ -287,7 +297,13 @@ useEffect(() => {
 }, []);
 
   return (
-    <Container>
+    <Container>{loading ? (
+        <LoadingContainer>
+          <LoadingSpinner />
+          <LoadingText>로딩 중...</LoadingText>
+        </LoadingContainer>
+      ) : (
+        <>
         <Peoplebox>
         <Tripicon>인원</Tripicon>
         <Plusbox>
@@ -340,7 +356,7 @@ useEffect(() => {
           </Buttontitlebox>
             {(saveHotelBoard.length > 0 ? (
               <Slider {...settings}>
-              {saveHotelBoard && saveHotelBoard.map(({ id,where,start,end}) => (
+              {saveHotelBoard && saveHotelBoard.map(({id,where,start,end}) => (
               <Hotelcontent id={id}>
                 <Closebnt onClick={() => handleHotelDelete(id)}></Closebnt>
                 <Hotelserchbox>
@@ -356,6 +372,8 @@ useEffect(() => {
             ) : (<div></div>))}
         </Hotelbox>
         <ClickButton onClick={PostData}>확인</ClickButton>
+        </>
+      )}
 
         {isModalOpen && (
             <AirModal title={airModalTitle} closeModal={() => setIsModalOpen(false)} >
@@ -422,6 +440,30 @@ useEffect(() => {
 export default PackageMain
 
 
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
+const LoadingSpinner = styled.div`
+  border: 4px solid rgba(195, 195, 195, 0.3);
+  border-top: 4px solid #9AC5F4;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+`;
+
+const LoadingText = styled.div`
+  margin-top: 20px;
+  font-size: 18px;
+`;
+
+
+
 const Text = styled.div`
   margin: 10px;
   font-size: 20px;
@@ -473,7 +515,7 @@ const Hotelcontent  = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.25);
   position: relative;
 `
 
@@ -516,7 +558,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 30px;
-  width: 410px;
+  width: 400px;
   padding-bottom: 20px;
   & > span {
   font-size: 25px;
@@ -587,7 +629,7 @@ const Peoplebox = styled.div`
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin-bottom: 30px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -600,7 +642,7 @@ const Airbox = styled.div`
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin-bottom: 30px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -613,7 +655,7 @@ const Hotelbox = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 30px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
     
 `
 const Contentbox = styled.div`
@@ -624,7 +666,7 @@ const Contentbox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const customStyles = {
