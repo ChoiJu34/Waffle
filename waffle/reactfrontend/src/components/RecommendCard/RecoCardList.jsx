@@ -19,8 +19,14 @@ const RecoCardList = (props) => {
     slidesToScroll: 1,
   };
 
-  const imgClick = (cardId) => {
-    navigate("/cardinfo/" + cardId, { state: { cardId: cardId } });
+  const imgClick = (cardId, originalPrice, discountPrice) => {
+    navigate("/cardinfo/" + cardId, {
+      state: {
+        cardId: cardId,
+        originalPrice: originalPrice,
+        discountPrice: discountPrice,
+      },
+    });
   };
 
   return (
@@ -49,7 +55,9 @@ const RecoCardList = (props) => {
                   <img
                     src={`https://j9d109.p.ssafy.io/downloads/${cardId}.png`}
                     alt="카드사진"
-                    onClick={() => imgClick(cardId)}
+                    onClick={() =>
+                      imgClick(cardId, originalPrice, discountPrice)
+                    }
                   />
                 </Cardimgbox>
                 <Cardnamefont>{cardName}</Cardnamefont>
