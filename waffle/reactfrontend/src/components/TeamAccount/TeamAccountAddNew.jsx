@@ -40,26 +40,26 @@ const closeModal = () => {
     tel: ''
   })
 
-  // useEffect = (() => {
-  //   handleInputChange()
-  // }, [formData.email, formData.name, formData.password, formData.tel, formData.birthday])
+  useEffect = (() => {
+    handleInputChange()
+  }, [formData.email, formData.name, formData.password, formData.tel, formData.birthday])
 
-  // useEffect = (() => {
-  //   onChangeBirthdate()
-  // }, [formData.birthday])
+  useEffect = (() => {
+    onChangeBirthdate()
+  }, [formData.birthday])
 
-  // useEffect = (() => {
-  //   handleBankSelect()
-  //   handleTelBlur()
-  // }, [formData.tel])
+  useEffect = (() => {
+    handleBankSelect()
+    handleTelBlur()
+  }, [formData.tel])
 
-  // useEffect = (() => {
-  //   if (formData.tel !== "") {
-  //     setIsTelComplete(true);
-  //   } else {
-  //     setIsTelComplete(false);
-  //   }
-  // }, [formData.tel]);
+  useEffect = (() => {
+    if (formData.tel !== "") {
+      setIsTelComplete(true);
+    } else {
+      setIsTelComplete(false);
+    }
+  }, [formData.tel]);
 
   // 뒤로가기
   const navigate = useNavigate();
@@ -384,17 +384,12 @@ const handleTargetValue = (e) => {
   let formattedValue = "";  
 
 
-  let reversedValue = value.split('').reverse().join('');
-
-  for (let i = 0; i < reversedValue.length; i++) {
+  for (let i = 0; i < value.length; i++) {
       if (i > 0 && i % 3 === 0) {
           formattedValue += ",";
       }
-      formattedValue += reversedValue[i];
+      formattedValue += value[i];
   }
-  
-  // 다시 문자열 뒤집기
-  formattedValue = formattedValue.split('').reverse().join('');
 
   setDisplayValue(formattedValue);
 
@@ -998,7 +993,7 @@ const ModalWrapper = styled.div`
   overflow: hidden;
   transition: height 0.2s ease-in-out;
   z-index: 2000;
-  border-radius: 20px 20px 0 0;
+  border-radius: 20px;
 `;
 
 const ModalContent = styled.div`

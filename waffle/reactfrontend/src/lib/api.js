@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // const baseUrl = 'https://i9d108.p.ssafy.io/api/';
-const baseUrl = 'https://j9d109.p.ssafy.io:8081/';
-const baseNodeUrl = 'http://i9d108.p.ssafy.io:3030/api/';
+const baseUrl = '`https://j9d109.p.ssafy.io:8081/';
+const baseNodeUrl = 'http://j9d109.p.ssafy.io:8000/';
 // const baseUrl = 'http://localhost:9999/api/';
 
 const headers = {
@@ -17,17 +17,17 @@ export const ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000;
 
 export const getAccessToken = async () => {
   console.log('새로 토큰을 얻어오자!');
-  const accessToken = localStorage.getItem('access_token');
+  const authorization = localStorage.getItem('access_token');
   // const refreshToken = localStorage.getItem('refresh_token');
   const headers = {
     'Content-Type': 'application/json;charset=UTF-8',
-    "Authorization": accessToken,
+    "Authorization": "Bearer " + authorization,
     // refresh_token: refreshToken,
   };
 
-  await axios.get(baseUrl + `user/userinfo`, headers).then((res) => {
+  await axios.get(baseUrl, headers).then((res) => {
     if (res.data.baseResponseDto.statusCode === 200) {
-      localStorage.setItem('access_token', res.headers['access_token']);
+      localStorage.setItem('access_token', res.headers['authorization']);
       localStorage.setItem('login', true);
       setTimeout(getAccessToken, ACCESS_TOKEN_EXPIRE_TIME);
     } else {
@@ -39,10 +39,15 @@ export const getAccessToken = async () => {
   });
 };
 
+export const deleteToken = () => {
+  delete axios.defaults.headers.common['Authorization'];
+};
+
 export const setToken = () => {
-  const access_token = localStorage.getItem('access_token');
+  const authorization = localStorage.getItem('access_token');
   // const refresh_token = localStorage.getItem('refresh_token');
-  axios.defaults.headers.common['access_token'] = access_token;
+  // delete axios.defaults.headers.common;
+  axios.defaults.headers.common['Authorization'] = "Bearer "+authorization;
   // axios.defaults.headers.common['refresh_token'] = refresh_token;
 };
 
@@ -77,9 +82,9 @@ export const requestPost = async (url, body, headers) => {
 export const requestPostNode = async (url, body) => {
   try {
     const headers = {
-      'Content-Type': 'multipart/form-data',
+      'Content-Type':'application/json;charset=UTF-8',
     };
-    const data = await axios.post(baseNodeUrl + url, body, headers);
+    const data = await axios.post(baseNodeUrl + url, body);
     return data;
   } catch (error) {
     console.log(error);
