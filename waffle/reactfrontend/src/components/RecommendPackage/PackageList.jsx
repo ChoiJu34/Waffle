@@ -4,7 +4,8 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import moment from "moment";
+import { IoAirplaneSharp } from "react-icons/io5";
 
 const PackageList = () => {
     const navigate = useNavigate();
@@ -57,14 +58,15 @@ const PackageList = () => {
                                     <div>{startPlace.substr(0,3)}</div>
                                     <div>{startTime}</div>
                                 </div>
+                                <IoAirplaneSharp className="air-icon"></IoAirplaneSharp> 
                                 <div>
                                     <div>{endPlace.substr(0,3)}</div>
                                     <div>{endTime}</div>
                                 </div>
                             </div>
                             <div>
-                                {(discountPrice === originPrice ? (<div></div>) : (<div>{discountPrice}</div>))}
-                                <div>{originPrice}원</div>
+                                {(discountPrice === originPrice ? (<div></div>) : (<div>{discountPrice.toLocaleString("ko-KR")}</div>))}
+                                <div>{originPrice.toLocaleString("ko-KR")}원</div>
                             </div>
                         </Airplacebox>
                         
@@ -114,7 +116,7 @@ const Content = styled.div`
 `
 const Smallairbox = styled.div`
     width: 330px;
-    height: auto;
+    height: 200px;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
     margin-bottom: 30px;
@@ -146,6 +148,10 @@ const Airplacebox = styled.div`
         width: 150px;
 
     }
+    .air-icon{
+        color: #9AC5F4;
+        font-size: 30px;
+    }
 `
 
 
@@ -158,7 +164,7 @@ const Aircompanybox = styled.div`
         height: 80px;
         display: flex;
         justify-self: center;
-        align-items: center;
+        align-self: center;
     
 
     }
