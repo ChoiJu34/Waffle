@@ -59,13 +59,13 @@ const ChecklistIcon = ({isListVisible, setListVisible, setEditChecklist, id, cle
                     <dl class="list">
                         <li key="0" onClick={() => setEditChecklist(true)}>수정</li>
                         <li key="1" onClick={() => ClearChecklist()}>종료</li>
-                        <li key="1" onClick={() => DeleteChecklist()}>삭제</li>
+                        <li key="2" onClick={() => DeleteChecklist()}>삭제</li>
                     </dl>
                     :
                     <dl class="list">
                         <li key="0" onClick={() => setEditChecklist(true)}>수정</li>
                         <li key="1" onClick={() => ClearChecklist()}>재시작</li>
-                        <li key="1" onClick={() => DeleteChecklist()}>삭제</li>
+                        <li key="2" onClick={() => DeleteChecklist()}>삭제</li>
                     </dl>
                 }
             </div>
