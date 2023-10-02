@@ -67,8 +67,8 @@ def crawling(request):
     logger.info(f"user_cards : {user_cards}")
 
     threads = []
-    for k in range(2):
-        thread = threading.Thread(target=hotel_or_plane, args=((k, data),))
+    for k in range(1):
+        thread = threading.Thread(target=main_thread, args=((data),))
         threads.append(thread)
         thread.start()
 
@@ -80,23 +80,33 @@ def crawling(request):
     json_response = json.dumps(result, ensure_ascii=False).encode('utf-8')
     return HttpResponse(json_response, content_type="application/json;charset=utf-8")
 
+def main_thread(data):
+    threads = []
+
+    hotel_or_plane_lock.acquire()
+    try:
+        for k in range(2):
+            thread = threading.Thread(target=hotel_or_plane, args=((k, data),))
+            threads.append(thread)
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+    finally:
+        hotel_or_plane_lock.release()
+
 
 def hotel_or_plane(info):
     k, data = info
     global plane_infos
     global hotel_infos
 
-    hotel_or_plane_lock.acquire()
-
-    try:
-        if k==0:
-            # plane_infos.append(plane.plane(data))
-            plane_infos = plane.plane(data)
-        elif k==1:
-            # hotel_infos.append(hotel.hotel(data))
-            hotel_infos = hotel.hotel(data)
-    finally:
-        hotel_or_plane_lock.release()
+    if k==0:
+        # plane_infos.append(plane.plane(data))
+        plane_infos = plane.plane(data)
+    elif k==1:
+        # hotel_infos.append(hotel.hotel(data))
+        hotel_infos = hotel.hotel(data)
 
 
 def find_lowest_package(data, user_cards):
