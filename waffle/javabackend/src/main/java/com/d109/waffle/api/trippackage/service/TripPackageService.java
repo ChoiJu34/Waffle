@@ -51,61 +51,57 @@ public class TripPackageService {
 		return airplaneList;
 	}
 
-	public boolean addFavorite(RecommendDto recommendDto, String authorization){
-		try {
-			List<PackagePlaneDto> planeDtos = recommendDto.getPlane();
-			List<PackageHotelDto> hotelDtos = recommendDto.getHotel();
-			int memberCnt = recommendDto.getMemberCnt();
-			String card = recommendDto.getCard();
-			Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
-			if (!userEntity.isPresent()) {
-				throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
-			}
-			UserEntity user = userEntity.get();
-			FavoritePackage favoritePackage = FavoritePackage.builder()
-				.memberCnt(memberCnt)
-				.card(card)
-				.userEntity(user)
+	public int addFavorite(RecommendDto recommendDto, String authorization){
+		List<PackagePlaneDto> planeDtos = recommendDto.getPlane();
+		List<PackageHotelDto> hotelDtos = recommendDto.getHotel();
+		int memberCnt = recommendDto.getMemberCnt();
+		String card = recommendDto.getCard();
+		Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
+		if (!userEntity.isPresent()) {
+			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+		}
+		UserEntity user = userEntity.get();
+		FavoritePackage favoritePackage = FavoritePackage.builder()
+			.memberCnt(memberCnt)
+			.card(card)
+			.userEntity(user)
+			.build();
+		int id = favoritePackageRepository.save(favoritePackage).getId();
+		favoritePackage.setId(id);
+		for (PackagePlaneDto planeDto : planeDtos) {
+			FavoritePlane favoritePlane = FavoritePlane.builder()
+				.planeDate(planeDto.getPlaneDate())
+				.company(planeDto.getCompany())
+				.startPlace(planeDto.getStartPlace())
+				.startTime(planeDto.getStartTime())
+				.endPlace(planeDto.getEndPlace())
+				.endTime(planeDto.getEndTime())
+				.originPrice(planeDto.getOriginPrice())
+				.discountPrice(planeDto.getDiscountPirce())
+				.layover(planeDto.getLayover())
+				.during(planeDto.getDuring())
+				.site(planeDto.getSite())
+				.card(planeDto.getCard())
+				.favoritePackage(favoritePackage)
 				.build();
-			favoritePackage.setId(favoritePackageRepository.save(favoritePackage).getId());
-			for (PackagePlaneDto planeDto : planeDtos) {
-				FavoritePlane favoritePlane = FavoritePlane.builder()
-					.planeDate(planeDto.getPlaneDate())
-					.company(planeDto.getCompany())
-					.startPlace(planeDto.getStartPlace())
-					.startTime(planeDto.getStartTime())
-					.endPlace(planeDto.getEndPlace())
-					.endTime(planeDto.getEndTime())
-					.originPrice(planeDto.getOriginPrice())
-					.discountPrice(planeDto.getDiscountPirce())
-					.layover(planeDto.getLayover())
-					.during(planeDto.getDuring())
-					.site(planeDto.getSite())
-					.card(planeDto.getCard())
-					.favoritePackage(favoritePackage)
-					.build();
-				favoritePlaneRepository.save(favoritePlane);
-			}
-			for (PackageHotelDto hotelDto : hotelDtos) {
-				FavoriteHotel favoriteHotel = FavoriteHotel.builder()
-					.hotelName(hotelDto.getHotelName())
-					.start(hotelDto.getStart())
-					.end(hotelDto.getEnd())
-					.card(hotelDto.getCard())
-					.originPrice(hotelDto.getOriginPrice())
-					.discountPrice(hotelDto.getDiscountPrice())
-					.url(hotelDto.getUrl())
-					.img(hotelDto.getImg())
-					.site(hotelDto.getSite())
-					.favoritePackage(favoritePackage)
-					.build();
-				favoriteHotelRepository.save(favoriteHotel);
-			}
+			favoritePlaneRepository.save(favoritePlane);
 		}
-		catch (Exception e){
-			return false;
+		for (PackageHotelDto hotelDto : hotelDtos) {
+			FavoriteHotel favoriteHotel = FavoriteHotel.builder()
+				.hotelName(hotelDto.getHotelName())
+				.start(hotelDto.getStart())
+				.end(hotelDto.getEnd())
+				.card(hotelDto.getCard())
+				.originPrice(hotelDto.getOriginPrice())
+				.discountPrice(hotelDto.getDiscountPrice())
+				.url(hotelDto.getUrl())
+				.img(hotelDto.getImg())
+				.site(hotelDto.getSite())
+				.favoritePackage(favoritePackage)
+				.build();
+			favoriteHotelRepository.save(favoriteHotel);
 		}
-		return true;
+		return id;
 	}
 
 	public List<RecommendDto> getFavoriteList(String authorization){
@@ -158,5 +154,16 @@ public class TripPackageService {
 			result.add(recommendDto);
 		}
 		return result;
+	}
+
+	public boolean deleteFavorite(int id){
+		try {
+			favoritePlaneRepository.deleteByFavoritePackage_Id(id);
+			favoriteHotelRepository.deleteByFavoritePackage_Id(id);
+			favoritePackageRepository.deleteById(id);
+			return true;
+		}catch (Exception e){
+			return false;
+		}
 	}
 }
