@@ -2,9 +2,13 @@ package com.d109.waffle.api.teamaccount.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,6 +18,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@DynamicInsert @DynamicUpdate
 public class TeamAccountEntity {
     @Id
     @Column
@@ -26,16 +31,19 @@ public class TeamAccountEntity {
     @Column(length=45)
     private String company;
 
-    @Column(length=45)
-    private String account_number;
+    @Column(length=45, name="account_number")
+    private String accountNumber;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    @Column(length=45)
-    private LocalDateTime end_day;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name="end_day")
+    private LocalDate endDay;
 
     @Column
     private int goal;
+
+    @Column
+    @CreationTimestamp
+    private LocalDateTime createDate;
 
     @Column(name="invite_code")
     private String inviteCode;

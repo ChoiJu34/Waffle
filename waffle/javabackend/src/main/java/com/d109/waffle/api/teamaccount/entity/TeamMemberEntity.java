@@ -2,16 +2,17 @@ package com.d109.waffle.api.teamaccount.entity;
 
         import com.d109.waffle.api.user.entity.UserEntity;
         import lombok.*;
+        import org.hibernate.type.descriptor.sql.TinyIntTypeDescriptor;
 
         import javax.persistence.*;
 
 @Entity
 @Table(name="team_member")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TeamMemberEntity {
     @Id
     @Column
@@ -27,7 +28,10 @@ public class TeamMemberEntity {
     private TeamAccountEntity teamAccount;
 
     @Column
-    private Byte master;
+    private Boolean master;
+
+    @Column(length=45)
+    private String nickname;
 
 }
 

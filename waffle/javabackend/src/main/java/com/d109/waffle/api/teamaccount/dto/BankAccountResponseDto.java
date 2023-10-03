@@ -1,5 +1,7 @@
 package com.d109.waffle.api.teamaccount.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.*;
 
 import java.util.List;
@@ -12,5 +14,8 @@ import java.util.List;
 @Builder
 public class BankAccountResponseDto {
     private String message;
-    private List<BankAccountDto> bankAccountDtoList;
+    @JsonProperty("result")
+    private BankAccountDto bankAccountDto;
+
 }
+
