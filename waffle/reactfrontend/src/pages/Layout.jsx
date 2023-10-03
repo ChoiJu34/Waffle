@@ -10,14 +10,16 @@ const Layout = () => {
 
   const location = useLocation();
   const isUserRoute = /^\/user\//.test(location.pathname);
+  const isTeamAccountAddRoute = /\/teamaccount\/add/.test(location.pathname);
+  const isTeamAccountUpdateRoute = /\/teamaccount\/update/.test(location.pathname);
 
   return (
     <SLayout>
-      {!isUserRoute && <Header/>}
-      <SContent isUserRoute={isUserRoute}>
+      {!(isUserRoute || isTeamAccountAddRoute || isTeamAccountUpdateRoute)&& <Header/>}
+      <SContent isUserRoute={isUserRoute} isTeamAccountAddRoute={isTeamAccountAddRoute} isTeamAccountUpdateRoute={isTeamAccountUpdateRoute}>
         <Outlet/>
       </SContent>
-      {!isUserRoute && <Footer/>}
+      {!(isUserRoute || isTeamAccountAddRoute || isTeamAccountUpdateRoute) && <Footer/>}
     </SLayout>
   )
 }
@@ -30,7 +32,7 @@ const SLayout = styled.div`
 
 const SContent = styled.div`
   flex: 1;
-  margin-top: ${(props) => (props.isUserRoute ? '0' : '6vh')};
+  margin-top: ${(props) => ((props.isUserRoute || props.isTeamAccountAddRoute || props.isTeamAccountUpdateRoute) ? '0' : '6vh')};
 `
 
 export default Layout

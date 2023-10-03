@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.d109.waffle.api.checklist.Entity.ChecklistList;
 
 public interface ChecklistListRepository extends JpaRepository<ChecklistList, Integer> {
-	List<ChecklistList> findAllByUserEntity_Id(int id);
+	List<ChecklistList> findByUserEntity_Id(int id);
 }

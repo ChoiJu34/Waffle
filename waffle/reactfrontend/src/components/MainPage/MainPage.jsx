@@ -8,6 +8,7 @@ import MainExchangeImg from '../../assets/MainExchangeImg.png'
 import MainAccountImg from '../../assets/MainAccountImg.png'
 import MainChecklistImg from '../../assets/MainChecklistImg.png'
 import { useNavigate } from 'react-router-dom';
+
 const MainPage = () => {
 
   // 이미지 회전하는 속도에 맞춰 글자 변환
@@ -54,13 +55,13 @@ const MainPage = () => {
       if (window.scrollY > 300) {
         setShowCard(true);
       }
-      if (window.scrollY > 700) {
+      if (window.scrollY > 600) {
         setShowExchange(true);
       }
-      if (window.scrollY > 1100) {
+      if (window.scrollY > 900) {
         setShowAccount(true);
       }
-      if (window.scrollY > 1300) {
+      if (window.scrollY > 1200) {
         setShowChecklist(true);
       }
     };
@@ -72,11 +73,9 @@ const MainPage = () => {
     };
   }, []);
 
-  // const goToPackage = () => {
-//   navigate('')
-//   setIsToggled(false)
-//   setUserToggled(false)
-// }
+  const goToPackage = () => {
+  navigate('/package/main')
+}
 
 const goToCard = () => {
   navigate('/recocard/main')
@@ -213,6 +212,7 @@ const MainPageWrapper = styled.div`
 
   .main-img {
     width: 100%;
+    height: 28vh;
     display: block;
   }
 
@@ -223,15 +223,15 @@ const MainPageWrapper = styled.div`
 
   .main-img-default-text {
     position: absolute;
-    top: 15%;
-    left: 8%;
+    top: 4vh;
+    left: 7vw;
     font-size: 3.1vh;
   }
 
   .main-img-text {
     position: absolute;
-    top: 60%;
-    left: 30%;
+    top: 17vh;
+    left: 28vw;
     transform: translate(-50%, -50%);
     width: 100%;
     font-size: 3vh;
@@ -240,15 +240,15 @@ const MainPageWrapper = styled.div`
 
   .main-img-waffle {
     position: absolute;
-    top: 100%;
-    left: 100%;
+    top: 28vh;
+    left: 96vw;
     transform: translate(-50%, -50%);
-    width: 100%;
+    width: 90vw;
     animation: ${rotateAnimation} 20s linear infinite;
   }
 
   .main-body-title {
-    font-size: 25px;
+    font-size: 3vh;
     margin: 5vh 0;
   }
 

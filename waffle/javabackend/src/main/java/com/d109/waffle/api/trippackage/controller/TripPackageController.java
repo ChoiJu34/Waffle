@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -50,10 +52,12 @@ public class TripPackageController {
 
 	@PostMapping("/add-favorite")
 	public ResponseEntity<?> addFavorite(@RequestBody RecommendDto recommendDto, @RequestHeader("Authorization") String authorization){
-		Map<String, String> result = new HashMap<>();
-		if(tripPackageService.addFavorite(recommendDto, authorization)) {
+		Map<String, Object> result = new HashMap<>();
+		try{
+			int id = tripPackageService.addFavorite(recommendDto, authorization);
+			result.put("id", id);
 			result.put("message", success);
-		}else{
+		}catch (Exception e){
 			result.put("message", fail);
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
@@ -67,6 +71,17 @@ public class TripPackageController {
 			result.put("list", list);
 			result.put("message", success);
 		}catch (Exception e) {
+			result.put("message", fail);
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/delete-favorite/{id}")
+	public ResponseEntity<?> deleteFavorite(@PathVariable("id") int id){
+		Map<String,Object> result = new HashMap<>();
+		if(tripPackageService.deleteFavorite(id)){
+			result.put("message", success);
+		}else{
 			result.put("message", fail);
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
