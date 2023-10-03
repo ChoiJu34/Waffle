@@ -255,6 +255,7 @@ const UpdateUserInfo = () => {
       .then(response => {
         if (response.data.message === "SUCCESS") {
         alert('회원 정보가 변경되었습니다')
+        navigate('/mypage/checklist')
         } else {
           alert('정보 변경에 실패했습니다')
         }

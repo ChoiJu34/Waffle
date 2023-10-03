@@ -69,7 +69,7 @@ const goToSignup = () => {
 }
 
 const goToMyPage = () => {
-  navigate('/mypage/favorite')
+  navigate('/mypage/checklist')
   setIsToggled(false)
   setUserToggled(false)
 }

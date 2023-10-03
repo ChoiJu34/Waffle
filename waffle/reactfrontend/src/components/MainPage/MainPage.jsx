@@ -241,10 +241,10 @@ const MainPageWrapper = styled.div`
   .main-img-waffle {
     position: absolute;
     top: 28vh;
-    left: 96vw;
-    transform: translate(-50%, -50%);
+    left: 103vw;
+    -webkit-transform: translate(-50%, -50%);
     width: 90vw;
-    animation: ${rotateAnimation} 20s linear infinite;
+    -webkit-animation: ${rotateAnimation} 20s linear infinite;
   }
 
   .main-body-title {
