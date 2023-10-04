@@ -149,24 +149,6 @@ const TeamAccountDetail = () => {
     }
   }, [teamAccountData?.endDay]);
 
-  // 개인 목표 수정
-  const [individualData, setIndividualData] = useState(
-      [
-        {name: "대장", target: 500},
-        {name: "부부젤라", target: 1500}
-      ])
-
-  const handleIndividualDataChange = (updatedData) => {
-    setIndividualData(updatedData)
-  }
-
-  const goToUpdateIndividual = () => {
-    setShowIndividualUpdate(true)
-    // navigate('/teamaccount/update/individual', { state: individualData })
-  }
-
-  const [showIndividualUpdate, setShowIndividualUpdate] = useState(false);
-
   // 스윙 이미지
   const [swingAnimation, setSwingAnimation] = useState("animate__fadeInTopLeft");
 
@@ -228,10 +210,18 @@ const TeamAccountDetail = () => {
     navigate(`/teamaccount/out`, { state: teamAccountData })
    }
 
+   const goToDelete = () => {
+    navigate(`/teamaccount/delete`, { state: teamAccountData })
+   }
+
+   const goToUpdateIndividual = () => {
+    const accountId = teamAccountData?.id
+
+    navigate(`/teamaccount/update/individual/${accountId}`)
+   }
+
   return (
     <TeamAccountDetailWrapper spentRatio={spentRatio} raisedRatio={raisedRatio}> 
-       {showIndividualUpdate ? (<TeamAccountUpdateIndividual handleIndividualDataChange={handleIndividualDataChange} individualData={individualData} setShowIndividualUpdate={setShowIndividualUpdate}/>) : 
-      (<>
       <div className="teamaccount-detail-title">
       <div className="login-header"><FontAwesomeIcon icon={faArrowLeft} color="black" onClick={handleGoBack}/></div>
         <div className="teamaccount-detail-title-text">{teamAccountData?.name}</div>
@@ -242,7 +232,7 @@ const TeamAccountDetail = () => {
            (<>
            <div className="menu-item" onClick={goToUpdate}>통장 정보 수정</div>
            <div className="menu-item" onClick={goToUpdateIndividual}>개인 목표 수정</div>
-           <div className="menu-item-delete">모임 통장 삭제</div>
+           <div className="menu-item-delete" onClick={goToDelete}>모임 통장 삭제</div>
            </>) :
            (<>
            <div className="menu-item-delete" onClick={goToOut}>모임 통장 탈퇴</div>
@@ -313,10 +303,8 @@ const TeamAccountDetail = () => {
         <div className="team-account-detail-individual-title">개인별 목표 금액</div>
         <TeamAccountDetailIndividualList />
       </div>
-      </>)}
     </TeamAccountDetailWrapper>
-  )
-}
+  )}
 
 const swingAnimation = keyframes`
   20% {

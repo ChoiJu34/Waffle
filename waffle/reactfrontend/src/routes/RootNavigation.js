@@ -92,7 +92,7 @@ const RootNavigation = () => {
           <Route path="/teamaccount/add/new" element={<TeamAccountAddNew />} />
           <Route path="/teamaccount/update/:id" element={<TeamAccountUpdate />} />
           <Route
-            path="/teamaccount/update/individual"
+            path="/teamaccount/update/individual/:id"
             element={<TeamAccountUpdateIndividual />}
           />
           <Route path="/mypage/checklist" element={<ChecklistList />} />

@@ -33,20 +33,20 @@ const closeModal = () => {
   const location = useLocation()
 
   const [formData, setFormData] = useState({
-    email: '',
     name: '',
-    password: '',
-    birthday: '',
-    tel: ''
+    goal: '',
+    endDay: '',
+    accountNumber: '',
+    company: ''
   })
 
   useEffect = (() => {
     handleInputChange()
-  }, [formData.email, formData.name, formData.password, formData.tel, formData.birthday])
+  }, [formData.name, formData.goal, formData.endDay, formData.accountNumber, formData.company])
 
   useEffect = (() => {
     onChangeBirthdate()
-  }, [formData.birthday])
+  }, [formData.endDay])
 
   useEffect = (() => {
     handleBankSelect()
@@ -54,12 +54,12 @@ const closeModal = () => {
   }, [formData.tel])
 
   useEffect = (() => {
-    if (formData.tel !== "") {
+    if (formData.company !== "") {
       setIsTelComplete(true);
     } else {
       setIsTelComplete(false);
     }
-  }, [formData.tel]);
+  }, [formData.companh]);
 
   // 뒤로가기
   const navigate = useNavigate();
@@ -81,7 +81,7 @@ const closeModal = () => {
   };
 
   const handleEmailBlur = useCallback(() => {
-    const emailValue = formData.email
+    const emailValue = formData.name
 
     setIsEmailFocused(false);
     if (emailValue === "") {
@@ -89,9 +89,9 @@ const closeModal = () => {
     } else {
       setIsEmailComplete(true);
     }
-  }, [formData.email]);
+  }, [formData.name]);
 
-  const showEmailPlaceholder = isEmailFocused && !formData.email
+  const showEmailPlaceholder = isEmailFocused && !formData.name
 
   // 비밀번호 입력 칸
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
@@ -117,7 +117,7 @@ const closeModal = () => {
 
     const [year, month, day] = passwordCurrent.split("-").map((str) => parseInt(str, 10))
   
-    }, [formData.password]);
+    }, [formData.goal]);
 
   const showPasswordPlaceholder = isPasswordFocused && !inputPasswordRef.current?.value
 
@@ -152,14 +152,14 @@ const closeModal = () => {
 
   const handleNameBlur = useCallback(() => {
 
-    const nameValue = formData.name
+    const nameValue = formData.accountNumber
     setIsNameFocused(false);
     if (nameValue === "") {
       setIsNameComplete(false);
     } else {
       setIsNameComplete(true);
     }
-  }, [formData.name]);
+  }, [formData.accountNumber]);
 
   const showNamePlaceholder = isNameFocused && !inputNameRef.current?.value
 
@@ -175,13 +175,13 @@ const closeModal = () => {
   const handleBirthdateBlur = useCallback(() => {
     setIsBirthdateFocused(false);
 
-    const birthdateValue = formData.birthday
+    const birthdateValue = formData.endDay
     if (birthdateValue === "") {
       setIsBirthdateComplete(false);
     } else {
       setIsBirthdateComplete(true);
     }
-  }, [formData.birthday]);
+  }, [formData.endDay]);
 
   const showBirthdatePlaceholder = isBirthdateFocused && !inputBirthdateRef.current?.value
 
@@ -223,7 +223,7 @@ const closeModal = () => {
   };
 
   const handleTelBlur = useCallback(() => {
-    const telValue = formData.tel
+    const telValue = formData.company
     setIsTelFocused(false);
     if (telValue === "") {
       setIsTelComplete(false);
@@ -269,7 +269,7 @@ const closeModal = () => {
     } else {
       setIsBirthdate(false);
     }
-    }, [formData.birthday]);
+    }, [formData.endDay]);
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -294,23 +294,25 @@ const handleChange = (e) => {
     handleChange(e);
   }
 
-  // 회원가입
+  // 신규 통장 등록
+
+  const token = localStorage.getItem('access_token')
+
+  const headers = {
+    "Authorization": "Bearer " + token
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    const forSubmitFormData = {
-      ...formData,
-      birthday: `${formData.birthday} 00:00`
-    }
-
-    axios.post('/user/sign-up', forSubmitFormData)
+    axios.post('/team-account/add-list', formData, {headers: headers})
       .then(response => {
-        navigate('/user/sign-up/complete')
+        alert('새 통장이 등록되었습니다')
+        navigate('/teamaccount/main')
       })
       .catch(error => {
-        console.error('회원가입 실패')
-        alert('회원가입에 실패했습니다')
+        console.error('통장 등록 실패')
+        alert('통장 등록에 실패했습니다')
       })
   }
 
@@ -365,7 +367,7 @@ const BANK_INFO = {
 const handleBankSelect = (bankInfo) => () => { 
   setChosenBank(bankInfo.display);
   
-  setFormData(prevData => ({ ...prevData, tel: bankInfo.value }));
+  setFormData(prevData => ({ ...prevData, company: bankInfo.value }));
 
   if (bankInfo.value !== "") {
     setIsTelComplete(true);
@@ -375,30 +377,37 @@ const handleBankSelect = (bankInfo) => () => {
   closeModal();
 };
 
+const formatValueWithComma = (value) => {
+  let formattedValue = "";  
+  let reversedValue = value.split('').reverse().join('');
+  
+  for (let i = 0; i < reversedValue.length; i++) {
+      if (i > 0 && i % 3 === 0) {
+          formattedValue += ",";
+      }
+      formattedValue += reversedValue[i];
+  }
+
+  return formattedValue.split('').reverse().join('');
+}
+
 const [displayValue, setDisplayValue] = useState('');
 
 const handleTargetValue = (e) => {
 
   const value = e.target.value.replace(/\D+/g, "");
+  const formattedValue = formatValueWithComma(value);
   
-  let formattedValue = "";  
-
-
-  for (let i = 0; i < value.length; i++) {
-      if (i > 0 && i % 3 === 0) {
-          formattedValue += ",";
-      }
-      formattedValue += value[i];
-  }
-
   setDisplayValue(formattedValue);
 
   setFormData(prevData => ({
     ...prevData,
-    password: value
+    goal: value
   }));
 }
-console.log(formData.password)
+
+console.log(formData)
+
   return (
     <SignupWrapper>
       <div className="signup-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
@@ -408,27 +417,27 @@ console.log(formData.password)
       <form>
         <div className={`signup-email ${isEmailFocused ? 'focus' : ''} ${isEmailComplete ? 'complete' : ''}`}>
           <label id="signup-label">통장 이름</label>
-          <input type="text" id="signup-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} onChange={(e) => {functionSetEmail(e); handleInputChange(e)}} inputmode="email" value={formData.email} name="email"/>
+          <input type="text" id="signup-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} onChange={(e) => {functionSetEmail(e); handleInputChange(e)}} inputmode="email" value={formData.name} name="name"/>
         </div>
 
         <div className={`signup-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
           <label id="signup-label">목표액</label>
-          <input type="text" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {handleTargetValue(e)}} value={displayValue} name="password"/>
+          <input type="text" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {handleTargetValue(e)}} value={displayValue} name="goal"/>
         </div>
 
         <div className={`signup-birthdate ${isBirthdateFocused ? 'focus' : ''} ${isBirthdateComplete ? 'complete' : ''}`}>
           <label id="signup-label">종료일</label>
-          <input type="text" id="signup-input" ref={inputBirthdateRef} onFocus={handleBirthdateFocus} onBlur={handleBirthdateBlur} onChange={(e) => {functionSetBirthdate(e) ; handleInputChange(e)}} value={formData.birthday} name="birthday"/>
+          <input type="text" id="signup-input" ref={inputBirthdateRef} onFocus={handleBirthdateFocus} onBlur={handleBirthdateBlur} onChange={(e) => {functionSetBirthdate(e) ; handleInputChange(e)}} value={formData.endDay} name="endDay"/>
         </div>
 
         <div className={`signup-name ${isNameFocused ? 'focus' : ''} ${isNameComplete ? 'complete' : ''}`}>
           <label id="signup-label">계좌번호</label>
-          <input type="text" id="signup-input" ref={inputNameRef} onFocus={handleNameFocus} onBlur={handleNameBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} value={formData.name} name="name"/>
+          <input type="text" id="signup-input" ref={inputNameRef} onFocus={handleNameFocus} onBlur={handleNameBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} value={formData.accountNumber} name="accountNumber"/>
         </div>
         
         <div className={`signup-password-verify ${isTelFocused ? 'focus' : ''} ${isTelComplete ? 'complete' : ''}`}>
           <label id="signup-label">은행</label>
-          <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} name="tel" onClick={openModal} autoComplete='off' value={chosenBank}/>
+          <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} name="company" onClick={openModal} autoComplete='off' value={chosenBank}/>
         </div>
 
         <ModalOverlay isOpen={isModalOpen} onClick={closeModal} />
@@ -486,7 +495,7 @@ console.log(formData.password)
         </ModalWrapper>
 
         <div className="signup-button-container">
-          <SignupButton type="submit" className="signup-button" onClick={handleSubmit} disabled={!(formData.name && formData.email && formData.password && formData.tel && formData.birthday && isBirthdate)}>등록하기</SignupButton>
+          <SignupButton type="submit" className="signup-button" onClick={handleSubmit} disabled={!(formData.name && formData.goal && formData.endDay && formData.accountNumber && formData.company && isBirthdate)}>등록하기</SignupButton>
         </div>
       </form>
     </SignupWrapper>

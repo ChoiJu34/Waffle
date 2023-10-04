@@ -6,28 +6,10 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
 import TeamAccountUpdateIndividualList from './TeamAccountUpdateIndividualList'
 
-const TeamAccountUpdateIndividual = ( { handleIndividualDataChange, individualData, setShowIndividualUpdate }) => {
+const TeamAccountUpdateIndividual = () => {
 
   const location = useLocation()
-  const sentData = individualData
-
-  const [tempData, setTempData] = useState(individualData ? individualData : [])
-
-  const handleItemChange = (name, newTarget) => {
-    const updatedData = [...tempData];
-    const item = updatedData.find(item => item.name === name);
-    if (item) {
-      item.target = parseInt(newTarget, 10);
-    }
-    setTempData(updatedData);
-  };
-
-  console.log(tempData)
-  const handleSaveChanges = () => {
-    handleIndividualDataChange(
-      tempData
-    );
-  };
+  const navigate = useNavigate()
 
   // 뒤로가기
 
@@ -35,7 +17,73 @@ const TeamAccountUpdateIndividual = ( { handleIndividualDataChange, individualDa
 
     window.scrollTo(0, 0)
     
-    setShowIndividualUpdate(false)
+    navigate(-1)
+  }
+
+  const accountId = window.location.pathname.match(/\d+$/)?.[0]
+
+  const token = localStorage.getItem('access_token')
+
+  const headers = {
+    "Authorization": "Bearer " + token
+  }
+
+  const [rawData, setRawData] = useState()
+
+  useEffect(() => {
+
+    axios.get(`/team-account/member-list/${accountId}`, { headers: headers })
+      .then(response => {
+        setRawData(response.data.list)
+      })
+      .catch(error => {
+        console.error('목록 가져오기 실패');
+      });
+  }, [])
+
+  const sentData = rawData?.map(item => ({
+    id: item.id,
+    name: item.name,
+    goal: item.goal
+  }));
+
+  const [updateData, setUpdateData] = useState({
+    accountId: accountId,
+    group: []
+  });
+
+  useEffect(() => {
+    const transformedData = rawData?.map(item => ({
+      id: item.id,
+      goal: item.goal
+    }));
+  
+    setUpdateData(prevData => ({ ...prevData, group: transformedData }));
+  }, [rawData]);
+
+  const updateGoal = (id, newGoal) => {
+    setUpdateData(prevData => {
+      const updatedGroup = prevData.group.map(item => 
+        item.id === id ? { ...item, goal: newGoal } : item
+      );
+  
+      return { ...prevData, group: updatedGroup };
+    });
+  };
+
+  console.log(updateData)
+
+  const updateSubmit = (e) => {
+    e.preventDefault()
+
+    axios.put(`/team-account/update-goals`, updateData, { headers: headers })
+    .then(response => {
+      alert('개인 목표가 수정되었습니다')
+      navigate(-1)
+    })
+    .catch(error => {
+      console.error('개인 목표 수정 실패');
+    });
   }
 
   return (
@@ -44,9 +92,9 @@ const TeamAccountUpdateIndividual = ( { handleIndividualDataChange, individualDa
       <div className="teamaccount-update-individual-title">개인 목표 금액 수정</div>
       <div className="teamaccount-update-individual-title-underline"></div>
 
-      <TeamAccountUpdateIndividualList sentData={sentData} onChange={handleItemChange}/>
+      <TeamAccountUpdateIndividualList sentData={sentData} updateGoal={updateGoal}/>
 
-      <button onClick={handleSaveChanges}>수정하기</button>
+      <button onClick={updateSubmit}>수정하기</button>
     </TeamAccountUpdateIndividualWrapper>
   )
 }
