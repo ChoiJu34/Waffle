@@ -18,6 +18,8 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { IoAirplaneSharp } from "react-icons/io5";
 import { AiOutlineClose } from "react-icons/ai";
 import { AiFillCalendar } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom'; 
+import { Link } from "react-router-dom";
 
 const PackageMain = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +42,8 @@ const PackageMain = () => {
   const [where, setWhere] = useState("");
   const [cntPeople, setCntPeople] = useState(1);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-
+  const navigate = useNavigate()
+  const url = "https://dinorunner.com/ko/"
   const settings = {
     dots: true,
     infinite: true,
@@ -207,7 +210,6 @@ const PackageMain = () => {
     const updatedHotelBoard = saveHotelBoard.filter((item) => item.id !== id);
     setSaveHotelBoard(updatedHotelBoard);
   };
-
   const [loading, setLoading] = useState(false);
   const PostData = async () => {
     try {
@@ -216,15 +218,26 @@ const PackageMain = () => {
         planPlane: saveAirBoard,
         planHotel: saveHotelBoard,
       };
+  
+      setLoading(true);
+      const resData = await requestPostNode(`package/recommend`, params2);
+  
+      if (!resData) { 
+        throw new Error("서버 응답 데이터가 없습니다.");
+      }
 
-      const response = await requestPostNode(`package/recommend`, params2);
-      alert("등록되었습니다.");
-      console.log("res", response);
+  
+      console.log("res", resData);
+  
+    
+      setLoading(false);
+      navigate('/package/list', { state: { value: resData } }); 
+      
+  
     } catch (error) {
-      console.error("포스트에러", error);
-    }
+      console.error('포스트 에러', error);
+    } 
   };
-
   const handleAirDelete = (id) => {
     // 해당 id를 가진 요소를 제외한 나머지 요소로 배열을 필터링합니다.
     const updatedAirBoard = saveAirBoard.filter((item) => item.id !== id);
@@ -262,160 +275,175 @@ const PackageMain = () => {
   }, []);
 
   return (
-    <Container>
-      <Peoplebox>
+      <Container>{loading ? (
+        <LoadingContainer>
+          <LoadingSpinner />
+            <LoadingText>로딩 중...
+          </LoadingText>
+        </LoadingContainer>
+      ) : (
+        <>
+        <Peoplebox>
         <Tripicon>인원</Tripicon>
         <Plusbox>
           <PlusMinusButton onClick={decreasePeople}>-</PlusMinusButton>
           <span>{cntPeople}명</span>
           <PlusMinusButton onClick={increasePeople}>+</PlusMinusButton>
         </Plusbox>
-      </Peoplebox>
-      <Airbox>
-        <Buttontitlebox>
-          <p>항공권검색</p>
-          <Button onClick={() => setIsModalOpen(!isModalOpen)}>추가</Button>
-        </Buttontitlebox>
-        {saveAirBoard.length > 0 ? (
-          <Slider {...settings}>
-            {saveAirBoard.map(
-              ({
-                id,
-                placeStart,
-                placeEnd,
-                startStart,
-                startEnd,
-                startTime,
-                endTime,
-              }) => (
-                <Contentbox key={id}>
-                  <Closebnt onClick={() => handleAirDelete(id)}></Closebnt>
-                  <Airplacebox>
-                    <div>
-                      {
-                        options[
-                          options.findIndex((e) => e.value === placeStart)
-                        ].label.split(",")[0]
-                      }
-                    </div>
-                    <IoAirplaneSharp size="30" color="#9AC5F4" />
-                    <div>
-                      {
-                        options[
-                          options.findIndex((e) => e.value === placeEnd)
-                        ].label.split(",")[0]
-                      }
-                    </div>
-                  </Airplacebox>
-                  <Airstartbox>
-                    <Starttime>
-                      <div>최소 출발시간</div>
-                      <Smalltime>
-                        <div>{startStart}</div>
-                        <div>{startTime}</div>
-                      </Smalltime>
-                    </Starttime>
-                    <Starttime>
-                      <div>최대 출발시간</div>
-                      <Smalltime>
-                        <div>{startEnd}</div>
-                        <div>{endTime}</div>
-                      </Smalltime>
-                    </Starttime>
-                  </Airstartbox>
-                </Contentbox>
-              )
-            )}
-          </Slider>
-        ) : (
-          <div></div>
-        )}
-      </Airbox>
-      <Hotelbox>
-        <Buttontitlebox>
-          <p>숙박검색</p>
-          <Button onClick={() => setIsModalOpen2(!isModalOpen2)}>추가</Button>
-        </Buttontitlebox>
-        {saveHotelBoard.length > 0 ? (
-          <Slider {...settings}>
-            {saveHotelBoard &&
-              saveHotelBoard.map(({ id, where, start, end }) => (
-                <Hotelcontent id={id}>
-                  <Closebnt onClick={() => handleHotelDelete(id)}></Closebnt>
-                  <Hotelserchbox>
-                    <div>{where}</div>
-                    <Hoteldaybox>
-                      <div>{start}</div>
-                      <div>{end}</div>
-                    </Hoteldaybox>
-                  </Hotelserchbox>
-                </Hotelcontent>
-              ))}
-          </Slider>
-        ) : (
-          <div></div>
-        )}
-      </Hotelbox>
-      <ClickButton onClick={PostData}>확인</ClickButton>
 
-      {isModalOpen && (
-        <AirModal
-          title={airModalTitle}
-          closeModal={() => setIsModalOpen(false)}
-        >
-          <Text>출발</Text>
-          <Select
-            defaultValue={options[0]}
-            inClearable={false}
-            inSearchable={false}
-            menuPortalTarget={document.body}
-            options={options}
-            styles={customStyles}
-            onChange={(e) => setStartAir(e.value)}
-          />
-          <Text>도착</Text>
-          <Select
-            defaultValue={options[0]}
-            inClearable={false}
-            inSearchable={false}
-            menuPortalTarget={document.body}
-            options={options}
-            styles={customStyles}
-            onChange={(e) => setEndAir(e.value)}
-          />
-          <AiFillCalendar size={30}></AiFillCalendar>
-          <Calender onChange={handleAirDateSelection} value={start} end={end} />
-          <Time onChange={handleTimeChange} />
-          <ClickButton onClick={handleAirButton}>확인</ClickButton>
-        </AirModal>
+        </Peoplebox>
+        <Airbox>
+          <Buttontitlebox>
+            <p>항공권검색</p>
+            <Button onClick={() => setIsModalOpen(!isModalOpen)}>추가</Button>
+          </Buttontitlebox>
+          {(saveAirBoard.length > 0 ? (
+              <Slider {...settings}>
+                {saveAirBoard.map(({ id, placeStart, placeEnd, startStart, startEnd, startTime, endTime }) => (
+                  <Contentbox key={id}>
+                    <Closebnt onClick={() => handleAirDelete(id)}></Closebnt>
+                      <Airplacebox>
+                        <div>{options[options.findIndex(e => e.value === placeStart)].label.split(',')[0]}</div>
+                        <IoAirplaneSharp size="30" color='#9AC5F4'/>
+                        <div>{options[options.findIndex(e => e.value === placeEnd)].label.split(',')[0]}</div>
+                      </Airplacebox>
+                      <Airstartbox>
+                        <Starttime>
+                          <div>최소 출발시간</div>
+                          <Smalltime>
+                          <div>{startStart}</div>
+                          <div>{startTime}</div>
+                          </Smalltime>
+                        </Starttime>
+                        <Starttime>
+                          <div>최대 출발시간</div>
+                          <Smalltime>
+                          <div>{startEnd}</div>      
+                          <div>{endTime}</div>
+                          </Smalltime>
+                        </Starttime>
+                      </Airstartbox>
+                  </Contentbox>
+                ))}
+            </Slider>
+            ) : (<div></div>))}
+        </Airbox>
+        <Hotelbox>
+          <Buttontitlebox>
+            <p>숙박검색</p>
+            <Button onClick={() => setIsModalOpen2(!isModalOpen2)}>추가</Button>
+          </Buttontitlebox>
+            {(saveHotelBoard.length > 0 ? (
+              <Slider {...settings}>
+              {saveHotelBoard && saveHotelBoard.map(({id,where,start,end}) => (
+              <Hotelcontent id={id}>
+                <Closebnt onClick={() => handleHotelDelete(id)}></Closebnt>
+                <Hotelserchbox>
+                <div>{where}</div>
+                <Hoteldaybox>
+                <div>{start}</div>
+                <div>{end}</div>
+                </Hoteldaybox>
+                </Hotelserchbox>
+              </Hotelcontent>
+          ))}
+          </Slider>
+            ) : (<div></div>))}
+        </Hotelbox>
+        <ClickButton onClick={PostData}>확인</ClickButton>
+        </>
       )}
 
-      {isModalOpen2 && (
-        <AirModal
-          title={hotelModalTitle}
-          closeModal={() => setIsModalOpen2(false)}
-        >
-          <div className="Hotel-text">장소</div>
-          <div className="input-container">
-            <input
-              type="text"
-              placeholder="장소 입력"
-              value={where}
-              onChange={(e) => setWhere(e.target.value)}
-            />
-          </div>
-          <div className="hotelday-box">
-            <AiFillCalendar size={30}></AiFillCalendar>
-            <Calender onChange={handleHotelDateSelection} value={start} />
-          </div>
-          <ClickButton onClick={handleHotelButton}>확인</ClickButton>
-        </AirModal>
-      )}
+        {isModalOpen && (
+            <AirModal title={airModalTitle} closeModal={() => setIsModalOpen(false)} >
+              <Text>출발</Text>
+              <Select
+                defaultValue={options[0]}
+                inClearable={false}
+                inSearchable={false}
+                menuPortalTarget={document.body}
+                options={options}
+                styles={customStyles}
+                onChange={(e) => setStartAir(e.value)}
+              />
+              <Text>도착</Text>
+              <Select
+                defaultValue={options[0]}
+                inClearable={false}
+                inSearchable={false}
+                menuPortalTarget={document.body}
+                options={options}
+                styles={customStyles}
+                onChange={(e) => setEndAir(e.value)}
+              />
+              <AiFillCalendar size={30}></AiFillCalendar>
+              <Calender 
+                onChange={handleAirDateSelection}
+                value={start}
+                end={end}/>
+                <Time
+                  onChange={handleTimeChange}
+                />
+                <ClickButton onClick={handleAirButton}>확인</ClickButton>
+            </AirModal>
+        )}
+
+        {isModalOpen2 && (
+            <AirModal title={hotelModalTitle} closeModal={() => setIsModalOpen2(false)} >
+             <div className='Hotel-text'>장소</div>
+             <div className="input-container">
+                <input
+                    type="text"
+                    placeholder="장소 입력"
+                    value={where}
+                    onChange={(e) => setWhere(e.target.value)}
+                />
+              </div>
+              <div className='hotelday-box'>
+              <AiFillCalendar size={30}></AiFillCalendar>
+              <Calender 
+                onChange={handleHotelDateSelection}
+                value={start}
+               />
+               </div>
+              <ClickButton onClick={handleHotelButton}>확인</ClickButton>
+  
+            </AirModal>
+            
+        )}
+
     </Container>
-  );
-};
+  )
+}
+
+  
+  
 
 export default PackageMain;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--vh, 1vh) * 100);
+`;
+
+const LoadingSpinner = styled.div`
+  border: 4px solid rgba(195, 195, 195, 0.3);
+  border-top: 4px solid #9AC5F4;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+`;
+
+const LoadingText = styled.div`
+  margin-top: 20px;
+  font-size: 18px;
+`;
+
+
 
 const Text = styled.div`
   margin: 10px;
@@ -464,7 +492,7 @@ const Hotelcontent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.25);
   position: relative;
 `;
 
@@ -507,7 +535,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 30px;
-  width: 410px;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 40);
   padding-bottom: 20px;
   & > span {
     font-size: 25px;
@@ -574,7 +603,7 @@ const Peoplebox = styled.div`
   border: 1px solid #b3b1b1;
   border-radius: 7px;
   margin-bottom: 30px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -587,7 +616,7 @@ const Airbox = styled.div`
   border: 1px solid #b3b1b1;
   border-radius: 7px;
   margin-bottom: 30px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -600,8 +629,9 @@ const Hotelbox = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 30px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-`;
+  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
+    
+`
 const Contentbox = styled.div`
   width: 320px;
   border: 1px solid #b3b1b1;
@@ -610,7 +640,7 @@ const Contentbox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const customStyles = {
