@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface UserCardService {
-    void addCard(String authorization, String cardNumber) throws Exception;
+    void addCard(String authorization, String cardBin, String cardNumber, String cardNickname, String cardValidDate) throws Exception;
 
     List<UserCardDto> getBankUserCardList(String authorization) throws Exception;
 

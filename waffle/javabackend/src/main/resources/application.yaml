@@ -59,7 +59,7 @@ jwt:
 # http request base_url
 request:
   chocobank:
-    base_url: http://localhost:8001
+    base_url: https://j9d109.p.ssafy.io:8002
   exchange_open_api:
     base_url: https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EExqPGr9A5oLm4EtBTNMhAJ2OEeQFKiM&data=AP01
   recent_exchange_open_api:

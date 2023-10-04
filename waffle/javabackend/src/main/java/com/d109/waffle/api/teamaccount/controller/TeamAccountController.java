@@ -168,6 +168,7 @@ public class TeamAccountController {
                 dto.put("id", e.getId());
                 dto.put("name", e.getNickname());
                 dto.put("master", e.getMaster());
+                dto.put("goal", e.getGoal());
 
                 list.add(dto);
             }
