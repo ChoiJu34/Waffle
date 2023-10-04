@@ -152,14 +152,11 @@ def interpark_crawling(info, chrome_options, service):
                 hotel_name = ''
                 for h in hotel:
                     hotel_name += h
-                try:
-                    img = element2.get_attribute('src')
-                    multi_list[k].put(Hotel(hotel_name.split('(')[0].split('@')[0], start, end, '', price, price, element1.get_attribute('href'),
-                            img, '인터파크'))
-                except:
-                    logger.info("인터파크 호텔 element2 에러")
-                    multi_list[k].put(Hotel(hotel_name.split('(')[0].split('@')[0], start, end, '', price, price, element1.get_attribute('href'),
-                            '이미지를 가져오지 못했습니다', '인터파크'))
+                img = element2.get_attribute('src')
+                if "interpark" not in img:
+                    img = 0
+                multi_list[k].put(Hotel(hotel_name.split('(')[0].split('@')[0], start, end, '', price, price, element1.get_attribute('href'),
+                        img, '인터파크'))
                 # logger.info(f'{hotel_name}, {start}, {end}, , {price}, {price}, {element1}, 인터파크')
         except:
             logger.info("인터파크 호텔 데이터 정제화 중 에러")
@@ -227,6 +224,8 @@ def agoda_crawling(info, chrome_options, service):
     for element, element2, element3 in zip(elements, elements2, elements3):
         href_element = element2.get_attribute('href')
         src_element = element3.get_attribute('src')
+        if "agoda" not in src_element:
+            src_element = 0
 
         try:
             origin = re.sub(r'\n예약 무료 취소|,|₩\s|페이지.*?\n', '', element.get_attribute('innerText'))
