@@ -200,7 +200,7 @@ const ChecklistListWrapper = styled.div`
         color:#76A8DE;
     }
     .checklist-name > label{
-        top: -2vh;
+        top: -3vh;
         position: absolute;
         left: 15vw;
         max-width: 100%;
@@ -219,14 +219,14 @@ const ChecklistListWrapper = styled.div`
         transform-origin: left top;
     }
     .checklist-name.focus > label{
-        top: -4vh;
+        top: -6vh;
         left: 15vw;
         font-size: 12px;
         line-height: 1.33;
         color: #76A8DE;
     }
     .checklist-name.complete > label{
-        top: -4vh;
+        top: -6vh;
         left: 15vw;
         font-size: 12px;
         line-height: 1.33;
