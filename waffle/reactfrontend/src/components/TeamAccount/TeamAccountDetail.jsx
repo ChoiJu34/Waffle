@@ -6,11 +6,14 @@ import 'animate.css';
 import TeamAccountDetailIndividualList from './TeamAccountDetailIndividualList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import IndividualDataContext from '../Commons/IndividualDataContext';
 import TeamAccountUpdateIndividual from './TeamAccountUpdateIndividual';
+import axios from 'axios'
 
 const TeamAccountDetail = () => {
+
+  const location = useLocation()
 
   const navigate = useNavigate()
 
@@ -20,6 +23,33 @@ const TeamAccountDetail = () => {
 
     navigate(-1);
   }
+
+  const token = localStorage.getItem('access_token')
+
+  const headers = {
+    "Authorization": "Bearer " + token
+  }
+
+  const [teamAccountData, setTeamAccountData] = useState()
+
+  useEffect(() => {
+    const id = window.location.pathname.match(/\d+$/)?.[0];
+
+    if (!id) {
+      console.error('ID를 찾을 수 없습니다.');
+      return;
+    }
+
+    axios.get(`/team-account/detail/${id}/`, { headers: headers })
+      .then(response => {
+        setTeamAccountData(response.data)
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error('로그인 실패');
+        alert('로그인에 실패했습니다');
+      });
+  }, []);
 
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 })
 
@@ -66,15 +96,8 @@ const TeamAccountDetail = () => {
     setShowDetail({ target: false, raised: false, spent: false });
   }
 
-  const accountName = "텅장"
-  const endDate = "2023-11-30"
-
-  const spentValue = 500
-  const raisedValue = 1300
-  const targetValue = 3000
-
-  const spentRatio = spentValue / targetValue * 100
-  const raisedRatio = raisedValue / targetValue * 100
+  const spentRatio = teamAccountData?.totalSub / teamAccountData?.goal * 100
+  const raisedRatio = teamAccountData?.totalAdd / teamAccountData?.goal * 100
 
   // 메뉴
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -98,20 +121,22 @@ const TeamAccountDetail = () => {
 
   // 수정 화면으로 보낼 데이터
   const dataToUpdate = {
-    accountName: accountName,
-    target: targetValue,
-    endDate: endDate
+    accountName: teamAccountData?.name,
+    target: teamAccountData?.goal,
+    endDate: teamAccountData?.endDay
   }
 
+  const id = window.location.pathname.match(/\d+$/)?.[0]
+
   const goToUpdate = () => {
-    navigate('/teamaccount/update', { state: dataToUpdate })
+    navigate(`/teamaccount/update/${id}`, { state: dataToUpdate })
   }
 
   const [dDay, setDDay] = useState(null);
 
   useEffect(() => {
-    if (endDate) {
-      const targetDate = new Date(endDate);
+    if (teamAccountData?.endDay) {
+      const targetDate = new Date(teamAccountData?.endDay);
       const currentDate = new Date();
 
       const differenceInTime = targetDate - currentDate;
@@ -119,7 +144,7 @@ const TeamAccountDetail = () => {
 
       setDDay(differenceInDays);
     }
-  }, [endDate]);
+  }, [teamAccountData?.endDay]);
 
   // 개인 목표 수정
   const [individualData, setIndividualData] = useState(
@@ -177,13 +202,17 @@ const TeamAccountDetail = () => {
         return () => clearTimeout(initialTimeout);
     }, []);
 
+    const numberWithCommas = (x) => {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
   return (
     <TeamAccountDetailWrapper spentRatio={spentRatio} raisedRatio={raisedRatio}>
        {showIndividualUpdate ? (<TeamAccountUpdateIndividual handleIndividualDataChange={handleIndividualDataChange} individualData={individualData} setShowIndividualUpdate={setShowIndividualUpdate}/>) : 
       (<>
       <div className="teamaccount-detail-title">
       <div className="login-header"><FontAwesomeIcon icon={faArrowLeft} color="black" onClick={handleGoBack}/></div>
-        <div className="teamaccount-detail-title-text">{accountName}</div>
+        <div className="teamaccount-detail-title-text">{teamAccountData?.name}</div>
         <FontAwesomeIcon icon={faEllipsisVertical} color="black" className="hamburger-dot" onClick={toggleMenu}/>
         {isMenuOpen && (
           <div className="menu">
@@ -218,7 +247,7 @@ const TeamAccountDetail = () => {
             onTouchStart={handleMouseDown}
             onTouchEnd={handleMouseUpOrLeave}
           >
-            {showDetail.target && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>목표 금액<br />3,000원</div>}
+            {showDetail.target && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>목표 금액<br />{numberWithCommas(teamAccountData?.goal)}원</div>}
 
             <div
               data-type="raised"
@@ -228,8 +257,8 @@ const TeamAccountDetail = () => {
               onMouseLeave={handleMouseUpOrLeave}
               onTouchStart={handleMouseDown}
               onTouchEnd={handleMouseUpOrLeave}
-            >{showDetail.raised && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>모은 금액<br />1,900원</div>}
-             {raisedValue < targetValue/2 ?
+            >{showDetail.raised && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>모은 금액<br />{numberWithCommas(teamAccountData?.totalAdd)}원</div>}
+             {teamAccountData?.totalAdd < teamAccountData?.goal/2 ?
               <img src={MainGraphBackpack} alt="MainGraphBackpack" className={`animate__animated ${backAnimation} raised-end-back`} data-type="raised" /> :
               <img src={MainGraphPlane} alt="MainGraphPlane" className={`animate__animated ${swingAnimation} raised-end`}  data-type="raised" />}
             </div>
@@ -242,7 +271,7 @@ const TeamAccountDetail = () => {
               onMouseLeave={handleMouseUpOrLeave}
               onTouchStart={handleMouseDown}
               onTouchEnd={handleMouseUpOrLeave}
-            >{showDetail.spent && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>지출 금액<br />500원</div>}</div>
+            >{showDetail.spent && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>지출 금액<br />{numberWithCommas(teamAccountData?.totalSub)}원</div>}</div>
           </div>
         </div>
         <div className="team-account-detail-individual-head-container">

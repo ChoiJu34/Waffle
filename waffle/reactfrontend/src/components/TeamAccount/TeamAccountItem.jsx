@@ -1,27 +1,41 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import TeamAccountRibbon from '../../assets/TeamAccountRibbon.png'
 import { useNavigate } from 'react-router-dom'
 
-const TeamAccountItem = () => {
+const TeamAccountItem = ({ data, index }) => {
 
   const navigate = useNavigate()
 
   const goToDetail = () => {
-    navigate('/teamaccount/detail')
+    navigate(`/teamaccount/detail/${data.id}`)
   }
+
+  const [dDay, setDDay] = useState(null);
+
+  useEffect(() => {
+    if (data.endDay) {
+      const targetDate = new Date(data.endDay);
+      const currentDate = new Date();
+
+      const differenceInTime = targetDate - currentDate;
+      const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
+      setDDay(differenceInDays);
+    }
+  }, [data.endDay]);
 
   return (
     <TeamAccountItemWrapper>
       <div className="team-account-item-container" onClick={goToDetail}>
-        {/* 모임 통장 관리자 여부 확인 가능해지면 리본은 조건부 렌더링 예정 */}
-        <img className="team-account-ribbon" src={TeamAccountRibbon} alt="TeamAccountRibbon" />
-        <div className="team-account-item-title">텅장</div>
+        {data.master && (
+        <img className="team-account-ribbon" src={TeamAccountRibbon} alt="TeamAccountRibbon" />)}
+        <div className="team-account-item-title">{data.name}</div>
         <div className="team-account-item-departure">
-          출발까지<span className="team-account-item-content-spacer"></span>D-23
+          <span className="team-account-item-content-spacer"></span>D-{dDay}
         </div>
         <div className="team-account-item-percentage">
-          3,000원 중<span className="team-account-item-content-spacer"></span>87%
+          <span className="team-account-item-content-spacer"></span>{data.percent}%
         </div>
       </div>
     </TeamAccountItemWrapper>
@@ -54,7 +68,7 @@ const TeamAccountItemWrapper = styled.div`
   .team-account-item-title {
     position: absolute;
     font-size: 3vh;
-    top: 34%;
+    top: 33%;
     left: 15%;
   }
 
