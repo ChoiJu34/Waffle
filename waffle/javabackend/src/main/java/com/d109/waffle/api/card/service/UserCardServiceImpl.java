@@ -75,6 +75,9 @@ public class UserCardServiceImpl implements UserCardService {
             if(cardEntity.isEmpty()) {
                 throw new NoSuchElementException("해당 카드의 정보를 찾지 못했습니다.");
             }
+            if(userCardRepository.existsByCardNumber(cardNumber)) {
+                throw new Exception("이미 등록된 카드입니다.");
+            }
             UserCardEntity userCardEntity = UserCardEntity.builder()
                 .cardEntity(cardEntity.get())
                 .cardValidDate(cardValidDate)
