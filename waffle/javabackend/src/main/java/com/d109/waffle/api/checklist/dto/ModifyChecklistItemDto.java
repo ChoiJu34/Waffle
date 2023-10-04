@@ -25,4 +25,5 @@ public class ModifyChecklistItemDto {
 	int order;
 	String currency;
 	int when;
+	byte check;
 }
