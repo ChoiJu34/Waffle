@@ -89,7 +89,7 @@ public class TeamAccountServiceImpl implements TeamAccountService {
 
     @Transactional
     @Override
-    public List<TeamAccountListDto> getAccountList(String authorization) throws Exception{
+    public List<TeamAccountListDto> getAccountList(String authorization){
         List<TeamAccountListDto> teamAccountListDtoList = new ArrayList<>();
         // *유저 정보를 들고온다.
         Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
@@ -218,6 +218,7 @@ public class TeamAccountServiceImpl implements TeamAccountService {
             Group addGroup = new Group();
             addGroup.setName(e.getNickname());
             addGroup.setId(e.getId());
+            addGroup.setGoal(e.getGoal());
             groupList.add(addGroup);
             if(user.getId() == e.getUser().getId()){
                 if(e.getMaster()) {
