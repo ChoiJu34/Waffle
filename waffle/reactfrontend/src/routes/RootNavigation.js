@@ -26,12 +26,9 @@ import ChecklistList from "../components/Checklist/ChecklistMain";
 import Checklist from '../components/Checklist/Checklist'
 import CardInfo from "../components/CardInfo/CardInfo";
 import Favorite from "../components/MyPage/Favorite"
-<<<<<<< HEAD
 import UpdateUserInfo from "../components/MyPage/UpdateUserInfo"
-=======
 import PackageList from "../components/RecommendPackage/PackageList";
 
->>>>>>> recommendcard
 const RootNavigation = () => {
   return (
     <BrowserRouter>
