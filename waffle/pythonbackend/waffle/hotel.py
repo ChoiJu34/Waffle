@@ -133,7 +133,7 @@ def interpark_crawling(info, chrome_options, service):
             # element2 = driver.find_elements(By.XPATH, xpath2)
             # 추출한 데이터를 딕셔너리로 추가
             origin = re.sub(r'\+', "", element1.get_attribute('textContent'))
-            pattern = r'청구할인|추천|항공할인|05267.*?가|원~정상가|(\d+)성급.*?가|~로그인.*?확인|(\d+)(\d+)(\d+)(\d+)(\d+)판매가|%할인판매가'
+            pattern = r'청구할인|추천|항공할인|05267.*?가|원~정상가|(\d+)성급.*?가|~로그인.*?확인|(\d+)(\d+)(\d+)(\d+)(\d+)판매가|%할인판매가|@'
             origin = re.sub(pattern, " ", origin)
             origin = re.sub(r' +', " ", origin)
             if "객실마감" not in origin:
@@ -253,7 +253,7 @@ def agoda_crawling(info, chrome_options, service):
         except:
             logger.info("아고다 호텔 데이터 정제화 중 에러")
         try:
-            multi_list[k].put(Hotel(origin[0].split('(')[0].split('@')[0], start, end, '', origin[len(origin) - 1], int(origin[len(origin) - 1]), href_element, src_element, '아고다'))
+            multi_list[k].put(Hotel(origin[0], start, end, '', origin[len(origin) - 1], int(origin[len(origin) - 1]), href_element, src_element, '아고다'))
         except:
             logger.info(f"아고다 호텔 multi_list의 put 실패")
         # logger.info(f'{origin[0]}, {start}, {end}, , {origin[len(origin) - 1]}, {int(origin[len(origin) - 1])}, {href_element}, {src_element}, 아고다')
