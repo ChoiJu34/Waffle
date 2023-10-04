@@ -31,6 +31,7 @@ const TeamAccountDetail = () => {
   }
 
   const [teamAccountData, setTeamAccountData] = useState()
+  const [isMaster, setIsMaster] = useState(false)
 
   useEffect(() => {
     const id = window.location.pathname.match(/\d+$/)?.[0];
@@ -42,8 +43,10 @@ const TeamAccountDetail = () => {
 
     axios.get(`/team-account/detail/${id}/`, { headers: headers })
       .then(response => {
+        if (response.data.master) {
+          setIsMaster(true)
+        }
         setTeamAccountData(response.data)
-        console.log(response.data)
       })
       .catch(error => {
         console.error('로그인 실패');
@@ -206,8 +209,27 @@ const TeamAccountDetail = () => {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
+
+    const [inviteCode, setInviteCode] = useState('')
+
+    useEffect(() => {
+      const accountId = teamAccountData?.id
+  
+      axios.get(`/team-account/create-code/${accountId}`, { headers: headers })
+        .then(response => {
+          setInviteCode(response.data.code)
+        })
+        .catch(error => {
+          console.error('초대 코드 못 가져옴');
+        });
+    }, [teamAccountData]);
+
+   const goToOut = () => {
+    navigate(`/teamaccount/out`, { state: teamAccountData })
+   }
+
   return (
-    <TeamAccountDetailWrapper spentRatio={spentRatio} raisedRatio={raisedRatio}>
+    <TeamAccountDetailWrapper spentRatio={spentRatio} raisedRatio={raisedRatio}> 
        {showIndividualUpdate ? (<TeamAccountUpdateIndividual handleIndividualDataChange={handleIndividualDataChange} individualData={individualData} setShowIndividualUpdate={setShowIndividualUpdate}/>) : 
       (<>
       <div className="teamaccount-detail-title">
@@ -216,12 +238,23 @@ const TeamAccountDetail = () => {
         <FontAwesomeIcon icon={faEllipsisVertical} color="black" className="hamburger-dot" onClick={toggleMenu}/>
         {isMenuOpen && (
           <div className="menu">
+          {isMaster ?
+           (<>
            <div className="menu-item" onClick={goToUpdate}>통장 정보 수정</div>
            <div className="menu-item" onClick={goToUpdateIndividual}>개인 목표 수정</div>
            <div className="menu-item-delete">모임 통장 삭제</div>
+           </>) :
+           (<>
+           <div className="menu-item-delete" onClick={goToOut}>모임 통장 탈퇴</div>
+           </>)}
           </div>
         )}
-      </div>
+        </div>
+      
+      {isMaster && 
+      (<div className='teamaccount-detail-code-container'>
+        <div className='teamaccount-detail-code'>{inviteCode}</div>
+      </div>)}
 
       <div className="teamaccount-detail-maingraph-container">
         <div className="teamaccount-detail-maingraph-category">
@@ -507,6 +540,26 @@ const TeamAccountDetailWrapper = styled.div`
   position: absolute;
   left: 0.1vw;
   margin: 1.2vh 2vh;
+}
+
+.teamaccount-detail-code-container {
+  height: 2vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.teamaccount-detail-code {
+  margin-top: 4vh;
+  margin-right: 10vw;
+  height: 3vh;
+  width: 20vw;
+  background-color: #99DBF5;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 `
 

@@ -35,6 +35,8 @@ const TeamAccountDetailIndividualList = () => {
     })
   }, [])
 
+  console.log(teamAccountIndividual)
+
    return (
   <TeamAccountDetailIndividualListWrapper>
       {teamAccountIndividual?.length === 0 ?
@@ -42,6 +44,9 @@ const TeamAccountDetailIndividualList = () => {
           <img src={SurprisinglyNoOne} alt="SurprisinglyNoOne" className="no-one"/>
         </div>) : (
         <>
+        {teamAccountIndividual?.map((data, index) => (
+          <TeamAccountDetailIndividualItem key={data.id} data={data} index={index} />
+        ))}
         <TeamAccountDetailIndividualItem />
         </>
         )}

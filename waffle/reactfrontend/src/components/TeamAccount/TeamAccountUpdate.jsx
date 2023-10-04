@@ -247,7 +247,10 @@ const headers = {
   "Authorization": "Bearer " + token
 }
 
-const submitUpdate = () => {
+const submitUpdate = (e) => {
+
+  e.preventDefault()
+
   axios.put(`/team-account/update-detail`, formData, { headers: headers })
   .then(response => {
     navigate(`/teamaccount/detail/${id}`)

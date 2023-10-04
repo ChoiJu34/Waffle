@@ -22,11 +22,15 @@ import TeamAccountAddCode from "../components/TeamAccount/TeamAccountAddCode";
 import TeamAccountAddNew from "../components/TeamAccount/TeamAccountAddNew";
 import TeamAccountUpdate from "../components/TeamAccount/TeamAccountUpdate";
 import TeamAccountUpdateIndividual from "../components/TeamAccount/TeamAccountUpdateIndividual";
+import TeamAccountOut from "../components/TeamAccount/TeamAccountOut"
+import TeamAccountDelete from "../components/TeamAccount/TeamAccountDelete"
 import ChecklistList from "../components/Checklist/ChecklistMain";
 import Checklist from '../components/Checklist/Checklist'
 import CardInfo from "../components/CardInfo/CardInfo";
 import Favorite from "../components/MyPage/Favorite"
 import UpdateUserInfo from "../components/MyPage/UpdateUserInfo"
+import PackageList from "../components/RecommendPackage/PackageList";
+
 const RootNavigation = () => {
   return (
     <BrowserRouter>
@@ -59,6 +63,7 @@ const RootNavigation = () => {
               </ProtectedRoute>
             }
           />
+          {/* "detail"은 나중에 각 모임통장의 id로 바꿀 예정 */}
           <Route
             path="/package/main"
             element={
@@ -69,6 +74,15 @@ const RootNavigation = () => {
           />
           {/* "detail"은 나중에 각 모임통장의 id로 바꿀 예정 */}
           <Route path="/teamaccount/detail/:id" element={<TeamAccountDetail />} />
+          <Route
+            path="/package/list"
+            element={
+              <ProtectedRoute>
+                <PackageList />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/teamaccount/detail" element={<TeamAccountDetail />} />
           <Route
             path="/teamaccount/add/code"
             element={<TeamAccountAddCode />}
@@ -84,6 +98,8 @@ const RootNavigation = () => {
           <Route path="/cardinfo/:cardId" element={<CardInfo />} />
           <Route path="/mypage/favorite" element={<Favorite />} />
           <Route path="/mypage/update-userinfo" element={<UpdateUserInfo />} />
+          <Route path="/teamaccount/out" element={<TeamAccountOut />} />
+          <Route path="/teamaccount/delete" element={<TeamAccountDelete />} />
         </Route>
       </Routes>
     </BrowserRouter>

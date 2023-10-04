@@ -69,7 +69,7 @@ const TeamAccountItemWrapper = styled.div`
     position: absolute;
     font-size: 3vh;
     top: 33%;
-    left: 15%;
+    left: 10%;
   }
 
   .team-account-item-departure {
