@@ -56,7 +56,7 @@ const AddChecklistListModal = ({setRestart, setModal}) =>{
     const customStyles = {
         control: (provided, state) => ({
             ...provided,
-            width: "26.5vh",
+            width: "55vw",
             height: "5vh",
             borderRadius: "2px",
             color: state.isSelected?"#76A8DE":"#909090",
@@ -135,13 +135,13 @@ const AddChecklistListModal = ({setRestart, setModal}) =>{
                         <Select onChange={handleOptionChange} classNamePrefix="react-select" defaultValue={options[0]} isClearable={false} isSearchable={false} options={options} styles={customStyles}/>
                     </div>
                     <HotelCalender onChange={handleHotelDateSelection} value={start}/>
-                    <div class="selectColor">
+                    <div class="selectColor" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", justifyContent:"center"}}>
                         {colorList?.map((elm, index) => {
                             return (
                                 <button
                                     key={index}
                                     class="selectColorBtn"
-                                    style={isSelect[index] ? { borderColor: "#76A8DE", backgroundColor: elm } : { borderColor: elm, backgroundColor: elm }}
+                                    style={isSelect[index] ? { borderColor: "#76A8DE", backgroundColor: elm, justifySelf:"center" } : { borderColor: elm, backgroundColor: elm , justifySelf:"center"}}
                                     onClick={() => settingColor(index)}
                                 />
                             )
@@ -176,7 +176,7 @@ const ChecklistListWrapper = styled.div`
     }
     .checklist-name > input{
         display: block;
-        width: 67%;
+        width: 54vw;
         color: #909090;
         border:0;
         border-bottom: 1px solid #8c8c8c;
@@ -219,14 +219,14 @@ const ChecklistListWrapper = styled.div`
         transform-origin: left top;
     }
     .checklist-name.focus > label{
-        top: -6vh;
+        top: -50px;
         left: 15vw;
         font-size: 12px;
         line-height: 1.33;
         color: #76A8DE;
     }
     .checklist-name.complete > label{
-        top: -6vh;
+        top: -50px;
         left: 15vw;
         font-size: 12px;
         line-height: 1.33;
@@ -251,7 +251,7 @@ const ChecklistListWrapper = styled.div`
         border: 4px solid;
     }
     .addChecklistListBtn{
-        width: 11vh;
+        width: 34vw;
         height: 5vh;
         border: none;
         border-radius: 15px;
