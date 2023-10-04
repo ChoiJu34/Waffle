@@ -100,6 +100,8 @@ export default RecoCardList;
 const Container = styled.div`
   margin-top: 30px;
   margin-bottom: 20px;
+  width: 100vw;
+  height: calc(var(--vh, 1vh) * 100);
 `;
 
 const CardList = styled.div`

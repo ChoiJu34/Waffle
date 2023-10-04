@@ -5,6 +5,7 @@ import axios from "axios";
 import ChecklistItem from "./ChecklistItem";
 import { HiDotsVertical } from "react-icons/hi";
 import ChecklistIcon from "./ChecklistIcon";
+import Select from "react-select";
 
 const ChecklistList = () => {
   //code
@@ -29,6 +30,17 @@ const ChecklistList = () => {
   const [addCurrency, setAddCurrency] = useState("");
 
   const [restart, setRestart] = useState("");
+
+  //드롭박스
+  const options = [
+    { value: '0', label: '원' },
+    { value: '1', label: '달러' },
+    { value: '2', label: '엔' },
+    { value: '3', label: '유로' },
+    { value: '3', label: '파운드' },
+    { value: '3', label: '위안' },
+    { value: '3', label: '프랑' },
+  ];
 
   useEffect(() => {
     axios
@@ -101,10 +113,9 @@ const ChecklistList = () => {
   };
 
   const addChecklistItem = () => {
-    console.log(id);
-    console.log(addContent);
-    console.log(addCurrency);
-    console.log(addPrice);
+    if(isNaN(addPrice)){
+      alert('가격은 숫자만 적을 수 있습니다.')
+    }else{
     axios
       .post(
         "/checklist/add-checklist-item",
@@ -128,6 +139,40 @@ const ChecklistList = () => {
         setAddPrice("");
         setRestart(response);
       });
+    }
+  };
+
+  const [selectedOption, setSelectedOption] = useState(null);
+  const handleOptionChange = (option) => {
+    setSelectedOption(option);
+  };
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: "29vw",
+      height: "5vh",
+      borderRadius: "2px",
+      color: state.isSelected ? "#76A8DE" : "#909090",
+      borderColor: state.isFocused ? "#76A8DE" : "#333"
+    }),
+    menu: (provided, state) => ({
+      ...provided,
+      zIndex: "10001",
+      overflow: "auto",
+      maxHeight: "7rem", // 옵션 창의 최대 높이 (조절 가능)
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? "#76A8DE" : "#ffffff",
+      color: state.isSelected ? "#ffffff" : "#333333",
+      height: "2rem",
+      width: "6rem",
+    }),
+    indicatorSeparator: (provided) => ({
+      ...provided,
+      display: "none"
+    })
   };
 
   // html
@@ -164,8 +209,13 @@ const ChecklistList = () => {
           </div>
         ) : null}
         {editChecklist === false ? (
-          <div class="date">
-            {start} ~ {end}
+          <div class="middleHead">
+            <div class="country">
+              {country}
+            </div>
+            <div class="date">
+              {start} ~ {end}
+            </div>
           </div>
         ) : (
           <div class="editDate">
@@ -229,14 +279,17 @@ const ChecklistList = () => {
                 setAddPrice(e.target.value);
               }}
             />
-            <input
+            {/* <input
               type="text"
               value={addCurrency}
               class="addCurrency"
               onChange={(e) => {
                 setAddCurrency(e.target.value);
               }}
-            />
+            /> */}
+            <div class="selectBox">
+              <Select onChange={handleOptionChange} classNamePrefix="react-select" defaultValue={options[0]} isClearable={false} isSearchable={false} options={options} styles={customStyles} />
+            </div>
           </div>
           <div class="addButton">
             <button class="addBtn" onClick={() => addChecklistItem()}>
@@ -378,7 +431,7 @@ const ChecklistListWrapper = styled.div`
   .addContent {
     display: block;
     color: #909090;
-    width: 46vw;
+    width: 35vw;
     border: 0;
     border-bottom: 1px solid #8c8c8c;
     background-color: transparent;
@@ -403,7 +456,7 @@ const ChecklistListWrapper = styled.div`
   .addPrice {
     display: block;
     color: #909090;
-    width: 20vw;
+    width: 18vw;
     border: 0;
     border-bottom: 1px solid #8c8c8c;
     background-color: transparent;
@@ -458,6 +511,15 @@ const ChecklistListWrapper = styled.div`
       border-color: #76a8de;
       color: #76a8de;
     }
+  }
+  .middleHead{
+    display: flex;
+    justify-content: space-between;
+  }
+  .country {
+    display: flex;
+    justify-content: right;
+    margin-top: 1vh;
   }
 `;
 

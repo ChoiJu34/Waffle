@@ -24,8 +24,8 @@ const StyledModalBackground = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: calc(var(--vh, 1vh) * 100);
   background-color: #292929;
   opacity: 0.5;
   z-index: 1;
@@ -36,8 +36,8 @@ const StyledBottomSheet = styled.div`
   margin-bottom: 10px;
   z-index: 2;
   position: fixed;
-  width: 100%;
-  height: 600px;
+  width: 100vw;
+  height: calc(var(--vh, 1vh) * 60);
   max-height: 90%;
   overflow-y: scroll;
   &::-webkit-scrollbar {
