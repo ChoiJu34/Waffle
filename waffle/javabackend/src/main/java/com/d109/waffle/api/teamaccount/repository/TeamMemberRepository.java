@@ -8,4 +8,5 @@ import java.util.List;
 public interface TeamMemberRepository extends JpaRepository<TeamMemberEntity, Integer> {
     List<TeamMemberEntity> findByUser_Id(int userId);
     List<TeamMemberEntity> findByTeamAccount_Id(int accountId);
+    Boolean existsByUser_IdAndTeamAccount_Id(int userId, int accountId);
 }
