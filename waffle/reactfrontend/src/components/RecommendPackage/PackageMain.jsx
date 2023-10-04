@@ -19,6 +19,7 @@ import { IoAirplaneSharp } from "react-icons/io5";
 import { AiOutlineClose } from "react-icons/ai";
 import { AiFillCalendar } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom'; 
+import { Link } from "react-router-dom";
 
 
 
@@ -44,9 +45,8 @@ const PackageMain = () => {
   const [where, setWhere] = useState("")
   const [cntPeople, setCntPeople] = useState(1)
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-
   const navigate = useNavigate()
-
+  const url = "https://dinorunner.com/ko/"
   const settings = {
     dots: true,
     infinite: true,
@@ -235,7 +235,6 @@ const PackageMain = () => {
       };
   
       setLoading(true);
-  
       const resData = await requestPostNode(`package/recommend`, params2);
   
       if (!resData) { 
@@ -300,7 +299,8 @@ useEffect(() => {
     <Container>{loading ? (
         <LoadingContainer>
           <LoadingSpinner />
-          <LoadingText>로딩 중...</LoadingText>
+            <LoadingText>로딩 중...
+          </LoadingText>
         </LoadingContainer>
       ) : (
         <>
@@ -445,7 +445,7 @@ const LoadingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: calc(var(--vh, 1vh) * 100);
 `;
 
 const LoadingSpinner = styled.div`
@@ -558,7 +558,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 30px;
-  width: 400px;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 40);
   padding-bottom: 20px;
   & > span {
   font-size: 25px;
