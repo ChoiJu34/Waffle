@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -546,12 +547,20 @@ public class TeamAccountServiceImpl implements TeamAccountService {
             throw new NoSuchElementException("잘못된 계좌 정보입니다");
         }
 
+        System.out.println(1);
         // *재생성하는 경우 그 전에 있던 리스트중에서 expired가 안된거를 expired로 바꾼다.
         TeamAccountEntity teamAccountEntity = teamAccountEntityOptional.get();
-        InviteCodeEntity beforeInviteCodeEntity = inviteCodeRepository.findByTeamAccount_IdAndExpiredIsFalse(teamAccountEntity.getId());
-        beforeInviteCodeEntity.setExpired(true);
+        Optional<InviteCodeEntity> beforeInviteCodeEntityOptional = inviteCodeRepository.findByTeamAccount_IdAndExpiredIsFalse(teamAccountEntity.getId());
+        InviteCodeEntity beforeInviteCodeEntity;
 
+        // 재생성하는 경우
+        if(beforeInviteCodeEntityOptional.isPresent()){
+             beforeInviteCodeEntity = beforeInviteCodeEntityOptional.get();
+             beforeInviteCodeEntity.setExpired(true);
+             inviteCodeRepository.save(beforeInviteCodeEntity);
+        }
 
+        System.out.println(2);
         // inviteCode 만료일 2분뒤로 설정해서 생성한 invtieCode 넣기
         InviteCodeEntity inviteCodeEntity = InviteCodeEntity.createInviteCode();
         inviteCodeEntity.setCode(inviteCode);
@@ -559,6 +568,42 @@ public class TeamAccountServiceImpl implements TeamAccountService {
         inviteCodeRepository.save(inviteCodeEntity);
 
         return inviteCode;
+
+    }
+
+    @Override
+    public void addInvite(String authorization, InviteCodeEntity inviteCodeEntity){
+        // *get UserEntity from AccessToken
+        Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
+        if(!userEntity.isPresent()){
+            throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+        }
+
+        UserEntity user = userEntity.get();
+
+        Optional<InviteCodeEntity> fullInviteCodeEntityOptional = inviteCodeRepository.findByCodeAndExpiredIsFalse(inviteCodeEntity.getCode());
+        if(!fullInviteCodeEntityOptional.isPresent()){
+            throw new NoSuchElementException("만료된 코드입니다.");
+        }
+
+        InviteCodeEntity fullInviteCodeEntity = fullInviteCodeEntityOptional.get();
+        LocalDateTime expirationDate = fullInviteCodeEntity.getExpirationDate();
+        LocalDateTime now = LocalDateTime.now();
+        // 토큰 시간이 만료됨
+        if(expirationDate.isBefore(now)){
+            fullInviteCodeEntity.setExpired(true);
+            inviteCodeRepository.save(fullInviteCodeEntity);
+            throw new NoSuchElementException("만료된 코드입니다.");
+        }else{ // 만료되지 않았을 때 구성원으로 추가함
+            TeamMemberEntity teamMemberEntity;
+            teamMemberEntity = TeamMemberEntity.builder()
+                    .user(user)
+                    .teamAccount(fullInviteCodeEntity.getTeamAccount())
+                    .master(false)
+                    .nickname(user.getName())
+                    .build();
+            teamMemberRepository.save(teamMemberEntity);
+        }
 
     }
 }
