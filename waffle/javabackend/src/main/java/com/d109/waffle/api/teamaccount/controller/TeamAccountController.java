@@ -3,6 +3,7 @@ package com.d109.waffle.api.teamaccount.controller;
 import com.d109.waffle.api.teamaccount.dto.TeamAccountDetailDto;
 import com.d109.waffle.api.teamaccount.dto.TeamAccountDto;
 import com.d109.waffle.api.teamaccount.dto.TeamAccountListDto;
+import com.d109.waffle.api.teamaccount.entity.InviteCodeEntity;
 import com.d109.waffle.api.teamaccount.entity.TeamAccountEntity;
 import com.d109.waffle.api.teamaccount.entity.TeamMemberEntity;
 import com.d109.waffle.api.teamaccount.service.TeamAccountServiceImpl;
@@ -235,6 +236,26 @@ public class TeamAccountController {
             String inviteCode = teamAccountService.createInviteCode(authorization, accountId);
             result.put("code", inviteCode);
             result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(NoSuchElementException e){
+            result.put("message", e.getMessage());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(Exception e){
+            result.put("message", "FAIL");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("add-invite")
+    public ResponseEntity<?> addInvite(@RequestHeader("Authorization") String authorization, @RequestBody InviteCodeEntity inviteCodeEntity){
+        Map<String, Object> result = new HashMap<>();
+
+        try{
+            teamAccountService.addInvite(authorization, inviteCodeEntity);
+            result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(NoSuchElementException e){
+            result.put("message", e.getMessage());
             return new ResponseEntity<>(result, HttpStatus.OK);
         }catch(Exception e){
             result.put("message", "FAIL");
