@@ -1,9 +1,6 @@
 package com.d109.waffle.api.teamaccount.controller;
 
-import com.d109.waffle.api.teamaccount.dto.Group;
-import com.d109.waffle.api.teamaccount.dto.TeamAccountDetailDto;
-import com.d109.waffle.api.teamaccount.dto.TeamAccountDto;
-import com.d109.waffle.api.teamaccount.dto.TeamAccountListDto;
+import com.d109.waffle.api.teamaccount.dto.*;
 import com.d109.waffle.api.teamaccount.entity.InviteCodeEntity;
 import com.d109.waffle.api.teamaccount.entity.TeamAccountEntity;
 import com.d109.waffle.api.teamaccount.entity.TeamMemberEntity;
@@ -257,7 +254,25 @@ public class TeamAccountController {
         }
     }
 
+    @PutMapping("update-goals")
+    public ResponseEntity<?> updateGoals(@RequestHeader("Authorization") String authorization, @RequestBody UpdateGoalDto updateGoalDto){
 
+        Map<String, Object> result = new HashMap<>();
+
+        try{
+            teamAccountService.updateGoals(authorization, updateGoalDto);
+            result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(NoSuchElementException e){
+            result.put("message", e.getMessage());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(Exception e){
+            result.put("message", "FAIL");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+    }
 
 
 

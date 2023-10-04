@@ -150,6 +150,7 @@ const Cardimgbox = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 10px;
+  cursor: pointer;
   & > img {
     max-width: 300px;
     max-height: 300px;

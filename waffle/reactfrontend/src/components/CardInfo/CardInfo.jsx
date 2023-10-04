@@ -51,10 +51,16 @@ const CardInfo = () => {
   return (
     <Container>
       <Cardimgbox>
-        <img
-          src={`https://j9d109.p.ssafy.io/downloads/${cardId}.png`}
-          alt="카드사진"
-        />
+        <a
+          href={cardInfo.result.cardEntity.link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src={`https://j9d109.p.ssafy.io/downloads/${cardId}.png`}
+            alt="카드사진"
+          />
+        </a>
       </Cardimgbox>
       <Cardnamefont>{cardInfo.result.cardEntity.name}</Cardnamefont>
       <CardBenefitList>
@@ -181,22 +187,16 @@ const CardInfo = () => {
           </Benefit>
         ))}
       </CardBenefitList>
-      <BenefitFooter>
-        <button onClick={goBack}>뒤로 가기</button>
-        <a href={cardInfo.result.cardEntity.link} target="_blank">
-          카드 링크
-        </a>
-        <Totalbox>
-          <p className="origintotal">
-            {originalPriceTotal.toLocaleString("ko-KR")}원
-          </p>
-          <div>
-            <div className="distotal">
-              {discountPriceTotal.toLocaleString("ko-KR")}원
-            </div>
+      <Totalbox>
+        <p className="origintotal">
+          {originalPriceTotal.toLocaleString("ko-KR")}원
+        </p>
+        <div>
+          <div className="distotal">
+            {discountPriceTotal.toLocaleString("ko-KR")}원
           </div>
-        </Totalbox>
-      </BenefitFooter>
+        </div>
+      </Totalbox>
     </Container>
   );
 };
@@ -211,9 +211,10 @@ const Cardimgbox = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  & > img {
+  & img {
     width: auto;
     max-height: 230px;
+    cursor: pointer;
   }
   margin-top: 10px;
   margin-bottom: 10px;
@@ -266,15 +267,6 @@ const BenefitLimit = styled.div``;
 
 const BenefitDetail = styled.div``;
 
-const BenefitFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-`;
-
 const Totalbox = styled.div`
   display: flex;
   flex-direction: column;
@@ -292,4 +284,5 @@ const Totalbox = styled.div`
     font-size: 25px;
     display: flex;
   }
+  margin-right: 40px;
 `;

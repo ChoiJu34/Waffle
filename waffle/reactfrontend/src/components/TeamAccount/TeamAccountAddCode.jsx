@@ -39,7 +39,7 @@ const TeamAccountAddNew = () => {
 
   // 코드
   const [formData, setFormData] = useState({
-    inviteCode: ''
+    code: ''
   })
 
   const handleChange = (e) => {
@@ -48,6 +48,32 @@ const TeamAccountAddNew = () => {
         const newData = { ...prevData, [name]: value };
         return newData;
     });
+  }
+
+  const token = localStorage.getItem('access_token')
+
+  const headers = {
+    "Authorization": "Bearer " + token
+  }
+
+  const handleSubmit = (e) => {
+
+    e.preventDefault()
+
+    axios.put(`/team-account/add-invite`, formData, { headers: headers })
+      .then(response => {
+        console.log(response.data.message)
+        if (response.data.message === 'SUCCESS') {
+          navigate('/teamaccount/main')
+        } else if (response.data.message === '만료된 코드입니다.') {
+          alert('유효하지 않은 코드입니다.')
+        } else  {
+          alert('이미 등록되어있는 계좌입니다')
+        }
+      })
+      .catch(error => {
+        console.error('초대코드로 등록 실패');
+      });
   }
 
   return (
@@ -59,10 +85,10 @@ const TeamAccountAddNew = () => {
       <form>
         <div className={`login-email ${isCodeFocused ? 'focus' : ''} ${isCodeComplete ? 'complete' : ''}`} id="code-container">
           <label id="email-label">초대 코드</label>
-          <input type="text" id="email-input" ref={inputCodeRef} onFocus={handleCodeFocus} onBlur={handleCodeBlur} value={formData.email} onChange={(e) => {handleChange(e)}} name="code"/>
+          <input type="text" id="email-input" ref={inputCodeRef} onFocus={handleCodeFocus} onBlur={handleCodeBlur} value={formData.code} onChange={(e) => {handleChange(e)}} name="code"/>
         </div>
         <div className="add-button-container">
-          <button className="add-button" type="submit">추가</button>
+          <button className="add-button" type="submit" onClick={handleSubmit}>추가</button>
         </div>
       </form>
 

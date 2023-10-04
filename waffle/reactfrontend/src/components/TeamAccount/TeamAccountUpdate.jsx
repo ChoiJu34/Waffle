@@ -9,10 +9,13 @@ const TeamAccountUpdate = () => {
 
   const location = useLocation()
 
+  const id = window.location.pathname.match(/\d+$/)?.[0]
+
   const [formData, setFormData] = useState({
-    accountName: location.state?.accountName,
-    target: location.state?.target,
-    endDate: location.state?.endDate,
+    id: id,
+    name: location.state?.accountName,
+    goal: location.state?.target,
+    endDay: location.state?.endDate,
   })
 
   useEffect(() => {
@@ -59,7 +62,7 @@ const TeamAccountUpdate = () => {
 
     window.scrollTo(0, 0)
     
-    navigate(-1);
+    navigate('/teamaccount/main');
   }
 
   // 통장 이름 입력 칸
@@ -218,7 +221,6 @@ const handleTargetValue = (e) => {
   
   let formattedValue = "";  
 
-
   let reversedValue = value.split('').reverse().join('');
 
   for (let i = 0; i < reversedValue.length; i++) {
@@ -235,9 +237,31 @@ const handleTargetValue = (e) => {
 
   setFormData(prevData => ({
     ...prevData,
-    target: value
+    goal: value
   }));
 }
+
+const token = localStorage.getItem('access_token')
+
+const headers = {
+  "Authorization": "Bearer " + token
+}
+
+const submitUpdate = (e) => {
+
+  e.preventDefault()
+
+  axios.put(`/team-account/update-detail`, formData, { headers: headers })
+  .then(response => {
+    navigate(`/teamaccount/detail/${id}`)
+  })
+  .catch(error => {
+    console.error('수정 실패');
+    alert('수정 실패');
+  });
+}
+
+console.log(formData)
 
   return (
     <TeamAccountUpdateWrapper>
@@ -248,21 +272,21 @@ const handleTargetValue = (e) => {
       <form>
         <div className={`teamaccount-update-accountname ${isAccountNameFocused ? 'focus' : ''} ${isAccountNameComplete ? 'complete' : ''}`}>
           <label id="signup-label">통장 이름</label>
-          <input type="text" id="signup-input" ref={inputAccountNameRef} onFocus={handleAccountNameFocus} onBlur={handleAccountNameBlur} onChange={(e) => {functionSetAccountName(e); handleInputChange(e)}} value={formData.accountName} name="accountName"/>
+          <input type="text" id="signup-input" ref={inputAccountNameRef} onFocus={handleAccountNameFocus} onBlur={handleAccountNameBlur} onChange={(e) => {functionSetAccountName(e); handleInputChange(e)}} value={formData.name} name="name"/>
         </div>
 
         <div className={`teamaccount-update-target ${isTargetFocused ? 'focus' : ''} ${isTargetComplete ? 'complete' : ''}`}>
           <label id="signup-label">목표액</label>
-          <input type="text" id="signup-input" ref={inputTargetRef} onFocus={handleTargetFocus} onBlur={handleTargetBlur} onChange={(e) => {handleTargetValue(e)}} value={displayValue} name="target"/>
+          <input type="text" id="signup-input" ref={inputTargetRef} onFocus={handleTargetFocus} onBlur={handleTargetBlur} onChange={(e) => {handleTargetValue(e)}} value={displayValue} name="goal"/>
         </div>
 
         <div className={`teamaccount-update-enddate ${isEndDateFocused ? 'focus' : ''} ${isEndDateComplete ? 'complete' : ''}`}>
           <label id="signup-label">종료일</label>
-          <input type="text" id="signup-input" ref={inputEndDateRef} onFocus={handleEndDateFocus} onBlur={handleEndDateBlur} onChange={(e) => {functionSetEndDate(e) ; handleInputChange(e)}} value={formData.endDate} name="endDate" placeholder={showEndDatePlaceholder ? "ex) 20231130" : ""}/>
+          <input type="text" id="signup-input" ref={inputEndDateRef} onFocus={handleEndDateFocus} onBlur={handleEndDateBlur} onChange={(e) => {functionSetEndDate(e) ; handleInputChange(e)}} value={formData.endDay} name="endDay" placeholder={showEndDatePlaceholder ? "ex) 20231130" : ""}/>
         </div>
 
         <div className="signup-button-container">
-          <TeamAccountUpdateButton type="submit" className="signup-button" disabled={!(formData.accountName && formData.target && formData.endDate && isEndDate)}>수정하기</TeamAccountUpdateButton>
+          <TeamAccountUpdateButton type="submit" className="signup-button" disabled={!(formData.name && formData.goal && formData.endDay && isEndDate)} onClick={submitUpdate}>수정하기</TeamAccountUpdateButton>
         </div>
       </form>
     </TeamAccountUpdateWrapper>

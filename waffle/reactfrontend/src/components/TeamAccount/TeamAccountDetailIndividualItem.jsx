@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-const TeamAccountDetailIndividualItem = () => {
+const TeamAccountDetailIndividualItem = ({ data, index }) => {
 
-    const individualName = '대장'
-    const individualTarget = 2000
-    const individualRaised = 1200
-    const raisedRatio = individualRaised / individualTarget * 100
+    const individualName = data?.name || '그 외'
+    const individualTarget = data?.goal
+    const individualRaised = data?.money
+    const raisedRatio = individualTarget !== 0 ? individualRaised / individualTarget * 100 : 0;
 
     const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 })
 
@@ -53,7 +53,7 @@ const TeamAccountDetailIndividualItem = () => {
     }
 
     const numberWithCommas = (x) => {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
     return (
