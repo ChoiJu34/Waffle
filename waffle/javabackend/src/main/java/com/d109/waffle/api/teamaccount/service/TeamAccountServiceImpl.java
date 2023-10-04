@@ -204,7 +204,7 @@ public class TeamAccountServiceImpl implements TeamAccountService {
         // *계좌에 연결되어 있는 nickname들고오기 + 이 계좌의 master인가
         Boolean master = false;
         int masterIndex = 0;
-        int me = 0; // group에 있는 member중에 나인지 확인할 수 있는 id
+        int me = -1; // group에 있는 member중에 나인지 확인할 수 있는 id
 
         List<Group> groupList = new ArrayList<>();
 

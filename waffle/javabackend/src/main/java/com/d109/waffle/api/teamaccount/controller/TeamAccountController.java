@@ -109,6 +109,7 @@ public class TeamAccountController {
             result.put("totalAdd", teamAccountDetailDto.getTotalAdd());
             result.put("totalSub", teamAccountDetailDto.getTotalSub());
             result.put("master", teamAccountDetailDto.getMaster());
+            result.put("me", teamAccountDetailDto.getMe());
             result.put("group", teamAccountDetailDto.getGroup());
             return new ResponseEntity<>(result, HttpStatus.OK);
         }catch(NoSuchElementException e){
