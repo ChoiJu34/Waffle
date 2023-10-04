@@ -24,4 +24,13 @@ public class UserCardEntity {
     @ManyToOne
     @JoinColumn(name = "card_id")
     private CardEntity cardEntity;
+
+    @Column(name = "card_nickname")
+    private String cardNickname;
+
+    @Column(name = "card_number")
+    private String cardNumber;
+
+    @Column(name = "card_valid_date")
+    private String cardValidDate;
 }

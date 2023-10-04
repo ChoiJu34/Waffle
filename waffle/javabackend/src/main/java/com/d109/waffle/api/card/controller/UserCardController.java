@@ -23,7 +23,7 @@ public class UserCardController {
     public ResponseEntity<?> addCard(@RequestHeader("Authorization") String authorization, @RequestBody Map<String, String> map) {
         Map<String, String> result = new HashMap<>();
         try {
-            userCardService.addCard(authorization, map.get("cardNumber"));
+            userCardService.addCard(authorization, map.get("cardBin"), map.get("cardNumber"), map.get("cardNickname"), map.get("cardValidDate"));
             result.put("message", "SUCCESS");
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
