@@ -47,7 +47,7 @@ public class UserCardServiceImpl implements UserCardService {
     private String bank_url;
 
     @Override
-    public void addCard(String authorization, String cardNumber) throws Exception {
+    public void addCard(String authorization, String cardBin, String cardNumber, String cardNickname, String cardValidDate) throws Exception {
         Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
         if(!userEntity.isPresent()) {
             throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
@@ -55,7 +55,7 @@ public class UserCardServiceImpl implements UserCardService {
         UserEntity user = userEntity.get();
 
         HashMap<String, String> body = new HashMap<>();
-        body.put("cardNumber", cardNumber);
+        body.put("cardNumber", cardBin);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         // headers.add("Authorization-uuid", user.getUuid());
@@ -76,9 +76,12 @@ public class UserCardServiceImpl implements UserCardService {
                 throw new NoSuchElementException("해당 카드의 정보를 찾지 못했습니다.");
             }
             UserCardEntity userCardEntity = UserCardEntity.builder()
-                    .cardEntity(cardEntity.get())
-                    .userEntity(user)
-                    .build();
+                .cardEntity(cardEntity.get())
+                .cardValidDate(cardValidDate)
+                .cardNickname(cardNickname)
+                .cardNumber(cardNumber)
+                .userEntity(user)
+                .build();
             userCardRepository.save(userCardEntity);
         }
 
