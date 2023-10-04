@@ -227,6 +227,21 @@ public class TeamAccountController {
         }
     }
 
+    @GetMapping("create-code/{accountId}")
+    public ResponseEntity<?> createInviteCode(@RequestHeader("Authorization") String authorization, @PathVariable("accountId") int accountId){
+        Map<String, Object> result = new HashMap<>();
+
+        try{
+            String inviteCode = teamAccountService.createInviteCode(authorization, accountId);
+            result.put("code", inviteCode);
+            result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(Exception e){
+            result.put("message", "FAIL");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
 
