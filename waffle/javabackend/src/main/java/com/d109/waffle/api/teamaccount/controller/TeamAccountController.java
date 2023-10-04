@@ -1,5 +1,6 @@
 package com.d109.waffle.api.teamaccount.controller;
 
+import com.d109.waffle.api.teamaccount.dto.Group;
 import com.d109.waffle.api.teamaccount.dto.TeamAccountDetailDto;
 import com.d109.waffle.api.teamaccount.dto.TeamAccountDto;
 import com.d109.waffle.api.teamaccount.dto.TeamAccountListDto;
@@ -109,6 +110,7 @@ public class TeamAccountController {
             result.put("totalAdd", teamAccountDetailDto.getTotalAdd());
             result.put("totalSub", teamAccountDetailDto.getTotalSub());
             result.put("master", teamAccountDetailDto.getMaster());
+            result.put("me", teamAccountDetailDto.getMe());
             result.put("group", teamAccountDetailDto.getGroup());
             return new ResponseEntity<>(result, HttpStatus.OK);
         }catch(NoSuchElementException e){
@@ -159,23 +161,14 @@ public class TeamAccountController {
         Map<String, Object> result = new HashMap<>();
 
         try{
-            List<TeamMemberEntity> teamMemberEntityList = teamAccountService.getMemberList(authorization, accountId);
-            List<Map<String, Object>> list = new ArrayList<>();
-            for(int i=0, size=teamMemberEntityList.size();i<size;i++){
-                TeamMemberEntity e = teamMemberEntityList.get(i);
-
-                Map<String, Object> dto = new HashMap<>();
-                dto.put("id", e.getId());
-                dto.put("name", e.getNickname());
-                dto.put("master", e.getMaster());
-                dto.put("goal", e.getGoal());
-
-                list.add(dto);
-            }
+            List<Map<String, Object>> list = teamAccountService.getMemberList(authorization, accountId);
             result.put("list", list);
             result.put("message", "SUCCESS");
             return new ResponseEntity<>(result, HttpStatus.OK);
         }catch(NoSuchElementException e){
+            result.put("message", e.getMessage());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(TransactionException e){
             result.put("message", e.getMessage());
             return new ResponseEntity<>(result, HttpStatus.OK);
         }catch(Exception e){
