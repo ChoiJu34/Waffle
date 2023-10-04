@@ -77,7 +77,7 @@ public class TripPackageService {
 				.endPlace(planeDto.getEndPlace())
 				.endTime(planeDto.getEndTime())
 				.originPrice(planeDto.getOriginPrice())
-				.discountPrice(planeDto.getDiscountPirce())
+				.discountPrice(planeDto.getDiscountPrice())
 				.layover(planeDto.getLayover())
 				.during(planeDto.getDuring())
 				.site(planeDto.getSite())
@@ -125,7 +125,7 @@ public class TripPackageService {
 				packagePlaneDto.setEndPlace(favoritePlane.getEndPlace());
 				packagePlaneDto.setEndTime(favoritePlane.getEndTime());
 				packagePlaneDto.setOriginPrice(favoritePlane.getOriginPrice());
-				packagePlaneDto.setDiscountPirce(favoritePlane.getDiscountPrice());
+				packagePlaneDto.setDiscountPrice(favoritePlane.getDiscountPrice());
 				packagePlaneDto.setLayover(favoritePlane.getLayover());
 				packagePlaneDto.setDuring(favoritePlane.getDuring());
 				packagePlaneDto.setSite(favoritePlane.getSite());
