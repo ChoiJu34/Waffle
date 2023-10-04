@@ -204,7 +204,7 @@ public class TeamAccountServiceImpl implements TeamAccountService {
         // *계좌에 연결되어 있는 nickname들고오기 + 이 계좌의 master인가
         Boolean master = false;
         int masterIndex = 0;
-        int me = 0; // group에 있는 member중에 나인지 확인할 수 있는 id
+        int me = -1; // group에 있는 member중에 나인지 확인할 수 있는 id
 
         List<Group> groupList = new ArrayList<>();
 
@@ -395,7 +395,7 @@ public class TeamAccountServiceImpl implements TeamAccountService {
     }
 
     @Override
-    public List<TeamMemberEntity> getMemberList(String authorization, int accountId){
+    public List<Map<String, Object>> getMemberList(String authorization, int accountId){
         // *get UserEntity from AccessToken
         Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
         if(!userEntity.isPresent()){
@@ -404,9 +404,113 @@ public class TeamAccountServiceImpl implements TeamAccountService {
 
         UserEntity user = userEntity.get();
 
-        List<TeamMemberEntity> teamMemberEntityList = teamMemberRepository.findByTeamAccount_Id(accountId);
+        Optional<TeamAccountEntity> teamAccountEntityOptional = teamAccountRepository.findById(accountId);
+        if(!teamAccountEntityOptional.isPresent()){
+            throw new NoSuchElementException("해당하는 계좌를 찾을 수 없습니다.");
+        }
 
-        return teamMemberEntityList;
+        TeamAccountEntity teamAccountEntity = teamAccountEntityOptional.get();
+
+        // *초코뱅크와 통신 해서 계좌 내역 들고 오기
+        HashMap<String, String> body = new HashMap<>();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        body.put("accountNumber", teamAccountEntity.getAccountNumber());
+
+        HttpEntity<HashMap<String, String>> entity = new HttpEntity<>(body, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<BankAccountHistoryResponseDto> response = restTemplate.exchange(
+                bank_url+"/account/service/history",
+                HttpMethod.POST,
+                entity,
+                BankAccountHistoryResponseDto.class
+        );
+
+        if(response.getBody().getMessage().equals("FAIL")){
+            throw new TransactionException("초코뱅크와 통신 실패");
+        }
+
+        // *계좌에 연결되어 있는 nickname들고오기 + 이 계좌의 master인가
+        Boolean master = false;
+        int masterIndex = 0;
+        int me = -1; // group에 있는 member중에 나인지 확인할 수 있는 id
+
+        List<Group> groupList = new ArrayList<>();
+
+        // 그 외 추가
+        Group group = new Group();
+        group.setId(0);
+        group.setName("그 외");
+        groupList.add(group);
+
+        List<TeamMemberEntity> teamMemberEntityList = teamMemberRepository.findByTeamAccount_Id(teamAccountEntity.getId());
+        for(int i=0, size=teamMemberEntityList.size();i<size;i++){
+            TeamMemberEntity e = teamMemberEntityList.get(i);
+            Group addGroup = new Group();
+            addGroup.setName(e.getNickname());
+            addGroup.setId(e.getId());
+            addGroup.setGoal(e.getGoal());
+            groupList.add(addGroup);
+            if(user.getId() == e.getUser().getId()){
+                if(e.getMaster()) {
+                    masterIndex = i + 1; // 그 외 생각해서 +1
+                    master = true;
+                }
+                me = e.getId();
+            }
+        }
+
+
+        // *계좌 내역의 보내는 사람 이름과 계좌에 연결된 nickname을 비교해서 사람마다 money 카운트
+        int totalAdd = 0;
+        int totalSub = 0;
+
+        for(BankAccountHistoryDto e : response.getBody().getBankAccountHistoryDtoList()){
+            int money = Integer.parseInt(e.getMoney());
+
+            if(money < 0){
+                int calculatedMoney = groupList.get(masterIndex).getMoney() + money;
+                groupList.get(masterIndex).setMoney(calculatedMoney);
+                totalSub += money;
+            }
+            else{
+                // 그 외를 빼고 생각하기 때문에 i = 1부터 그 외의 index는 0
+                for(int i=1,size=groupList.size();i<=size;i++){
+                    Group g = groupList.get(i);
+                    int calculatedMoney = g.getMoney() + money;
+                    if(e.getSenderName().equals(g.getName())){
+                        // 닉네임이 일치하는 사람에게 돈이 올라감
+                        g.setMoney(calculatedMoney);
+                    }else{
+                        // 그 외에 돈이 올라감
+                        groupList.get(0).setMoney(calculatedMoney);
+                    }
+                }
+                totalAdd += money;
+            }
+        }
+
+        List<Map<String, Object>> returnDtoList = new ArrayList<>();
+
+        for(int i=0, size=teamMemberEntityList.size();i<size;i++){
+            TeamMemberEntity e = teamMemberEntityList.get(i);
+
+            Map<String, Object> returnDto = new HashMap<>();
+            returnDto.put("id", e.getId());
+            returnDto.put("name", e.getNickname());
+            returnDto.put("master", e.getMaster());
+            returnDto.put("goal", e.getGoal());
+            for(Group g: groupList){
+                if(g.getId() == e.getId()){
+                    returnDto.put("money", g.getMoney());
+                }
+            }
+            returnDtoList.add(returnDto);
+        }
+        
+        return returnDtoList;
     }
 
     @Override
