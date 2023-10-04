@@ -44,7 +44,4 @@ public class TeamAccountEntity {
     @Column
     @CreationTimestamp
     private LocalDateTime createDate;
-
-    @Column(name="invite_code")
-    private String inviteCode;
 }
