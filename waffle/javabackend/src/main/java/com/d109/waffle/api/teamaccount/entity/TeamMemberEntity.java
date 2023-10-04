@@ -33,6 +33,9 @@ public class TeamMemberEntity {
     @Column(length=45)
     private String nickname;
 
+    @Column
+    private int goal;
+
 }
 
 
