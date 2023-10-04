@@ -106,9 +106,9 @@ public class UserServiceImpl implements UserService {
 		if(userEntity.isPresent()) {
 			UserEntity user = userEntity.get();
 
-			if(!passwordEncoder.matches(updateUserDto.getPassword(), user.getPassword())) {
-				throw new InvalidKeyException("비밀번호를 다시 입력해주세요.");
-			}
+			// if(!passwordEncoder.matches(updateUserDto.getPassword(), user.getPassword())) {
+			// 	throw new InvalidKeyException("비밀번호를 다시 입력해주세요.");
+			// }
 			user.setName(updateUserDto.getNewName());
 			user.setTel(updateUserDto.getNewTel());
 			user.setPassword(updateUserDto.getNewPassword());
@@ -129,4 +129,18 @@ public class UserServiceImpl implements UserService {
 			userRepository.save(user);
 		}
 	}
+
+	@Override
+	public void verifyPassword(String authorization, String password) throws Exception {
+		UserEntity userEntity = jwtService.accessHeaderToUser(authorization).orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+		if(!passwordEncoder.matches(password, userEntity.getPassword())) {
+			throw new InvalidKeyException("비밀번호를 다시 입력해주세요.");
+		}
+	}
+
+	@Override
+	public UserEntity getUserInfo(String authorization) throws Exception {
+		return jwtService.accessHeaderToUser(authorization).orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+	}
+
 }

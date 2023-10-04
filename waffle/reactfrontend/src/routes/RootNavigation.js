@@ -22,9 +22,11 @@ import TeamAccountAddCode from "../components/TeamAccount/TeamAccountAddCode";
 import TeamAccountAddNew from "../components/TeamAccount/TeamAccountAddNew";
 import TeamAccountUpdate from "../components/TeamAccount/TeamAccountUpdate";
 import TeamAccountUpdateIndividual from "../components/TeamAccount/TeamAccountUpdateIndividual";
-import Checklist from "../components/Checklist/ChecklistMain";
+import ChecklistList from "../components/Checklist/ChecklistMain";
+import Checklist from '../components/Checklist/Checklist'
 import CardInfo from "../components/CardInfo/CardInfo";
 import Favorite from "../components/MyPage/Favorite"
+import UpdateUserInfo from "../components/MyPage/UpdateUserInfo"
 import PackageList from "../components/RecommendPackage/PackageList";
 
 const RootNavigation = () => {
@@ -87,9 +89,11 @@ const RootNavigation = () => {
             path="/teamaccount/update/individual"
             element={<TeamAccountUpdateIndividual />}
           />
-          <Route path="/mypage/checklist" element={<Checklist />} />
+          <Route path="/mypage/checklist" element={<ChecklistList/>} />
+          <Route path="/mypage/checklist/:id" element={<Checklist/>} />
           <Route path="/cardinfo/:cardId" element={<CardInfo />} />
           <Route path="/mypage/favorite" element={<Favorite />} />
+          <Route path="/mypage/update-userinfo" element={<UpdateUserInfo />} />
         </Route>
       </Routes>
     </BrowserRouter>

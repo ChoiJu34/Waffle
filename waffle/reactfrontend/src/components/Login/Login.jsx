@@ -150,6 +150,7 @@ const Login = () => {
 
 const LoginWrapper = styled.div`
   min-height: 100vh;
+  overflow: hidden;
 
   .login-header {
     display: flex;

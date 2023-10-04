@@ -76,6 +76,11 @@ const PackageList = () => {
         return stack.join('');
       }
 
+      function formatDate(input) {
+        const str = input.toString();
+        return `${str.substring(0, 4)}-${str.substring(4, 6)}-${str.substring(6, 8)}`;
+    }
+
     useEffect(() => {
       setToken()
       console.log(data)
@@ -107,7 +112,7 @@ const PackageList = () => {
                     <Smallairbox>
                         <Aircompanybox>
                             <div className="site-box">
-                            <div className="plane-date">{planeDate}</div>
+                            <div className="plane-date">{formatDate(planeDate)}</div>
                             {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
 
                             </div>
@@ -145,13 +150,15 @@ const PackageList = () => {
                     <div className="airfont">숙박</div>
                     {hotel && hotel.map(({hotelName,discountPrice,end,img,originPrice,site,start,url }) => (
                     <Hotelcontent>
-                        <div>{start}</div>
+                        
                          {( img === "이미지를 가지고 오지 못했습니다.")? (<Hotelimg src={"/cardlogo/hotel.png"} alt="img" />):(<Hotelimg src={`${img}`} alt="img" />)}
                         <div>{solution(hotelName)}</div>
+                        <div>{start}</div>
                         {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/agoda.png"} alt="logo" />))}
-                        {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
-                        <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
-                        
+                        <div className="price-box">
+                            {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
+                            <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
+                        </div>
                     </Hotelcontent>
                     ))}
                 </Hotelbox>
@@ -170,7 +177,7 @@ const PackageList = () => {
                     <Smallairbox>
                         <Aircompanybox>
                             <div className="site-box">
-                            <div className="plane-date">{planeDate}</div>
+                            <div className="plane-date">{formatDate(planeDate)}</div>
                             {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
 
                             </div>
@@ -277,7 +284,7 @@ const Container = styled.div`
   margin-top: 30px;
   margin-bottom: 20px;
   height: calc(var(--vh, 1vh) * 80);
-  width: 97vw;
+  width: 100%;
 
   .Navecontainer{
     display: flex;
@@ -451,5 +458,6 @@ const Hotelcontent = styled.div`
 `
 const Hotelimg = styled.img`
     width: 100%;
-    height: 50%;
+    height: auto;
+    margin-bottom:1vh;
 `

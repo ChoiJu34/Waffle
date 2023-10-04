@@ -212,6 +212,7 @@ const MainPageWrapper = styled.div`
 
   .main-img {
     width: 100%;
+    height: 28vh;
     display: block;
   }
 
@@ -222,15 +223,15 @@ const MainPageWrapper = styled.div`
 
   .main-img-default-text {
     position: absolute;
-    top: 15%;
-    left: 8%;
+    top: 4vh;
+    left: 7vw;
     font-size: 3.1vh;
   }
 
   .main-img-text {
     position: absolute;
-    top: 60%;
-    left: 30%;
+    top: 17vh;
+    left: 28vw;
     transform: translate(-50%, -50%);
     width: 100%;
     font-size: 3vh;
@@ -239,15 +240,15 @@ const MainPageWrapper = styled.div`
 
   .main-img-waffle {
     position: absolute;
-    top: 100%;
-    left: 100%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    animation: ${rotateAnimation} 20s linear infinite;
+    top: 28vh;
+    left: 103vw;
+    -webkit-transform: translate(-50%, -50%);
+    width: 90vw;
+    -webkit-animation: ${rotateAnimation} 20s linear infinite;
   }
 
   .main-body-title {
-    font-size: 25px;
+    font-size: 3vh;
     margin: 5vh 0;
   }
 
