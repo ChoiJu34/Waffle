@@ -269,6 +269,15 @@ const closeModal = () => {
     } else {
       setIsBirthdate(false);
     }
+    
+  // 현재 날짜와 입력된 날짜를 비교
+  const currentDate = new Date();
+  const inputDate = new Date(year, month - 1, day)
+
+  if (inputDate.getTime() < currentDate.getTime()) {
+    setIsBirthdate(false);
+    return;
+  }
     }, [formData.endDay]);
 
 const handleChange = (e) => {
