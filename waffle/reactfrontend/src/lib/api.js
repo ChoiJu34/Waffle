@@ -71,6 +71,9 @@ export const requestGetNode = async (url, params) => {
 
 export const requestPost = async (url, body, headers) => {
   try {
+    const headers = {
+      'Content-Type':'application/json;charset=UTF-8',
+    };
     const data = await axios.post(baseUrl + url, body, headers);
     return data;
   } catch (error) {
@@ -84,13 +87,13 @@ export const requestPostNode = async (url, body) => {
     const headers = {
       'Content-Type':'application/json;charset=UTF-8',
     };
-    const data = await axios.post(baseNodeUrl + url, body);
-    return data;
+    const response = await axios.post(baseNodeUrl + url, body, { headers });
+    return response.data;
   } catch (error) {
     console.log(error);
     throw error;
   }
-};
+}
 
 export const requestPut = async (url, body, headers) => {
   try {
