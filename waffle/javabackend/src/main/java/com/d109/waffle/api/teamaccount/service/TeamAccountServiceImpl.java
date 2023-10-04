@@ -595,10 +595,17 @@ public class TeamAccountServiceImpl implements TeamAccountService {
             inviteCodeRepository.save(fullInviteCodeEntity);
             throw new NoSuchElementException("만료된 코드입니다.");
         }else{ // 만료되지 않았을 때 구성원으로 추가함
+            TeamAccountEntity teamAccountEntity = fullInviteCodeEntity.getTeamAccount();
+
+            Boolean exist = teamMemberRepository.existsByUser_IdAndTeamAccount_Id(user.getId(), teamAccountEntity.getId());
+            if(exist){
+                throw new NoSuchElementException("이미 등록된 계좌입니다.");
+            }
+
             TeamMemberEntity teamMemberEntity;
             teamMemberEntity = TeamMemberEntity.builder()
                     .user(user)
-                    .teamAccount(fullInviteCodeEntity.getTeamAccount())
+                    .teamAccount(teamAccountEntity)
                     .master(false)
                     .nickname(user.getName())
                     .build();
