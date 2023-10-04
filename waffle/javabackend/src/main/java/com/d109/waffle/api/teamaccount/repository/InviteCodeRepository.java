@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface InviteCodeRepository extends JpaRepository<InviteCodeEntity, Integer> {
     Optional<InviteCodeEntity> findByTeamAccount_IdAndExpiredIsFalse(int teamAccountId);
     Optional<InviteCodeEntity> findByCodeAndExpiredIsFalse(String code);
+    List<InviteCodeEntity> findByTeamAccount_Id(int teamAccountId);
 }

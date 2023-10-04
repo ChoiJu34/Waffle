@@ -155,11 +155,20 @@ public class TeamAccountServiceImpl implements TeamAccountService {
             throw new NoSuchElementException();
         }
 
-        teamAccountRepository.deleteById(accountId);
+        // teamMember table에서 관련된 accountId 삭제
         List<TeamMemberEntity> teamMemberEntityList = teamMemberRepository.findByTeamAccount_Id(accountId);
         teamMemberEntityList.forEach(e -> {
             teamMemberRepository.deleteById(e.getId());
         });
+
+        // inviteCode table에서 관련된 accountId 삭제
+        List<InviteCodeEntity> inviteCodeEntityList = inviteCodeRepository.findByTeamAccount_Id(accountId);
+        for(InviteCodeEntity e : inviteCodeEntityList){
+            inviteCodeRepository.deleteById(e.getId());
+        }
+        
+        // 마지막으로 해당하는 teamAccount 계좌에서 삭제
+        teamAccountRepository.deleteById(accountId);
     }
 
     @Override
@@ -654,7 +663,6 @@ public class TeamAccountServiceImpl implements TeamAccountService {
             throw new NoSuchElementException("잘못된 계좌 정보입니다");
         }
 
-        System.out.println(1);
         // *재생성하는 경우 그 전에 있던 리스트중에서 expired가 안된거를 expired로 바꾼다.
         TeamAccountEntity teamAccountEntity = teamAccountEntityOptional.get();
         Optional<InviteCodeEntity> beforeInviteCodeEntityOptional = inviteCodeRepository.findByTeamAccount_IdAndExpiredIsFalse(teamAccountEntity.getId());
@@ -667,7 +675,6 @@ public class TeamAccountServiceImpl implements TeamAccountService {
              inviteCodeRepository.save(beforeInviteCodeEntity);
         }
 
-        System.out.println(2);
         // inviteCode 만료일 2분뒤로 설정해서 생성한 invtieCode 넣기
         InviteCodeEntity inviteCodeEntity = InviteCodeEntity.createInviteCode();
         inviteCodeEntity.setCode(inviteCode);
@@ -720,4 +727,46 @@ public class TeamAccountServiceImpl implements TeamAccountService {
         }
 
     }
+
+    @Override
+    public void updateGoals(String authorization, UpdateGoalDto updateGoalDto){
+        // *get UserEntity from AccessToken
+        Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
+        if(!userEntity.isPresent()){
+            throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+        }
+
+        UserEntity user = userEntity.get();
+
+        // groupList를 updateGoalDto로 부터 받아오기
+        // 여기에는 id랑 goal금액 데이터만 들어가있다.
+        List<Group> groupList = updateGoalDto.getGroup();
+        List<TeamMemberEntity> teamMemberEntityList = teamMemberRepository.findByTeamAccount_Id(updateGoalDto.getAccountId());
+
+        // 받아오는 정보에 오류가 없는지 확인
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+
+        for(Group g : groupList){
+            list1.add(g.getId());
+        }
+        for(TeamMemberEntity e : teamMemberEntityList){
+            list2.add(e.getId());
+        }
+
+        if(!list2.containsAll(list1)){
+            throw new NoSuchElementException("잘못된 정보입니다.");
+        }
+
+        for(TeamMemberEntity e : teamMemberEntityList){
+            for(Group g : groupList){
+                if(g.getId() == e.getId()){
+                    e.setGoal(g.getGoal());
+                    teamMemberRepository.save(e);
+                }
+            }
+        }
+
+    }
+
 }
