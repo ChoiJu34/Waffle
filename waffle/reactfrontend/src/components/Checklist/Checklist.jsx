@@ -178,151 +178,156 @@ const ChecklistList = () => {
   // html
   return (
     <ChecklistListWrapper>
-      <div class="head">
+      <div class="main">
+        <div class="head">
+          {editChecklist === false ? (
+            <div class="title">
+              <label style={{ width: "30px" }} />
+              {name}
+              <HiDotsVertical size="25" onClick={toggleList} />
+            </div>
+          ) : (
+            <div class="title">
+              <input
+                type="text"
+                class="editTitle"
+                defaultValue={editName}
+                onChange={(e) => {
+                  setEditName(e.target.value);
+                }}
+              />
+            </div>
+          )}
+          {isListVisible === true ? (
+            <div class="iconList">
+              <ChecklistIcon
+                isListVisible={isListVisible}
+                setListVisible={setListVisible}
+                setEditChecklist={setEditChecklist}
+                id={id}
+                clear={clear}
+              />
+            </div>
+          ) : null}
+          {editChecklist === false ? (
+            <div class="middleHead">
+              <div class="country">
+                {country}
+              </div>
+              <div class="date">
+                {start} ~ {end}
+              </div>
+            </div>
+          ) : (
+            <div class="editDate">
+              <input
+                type="text"
+                class="editTitle"
+                defaultValue={editStart}
+                style={{ width: "30vw" }}
+                onChange={(e) => {
+                  setEditStart(e.target.value);
+                }}
+              />
+              <input
+                type="text"
+                class="editTitle"
+                defaultValue={editEnd}
+                style={{ width: "30vw" }}
+                onChange={(e) => {
+                  setEditEnd(e.target.value);
+                }}
+              />
+            </div>
+          )}
+        </div>
+        <div class="body">
+          <div class="bodyColumn">
+            <div class="columnAll">전체</div>
+            <div class="columnPrice">비용</div>
+          </div>
+          {editChecklistData?.map((list) => (
+            <ChecklistItem
+              key={list.id}
+              checklistListId={id}
+              id={list.id}
+              price={list.price}
+              currency={list.currency}
+              content={list.content}
+              check={list.check}
+              editChecklist={editChecklist}
+              editChecklistData={editChecklistData}
+              setEditChecklistData={setEditChecklistData}
+            />
+          ))}
+        </div>
         {editChecklist === false ? (
-          <div class="title">
-            <label style={{ width: "30px" }} />
-            {name}
-            <HiDotsVertical size="25" onClick={toggleList} />
-          </div>
-        ) : (
-          <div class="title">
-            <input
-              type="text"
-              class="editTitle"
-              defaultValue={editName}
-              onChange={(e) => {
-                setEditName(e.target.value);
-              }}
-            />
-          </div>
-        )}
-        {isListVisible === true ? (
-          <div class="iconList">
-            <ChecklistIcon
-              isListVisible={isListVisible}
-              setListVisible={setListVisible}
-              setEditChecklist={setEditChecklist}
-              id={id}
-              clear={clear}
-            />
+          <div class="foot">
+            <div class="addInput">
+              <input
+                type="text"
+                value={addContent}
+                class="addContent"
+                onChange={(e) => {
+                  setAddContent(e.target.value);
+                }}
+              />
+              <input
+                type="text"
+                value={addPrice}
+                class="addPrice"
+                onChange={(e) => {
+                  setAddPrice(e.target.value);
+                }}
+              />
+              {/* <input
+                type="text"
+                value={addCurrency}
+                class="addCurrency"
+                onChange={(e) => {
+                  setAddCurrency(e.target.value);
+                }}
+              /> */}
+              <div class="selectBox">
+                <Select onChange={handleOptionChange} classNamePrefix="react-select" defaultValue={options[0]} isClearable={false} isSearchable={false} options={options} styles={customStyles} />
+              </div>
+            </div>
+            <div class="addButton">
+              <button class="addBtn" onClick={() => addChecklistItem()}>
+                +
+              </button>
+            </div>
           </div>
         ) : null}
-        {editChecklist === false ? (
-          <div class="middleHead">
-            <div class="country">
-              {country}
-            </div>
-            <div class="date">
-              {start} ~ {end}
-            </div>
-          </div>
-        ) : (
-          <div class="editDate">
-            <input
-              type="text"
-              class="editTitle"
-              defaultValue={editStart}
-              style={{ width: "30vw" }}
-              onChange={(e) => {
-                setEditStart(e.target.value);
-              }}
-            />
-            <input
-              type="text"
-              class="editTitle"
-              defaultValue={editEnd}
-              style={{ width: "30vw" }}
-              onChange={(e) => {
-                setEditEnd(e.target.value);
-              }}
-            />
+        {editChecklist === false ? null : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              position: "absolute",
+              left: "11vw",
+              position: "sticky",
+              bottom: "2vh",
+            }}
+          >
+            <button class="editBtn" onClick={() => editClear()}>
+              저장
+            </button>
+            <button class="editBtn" onClick={() => editCancle()}>
+              취소
+            </button>
           </div>
         )}
       </div>
-      <div class="body">
-        <div class="bodyColumn">
-          <div class="columnAll">전체</div>
-          <div class="columnPrice">비용</div>
-        </div>
-        {editChecklistData?.map((list) => (
-          <ChecklistItem
-            key={list.id}
-            checklistListId={id}
-            id={list.id}
-            price={list.price}
-            currency={list.currency}
-            content={list.content}
-            check={list.check}
-            editChecklist={editChecklist}
-            editChecklistData={editChecklistData}
-            setEditChecklistData={setEditChecklistData}
-          />
-        ))}
-      </div>
-      {editChecklist === false ? (
-        <div class="foot">
-          <div class="addInput">
-            <input
-              type="text"
-              value={addContent}
-              class="addContent"
-              onChange={(e) => {
-                setAddContent(e.target.value);
-              }}
-            />
-            <input
-              type="text"
-              value={addPrice}
-              class="addPrice"
-              onChange={(e) => {
-                setAddPrice(e.target.value);
-              }}
-            />
-            {/* <input
-              type="text"
-              value={addCurrency}
-              class="addCurrency"
-              onChange={(e) => {
-                setAddCurrency(e.target.value);
-              }}
-            /> */}
-            <div class="selectBox">
-              <Select onChange={handleOptionChange} classNamePrefix="react-select" defaultValue={options[0]} isClearable={false} isSearchable={false} options={options} styles={customStyles} />
-            </div>
-          </div>
-          <div class="addButton">
-            <button class="addBtn" onClick={() => addChecklistItem()}>
-              +
-            </button>
-          </div>
-        </div>
-      ) : null}
-      {editChecklist === false ? null : (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            position: "absolute",
-            left: "11vw",
-            position: "sticky",
-            bottom: "2vh",
-          }}
-        >
-          <button class="editBtn" onClick={() => editClear()}>
-            저장
-          </button>
-          <button class="editBtn" onClick={() => editCancle()}>
-            취소
-          </button>
-        </div>
-      )}
     </ChecklistListWrapper>
   );
 };
 
 // css
 const ChecklistListWrapper = styled.div`
+  .main{
+    padding: 2vw;
+  }
   .head {
     padding: 2vh;
     padding-bottom: 1vh;
