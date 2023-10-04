@@ -20,5 +20,6 @@ public class TeamAccountDetailDto {
     private long totalAdd;
     private long totalSub;
     private Boolean master;
+    private int me;
     private List<Group> group;
 }
