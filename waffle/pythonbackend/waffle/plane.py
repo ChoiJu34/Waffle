@@ -109,6 +109,8 @@ def interpark_crawling(info, chrome_options, service):
 
     url = f'https://fly.interpark.com/booking/mainFlights.do?tripType=OW&sdate0={int(startStart) + int(n)}&sdate1=&dep0={placeStart}&arr0={placeEnd}&dep1=&arr1=&adt={memberCnt}&chd=0&inf=0&val=&comp=Y&via=#list'
     xpath = '//ul[@id="schedule0List"]/li'
+    xpath2 = '//ul[@id="schedule0List"]/li/div/span/i/img'
+    # xpath2 = '//i[@class="air-search-icon"]/img'
     
     try:
         driver.get(url)
@@ -116,15 +118,18 @@ def interpark_crawling(info, chrome_options, service):
         wait = WebDriverWait(driver, 20)
         wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
         elements = driver.find_elements(By.XPATH, xpath)
+        elements1 = driver.find_elements(By.XPATH, xpath2)
     except:
         logger.info("인터파크 비행기 크롤링 에러")
         return
 
     # n일째의 i번째 비행기
-    for element in elements:
+    for element, element1 in zip(elements, elements1):
         try:
+            # logger.info(element1.get_attribute('innerHTML'))
+            companyImg = element1.get_attribute('src')
             pattern = r'공동운항.*?입니다.|Best|위탁수하물제공 '
-            origin = re.sub(pattern, "", element.get_attribute('textContent')).split('팝업닫기')
+            origin = re.sub(pattern, "", element.get_attribute('textContent')).replace("홍콩 익스프레스", "홍콩익스프레스").split('팝업닫기')
             planeTime = origin[0].replace(" 경유", "경유").split()[2].split(":")
             userTimeS = planPlane["startTime"].split(":")
             userTimeE = planPlane["endTime"].split(":")
@@ -135,7 +140,7 @@ def interpark_crawling(info, chrome_options, service):
             origin = cards[len(cards)-1]
             del cards[len(cards)-1]
             if len(cards)==0:
-                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin, int(origin.replace("위탁수하물제공 ", "")), p[5], p[6], '인터파크'))
+                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin, int(origin.replace("위탁수하물제공 ", "")), p[5], p[6], '인터파크', companyImg))
 
             pt = int(planeTime[0])
             uts = int(userTimeS[0])
@@ -148,16 +153,16 @@ def interpark_crawling(info, chrome_options, service):
                 discount = int(card_info[1].split('장애인')[0])
                 if n == 0:
                     if pt > uts:  # 비행기H>설정H
-                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
+                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg))
                     elif pt == uts and pt1 >= uts1:
-                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
+                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg))
                 elif n == (day - 1):
                     if pt < ute:
-                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
+                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg))
                     elif pt == ute and pt1 <= ute1:
-                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
+                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg))
                 else:
-                    multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크'))
+                    multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg))
                 # logger.info(f'{today}, {p[0]}, {p[1]}, {p[2]}, {p[3]}, {p[4]}, {card_info[0]}, {origin}, {discount}, {p[5]}, {p[6]}, 인터파크')
         except:
             logger.info("인터파크 항공권 데이터 정제화 중 에러 발생")
@@ -173,6 +178,7 @@ def trip_crawling(info, chrome_options, service):
     url = f'https://kr.trip.com/flights/{placeStart}-to-{placeEnd}/tickets-{placeStart}-{placeEnd}?dcity={placeStart}&acity={placeEnd}&ddate={int(startStart) + int(n)}&rdate=&flighttype=ow&class=y&lowpricesource=searchform&quantity={memberCnt}&searchboxarg=t&locale=ko-KR&curr=KRW'
     xpath1 = '//*[@id="main"]/div[2]/div[7]/div[1]/div[2]/div[4]/div[1]/div[1]/div/div[2]'# 낮은가격순 버튼
     xpath2 = '//*[@id="J_resultList"]/div/div/div[1]/div[2]'
+    xpath3 = '//*[@id="J_resultList"]/div/div/div[1]/div[2]/div[1]/div/div[1]/img'
 
     try:
         driver.get(url)
@@ -205,13 +211,15 @@ def trip_crawling(info, chrome_options, service):
         wait = WebDriverWait(driver, 20)
         wait.until(EC.presence_of_element_located((By.XPATH, xpath2)))
         elements = driver.find_elements(By.XPATH, xpath2)
+        elements2 = driver.find_elements(By.XPATH, xpath3)
     except:
         logger.info("트립닷컴 비행기 크롤링 에러")
         return
 
     # n일째의 i번째 비행기
-    for element in elements:
+    for element, element2 in zip(elements, elements2):
         try:
+            companyImg = element2.get_attribute('src')
             pattern = r'항공사|선택|원|,|저비용|공동운항편|\s\+\d+\n'
             origin = re.sub(pattern, "", element.get_attribute('innerText'))
             origin = re.sub(r'\n\n', '\n', origin)
@@ -229,16 +237,16 @@ def trip_crawling(info, chrome_options, service):
             ute1 = int(userTimeE[1])
             if n == 0:
                 if pt > uts:  # 비행기H>설정H
-                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴'))
+                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
                 elif pt == uts and pt1 >= uts1:
-                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴'))
+                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴',companyImg))
             elif n == (day - 1):
                 if pt < ute:
-                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴'))
+                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
                 elif pt == ute and pt1 <= ute1:
-                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴'))
+                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
             else:
-                multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴'))
+                multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
             # logger.info(f'{today}, {p[0]}, {p[2]}, {p[1]}, {p[6]}, {p[5]}, "", {p[7]}, {int(p[7])}, {p[4]}, {p[3]}, 트립닷컴')
         except:
             logger.info("트립닷컴 데이터 정제화 중 오류 발생")
