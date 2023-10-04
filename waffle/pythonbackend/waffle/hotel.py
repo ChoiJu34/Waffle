@@ -253,7 +253,7 @@ def agoda_crawling(info, chrome_options, service):
         except:
             logger.info("아고다 호텔 데이터 정제화 중 에러")
         try:
-            multi_list[k].put(Hotel(origin[0], start, end, '', origin[len(origin) - 1], int(origin[len(origin) - 1]), href_element, src_element, '아고다'))
+            multi_list[k].put(Hotel(origin[0].split('(')[0].split('@')[0], start, end, '', origin[len(origin) - 1], int(origin[len(origin) - 1]), href_element, src_element, '아고다'))
         except:
             logger.info(f"아고다 호텔 multi_list의 put 실패")
         # logger.info(f'{origin[0]}, {start}, {end}, , {origin[len(origin) - 1]}, {int(origin[len(origin) - 1])}, {href_element}, {src_element}, 아고다')
