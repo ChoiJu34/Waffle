@@ -17,4 +17,5 @@ public interface TeamAccountService {
     public List<TeamMemberEntity> getMemberList(String authorization, int accountId);
     public void deleteMember(String authorization, int groupId);
     public TeamAccountDetailDto updateNickname(String authorization, TeamMemberEntity teamMemberEntity);
+    public String createInviteCode(String authorization, int accountId);
 }

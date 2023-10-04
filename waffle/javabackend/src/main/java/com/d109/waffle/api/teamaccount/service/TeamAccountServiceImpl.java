@@ -1,8 +1,10 @@
 package com.d109.waffle.api.teamaccount.service;
 
 import com.d109.waffle.api.teamaccount.dto.*;
+import com.d109.waffle.api.teamaccount.entity.InviteCodeEntity;
 import com.d109.waffle.api.teamaccount.entity.TeamAccountEntity;
 import com.d109.waffle.api.teamaccount.entity.TeamMemberEntity;
+import com.d109.waffle.api.teamaccount.repository.InviteCodeRepository;
 import com.d109.waffle.api.teamaccount.repository.TeamAccountRepository;
 import com.d109.waffle.api.teamaccount.repository.TeamMemberRepository;
 import com.d109.waffle.api.user.entity.UserEntity;
@@ -29,6 +31,7 @@ public class TeamAccountServiceImpl implements TeamAccountService {
 
     private final TeamMemberRepository teamMemberRepository;
     private final TeamAccountRepository teamAccountRepository;
+    private final InviteCodeRepository inviteCodeRepository;
     private final JwtService jwtService;
 
     @Value("${request.chocobank.base_url}")
@@ -518,6 +521,43 @@ public class TeamAccountServiceImpl implements TeamAccountService {
                 .build();
 
         return teamAccountDetailDto;
+
+    }
+
+    @Override
+    public String createInviteCode(String authorization, int accountId){
+        // *inviteCode 생성하기
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 6;
+        Random random = new Random();
+
+        String inviteCode = random.ints(leftLimit,rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        
+        // *accountId를 가지고 계좌 정보 가지고 오기
+        Optional<TeamAccountEntity> teamAccountEntityOptional = teamAccountRepository.findById(accountId);
+
+        if(!teamAccountEntityOptional.isPresent()){
+            throw new NoSuchElementException("잘못된 계좌 정보입니다");
+        }
+
+        // *재생성하는 경우 그 전에 있던 리스트중에서 expired가 안된거를 expired로 바꾼다.
+        TeamAccountEntity teamAccountEntity = teamAccountEntityOptional.get();
+        InviteCodeEntity beforeInviteCodeEntity = inviteCodeRepository.findByTeamAccount_IdAndExpiredIsFalse(teamAccountEntity.getId());
+        beforeInviteCodeEntity.setExpired(true);
+
+
+        // inviteCode 만료일 2분뒤로 설정해서 생성한 invtieCode 넣기
+        InviteCodeEntity inviteCodeEntity = InviteCodeEntity.createInviteCode();
+        inviteCodeEntity.setCode(inviteCode);
+        inviteCodeEntity.setTeamAccount(teamAccountEntity);
+        inviteCodeRepository.save(inviteCodeEntity);
+
+        return inviteCode;
 
     }
 }
