@@ -133,7 +133,7 @@ def interpark_crawling(info, chrome_options, service):
             # element2 = driver.find_elements(By.XPATH, xpath2)
             # 추출한 데이터를 딕셔너리로 추가
             origin = re.sub(r'\+', "", element1.get_attribute('textContent'))
-            pattern = r'청구할인|추천|항공할인|05267.*?가|원~정상가|(\d+)성급.*?가|~로그인.*?확인|(\d+)(\d+)(\d+)(\d+)(\d+)판매가|%할인판매가'
+            pattern = r'청구할인|추천|항공할인|05267.*?가|원~정상가|(\d+)성급.*?가|~로그인.*?확인|(\d+)(\d+)(\d+)(\d+)(\d+)판매가|%할인판매가|@'
             origin = re.sub(pattern, " ", origin)
             origin = re.sub(r' +', " ", origin)
             if "객실마감" not in origin:
