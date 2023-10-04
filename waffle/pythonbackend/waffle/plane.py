@@ -43,28 +43,6 @@ def plane(data):
     for thread in threads:
         thread.join()
 
-    # 항공권 크롤링(계획별)
-    # with Pool(processes=5) as pool:
-    #     result.append(pool.starmap(multi_threading, [(k, plan, memberCnt) for k, plan in enumerate(data["planPlane"])]))
-
-    # for k in range(len(data["planPlane"])):
-    #     top = multi_list[k].get()
-    #     best = {
-    #         "planeDate" : top.date,
-    #         "company" : top.name,
-    #         "startPlace" : top.startPlace,
-    #         "startTime" : top.startTime,
-    #         "endPlace" : top.endPlace,
-    #         "endTime" : top.endTime,
-    #         "card" : top.card,
-    #         "originPrice" : top.originPrice,
-    #         "discountPrice" : top.discountPrice,
-    #         "layover" : top.layover,
-    #         "long" : top.long,
-    #         "site" : top.site
-    #     }
-    #     result.append(best)
-
     return multi_list
 
 def multi_threading(info):
@@ -109,27 +87,25 @@ def interpark_crawling(info, chrome_options, service):
 
     url = f'https://fly.interpark.com/booking/mainFlights.do?tripType=OW&sdate0={int(startStart) + int(n)}&sdate1=&dep0={placeStart}&arr0={placeEnd}&dep1=&arr1=&adt={memberCnt}&chd=0&inf=0&val=&comp=Y&via=#list'
     xpath = '//ul[@id="schedule0List"]/li'
-    xpath2 = '//ul[@id="schedule0List"]/li/div/span/i/img'
-    # xpath2 = '//i[@class="air-search-icon"]/img'
-    
+    xpath2 = '//*[@id="schedule0List"]/li/div[1]/span/i/img'
+
     try:
         driver.get(url)
         # time.sleep(0.17)
         wait = WebDriverWait(driver, 20)
         wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
         elements = driver.find_elements(By.XPATH, xpath)
-        elements1 = driver.find_elements(By.XPATH, xpath2)
+        elements2 = driver.find_elements(By.XPATH, xpath2)
     except:
         logger.info("인터파크 비행기 크롤링 에러")
         return
 
     # n일째의 i번째 비행기
-    for element, element1 in zip(elements, elements1):
+    for element, element2 in zip(elements, elements2):
         try:
-            # logger.info(element1.get_attribute('innerHTML'))
-            companyImg = element1.get_attribute('src')
+            companyImg = element2.get_attribute('src')
             pattern = r'공동운항.*?입니다.|Best|위탁수하물제공 '
-            origin = re.sub(pattern, "", element.get_attribute('textContent')).replace("홍콩 익스프레스", "홍콩익스프레스").split('팝업닫기')
+            origin = re.sub(pattern, "", element.get_attribute('textContent')).split('팝업닫기')
             planeTime = origin[0].replace(" 경유", "경유").split()[2].split(":")
             userTimeS = planPlane["startTime"].split(":")
             userTimeE = planPlane["endTime"].split(":")
@@ -239,7 +215,7 @@ def trip_crawling(info, chrome_options, service):
                 if pt > uts:  # 비행기H>설정H
                     multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
                 elif pt == uts and pt1 >= uts1:
-                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴',companyImg))
+                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
             elif n == (day - 1):
                 if pt < ute:
                     multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
