@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+clientCnt = 3
+
 
 # Application definition
 

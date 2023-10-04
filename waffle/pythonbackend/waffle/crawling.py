@@ -5,11 +5,13 @@ import queue
 import threading
 import requests
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework.decorators import api_view
 
 from waffle import hotel
 from waffle import plane
+
+from django.conf import settings
 
 # 로깅 설정
 logger = logging.getLogger(__name__)
@@ -85,10 +87,18 @@ airplane={
     "홍콩에어라인": 'https://openimage.interpark.com/tourpark/air/air_logo/m/HX.png',
 }
 
+waiting = {
+    "cnt": -1
+}
+
 hotel_or_plane_lock = threading.Lock()
 
 @api_view(['POST'])
 def crawling(request):
+    waiting = getattr(settings, 'clientCnt', 0)
+    logger.info(waiting)
+    setattr(settings, 'clientCnt', waiting + 1)
+
     data = json.loads(request.body)
     logger.info(f"request.body : {data}")
     authorization = request.META.get('HTTP_AUTHORIZATION')
@@ -105,7 +115,6 @@ def crawling(request):
         response = requests.get(spring_boot_api_url, headers=headers)
     except:
         logger.info(f"user-card/list 불러오지 못함")
-
 
     user_cards = []
     # 요청이 성공하면 JSON 응답을 파싱합니다.
@@ -125,8 +134,15 @@ def crawling(request):
 
     find_lowest_package(data, user_cards)
 
+    waiting = getattr(settings, 'clientCnt', 0)
+    logger.info(waiting)
+    setattr(settings, 'clientCnt', waiting - 1)
+
     json_response = json.dumps(result, ensure_ascii=False).encode('utf-8')
     return HttpResponse(json_response, content_type="application/json;charset=utf-8")
+    # else:
+    #     logger.info("여기가 아니라???????????????")
+    #     return JsonResponse(waiting)
 
 def main_thread(data):
     threads = []
