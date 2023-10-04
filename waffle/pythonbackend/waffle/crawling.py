@@ -5,11 +5,13 @@ import queue
 import threading
 import requests
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework.decorators import api_view
 
 from waffle import hotel
 from waffle import plane
+
+from django.conf import settings
 
 # 로깅 설정
 logger = logging.getLogger(__name__)
@@ -85,15 +87,39 @@ airplane={
     "홍콩에어라인": 'https://openimage.interpark.com/tourpark/air/air_logo/m/HX.png',
 }
 
+waiting = {
+    "cnt": -1
+}
+
 hotel_or_plane_lock = threading.Lock()
 
 @api_view(['POST'])
 def crawling(request):
+    waiting = getattr(settings, 'clientCnt', 0)
+    logger.info(waiting)
+    setattr(settings, 'clientCnt', waiting + 1)
+
     data = json.loads(request.body)
     logger.info(f"request.body : {data}")
     authorization = request.META.get('HTTP_AUTHORIZATION')
     logger.info(f"request.header : {authorization}")
     spring_boot_api_url = "https://j9d109.p.ssafy.io:8081/user-card/list"
+
+    # try:
+    #     get = data["getWaiting"]
+    #     logger.info(f'###################{get}')
+    #     if hotel_or_plane_lock.locked():
+    #         waiting["cnt"] = len(hotel_or_plane_lock._cond.waiters)
+    #         logger.info(f'**********************{waiting["cnt"]}')
+    #         return JsonResponse(waiting)
+    #     else:
+    #         waiting["cnt"] = 0
+    #         logger.info(waiting["cnt"])
+    #         logger.info("0000000000000000000000000")
+    #         return JsonResponse(waiting)
+    # except Exception as e:
+    #     error_message = str(e)
+    #     logger.error(f'????????????????????????Error: {error_message}')
 
     headers = {
         'Authorization': authorization,  # 예시: 인증 토큰을 설정하세요
@@ -105,7 +131,6 @@ def crawling(request):
         response = requests.get(spring_boot_api_url, headers=headers)
     except:
         logger.info(f"user-card/list 불러오지 못함")
-
 
     user_cards = []
     # 요청이 성공하면 JSON 응답을 파싱합니다.
@@ -123,13 +148,36 @@ def crawling(request):
     for thread in threads:
         thread.join()
 
+    # if waiting["cnt"] < 0:
+    logger.info("여기로 들어옴?????????????")
     find_lowest_package(data, user_cards)
+
+
+    waiting = getattr(settings, 'clientCnt', 0)
+    logger.info(waiting)
+    setattr(settings, 'clientCnt', waiting - 1)
 
     json_response = json.dumps(result, ensure_ascii=False).encode('utf-8')
     return HttpResponse(json_response, content_type="application/json;charset=utf-8")
+    # else:
+    #     logger.info("여기가 아니라???????????????")
+    #     return JsonResponse(waiting)
 
 def main_thread(data):
     threads = []
+    # try:
+    #     get = data["getWaiting"]
+    #     logger.info(f'###################{get}')
+    #     if hotel_or_plane_lock.locked():
+    #         waiting["cnt"] = len(hotel_or_plane_lock._cond.waiters)
+    #         logger.info(f'**********************{waiting["cnt"]}')
+    #     else:
+    #         waiting["cnt"] = 0
+    #         logger.info(waiting["cnt"])
+    #         logger.info("0000000000000000000000000")
+    # except Exception as e:
+    #     error_message = str(e)
+    #     logger.error(f'????????????????????????Error: {error_message}')
 
     hotel_or_plane_lock.acquire()
     try:
