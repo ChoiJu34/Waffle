@@ -46,20 +46,14 @@ def hotel(data):
     # with Pool(processes=5) as pool:
     #     result.append(pool.starmap(multi_threading, [(k, plan, memberCnt) for k, plan in enumerate(data["planPlane"])]))
 
-    # for k in range(len(data["planHotel"])):
+    # for k in range(len(data["planPlane"])):
     #     top = multi_list[k].get()
     #     best = {
-    #         "hotelName" : top.name,
-    #         "start" : top.start,
-    #         "end" : top.end,
-    #         "card" : top.card,
-    #         "originPrice" : top.originPrice,
-    #         "discountPrice" : top.discountPrice,
-    #         "url" : top.url,
-    #         "img" : top.img,
-    #         "site" : top.site
+    #         "planeDate" : top.img
     #     }
     #     result.append(best)
+    #
+    # logger.info(result)
 
     return multi_list
 
@@ -88,8 +82,8 @@ def crawling_multi_thread(info):
     chrome_options.add_argument("disable-gpu")
 
     if i == 0:
-        interpark_crawling(info, chrome_options, service)
-    elif i == 1:
+    #     interpark_crawling(info, chrome_options, service)
+    # elif i == 1:
         agoda_crawling(info, chrome_options, service)
 
 
@@ -174,8 +168,10 @@ def agoda_crawling(info, chrome_options, service):
     xpath3 = '//*[@id="autocomplete-box"]/div'
     xpath4 = '//*[@id="contentContainer"]/div[4]/ol/li'
     xpath5 = '//*[@id="sort-bar"]/div/a[2]'
-    xpath6 = '//*[@id="contentContainer"]/div[3]/ol/li/div/a'
-    xpath7 = '//*[@id="contentContainer"]/div[3]/ol/li/div/a/div/div[1]/div/div[3]/img'
+    xpath6 = '//*[@id="contentContainer"]/div[4]/ol/li/div/a'
+    xpath7 = '//*[@id="contentContainer"]/div[4]/ol/li/div/a/div/div[1]/div/div[3]/img'
+
+    # xpath  = '//*[@id="contentContainer"]/div[4]/ol/li/div/a/div/div[1]/div/div[3]/img'
 
     driver = webdriver.Chrome(service=service, options=chrome_options)
     
@@ -217,23 +213,25 @@ def agoda_crawling(info, chrome_options, service):
         time.sleep(0.7)
         wait = WebDriverWait(driver, 20)
         wait.until(EC.presence_of_element_located((By.XPATH, xpath4)))
-        elements = driver.find_elements(By.XPATH, xpath4)
+        elements1 = driver.find_elements(By.XPATH, xpath4)
+        elements2 = driver.find_elements(By.XPATH, xpath6)
+        elements3 = driver.find_elements(By.XPATH, xpath7)
     except:
         logger.info('아고다 호텔 크롤링 에러')
         return
 
-    for element in elements:
-        try:
-            href_element = element.find_element(By.XPATH, xpath6)
-        except Exception:
-            href_element = "https://www.agoda.com"
-        try:
-            src_element = element.find_element(By.XPATH, xpath7)
-        except Exception:
-            src_element = '이미지를 가지고 오지 못했습니다.'
+    for element1, element2, element3 in zip(elements1, elements2, elements3):
+        # try:
+        href_element = element2.get_attribute('href')
+        # except Exception:
+        #     href_element = "https://www.agoda.com"
+        # try:
+        src_element = element3.get_attribute('src')
+        # except Exception:
+        #     src_element = '이미지를 가지고 오지 못했습니다.'
 
         try:
-            origin = re.sub(r'\n예약 무료 취소|,|₩\s|페이지.*?\n', '', element.get_attribute('innerText'))
+            origin = re.sub(r'\n예약 무료 취소|,|₩\s|페이지.*?\n', '', element1.get_attribute('innerText'))
 
             if '모두 보기' in origin:
                 origin = origin.split('모두 보기\n')[1]
