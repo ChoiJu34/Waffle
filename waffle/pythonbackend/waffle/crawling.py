@@ -105,22 +105,6 @@ def crawling(request):
     logger.info(f"request.header : {authorization}")
     spring_boot_api_url = "https://j9d109.p.ssafy.io:8081/user-card/list"
 
-    # try:
-    #     get = data["getWaiting"]
-    #     logger.info(f'###################{get}')
-    #     if hotel_or_plane_lock.locked():
-    #         waiting["cnt"] = len(hotel_or_plane_lock._cond.waiters)
-    #         logger.info(f'**********************{waiting["cnt"]}')
-    #         return JsonResponse(waiting)
-    #     else:
-    #         waiting["cnt"] = 0
-    #         logger.info(waiting["cnt"])
-    #         logger.info("0000000000000000000000000")
-    #         return JsonResponse(waiting)
-    # except Exception as e:
-    #     error_message = str(e)
-    #     logger.error(f'????????????????????????Error: {error_message}')
-
     headers = {
         'Authorization': authorization,  # 예시: 인증 토큰을 설정하세요
         'Content-Type': 'application/json',  # 예시: Content-Type을 설정하세요
@@ -148,10 +132,7 @@ def crawling(request):
     for thread in threads:
         thread.join()
 
-    # if waiting["cnt"] < 0:
-    logger.info("여기로 들어옴?????????????")
     find_lowest_package(data, user_cards)
-
 
     waiting = getattr(settings, 'clientCnt', 0)
     logger.info(waiting)
@@ -165,19 +146,6 @@ def crawling(request):
 
 def main_thread(data):
     threads = []
-    # try:
-    #     get = data["getWaiting"]
-    #     logger.info(f'###################{get}')
-    #     if hotel_or_plane_lock.locked():
-    #         waiting["cnt"] = len(hotel_or_plane_lock._cond.waiters)
-    #         logger.info(f'**********************{waiting["cnt"]}')
-    #     else:
-    #         waiting["cnt"] = 0
-    #         logger.info(waiting["cnt"])
-    #         logger.info("0000000000000000000000000")
-    # except Exception as e:
-    #     error_message = str(e)
-    #     logger.error(f'????????????????????????Error: {error_message}')
 
     hotel_or_plane_lock.acquire()
     try:
