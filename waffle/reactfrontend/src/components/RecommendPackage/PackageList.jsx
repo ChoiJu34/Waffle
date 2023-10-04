@@ -76,6 +76,11 @@ const PackageList = () => {
         return stack.join('');
       }
 
+      function formatDate(input) {
+        const str = input.toString();
+        return `${str.substring(0, 4)}-${str.substring(4, 6)}-${str.substring(6, 8)}`;
+    }
+
     useEffect(() => {
       setToken()
       console.log(data)
@@ -85,14 +90,14 @@ const PackageList = () => {
   
     return (
         <Container>
-                <StyledNav className="Navecontainer" variant="tabs" defaultActiveKey={0}>
-                    <Nav.Item className="Nav-Item">
-                        <Nav.Link eventKey="0" onClick={()=>setClickedTab(0)}>최저가 패키지</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="1"onClick={()=>setClickedTab(1)}>내카드 패키지</Nav.Link>
-                    </Nav.Item>
-                </StyledNav>
+            <StyledNav className="Navecontainer" variant="tabs" defaultActiveKey={0}>
+                <Nav.Item className="Nav-Item">
+                    <Nav.Link eventKey="0" onClick={()=>setClickedTab(0)}>최저가 패키지</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="1"onClick={()=>setClickedTab(1)}>내카드 패키지</Nav.Link>
+                </Nav.Item>
+            </StyledNav>
             {(clickedTab === 0 ? (
                 <>
             {data && data.map(({card,hotel,plane}) => (
@@ -107,7 +112,7 @@ const PackageList = () => {
                     <Smallairbox>
                         <Aircompanybox>
                             <div className="site-box">
-                            <div className="plane-date">{planeDate}</div>
+                            <div className="plane-date">{formatDate(planeDate)}</div>
                             {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
 
                             </div>
@@ -133,7 +138,7 @@ const PackageList = () => {
                             </div>
                             <div className="price-box">
                                 
-                                {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
+                               {/* {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))} */}
                                 <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
                             </div>
                         </Airplacebox>
@@ -145,13 +150,15 @@ const PackageList = () => {
                     <div className="airfont">숙박</div>
                     {hotel && hotel.map(({hotelName,discountPrice,end,img,originPrice,site,start,url }) => (
                     <Hotelcontent>
-                        <div>{start}</div>
+                        
                          {( img === "이미지를 가지고 오지 못했습니다.")? (<Hotelimg src={"/cardlogo/hotel.png"} alt="img" />):(<Hotelimg src={`${img}`} alt="img" />)}
                         <div>{solution(hotelName)}</div>
+                        <div>{start}</div>
                         {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/agoda.png"} alt="logo" />))}
-                        {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
-                        <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
-                        
+                        <div className="price-box">
+                            {/* {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))} */}
+                            <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
+                        </div>
                     </Hotelcontent>
                     ))}
                 </Hotelbox>
@@ -160,68 +167,66 @@ const PackageList = () => {
             {data2 && data2.map(({hotel,plane,card}) => (
             <Content>
                 <Favoritebox>
-                <p>{card}</p>
-                <AiOutlineStar size={30} onClick={()=> PostFavorite()}>즐겨찾기</AiOutlineStar>
+                    <p>{card}</p>
+                    <AiOutlineStar size={30} onClick={()=> PostFavorite()}>즐겨찾기</AiOutlineStar>
                 </Favoritebox>
                 <Airbox>
                     <div className="airfont">항공권</div>                
                     {plane && plane.map(({company, discountPrice,during, endPlace,endTime,layover,originPrice,planeDate,site,startPlace,startTime,companyImg }) => (
-                    
                     <Smallairbox>
-                        <Aircompanybox>
-                            <div className="site-box">
-                            <div className="plane-date">{planeDate}</div>
-                            {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
+                    <Aircompanybox>
+                        <div className="site-box">
+                        <div className="plane-date">{formatDate(planeDate)}</div>
+                        {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
 
+                        </div>
+                        <img src={`${companyImg}`} alt="" />
+                        <div className="company-box">{company}</div>
+                    </Aircompanybox>
+                    
+                    <Airplacebox>
+                        <div className="layover">
+                            <div>{layover}</div>
+                            <div>{during}</div>
+                        </div>
+                        <div className="air-place">
+                            <div>
+                                <div>{startPlace.substr(0,3)}</div>
+                                <div>{startTime}</div>
                             </div>
-                            <img src={`${companyImg}`} alt="" />
-                            <div className="company-box">{company}</div>
-                        </Aircompanybox>
-                        
-                        <Airplacebox>
-                            <div className="layover">
-                                <div>{layover}</div>
-                                <div>{during}</div>
+                            <IoAirplaneSharp className="air-icon"></IoAirplaneSharp> 
+                            <div>
+                                <div>{endPlace.substr(0,3)}</div>
+                                <div>{endTime}</div>
                             </div>
-                            <div className="air-place">
-                                <div>
-                                    <div>{startPlace.substr(0,3)}</div>
-                                    <div>{startTime}</div>
-                                </div>
-                                <IoAirplaneSharp className="air-icon"></IoAirplaneSharp> 
-                                <div>
-                                    <div>{endPlace.substr(0,3)}</div>
-                                    <div>{endTime}</div>
-                                </div>
-                            </div>
-                            <div className="price-box">
-                                {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
-                                <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
-                            </div>
-                        </Airplacebox>
-                        
-                    </Smallairbox>
-                    ))}
-                </Airbox>
-                <Hotelbox>
-                    <div className="airfont">숙박</div>
-                    {hotel && hotel.map(({hotelName,discountPrice,end,img,originPrice,site,start,url }) => (
-                    <Hotelcontent>
-                        {( img === "이미지를 가지고 오지 못했습니다.")? (<Hotelimg src={"/cardlogo/hotel.png"} alt="img" />):(<Hotelimg src={`${img}`} alt="img" />)}
-                        <div>{solution(hotelName)}</div>
-                        <div>
-                            {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/agoda.png"} alt="logo" />))}
-                            <div>{start}</div>
                         </div>
                         <div className="price-box">
+                            
                             {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
                             <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
                         </div>
-                    </Hotelcontent>
-                    ))}
-                </Hotelbox>
-            </Content>))}
-           </>))}
+                    </Airplacebox>
+                    
+                </Smallairbox>
+                ))}
+            </Airbox>
+            <Hotelbox>
+                <div className="airfont">숙박</div>
+                {hotel && hotel.map(({hotelName,discountPrice,end,img,originPrice,site,start,url }) => (
+                <Hotelcontent>
+                     {( img === 0)? (<Hotelimg src={"/cardlogo/hotel.png"} alt="img" />):(<Hotelimg src={`${img}`} alt="img" />)}
+                    <div>{solution(hotelName)}</div>
+                    <div>{start}</div>
+                    {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/agoda.png"} alt="logo" />))}
+                    <div className="price-box">
+                        {/* {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))} */}
+                        <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
+                    </div>
+                </Hotelcontent>
+                ))}
+            </Hotelbox>
+        </Content>))}
+       </>))}
       </Container>
     )}
 export default PackageList
@@ -277,7 +282,7 @@ const Container = styled.div`
   margin-top: 30px;
   margin-bottom: 20px;
   height: calc(var(--vh, 1vh) * 80);
-  width: 97vw;
+  width: 100%;
 
   .Navecontainer{
     display: flex;
@@ -301,11 +306,11 @@ const Content = styled.div`
   height: 100%;
 `
 const Smallairbox = styled.div`
-    width: 33vh;
-    height: 200px;
+    width: 90%;
+    height: 60%;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
-    margin-bottom: 30px;
+    margin-bottom: 2vh;
     box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: row;
@@ -319,7 +324,7 @@ const Airplacebox = styled.div`
     justify-content: space-around;
     justify-items: end;
     align-items: center;
-    margin-top: 2.5vh;
+    margin-top: 1.4vh;
 
     .layover{
         display: flex;
@@ -327,7 +332,6 @@ const Airplacebox = styled.div`
         justify-content: space-between;
         align-items: center;
         width: 80%;
-        height: calc(2);
     }
     .air-place{
         display: flex;
@@ -335,7 +339,6 @@ const Airplacebox = styled.div`
         justify-content: space-between;
         align-items: center;
         width: 90%;
-        height: calc(6);
     }
     .air-icon{
         color: #9AC5F4;
@@ -361,10 +364,12 @@ const Aircompanybox = styled.div`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    justify-items: center;
     width: 90%;
+    height: 100%;
 
     .company-box{
-        height: 80px;
+        height: 5vh;
         display: flex;
         justify-self: center;
         align-self: center;
@@ -372,34 +377,42 @@ const Aircompanybox = styled.div`
 
     }
     .site-box{
-        height: 30px;
-        padding: 2px;
+        width: 100%;
+        height: 2vh;
+        margin-top: 0.3vh;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
     
 }
     .plane-date{
         height: 30px;
         padding: 2px;
-        display: flex;
-        justify-self: center;
-        align-items: center;
+        position: relative;
+
+        left: 9vh;
+        background-color: white;
+
+
     
 }
     & > img {
+     width: 4vh;
      margin-top: 2vh;
-     margin-bottom: 0vh;
+     margin-bottom: 1vh;
  }
  
 `
 const Companylogo = styled.img`
     width: 9vh;
+    max-height: 3vh;
 
 `
 
 const Airbox = styled.div`
     width: 85%;
-    height: 30%;
+    height: 40%;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
     margin-bottom: 30px;
@@ -415,15 +428,14 @@ const Airbox = styled.div`
         justify-content: start;
         align-items: start;
         width: 85%;
-        margin: 1vh;
-        margin-top: 2cqh;
-
+        height: 1vh;
+        font-size: 2vh;
     }
 `
 
 const Hotelbox = styled.div`
     width: 85%;
-    height: 50%;
+    height: 60%;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
     box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
@@ -433,7 +445,6 @@ const Hotelbox = styled.div`
     align-items: center;
     margin-bottom: 10vh;
 
-   
 `
 
 const Hotelcontent = styled.div`
@@ -451,5 +462,6 @@ const Hotelcontent = styled.div`
 `
 const Hotelimg = styled.img`
     width: 100%;
-    height: 50%;
+    max-height: 19vh;
+    margin-bottom:1vh;
 `

@@ -22,11 +22,15 @@ import TeamAccountAddCode from "../components/TeamAccount/TeamAccountAddCode";
 import TeamAccountAddNew from "../components/TeamAccount/TeamAccountAddNew";
 import TeamAccountUpdate from "../components/TeamAccount/TeamAccountUpdate";
 import TeamAccountUpdateIndividual from "../components/TeamAccount/TeamAccountUpdateIndividual";
+import TeamAccountOut from "../components/TeamAccount/TeamAccountOut"
+import TeamAccountDelete from "../components/TeamAccount/TeamAccountDelete"
 import ChecklistList from "../components/Checklist/ChecklistMain";
-import Checklist from '../components/Checklist/Checklist'
+import Checklist from "../components/Checklist/Checklist";
 import CardInfo from "../components/CardInfo/CardInfo";
-import Favorite from "../components/MyPage/Favorite"
-import UpdateUserInfo from "../components/MyPage/UpdateUserInfo"
+import Favorite from "../components/MyPage/Favorite";
+import UpdateUserInfo from "../components/MyPage/UpdateUserInfo";
+import MyCard from "../components/MyCard/MyCard";
+import CardRegister from "../components/MyCard/CardRegister";
 import PackageList from "../components/RecommendPackage/PackageList";
 
 const RootNavigation = () => {
@@ -70,6 +74,8 @@ const RootNavigation = () => {
               </ProtectedRoute>
             }
           />
+          {/* "detail"은 나중에 각 모임통장의 id로 바꿀 예정 */}
+          <Route path="/teamaccount/detail/:id" element={<TeamAccountDetail />} />
           <Route
             path="/package/list"
             element={
@@ -84,16 +90,20 @@ const RootNavigation = () => {
             element={<TeamAccountAddCode />}
           />
           <Route path="/teamaccount/add/new" element={<TeamAccountAddNew />} />
-          <Route path="/teamaccount/update" element={<TeamAccountUpdate />} />
+          <Route path="/teamaccount/update/:id" element={<TeamAccountUpdate />} />
           <Route
             path="/teamaccount/update/individual"
             element={<TeamAccountUpdateIndividual />}
           />
-          <Route path="/mypage/checklist" element={<ChecklistList/>} />
-          <Route path="/mypage/checklist/:id" element={<Checklist/>} />
+          <Route path="/mypage/checklist" element={<ChecklistList />} />
+          <Route path="/mypage/checklist/:id" element={<Checklist />} />
           <Route path="/cardinfo/:cardId" element={<CardInfo />} />
           <Route path="/mypage/favorite" element={<Favorite />} />
           <Route path="/mypage/update-userinfo" element={<UpdateUserInfo />} />
+          <Route path="/teamaccount/out" element={<TeamAccountOut />} />
+          <Route path="/teamaccount/delete" element={<TeamAccountDelete />} />
+          <Route path="/mypage/mycard" element={<MyCard />} />
+          <Route path="/mycard/card-register" element={<CardRegister />} />
         </Route>
       </Routes>
     </BrowserRouter>
