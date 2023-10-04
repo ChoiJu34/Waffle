@@ -77,16 +77,16 @@ const ChecklistListWrapper = styled.div`
         width: 75vw;
         height: 24vh;
         margin-bottom: 4vh;
-        background-color: #000000d0;
+        background-color: #000000e0;
     }
     .completeImg{
-        margin-left: 42vw;
-        margin-top: 15vh;
+        margin-left: 45vw;
+        margin-top: 9vh;
         width: 30vw;
         object-fit: cover;
-        -ms-transform: rotate(-20deg); // IE 9 이상에서 사용
-        -webkit-transform: rotate(-20deg); // 사파리, 크롬, 오페라 브라우저 사용
-        transform: rotate(-20deg);
+        -ms-transform: rotate(1deg); // IE 9 이상에서 사용
+        -webkit-transform: rotate(1deg); // 사파리, 크롬, 오페라 브라우저 사용
+        transform: rotate(1deg);
     }
 `
 

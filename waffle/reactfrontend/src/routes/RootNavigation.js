@@ -25,10 +25,12 @@ import TeamAccountUpdateIndividual from "../components/TeamAccount/TeamAccountUp
 import TeamAccountOut from "../components/TeamAccount/TeamAccountOut"
 import TeamAccountDelete from "../components/TeamAccount/TeamAccountDelete"
 import ChecklistList from "../components/Checklist/ChecklistMain";
-import Checklist from '../components/Checklist/Checklist'
+import Checklist from "../components/Checklist/Checklist";
 import CardInfo from "../components/CardInfo/CardInfo";
-import Favorite from "../components/MyPage/Favorite"
-import UpdateUserInfo from "../components/MyPage/UpdateUserInfo"
+import Favorite from "../components/MyPage/Favorite";
+import UpdateUserInfo from "../components/MyPage/UpdateUserInfo";
+import MyCard from "../components/MyCard/MyCard";
+import CardRegister from "../components/MyCard/CardRegister";
 import PackageList from "../components/RecommendPackage/PackageList";
 
 const RootNavigation = () => {
@@ -93,13 +95,15 @@ const RootNavigation = () => {
             path="/teamaccount/update/individual"
             element={<TeamAccountUpdateIndividual />}
           />
-          <Route path="/mypage/checklist" element={<ChecklistList/>} />
-          <Route path="/mypage/checklist/:id" element={<Checklist/>} />
+          <Route path="/mypage/checklist" element={<ChecklistList />} />
+          <Route path="/mypage/checklist/:id" element={<Checklist />} />
           <Route path="/cardinfo/:cardId" element={<CardInfo />} />
           <Route path="/mypage/favorite" element={<Favorite />} />
           <Route path="/mypage/update-userinfo" element={<UpdateUserInfo />} />
           <Route path="/teamaccount/out" element={<TeamAccountOut />} />
           <Route path="/teamaccount/delete" element={<TeamAccountDelete />} />
+          <Route path="/mypage/mycard" element={<MyCard />} />
+          <Route path="/mycard/card-register" element={<CardRegister />} />
         </Route>
       </Routes>
     </BrowserRouter>
