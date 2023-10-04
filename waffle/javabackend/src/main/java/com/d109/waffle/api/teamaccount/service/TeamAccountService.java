@@ -1,9 +1,6 @@
 package com.d109.waffle.api.teamaccount.service;
 
-import com.d109.waffle.api.teamaccount.dto.Group;
-import com.d109.waffle.api.teamaccount.dto.TeamAccountDetailDto;
-import com.d109.waffle.api.teamaccount.dto.TeamAccountDto;
-import com.d109.waffle.api.teamaccount.dto.TeamAccountListDto;
+import com.d109.waffle.api.teamaccount.dto.*;
 import com.d109.waffle.api.teamaccount.entity.InviteCodeEntity;
 import com.d109.waffle.api.teamaccount.entity.TeamAccountEntity;
 import com.d109.waffle.api.teamaccount.entity.TeamMemberEntity;
@@ -22,4 +19,5 @@ public interface TeamAccountService {
     public TeamAccountDetailDto updateNickname(String authorization, TeamMemberEntity teamMemberEntity);
     public String createInviteCode(String authorization, int accountId);
     public void addInvite(String authorization, InviteCodeEntity inviteCodeEntity);
+    public void updateGoals(String authorization, UpdateGoalDto updateGoalDto);
 }
