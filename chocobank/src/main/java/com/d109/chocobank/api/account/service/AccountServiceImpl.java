@@ -86,7 +86,7 @@ public class AccountServiceImpl implements AccountService {
 		AccountHistoryEntity sendHistory = AccountHistoryEntity.builder()
 			.accountEntity(senderAccountEntity)
 			.balance(senderAccountEntity.sendTransfer(money))
-			.money(money)
+			.money(0-money)
 			.senderName(Optional.ofNullable(senderName).orElse(senderAccountEntity.getUserEntity().getName()))
 			.receiverName(Optional.ofNullable(receiverName).orElse(receiverAccountEntity.getUserEntity().getName()))
 			.senderAccountNumber(senderAccountNumber)
