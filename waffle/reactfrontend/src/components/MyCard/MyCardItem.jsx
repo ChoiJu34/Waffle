@@ -42,7 +42,7 @@ const MyCardItem = ({ data, setModalOpen, setDeleteCardId }) => {
       setBackgroundColor("#8EE696");
     } else if (data.company === "현대카드") {
       setLogoLink("/cardlogo/HDlogo.png");
-      setBackgroundColor("#AADAEF");
+      setBackgroundColor("#C798CE");
     }
   }, []);
 
