@@ -17,7 +17,8 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { IoAirplaneSharp } from "react-icons/io5";
 import { AiOutlineClose } from "react-icons/ai";
 import { AiFillCalendar } from "react-icons/ai";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import SignupCompleteWaffle from "../../assets/SignupCompleteWaffle.png";
 
 
 
@@ -279,11 +280,13 @@ const PackageMain = () => {
 
   return (
       <Container>{loading ? (
-        <LoadingContainer>
-          <LoadingSpinner />
-            <LoadingText>로딩 중...
-          </LoadingText>
-        </LoadingContainer>
+          <LoadingOverlay>
+            <LoadingImage
+              className="animate__animated animate__bounce animate__slow animate__infinite"
+              src={SignupCompleteWaffle}
+              alt="LoadingWaffle"
+            />
+          </LoadingOverlay>
       ) : (
         <>
         <Peoplebox>
@@ -424,38 +427,23 @@ const PackageMain = () => {
 
 export default PackageMain;
 
-const LoadingContainer = styled.div`
+const LoadingOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(var(--vh, 1vh) * 80);
-`;
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 `;
 
-
-
-const LoadingSpinner = styled.div`
-  border: 4px solid rgba(195, 195, 195, 0.3);
-  border-top: 4px solid #9AC5F4;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: ${spin} 2s linear infinite;
+const LoadingImage = styled.img`
+  width: 20vh;
+  height: 20vh;
 `;
-
-const LoadingText = styled.div`
-  margin-top: 20px;
-  font-size: 18px;
-`;
-
 
 
 const Text = styled.div`
