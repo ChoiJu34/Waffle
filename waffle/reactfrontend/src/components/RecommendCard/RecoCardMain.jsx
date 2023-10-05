@@ -11,13 +11,14 @@ import tossBankLogo from '../../assets/tossbanklogo.png'
 import samsungLogo from '../../assets/samsungLogo.png'
 import lotteCardLogo from '../../assets/lotteCardLogo.png'
 import nonghyuplogo from '../../assets/nonghyuplogo.png'
+import { right } from '@popperjs/core';
 
 
 const RecoCardMain = () => {
   const navigate = useNavigate();
   const [creaditData, setCreaditData] = useState();;
   const [dutyFree, setDutyFree] = useState();
-  const [annualFee, setannualFee] = useState();
+  const [annualFee, setannualFee] = useState(300000);
   const [company, setcompany] = useState([]);
   const [use, setuse] = useState();
   const [checkCard, setCheckcard] = useState(0);
@@ -546,7 +547,7 @@ const Lobox = styled.div`
   width: 100%;
 
   & > span {
-    width: 2vw;
+    width: 11vw;
     height: 3vh;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
@@ -642,15 +643,18 @@ const Frombox = styled.div`
 const From = styled.div`
 `
 const Shopbox = styled.div`
-  width: 80%;
+  width: 85%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   margin: 1.5vh;
+
+  & > div{
+  }
 `
 const Usebox = styled.div`
- width: 80%;
+  width: 85%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -697,7 +701,7 @@ const Selecnation = styled.div`
   & > img {
     width: 12vh;
     height: 6vh;
-    margin-left: 110px;
+    margin-left: 23vw;
   }
 `
 const Cardsheetbox = styled.div`
