@@ -110,8 +110,7 @@ const MypageHeaderWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    width: 101vw;
-    margin-left: -1.9vw;
+    width: 100vw;
   }
 
   .mypage-header-tab {

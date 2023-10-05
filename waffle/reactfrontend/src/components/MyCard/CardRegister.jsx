@@ -235,6 +235,9 @@ const CardRegisterWrapper = styled.div`
   margin-top: 10vw;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  min-width: 100vw;
+  position: fixed;
 
   .mycard-number {
     margin: 8vw 14vw;
@@ -243,22 +246,21 @@ const CardRegisterWrapper = styled.div`
 
   .mycard-number > input {
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .mycard-number > input:focus {
@@ -269,9 +271,9 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number > label {
-    top: 66vw;
+    top: 43vw;
     position: absolute;
-    left: 18vw;
+    left: 15vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
@@ -289,16 +291,16 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number.focus > label {
-    top: 61vw;
-    left: 16vw;
+    top: 38vw;
+    left: 13vw;
     font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .mycard-number.complete > label {
-    top: 61vw;
-    left: 16vw;
+    top: 38vw;
+    left: 13vw;
     font-size: 3vw;
     line-height: 1.33;
   }
@@ -310,22 +312,21 @@ const CardRegisterWrapper = styled.div`
 
   .mycard-date > input {
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .mycard-date > input:focus {
@@ -336,9 +337,9 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date > label {
-    top: 85vw;
+    top: 61vw;
     position: absolute;
-    left: 18vw;
+    left: 15vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
@@ -356,16 +357,16 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date.focus > label {
-    top: 80vw;
-    left: 16vw;
+    top: 56vw;
+    left: 13vw;
     font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .mycard-date.complete > label {
-    top: 80vw;
-    left: 16vw;
+    top: 56vw;
+    left: 13vw;
     font-size: 3vw;
     line-height: 1.33;
   }
@@ -377,22 +378,21 @@ const CardRegisterWrapper = styled.div`
 
   .mycard-nickname > input {
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .mycard-nickname > input:focus {
@@ -403,9 +403,9 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname > label {
-    top: 103vw;
+    top: 79vw;
     position: absolute;
-    left: 18vw;
+    left: 15vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
@@ -423,16 +423,16 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname.focus > label {
-    top: 98vw;
-    left: 16vw;
+    top: 74vw;
+    left: 13vw;
     font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .mycard-nickname.complete > label {
-    top: 98vw;
-    left: 16vw;
+    top: 74vw;
+    left: 13vw;
     font-size: 3vw;
     line-height: 1.33;
   }
@@ -442,7 +442,7 @@ const RegisterHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 40px;
+  margin: 0 10vw;
   font-size: 20px;
 `;
 
