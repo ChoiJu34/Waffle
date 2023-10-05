@@ -426,7 +426,7 @@ const ChecklistListWrapper = styled.div`
     border-radius: 20px;
     padding: 2vh;
     position: sticky;
-    bottom: 2vh;
+    bottom: 13vh;
     background-color: white;
   }
   .addInput {
