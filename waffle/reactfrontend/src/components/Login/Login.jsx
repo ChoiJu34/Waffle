@@ -158,28 +158,37 @@ const LoginWrapper = styled.div`
   bottom: 0;
   overflow-y: auto;
 
+  .entire {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+
   .login-header {
     display: flex;
-    margin: 3vh 2vh;
+    margin: 8vw 6vw;
   }
 
   .login-title {
-    font-size: 4vh;
-    margin-top: 3vh;
-    margin-left: 3vh;
+    font-size: 10vw;
+    margin-top: 3vw;
+    margin-left: 8vw;
     text-align: left;
     color: #000004;
   }
 
   .login-title-underline {
-    height: 0.3vh;
-    width: 80%;
-    margin: 1.5vh auto;
+    height: 0.7vw;
+    width: 80vw;
+    margin: 4vw auto;
     background-color: #000004;
   }
 
   .login-email {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
   }
 
   .login-email > input{
@@ -192,9 +201,9 @@ const LoginWrapper = styled.div`
 	    box-sizing: border-box;
 	    border-radius: 0;
 	    padding: 0;
-	    height: 36px;
+	    height: 10vw;
 	    line-height: 1.33;
-	    font-size: 18px;
+	    font-size: 6vw;
 	    font-family: inherit;
 	    vertical-align: baseline;
 	    -webkit-appearance: none;
@@ -205,19 +214,19 @@ const LoginWrapper = styled.div`
     .login-email > input:focus{
         outline:0;
         border-color:#76A8DE;
-        border-width: 2px;
+        border-width: 0.5vw;
         color:#76A8DE;
     }
 
     .login-email > label{
-        top: 19vh;
+        top: 49vw;
         position: absolute;
-        left: 9vh;
+        left: 16vw;
         max-width: 100%;
         height: 2.7em;
         line-height: 1.33;
         color: #909090;
-        font-size: 18px;
+        font-size: 4.5vw;
         cursor: text;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -230,26 +239,26 @@ const LoginWrapper = styled.div`
     }
 
     .login-email.focus > label{
-        top: 17vh;
-        left: 8vh;
-        font-size: 12px;
+        top: 44vw;
+        left: 14vw;
+        font-size: 3vw;
         line-height: 1.33;
         color: #76A8DE;
     }
 
     .login-email.complete > label{
-        top: 17vh;
-        left: 8vh;
-        font-size: 12px;
+        top: 44vw;
+        left: 14vw;
+        font-size: 3vw;
         line-height: 1.33;
     }
 
     .login-password {
-    padding: 2vh 7vh;
+      padding: 4vw 15vw;
   }
 
   .login-password > input{
-	    display: block;
+    display: block;
 	    width: 100%;
 	    color: #909090;
 	    border:0;
@@ -258,9 +267,9 @@ const LoginWrapper = styled.div`
 	    box-sizing: border-box;
 	    border-radius: 0;
 	    padding: 0;
-	    height: 36px;
+	    height: 10vw;
 	    line-height: 1.33;
-	    font-size: 18px;
+	    font-size: 6vw;
 	    font-family: inherit;
 	    vertical-align: baseline;
 	    -webkit-appearance: none;
@@ -270,20 +279,20 @@ const LoginWrapper = styled.div`
       /* 단순히 돋움으로만 설정해두면 점 간격이 고르지 않아, 추가 작업 필요 */
       font-family: "돋움";
       font: small-caption;
-      font-size: 3vh;
+      font-size: 7vw;
 	}
 
     .login-password > input:focus{
         outline:0;
         border-color:#76A8DE;
-        border-width: 2px;
+        border-width: 0.5vw;
         color:#76A8DE;
     }
 
     .login-password > label{
-        top: 27vh;
+        top: 67vw;
         position: absolute;
-        left: 9vh;
+        left: 16vw;
         max-width: 100%;
         height: 2.7em;
         line-height: 1.33;
@@ -301,37 +310,37 @@ const LoginWrapper = styled.div`
     }
 
     .login-password.focus > label{
-        top: 25vh;
-        left: 8vh;
+        top: 62vw;
+        left: 14vw;
         font-size: 12px;
         line-height: 1.33;
         color: #76A8DE;
     }
 
     .login-password.complete > label{
-        top: 25vh;
-        left: 8vh;
+        top: 62vw;
+        left: 14vw;
         font-size: 12px;
         line-height: 1.33;
     }
 
     .login-button {
-      width: 11vh;
-      height: 5vh;
+      width: 22vw;
+      height: 11vw;
       border-radius: 15px;
       border: none;
       background-color: #9AC5F4;
       color: white;
       font-weight: 800;
-      font-size: 2.3vh;
-      margin-top: 2vh;
+      font-size: 5vw;
+      margin-top: 5vw;
     }
 
     .login-underline {
-    height: 0.1vh;
+    height: 0.1vw;
     width: 80%;
-    margin: 1.5vh auto;
-    margin-top: 3vh;
+    margin: 5vw auto;
+    margin-top: 7vw;
     background-color: #000004;
   }
 
@@ -339,8 +348,8 @@ const LoginWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 1vh 6vh;
-    font-size: 1.4vh;
+    margin: 1vw 14vw;
+    font-size: 3.2vw;
   }
 `
 

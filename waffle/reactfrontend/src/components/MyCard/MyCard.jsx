@@ -48,7 +48,7 @@ const MyCard = () => {
           <div>
             {cardListLoading ? (
               <div>
-                {cardList.length !== 0 ? (
+                {cardList?.length !== 0 ? (
                   <MyCardList
                     cardList={cardList}
                     setModalOpen={setModalOpen}

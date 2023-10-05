@@ -10,7 +10,7 @@ const RecoCardList = (props) => {
   const location = useLocation();
   const data = location.state?.value.result;
   const count = location.state?.value.result.length;
-  console.log(data);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -20,11 +20,13 @@ const RecoCardList = (props) => {
   };
 
   const imgClick = (cardId, originalPrice, discountPrice) => {
+
     navigate("/cardinfo/" + cardId, {
       state: {
         cardId: cardId,
         originalPrice: originalPrice,
         discountPrice: discountPrice,
+        
       },
     });
   };
@@ -50,14 +52,13 @@ const RecoCardList = (props) => {
                   <Cardboxtitle>많은 혜택</Cardboxtitle>
                 ) : (
                   <Cardboxtitle>환전</Cardboxtitle>
-                )}
+                  
+                )}      
                 <Cardimgbox>
                   <img
                     src={`https://j9d109.p.ssafy.io/downloads/${cardId}.png`}
                     alt="카드사진"
-                    onClick={() =>
-                      imgClick(cardId, originalPrice, discountPrice)
-                    }
+                    onClick={() => imgClick(cardId, originalPrice, discountPrice)}
                   />
                 </Cardimgbox>
                 <Cardnamefont>{cardName}</Cardnamefont>
@@ -100,7 +101,7 @@ export default RecoCardList;
 const Container = styled.div`
   margin-top: 30px;
   margin-bottom: 20px;
-  width: 100vw;
+  width: 100%;
   height: calc(var(--vh, 1vh) * 100);
 `;
 
@@ -120,6 +121,7 @@ const Contentbox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
   /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
   & > img {
     width: 300px;
@@ -158,9 +160,9 @@ const Cardimgbox = styled.div`
 `;
 const Cardboxtitle = styled.div`
   font-size: 20px;
-  margin-top: 10px;
-  margin-left: 20px;
-  margin-bottom: 20px;
+  margin-top: 1vh;
+  margin-left: 3vh;
+  margin-bottom: 2vh;
   display: flex;
   justify-content: start;
 `;
@@ -176,8 +178,8 @@ const Getbox = styled.div`
   align-items: center;
   width: 100%;
   font-size: 20px;
-  margin-top: 50px;
-  margin-bottom: 20px;
+  margin-top: 5vh;
+  margin-bottom: 1vh;
 `;
 const Totalbox = styled.div`
   width: 90%;
@@ -209,4 +211,3 @@ const Getsmallbox = styled.div`
     font-size: 25px;
   }
 `;
-const Per = styled.p``;
