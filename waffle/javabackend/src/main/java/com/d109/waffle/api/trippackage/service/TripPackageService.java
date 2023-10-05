@@ -120,6 +120,7 @@ public class TripPackageService {
 			List<PackageHotelDto> packageHotelDtos = new ArrayList<>();
 			for(FavoritePlane favoritePlane : planeList){
 				PackagePlaneDto packagePlaneDto = new PackagePlaneDto();
+				packagePlaneDto.setPlaneDate(favoritePlane.getPlaneDate());
 				packagePlaneDto.setCompany(favoritePlane.getCompany());
 				packagePlaneDto.setStartPlace(favoritePlane.getStartPlace());
 				packagePlaneDto.setStartTime(favoritePlane.getStartTime());
