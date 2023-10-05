@@ -14,7 +14,7 @@ public interface UserCardRepository extends JpaRepository<UserCardEntity, Intege
 
     Boolean existsByCardNumber(String cardNumber);
 
-    @Query(value = "select c.id, c.name, c.company, c.credit, c.brand, uc.card_nickname as cardNickname, uc.card_number as cardNumber, uc.card_valid_date as cardValidDate from user_card as uc inner join card as c on uc.card_id = c.id where uc.user_id = ?",
+    @Query(value = "select uc.id, c.name, c.company, c.credit, c.brand, uc.card_nickname as cardNickname, uc.card_number as cardNumber, uc.card_valid_date as cardValidDate from user_card as uc inner join card as c on uc.card_id = c.id where uc.user_id = ?",
             nativeQuery = true)
     List<UserCardListDto> findByUserEntity_IdAndGetCardNameList(int userId);
 

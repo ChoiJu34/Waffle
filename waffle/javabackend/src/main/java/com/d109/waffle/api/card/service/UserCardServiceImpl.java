@@ -72,6 +72,8 @@ public class UserCardServiceImpl implements UserCardService {
 
         // log.info("res: {}", response);
 
+        boolean flag = true;
+
         if(response.getBody().getMessage().equals("SUCCESS")) {
             Optional<CardEntity> cardEntity = cardRepository.findByName(response.getBody().getResult());
             // log.info("cardEntity: {}", cardEntity);
@@ -89,8 +91,9 @@ public class UserCardServiceImpl implements UserCardService {
                 .userEntity(user)
                 .build();
             userCardRepository.save(userCardEntity);
+            flag = false;
         }
-        throw new Exception("해당 카드의 정보를 찾지 못했습니다.");
+        if(flag) throw new Exception("해당 카드의 정보를 찾지 못했습니다.");
     }
 
     @Override
