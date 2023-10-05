@@ -180,7 +180,7 @@ const LoginWrapper = styled.div`
 
   .login-email > input{
     display: block;
-    width: 80%;
+    width: 100%;
     color: #909090;
     border: 0;
     border-bottom: 1px solid #8c8c8c;
@@ -195,9 +195,7 @@ const LoginWrapper = styled.div`
     vertical-align: baseline;
     -webkit-appearance: none;
     overflow: visible;
-    font-family: "돋움";
-    font: small-caption;
-    font-size: 7vw;
+
 	}
 
     .login-email > input:focus{

@@ -597,7 +597,7 @@ const UpdateUserInfoWrapper = styled.div`
 	  overflow: visible;
     font-family: "돋움";
     font: small-caption;
-    font-size: 3vh;
+    font-size: 7vw;
   }
 
   .update-userinfo-password-for-update > input:focus{
@@ -608,7 +608,7 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-password-for-update > label{
-    top: 74vw;
+    top: 71vw;
       position: absolute;
       left: 16vw;
       max-width: 100%;
@@ -644,15 +644,15 @@ const UpdateUserInfoWrapper = styled.div`
 `
 
 const SignupButton = styled.button`
-  width: 12.5vh;
-  height: 5vh;
-  border-radius: 15px;
-  border: none;
-  background-color: #9AC5F4;
-  color: white;
-  font-weight: 800;
-  font-size: 2.3vh;
-  margin-top: 2vh;
+      width: 30vw;
+      height: 11vw;
+      border-radius: 15px;
+      border: none;
+      background-color: #9AC5F4;
+      color: white;
+      font-weight: 800;
+      font-size: 5vw;
+      margin-top: 5vw;
 
   &:disabled {
     background-color: #ddd;
