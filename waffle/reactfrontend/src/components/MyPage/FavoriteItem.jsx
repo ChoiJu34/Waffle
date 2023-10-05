@@ -4,8 +4,9 @@ import TemporaryKakaoLogo from '../../assets/kakaobanklogo.png'
 import BookmarkPlane from '../../assets/bookmarkPlane.png'
 import BookmarkHotel from '../../assets/bookmarkHotel.png'
 import BookmarkStar from '../../assets/bookmarkStar.png'
+import axios from 'axios'
 
-const FavoriteItem = ( { data } ) => {
+const FavoriteItem = ( { data, handleDelete } ) => {
 
   const totalHotelOriginPrice = data.hotel.reduce((acc, currentItem) => {
     const price = currentItem.originPrice ? parseInt(currentItem.originPrice, 10) : 0;
@@ -33,14 +34,27 @@ const FavoriteItem = ( { data } ) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  const token = localStorage.getItem('access_token')
+
+  const headers = {
+    "Authorization": "Bearer " + token
+  }
+
+  const deleteBookmark = () => {
+    axios.delete(`/package/delete-favorite/${data.id}`, {headers: headers})
+    .then(response => {
+      handleDelete(data.id)
+    })
+    .catch(error => {
+      console.error('서버탓이야')
+      alert('서버탓임')
+    })
+  }
 
   return (
     <FavoriteItemWrapper>
     <div className="favorite-item-container">
-      <div className="favorite-item-cardlogo-container">
-        <img src={TemporaryKakaoLogo} alt="우리에게는 하나은행 로고가 없다" className="favorite-item-cardlogo" />
-      </div>
-
+      <div className="card-name-container">{data.card ? data.card : "모든 카드"}</div>
       <div className="favorite-item-discount-text">
         <div className="discount-container">
           <img src={BookmarkPlane} alt="비행기를타고가던너따라가고싶어울었던" className="favorite-item-discount-img"/>
@@ -53,7 +67,7 @@ const FavoriteItem = ( { data } ) => {
       </div>
 
       <div className="favorite-item-ratio">
-        <img src={BookmarkStar} alt="반짝반짝빛나는스타rrrr" className="favorite-item-star" />
+        <img src={BookmarkStar} alt="반짝반짝빛나는스타rrrr" className="favorite-item-star" onClick={deleteBookmark}/>
         <span>{discountRatio}% 할인</span>
       </div>
     </div>
@@ -66,36 +80,25 @@ const FavoriteItemWrapper = styled.div`
   width: 70vw;
   display: flex;
   justify-content: center;
-  margin: 3vh auto;
+  margin: 7vh auto;
 
   .favorite-item-container {
     width: 100%;
     display: flex;
     background-color: #C1EBFC;
     border-radius: 15px;
-  }
-
-  .favorite-item-cardlogo-container {
-    height: 100%;
-    width: 25%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .favorite-item-cardlogo {
-    height: 50%;
-    width: auto;
+    position: relative;
   }
 
   .favorite-item-discount-text {
     height: 60%;
-    width: 40%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
     margin-top: 2vh;
+    margin-left: 7vw;
   }
 
   .discount-container {
@@ -122,8 +125,21 @@ const FavoriteItemWrapper = styled.div`
 .favorite-item-star {
     position: absolute;
     top: 1vh;
-    right: 1vh;
     height: 2vh;
+}
+
+.card-name-container {
+  position: absolute;
+  top: -2vh;
+  left: 5vw;
+  font-size: 1.4vh;
+  background-color: #FFEEBB;
+  width: 35vw;
+  height: 3vh;
+  border-radius: 7px;
+  padding-top: 1vh;
+  line-height: 0.3vh;
+  z-index: -300;
 }
 `
 

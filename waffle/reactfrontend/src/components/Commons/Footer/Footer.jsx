@@ -12,14 +12,16 @@ const Footer = () => {
 
   return (
     <FooterWrapper>
-      <div className="underline"></div>
+      {!isMypage &&
+      <div className="underline"></div>}
       <footer>
+        {!isMypage && 
         <div className="logo">
             <img src={WaffleLogo} alt="WaffleLogo" className="footer-logo" />
             <span className="footer-text">와플</span>
-        </div>
+        </div>}
       </footer>
-      {isMypage && 
+      {(isMypage || isUserUpdate) &&
       (<div className="mypage-bottom">
         <MypageHeader />
       </div>)}

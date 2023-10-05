@@ -4,6 +4,7 @@ import styled from "styled-components";
 import mypageChecklist from "../../assets/mypageChecklist.png";
 import mypageUser from "../../assets/mypageUser.png";
 import mypageBookmark from "../../assets/mypageBookmark.png";
+import mypageCard from "../../assets/mypageCard.png"
 
 const MypageHeader = () => {
   const location = useLocation();
@@ -17,6 +18,8 @@ const MypageHeader = () => {
       setActiveTab("userinfo");
     } else if (/\/mypage\/favorite/.test(location.pathname)) {
       setActiveTab("bookmark");
+    } else if (/\/mypage\/mycard/.test(location.pathname)) {
+      setActiveTab("card");
     }
   });
 
@@ -80,7 +83,18 @@ const MypageHeader = () => {
           />
           북마크
         </div>
-        <div onClick={goToMyCard}>카드등록</div>
+        <div 
+          className={`mypage-header-tab ${
+            activeTab === "card" ? "active" : ""
+          }`}
+          onClick={goToMyCard}>
+          <img
+            src={mypageCard}
+            alt="mypageChecklist"
+            className="mypage-header-img"
+          />
+          카드등록
+        </div>
       </div>
     </MypageHeaderWrapper>
   );
@@ -88,12 +102,16 @@ const MypageHeader = () => {
 
 const MypageHeaderWrapper = styled.div`
   margin-top: 1vh;
-  margin-bottom: -10vh;
+  margin-bottom: -11vh;
+  position: fixed;
+  bottom: 11vh;
 
   .mypage-header-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    width: 101vw;
+    margin-left: -1.9vw;
   }
 
   .mypage-header-tab {
