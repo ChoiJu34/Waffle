@@ -301,6 +301,7 @@ def find_lowest_package(data, user_cards):
 
     #사용자가 보유한 카드로 최저가
     user_have_card_company=[]
+    have_card_name = ""
     for user_card in user_cards:
         user_card_name = user_card["company"]
         if '하나' in user_card_name and not card_company[0][1]:
@@ -348,8 +349,8 @@ def find_lowest_package(data, user_cards):
                     "companyImg": info.companyImg,
                     "url": info.url
                 })
-                if len(card_name) < len(info.card):
-                    card_name = info.card
+                if len(have_card_name) < len(info.card):
+                    have_card_name = info.card
                 break
             elif any(card in info.card for card in user_have_card_company):#회사가 겹쳤을 때
                 if(card+"카드" in info.card for card in user_have_card_company):#해당 회사 카드만 있어도 되는 할인이라면 넣고
@@ -369,8 +370,8 @@ def find_lowest_package(data, user_cards):
                         "companyImg": info.companyImg,
                         "url": info.url
                     })
-                    if len(card_name) < len(info.card):
-                        card_name = info.card
+                    if len(have_card_name) < len(info.card):
+                        have_card_name = info.card
                     break
                 elif (card["name"] in info.card for card in user_card):#특정 카드가 필요하다면 카드 명 비교
                     companyImg = 'none'
@@ -390,8 +391,8 @@ def find_lowest_package(data, user_cards):
                         "companyImg": info.companyImg,
                         "url": info.url
                     })
-                    if len(card_name) < len(info.card):
-                        card_name = info.card
+                    if len(have_card_name) < len(info.card):
+                        have_card_name = info.card
                     break
             info = plane_infos_save2[pp].get()
 
@@ -410,8 +411,8 @@ def find_lowest_package(data, user_cards):
                     "img": info.img,
                     "site": info.site,
                 })
-                if len(card_name) < len(info.card):
-                    card_name = info.card
+                if len(have_card_name) < len(info.card):
+                    have_card_name = info.card
                 break
             elif any(card in info.card for card in user_have_card_company):#회사가 겹쳤을 때
                 if(card+"카드" in info.card for card in user_have_card_company):#해당 회사 카드만 있어도 되는 할인이라면 넣고
@@ -426,8 +427,8 @@ def find_lowest_package(data, user_cards):
                         "img": info.img,
                         "site": info.site,
                     })
-                    if len(card_name) < len(info.card):
-                        card_name = info.card
+                    if len(have_card_name) < len(info.card):
+                        have_card_name = info.card
                     break
                 elif (card["name"] in info.card for card in user_card):#특정 카드가 필요하다면 카드 명 비교
                     user_hotel_info.append({
@@ -441,8 +442,8 @@ def find_lowest_package(data, user_cards):
                         "img": info.img,
                         "site": info.site,
                     })
-                    if len(card_name) < len(info.card):
-                        card_name = info.card
+                    if len(have_card_name) < len(info.card):
+                        have_card_name = info.card
                     break
             info = hotel_infos_save2[pp].get()
 
@@ -454,6 +455,7 @@ def find_lowest_package(data, user_cards):
 
     have_card_package["plane"] = user_plane_info
     have_card_package["hotel"] = user_hotel_info
+    have_card_package["card"] = have_card_name
     have_card_package["memberCnt"] = data["memberCnt"]
 
 

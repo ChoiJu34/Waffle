@@ -116,7 +116,7 @@ def interpark_crawling(info, chrome_options, service):
             origin = cards[len(cards)-1]
             del cards[len(cards)-1]
             if len(cards)==0:
-                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin, int(origin.replace("위탁수하물제공 ", "")), p[5], p[6], '인터파크', companyImg, url))
+                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin.replace("위탁수하물제공 ", ""), int(origin.replace("위탁수하물제공 ", "")), p[5], p[6], '인터파크', companyImg, url))
 
             pt = int(planeTime[0])
             uts = int(userTimeS[0])
