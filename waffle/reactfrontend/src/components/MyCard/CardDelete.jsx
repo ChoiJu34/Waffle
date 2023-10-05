@@ -9,7 +9,7 @@ const CardDelete = ({ setModalOpen, deleteCardId, setCardList }) => {
   };
 
   const cardDelete = async () => {
-    await axios.delete(`/user-card/${deleteCardId}`, headers);
+    await axios.delete(`/user-card/${deleteCardId}`, { headers });
     const response = await axios.get("/user-card/list", { headers });
     setCardList(response.data.result);
     setModalOpen(false);
@@ -22,7 +22,7 @@ const CardDelete = ({ setModalOpen, deleteCardId, setCardList }) => {
         <CardDeleteCancle onClick={() => setModalOpen(false)}>
           취소
         </CardDeleteCancle>
-        <CardDeleteConfirm onClick={() => cardDelete}>삭제</CardDeleteConfirm>
+        <CardDeleteConfirm onClick={() => cardDelete()}>삭제</CardDeleteConfirm>
       </CardDeleteFooter>
     </CardDeleteModal>
   );
