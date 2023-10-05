@@ -214,7 +214,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number > label {
-    top: 27vh;
+    top: 29vh;
     position: absolute;
     left: 9vh;
     max-width: 100%;
@@ -234,7 +234,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number.focus > label {
-    top: 25vh;
+    top: 27vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -242,7 +242,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number.complete > label {
-    top: 25vh;
+    top: 27vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -283,7 +283,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date > label {
-    top: 35vh;
+    top: 37vh;
     position: absolute;
     left: 9vh;
     max-width: 100%;
@@ -303,7 +303,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date.focus > label {
-    top: 33vh;
+    top: 35vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -311,7 +311,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date.complete > label {
-    top: 33vh;
+    top: 35vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -352,7 +352,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname > label {
-    top: 43vh;
+    top: 45vh;
     position: absolute;
     left: 9vh;
     max-width: 100%;
@@ -372,7 +372,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname.focus > label {
-    top: 41vh;
+    top: 43vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -380,7 +380,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname.complete > label {
-    top: 41vh;
+    top: 43vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;

@@ -31,6 +31,7 @@ const CardDelete = ({ setModalOpen, deleteCardId, setCardList }) => {
 export default CardDelete;
 
 const CardDeleteModal = styled.div`
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   width: 75%;
