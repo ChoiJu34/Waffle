@@ -502,8 +502,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 12vw;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 150vw;
 
 `
 
