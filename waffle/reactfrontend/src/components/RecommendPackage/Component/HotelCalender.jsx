@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 
-class HotelCalendarComponent extends Component {
+class CalendarComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -49,4 +49,4 @@ class HotelCalendarComponent extends Component {
         );
     }
 }
-export default HotelCalendarComponent;
+export default CalendarComponent;

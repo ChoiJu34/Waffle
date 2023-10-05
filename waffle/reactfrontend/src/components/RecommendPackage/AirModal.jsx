@@ -1,6 +1,6 @@
 // import { icClose } from 'assets';
 import styled from 'styled-components';
-
+import { GrFormClose } from "react-icons/gr";
 
 function AirModal({ title, closeModal, children }) {
   return (
@@ -8,7 +8,7 @@ function AirModal({ title, closeModal, children }) {
       <StyledModalBackground />
       <StyledBottomSheet>
         <StyledBottomSheetHeader>
-          <button onClick={closeModal}>X</button>
+          <GrFormClose size={30} onClick={closeModal}>X</GrFormClose>
           <div>{title}</div>
         </StyledBottomSheetHeader>
         <div>{children}</div>

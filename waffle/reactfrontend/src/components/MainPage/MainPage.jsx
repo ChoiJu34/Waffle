@@ -56,12 +56,9 @@ const MainPage = () => {
         setShowCard(true);
       }
       if (window.scrollY > 600) {
-        setShowExchange(true);
-      }
-      if (window.scrollY > 900) {
         setShowAccount(true);
       }
-      if (window.scrollY > 1200) {
+      if (window.scrollY > 900) {
         setShowChecklist(true);
       }
     };
@@ -137,24 +134,7 @@ const goToTeamAccount = () => {
           </div>
         </div>
 
-        <div className="main-body-exchange-container" style={{opacity: showExchange ? 1 : 0, transition: 'opacity 1s'}}>
-            <div className="main-body-exchange-text">
-              <div className="main-body-exchange-text-title">
-                오늘 대비하는 내일의 환율
-              </div>
-              <br/>
-              <div className="main-body-exchange-text-content">
-                데이터 기반의 예측으로
-                <div className="main-body-text-spacer"></div>
-                더 많은 추억을 위한 환전 계획을 세우세요
-              </div>
-              <button className="main-body-exchange-button">환율 예측해보기</button>
-            </div>
-              <img className="main-body-exchange-img" src={MainExchangeImg}/>
-          </div>
-
           <div className="main-body-account-container" style={{opacity: showAccount ? 1 : 0, transition: 'opacity 1s'}}>
-            <img className="main-body-account-img" src={MainAccountImg}/>
             <div className="main-body-account-text">
               <div className="main-body-account-text-title">
                 함께 준비해가는 여행
@@ -167,9 +147,11 @@ const goToTeamAccount = () => {
               </div>
               <button className="main-body-account-button" onClick={goToTeamAccount}>모임 통장 보기</button>
             </div>
+            <img className="main-body-account-img" src={MainAccountImg}/>
           </div>
 
           <div className="main-body-checklist-container" style={{opacity: showChecklist ? 1 : 0, transition: 'opacity 1s'}}>
+          <img className="main-body-checklist-img" src={MainChecklistImg}/>
             <div className="main-body-checklist-text">
               <div className="main-body-checklist-text-title">
                 한 여행은 또 다음 여행으로
@@ -182,7 +164,6 @@ const goToTeamAccount = () => {
               </div>
               <button className="main-body-checklist-button" onClick={handleScrollToTop}>와플 시작해보기</button>
             </div>
-              <img className="main-body-checklist-img" src={MainChecklistImg}/>
           </div>
       </MainPageWrapper>
   )
@@ -241,7 +222,7 @@ const MainPageWrapper = styled.div`
   .main-img-waffle {
     position: absolute;
     top: 28vh;
-    left: 103vw;
+    left: 97vw;
     -webkit-transform: translate(-50%, -50%);
     width: 90vw;
     -webkit-animation: ${rotateAnimation} 20s linear infinite;
@@ -338,47 +319,6 @@ const MainPageWrapper = styled.div`
     margin-left: 13vh;
   }
 
-  .main-body-exchange-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 30vh;
-  }
-
-  .main-body-exchange-text {
-    display: flex;
-    flex-direction: column;
-
-  }
-
-  .main-body-exchange-text-title {
-    text-align: left;
-    margin-left: 2.5vh;
-    font-size: 15px;
-  }
-
-  .main-body-exchange-text-content {
-    font-size: 12px;
-    text-align: left;
-    margin-left: 4vh;
-  }
-
-  .main-body-exchange-button {
-    margin-top: 1.5vh;
-    background-color: #A7ECEE;
-    border-radius: 5px;
-    width: 15vh;
-    height: 4vh;
-    border: none;
-    font-weight: 800;
-    margin-left: 11vh;
-  }
-
-  .main-body-exchange-img {
-    width: 25%;
-    margin-right: 3vh;
-  }
-
   .main-body-account-container {
     display: flex;
     align-items: center;
@@ -389,7 +329,7 @@ const MainPageWrapper = styled.div`
   .main-body-account-text {
     display: flex;
     flex-direction: column;
-    margin-right: 1.1vh;
+
   }
 
   .main-body-account-text-title {
@@ -404,20 +344,20 @@ const MainPageWrapper = styled.div`
     margin-left: 4vh;
   }
 
-  .main-body-account-img {
-    width: 25%;
-    margin-left: 3vh;
-  }
-
   .main-body-account-button {
     margin-top: 1.5vh;
-    background-color: #FFEEBB;
+    background-color: #A7ECEE;
     border-radius: 5px;
     width: 15vh;
     height: 4vh;
     border: none;
     font-weight: 800;
-    margin-left: 13vh;
+    margin-left: 11vh;
+  }
+
+  .main-body-account-img {
+    width: 25%;
+    margin-right: 3vh;
   }
 
   .main-body-checklist-container {
@@ -425,13 +365,13 @@ const MainPageWrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-top: 30vh;
-    margin-bottom: 20vh;
+    margin-bottom: 5vh;
   }
 
   .main-body-checklist-text {
     display: flex;
     flex-direction: column;
-
+    margin-right: 1.1vh;
   }
 
   .main-body-checklist-text-title {
@@ -446,20 +386,20 @@ const MainPageWrapper = styled.div`
     margin-left: 4vh;
   }
 
+  .main-body-checklist-img {
+    width: 25%;
+    margin-left: 3vh;
+  }
+
   .main-body-checklist-button {
     margin-top: 1.5vh;
-    background-color: #FFF8E4;
+    background-color: #FFEEBB;
     border-radius: 5px;
     width: 15vh;
     height: 4vh;
     border: none;
     font-weight: 800;
-    margin-left: 11vh;
-  }
-
-  .main-body-checklist-img {
-    width: 25%;
-    margin-right: 3vh;
+    margin-left: 13vh;
   }
 `
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProtectedRoute } from "../components/Commons/ProtectedRoute";
+import ScrollToTop from "../components/Commons/ScrollToTop";
 import Layout from "../pages/Layout";
 // import ScrollTop from '../components/Commons/ScrollTop'
 import RecoCardMain from "../components/RecommendCard/RecoCardMain";
@@ -36,6 +37,7 @@ import PackageList from "../components/RecommendPackage/PackageList";
 const RootNavigation = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/recocard/list" element={<RecoCardList />} />
@@ -92,7 +94,7 @@ const RootNavigation = () => {
           <Route path="/teamaccount/add/new" element={<TeamAccountAddNew />} />
           <Route path="/teamaccount/update/:id" element={<TeamAccountUpdate />} />
           <Route
-            path="/teamaccount/update/individual"
+            path="/teamaccount/update/individual/:id"
             element={<TeamAccountUpdateIndividual />}
           />
           <Route path="/mypage/checklist" element={<ChecklistList />} />

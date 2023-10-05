@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import TeamAccountUpdateIndividualItem from './TeamAccountUpdateIndividualItem'
 
-const TeamAccountUpdateIndividualList = ({ sentData, onChange }) => {
+const TeamAccountUpdateIndividualList = ({ sentData, updateGoal }) => {
   return (
     <TeamAccountUpdateIndividualListWrapper>
-      {sentData.map((data, index) => (
-        <TeamAccountUpdateIndividualItem key={data.name} data={data} index={index} onChange={onChange}/>
+      {sentData?.map((data, index) => (
+        <TeamAccountUpdateIndividualItem key={data.name} data={data} index={index} updateGoal={updateGoal}/>
       ))}
     </TeamAccountUpdateIndividualListWrapper>
   )

@@ -20,7 +20,7 @@ const Layout = () => {
       <SContent isUserRoute={isUserRoute} isTeamAccountAddRoute={isTeamAccountAddRoute} isTeamAccountUpdateRoute={isTeamAccountUpdateRoute}>
         <Outlet/>
       </SContent>
-      {isUserUpdate || (!(isUserRoute || isTeamAccountAddRoute || isTeamAccountUpdateRoute)) && <Footer />}
+      {(isUserUpdate || (!(isUserRoute || isTeamAccountAddRoute || isTeamAccountUpdateRoute))) && <Footer />}
     </SLayout>
   )
 }
