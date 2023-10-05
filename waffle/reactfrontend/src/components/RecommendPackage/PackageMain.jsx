@@ -402,7 +402,7 @@ const PackageMain = () => {
               </div>
               <div className='hotelday-box'>
               <AiFillCalendar size={30}></AiFillCalendar>
-              <Calender 
+              <HotelCalender 
                 onChange={handleHotelDateSelection}
                 value={start}
                />
