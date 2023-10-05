@@ -275,7 +275,7 @@ public class TeamAccountController {
     }
 
     @GetMapping("get-groupId/{accountId}")
-    public ResponseEntity<?> getGroupId(@RequestHeader("Authorization") String authorization, @PathVariable("accoutId") int accountId){
+    public ResponseEntity<?> getGroupId(@RequestHeader("Authorization") String authorization, @PathVariable("accountId") int accountId){
         Map<String, Object> result = new HashMap<>();
 
         try{
