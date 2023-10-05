@@ -20,70 +20,23 @@ plane_infos=[]
 hotel_infos=[]
 
 package = {
-    "plane" : "",
-    "hotel" : "",
-    "card" : "",
-    "memberCnt" : ""
+    "plane": "",
+    "hotel": "",
+    "card": "",
+    "memberCnt": ""
 }
 
 have_card_package = {
-    "plane" : "",
-    "hotel" : "",
-    "memberCnt" : ""
+    "plane": "",
+    "hotel": "",
+    "card": "",
+    "memberCnt": ""
 }
 
 result={
     "package" : package,
     "userPackage" : have_card_package,
 }
-
-# airplane={
-#     "대한항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/KE.png',
-#     "아시아나항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/OZ.png',
-#     "티웨이항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/TW.png',
-#     "에어서울" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/RS.png',
-#     "제주항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/7C.png',
-#     "진에어" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/LJ.png',
-#     "에어프레미아" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/YP.png',
-#     "에어부산" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/BX.png',
-#     "에티오피아항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/ET.png',
-#     "전일본공수" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/NH.png',
-#     "일본항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/JL.png',
-#     "이스타항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/ZE.png',
-#     "싱카포르항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/SQ.png',
-#     "말레이시아항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/MH.png',
-#     "스리랑카항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/UL.png',
-#     "베트남항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/VN.png',
-#     "카타르항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/QR.png',
-#     "에티하드": 'https://openimage.interpark.com/tourpark/air/air_logo/m/EY.png',
-#     "터키항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/TK.png',
-#     "LOT POLISH AIRLINES": 'https://openimage.interpark.com/tourpark/air/air_logo/m/LO.png',
-#     "에미레이트항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/EK.png',
-#     "타이항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/TG.png',
-#     "캐세이패시픽": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CX.png',
-#     "에바항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/BR.png',
-#     "인도항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AI.png',
-#     "핀에어": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AY.png',
-#     "KLM네덜란드": 'https://openimage.interpark.com/tourpark/air/air_logo/m/KL.png',
-#     "중국국제항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CA.png',
-#     "에어캐나다": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AC.png',
-#     "중국동방항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/MU.png',
-#     "중국남방항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CZ.png',
-#     "에어마카오항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CZ.png',
-#     "산동항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/SC.png',
-#     "중화항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CI.png',
-#     "가루다항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/GA.png',
-#     "델타항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/DL.png"',
-#     "하와이안항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/HA.png',
-#     "사우디아항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/SV.png',
-#     "루프트한자": 'https://openimage.interpark.com/tourpark/air/air_logo/m/LH.png',
-#     "에어프랑스": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AF.png',
-#     "콴다스항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/QF.png',
-#     "스쿠트항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/TR.png',
-#     "그레이터 베이 항공": 'https://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAWCAMAAACWh252AAAATlBMVEVHcEwAsK0AraoArqsAr6wAsK0AsK0AsK0Ar6wAsK0AraoAsK0Aran3/Py/5eTq9vbS7OxNvruv394Wsq80uLZgw8GFz83a8O+Bzsx1yce5MyEpAAAAC3RSTlMA72OyM0t6gJQc2n6I4TYAAACMSURBVCiRxdHJEoMgEARQcQPsHhYFNf//ozHekgC3VPr6pqhmpuv+lknrvukATMPt5ZgaAy9HwxcSUHU3Z9jBoeo9s1/FVT8xwm3OE7Y2wOOUVVjtuGRx0UfUKgx7iLI6Yi67jke6HWPRDR+BSbbymuysAAbv8/XA8qmjUfd+wbTx+1J2Nvo95Qq/yRO6wQanQZ9ClQAAAABJRU5ErkJggg==',
-#     "미아트몽골리안항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/OM.png',
-#     "홍콩에어라인": 'https://openimage.interpark.com/tourpark/air/air_logo/m/HX.png',
-# }
 
 hotel_or_plane_lock = threading.Lock()
 
@@ -122,9 +75,9 @@ def crawling(request):
     if response.status_code == 200:
         user_cards = response.json()['result']
 
-    logger.info(f"user_cards : {user_cards}")
-
     find_lowest_package(data, user_cards)
+
+    logger.info(result)
 
     json_response = json.dumps(result, ensure_ascii=False).encode('utf-8')
     return HttpResponse(json_response, content_type="application/json;charset=utf-8")
