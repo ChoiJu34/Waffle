@@ -12,6 +12,7 @@ import com.d109.waffle.api.trippackage.dto.AirplaneDto;
 import com.d109.waffle.api.trippackage.dto.PackageHotelDto;
 import com.d109.waffle.api.trippackage.dto.PackagePlaneDto;
 import com.d109.waffle.api.trippackage.dto.RecommendDto;
+import com.d109.waffle.api.trippackage.dto.RecommendResultDto;
 import com.d109.waffle.api.trippackage.entity.Airplane;
 import com.d109.waffle.api.trippackage.entity.FavoriteHotel;
 import com.d109.waffle.api.trippackage.entity.FavoritePackage;
@@ -104,14 +105,14 @@ public class TripPackageService {
 		return id;
 	}
 
-	public List<RecommendDto> getFavoriteList(String authorization){
+	public List<RecommendResultDto> getFavoriteList(String authorization){
 		Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
 		if (!userEntity.isPresent()) {
 			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
 		}
 		UserEntity user = userEntity.get();
 		List<FavoritePackage> list = favoritePackageRepository.findAllByUserEntity_Id(user.getId());
-		List<RecommendDto> result = new ArrayList<>();
+		List<RecommendResultDto> result = new ArrayList<>();
 		for(FavoritePackage favoritePackage : list){
 			List<FavoritePlane> planeList = favoritePlaneRepository.findAllByFavoritePackage_Id(favoritePackage.getId());
 			List<FavoriteHotel> hotelList = favoriteHotelRepository.findAllByFavoritePackage_Id(favoritePackage.getId());
@@ -145,13 +146,14 @@ public class TripPackageService {
 				packageHotelDto.setSite(favoriteHotel.getSite());
 				packageHotelDtos.add(packageHotelDto);
 			}
-			RecommendDto recommendDto = RecommendDto.builder()
+			RecommendResultDto recommendResultDto = RecommendResultDto.builder()
+				.id(favoritePackage.getId())
 				.memberCnt(favoritePackage.getMemberCnt())
 				.card(favoritePackage.getCard())
 				.plane(packagePlaneDtos)
 				.hotel(packageHotelDtos)
 				.build();
-			result.add(recommendDto);
+			result.add(recommendResultDto);
 		}
 		return result;
 	}
