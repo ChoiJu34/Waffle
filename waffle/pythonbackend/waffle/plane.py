@@ -211,6 +211,10 @@ def trip_crawling(info, chrome_options, service):
             pt1 = int(planeTime[1])
             uts1 = int(userTimeS[1])
             ute1 = int(userTimeE[1])
+            if '2회' in p[4]:
+                p[4] = "2회경유"
+            elif '에서' in p[4]:
+                p[4] = "1회경유"
             if n == 0:
                 if pt > uts:  # 비행기H>설정H
                     multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
