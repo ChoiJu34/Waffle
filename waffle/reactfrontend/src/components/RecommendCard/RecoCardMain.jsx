@@ -501,7 +501,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 12vw;
   width: 100%;
   height: 100%;
 
@@ -515,19 +515,19 @@ const Creditbox = styled.div`
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-bottom: 8vw;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   
 `
 const Cardtext = styled.div`
-  padding-top: 1vh;
-  padding-left: 2vh;
-  padding-bottom: 1vh;
+  padding-top: 3vw;
+  padding-left: 3vw;
+  padding-bottom: 3vw;
   display: flex;
 `
 const Checkcardbox = styled.div`
-  width: 15vh;
-  height: 3vh;
+  width: 30vw;
+  height: 7vw;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   display: flex;
@@ -547,8 +547,8 @@ const Lobox = styled.div`
   width: 100%;
 
   & > span {
-    width: 11vw;
-    height: 3vh;
+    width: 10vw;
+    height: 7vw;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
     margin-left: 1vw;
@@ -562,8 +562,8 @@ const Lobox = styled.div`
 `
 
 const Checkcardbox2 = styled.div`
-  width: 15vh;
-  height: 3vh;
+  width: 30vw;
+  height: 7vw;
   border: 1px solid #9AC5F4;
   border-radius: 7px;
   display: flex;
@@ -578,10 +578,10 @@ const Checkcardline = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  padding: 3px;
+
 `
 const Companybox = styled.div`
-  width: 80%;
+  width: 80vw;
   height: 8vh;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
@@ -598,35 +598,35 @@ const Companytext = styled.div`
   
 `
 const Latext = styled.div`
-  margin-top: 1vh;
-  margin-left: 1.5vh;
+  margin-top: 2vw;
+  margin-left: 3vw;
 `
 
 const Smalltext = styled.div`
   font-size: 13px;
-  margin-left: 3px;
+  margin-left: 3vw;
   color: #DD3232;
 `
 
 const Company = styled.div`
-  width: 5vh;
+  width: 8vw;
   border-radius: 7px;
   border: 1px dashed;
   margin: 10px;
 `
 
 const Budgetbox = styled.div`
-  width: 80%;
+  width: 80vw;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
-  margin-bottom: 10px;
+  margin-bottom: 3vw;
   display: flex;
   flex-direction: column;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `
 const Budgettext = styled.div`
   display: flex;
-  margin: 15px;
+  margin: 4vw;
 `
 const Writebox = styled.div`
   display: flex;
@@ -638,55 +638,57 @@ const Frombox = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin: 15px;
+  margin: 5vw;
 `
 const From = styled.div`
 `
 const Shopbox = styled.div`
-  width: 85%;
+  width: 69vw;
+  height: 8vw;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 1.5vh;
+  margin: 3vw;
 
   & > div{
   }
 `
 const Usebox = styled.div`
-  width: 85%;
+  width: 69vw;
+  height: 8vw;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 1.5vh;
+  margin: 3vw;
 `
 const Nations = styled.div`
-  width: 8vh;
+  width: 17vw;
   border-radius: 7px;
   border: 1px dashed;
-  margin-left: 12vh;
+  margin-left: 28vw;
   cursor: pointer;
 `
 
 
 const Countryimg = styled.img`
-  width: 10vh;
+  width: 27vw;
   height: 50px;
 `
 const Countrybox = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: 10px;
-  padding: 10px;
+  margin-bottom: 1vw;
+  padding: 3vw;
   border-bottom: 1px solid #898989;
   cursor: pointer;
 `
 
 const AnnualFeebox = styled.div`
-  width: 80%;
-  height: 5vh;
+  width: 80vw;
+  height: 12vw;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin-bottom: 10px;
@@ -718,17 +720,17 @@ const Companysbox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 12vh;
-  height: 100px;
+  width: 26vw;
+  height: 24vw;
   background-color: white;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin: 10px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   & > img {
-    width: 50px;
-    height: 40px;
-    margin-bottom: 5px;
+    width: 10vw;
+    height: 10vw;
+    margin-bottom: 2vw;
   }
 `
 
@@ -737,17 +739,17 @@ const Companysbox2 = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 12vh;
-  height: 100px;
+  width: 26vw;
+  height: 24vw;
   background-color: #9AC5F4;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin: 10px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   & > img {
-    width: 50px;
-    height: 40px;
-    margin-bottom: 5px;
+    width: 10vw;
+    height: 10vw;
+    margin-bottom: 2vw;
   }
 `
 
@@ -756,9 +758,9 @@ const Minbox = styled.div`
   margin: 10px;
 `
 const Companybutton = styled.button`
-  width: 100px;
+  width: 15vw;
   background-color: white;
   border-radius: 7px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  margin: 10px;
+  margin: 5vw;
 `

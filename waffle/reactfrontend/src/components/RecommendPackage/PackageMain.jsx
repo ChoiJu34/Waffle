@@ -427,14 +427,14 @@ const LoadingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(var(--vh, 1vh) * 80);
+  height: calc(var(--vh, 1vw) * 80);
 `;
 
 const LoadingSpinner = styled.div`
   border: 4px solid rgba(195, 195, 195, 0.3);
   border-top: 4px solid #9AC5F4;
   border-radius: 50%;
-  width: 40px;
+  width: 40vw;
   height: 40px;
   animation: spin 2s linear infinite;
 `;
@@ -455,7 +455,7 @@ const Falsebox = styled.div`
   height: 30px;
 `;
 const Starttime = styled.div`
-  width: 320px;
+  width: 90vw;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -463,18 +463,18 @@ const Starttime = styled.div`
 `;
 
 const ClickButton = styled.button`
-  width: 80px;
+  width: 15vw;
   border-radius: 7px;
   border: 2px solid #9ac5f4;
   background-color: white;
 `;
 const Hoteldaybox = styled.div`
-  width: 340px;
+  width: 90vw;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  padding: 10px;
+  padding: 2vw;
 `;
 
 const Hotelserchbox = styled.div`
@@ -486,10 +486,10 @@ const Hotelserchbox = styled.div`
 `;
 
 const Hotelcontent = styled.div`
-  width: 320px;
+  width: 90vw;
   border: 1px solid #b3b1b1;
   border-radius: 7px;
-  margin-bottom: 30px; /* 30px 아래 여백 추가 */
+  margin-bottom: 8vw; /* 30px 아래 여백 추가 */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -505,8 +505,9 @@ const Smalltime = styled.div`
 `;
 
 const Closebnt = styled(AiOutlineClose)`
-  width: 600px;
+  width: 160vw;
   display: flex;
+  flex-direction: row;
   justify-content: end;
   align-items: end;
   padding: 5px;
@@ -524,7 +525,7 @@ const Plusbox = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  width: 150px;
+  width: 40vw;
   align-self: center;
   & > span {
     font-size: 25px;
@@ -537,21 +538,21 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 30px;
-  width: 100%;
-  height: 100%;
-  padding-bottom: 20px;
+  width: 100vw;
+  height: 130vw;
+  padding-bottom: 8vw;
   & > span {
     font-size: 25px;
   }
 
   .input-container {
     position: relative;
-    margin-bottom: 15px;
+    margin-bottom: 3vw;
   }
 
   .input-container input {
-    width: 75%;
-    padding: 12px; /* 여백을 늘릴 수 있습니다. */
+    width: 75vw;
+    padding: 5vw; /* 여백을 늘릴 수 있습니다. */
     font-size: 16px;
     border-radius: 5px;
     outline: none;
@@ -581,8 +582,8 @@ const Airplacebox = styled.div`
 `;
 
 const PlusMinusButton = styled.button`
-  width: 30px;
-  height: 30px;
+  width: 8vw;
+  height: 8vw;
   border: 1px solid #ccc;
   border-radius: 50%;
   background-color: white;
@@ -599,11 +600,11 @@ const PlusMinusButton = styled.button`
 `;
 
 const Peoplebox = styled.div`
-  width: 90%; // 고정된 컨테이너 너비
-  height: 10vh;
+  width: 90vw;
+  height: 23vw;
   border: 1px solid #b3b1b1;
   border-radius: 7px;
-  margin-bottom: 30px;
+  margin-bottom: 8vw;
   box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: row;
@@ -612,31 +613,31 @@ const Peoplebox = styled.div`
 `;
 
 const Airbox = styled.div`
-  width: 90%;
+  width: 90vw;
   border: 1px solid #b3b1b1;
   border-radius: 7px;
-  margin-bottom: 30px;
+  margin-bottom: 10vw;
   box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 `;
 const Hotelbox = styled.div`
-  width: 90%;
+  width: 90vw;
   border: 1px solid #b3b1b1;
   border-radius: 7px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-bottom: 10vw;
   box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
     
 `
 const Contentbox = styled.div`
-  width: 320px;
+  width: 100vw;
   border: 1px solid #b3b1b1;
   border-radius: 7px;
-  margin-bottom: 30px; /* 30px 아래 여백 추가 */
+  margin-bottom: 10vw; /* 30px 아래 여백 추가 */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -647,7 +648,7 @@ const customStyles = {
   control: (provided) => ({
     ...provided,
     marginRight: "0,5rem",
-    width: "100%",
+    width: "80vw",
     height: "3rem",
     borderRadius: "2px",
   }),
@@ -670,7 +671,7 @@ const customStyles = {
 };
 
 const Button = styled.button`
-  width: 80px;
+  width: 20vw;
   border-radius: 7px;
   border-color: #9ac5f4;
   background-color: #9ac5f4;
@@ -682,10 +683,10 @@ const Buttontitlebox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 5vw;
+  padding-right: 8vw;
   font-size: 20px;
-  width: 300px;
+  width: 80vw;
 `;
 
 const Airstartbox = styled.div`
@@ -693,6 +694,6 @@ const Airstartbox = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 100px;
+  height: 20vw;
   font-size: 17px;
 `;
