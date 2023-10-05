@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,8 +12,6 @@ const TeamAccountAddNew = () => {
   const navigate = useNavigate()
 
   const handleGoBack = () => {
-
-    window.scrollTo(0, 0)
 
     navigate(-1);
 

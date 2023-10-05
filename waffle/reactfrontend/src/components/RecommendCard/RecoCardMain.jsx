@@ -509,7 +509,7 @@ const Container = styled.div`
 
 const Creditbox = styled.div`
   width: 80%;
-  height: 10vh;
+  height: 23vw;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin-bottom: 10px;

@@ -315,7 +315,7 @@ const FindEmailWrapper = styled.div`
     }
 
     .find-email-tel {
-    padding: 2vh 7vh;
+      padding: 4vw 15vw;
   }
 
   .find-email-tel > input{
@@ -346,7 +346,7 @@ const FindEmailWrapper = styled.div`
     }
 
     .find-email-tel > label{
-      top: 85vw;
+      top: 84vw;
         position: absolute;
         left: 16vw;
         max-width: 100%;
@@ -366,7 +366,7 @@ const FindEmailWrapper = styled.div`
     }
 
     .find-email-tel.focus > label{
-      top: 80vw;
+      top: 79vw;
         left: 14vw;
         font-size: 12px;
         line-height: 1.33;
@@ -374,7 +374,7 @@ const FindEmailWrapper = styled.div`
     }
 
     .find-email-tel.complete > label{
-      top: 80vw;
+        top: 79vw;
         left: 14vw;
         font-size: 12px;
         line-height: 1.33;
@@ -393,7 +393,7 @@ const FindEmailWrapper = styled.div`
     }
 
     .find-email-underline {
-      height: 0.1vw;
+    height: 0.1vw;
     width: 80%;
     margin: 5vw auto;
     margin-top: 7vw;
@@ -409,7 +409,7 @@ const FindEmailWrapper = styled.div`
   }
 
   .signup-email {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 

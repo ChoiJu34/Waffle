@@ -13,7 +13,7 @@ const MainPage = () => {
 
   // 이미지 회전하는 속도에 맞춰 글자 변환
   const [text, setText] = useState('최저가 항공권');
-  const texts = ['최저가 항공권', '맞춤 카드', '환율 예측', '모임 통장'];
+  const texts = ['최저가 항공권', '맞춤 카드', '모임 통장', '경비 절약'];
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const MainPage = () => {
 
 
   // 일정 수준 스크롤되어야 요소가 나타나도록 하기
-  const [showPackage, setShowPackage] = useState(false);
+  const [showPackage, setShowPackage] = useState(true);
   const [showCard, setShowCard] = useState(false);
   const [showExchange, setShowExchange] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
@@ -49,9 +49,6 @@ const MainPage = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 70) {
-        setShowPackage(true);
-      }
       if (window.scrollY > 300) {
         setShowCard(true);
       }
@@ -249,24 +246,24 @@ const MainPageWrapper = styled.div`
   .main-body-package-text-title {
     text-align: left;
     margin-left: 2.5vh;
-    font-size: 15px;
+    font-size: 2vh;
   }
 
   .main-body-package-text-content {
-    font-size: 12px;
+    font-size: 1.3vh;
     text-align: left;
-    margin-left: 4vh;
+    margin-left: 8vw;
   }
 
   .main-body-package-button {
     margin-top: 1.5vh;
     background-color: #9AC5F4;
     border-radius: 5px;
-    width: 15vh;
+    width: 35vw;
     height: 4vh;
     border: none;
     font-weight: 800;
-    margin-left: 11vh;
+    margin-left: 25vw;
   }
 
   .main-body-package-img {
@@ -288,13 +285,13 @@ const MainPageWrapper = styled.div`
   .main-body-card-text {
     display: flex;
     flex-direction: column;
-    margin-right: 1.1vh;
+    margin-right: 7vw;
   }
 
   .main-body-card-text-title {
     text-align: left;
     margin-left: 2.5vh;
-    font-size: 15px;
+    font-size: 2vh;
   }
 
   .main-body-card-text-content {
@@ -312,11 +309,11 @@ const MainPageWrapper = styled.div`
     margin-top: 1.5vh;
     background-color: #99DBF5;
     border-radius: 5px;
-    width: 15vh;
+    width: 35vw;
     height: 4vh;
     border: none;
     font-weight: 800;
-    margin-left: 13vh;
+    margin-left: 26vw;
   }
 
   .main-body-account-container {
@@ -335,24 +332,24 @@ const MainPageWrapper = styled.div`
   .main-body-account-text-title {
     text-align: left;
     margin-left: 2.5vh;
-    font-size: 15px;
+    font-size: 2vh;
   }
 
   .main-body-account-text-content {
-    font-size: 12px;
+    font-size: 1.3vh;
     text-align: left;
-    margin-left: 4vh;
+    margin-left: 8vw;
   }
 
   .main-body-account-button {
     margin-top: 1.5vh;
     background-color: #A7ECEE;
     border-radius: 5px;
-    width: 15vh;
+    width: 35vw;
     height: 4vh;
     border: none;
     font-weight: 800;
-    margin-left: 11vh;
+    margin-left: 25vw;
   }
 
   .main-body-account-img {
@@ -371,13 +368,13 @@ const MainPageWrapper = styled.div`
   .main-body-checklist-text {
     display: flex;
     flex-direction: column;
-    margin-right: 1.1vh;
+    margin-right: 7vw;
   }
 
   .main-body-checklist-text-title {
     text-align: left;
-    margin-left: 2.5vh;
-    font-size: 15px;
+    margin-left: 5vw;
+    font-size: 2vh;
   }
 
   .main-body-checklist-text-content {
@@ -395,11 +392,11 @@ const MainPageWrapper = styled.div`
     margin-top: 1.5vh;
     background-color: #FFEEBB;
     border-radius: 5px;
-    width: 15vh;
+    width: 35vw;
     height: 4vh;
     border: none;
     font-weight: 800;
-    margin-left: 13vh;
+    margin-left: 26vw;
   }
 `
 

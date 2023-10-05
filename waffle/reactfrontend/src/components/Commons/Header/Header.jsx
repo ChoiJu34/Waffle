@@ -249,7 +249,7 @@ const HeaderWrapper = styled.div`
 
   .header-now-where {
     color: black;
-    font-size: 2.3vh;
+    font-size: 5vw;
   }
 
   @media screen and (max-width: 768px) {
@@ -301,7 +301,7 @@ const HeaderWrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin: 0 1vh;
+    margin: 0 3vw;
   }
 
 `;

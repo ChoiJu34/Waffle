@@ -80,7 +80,7 @@ const MyCard = () => {
           </div>
           <button
             className="registerCardBtn"
-            onClick={() => navigate("/mycard/card-register")}
+            onClick={() => navigate("/mypage/card-register")}
           >
             +
           </button>

@@ -16,15 +16,9 @@ import axios from "axios";
 
 const FavoriteDetail = () => {
     const location = useLocation();
-    const data = [location.state.value.plane];
-    const data2 = [location.state.value.hotel];
-    const data3 = [location.state.value.card];
+    const data = [location.state.value];
     const navigate = useNavigate();
-    const [favorite, setFavorite] = useState()
-    const [clickedTab, setClickedTab] = useState(0)
-    const [favoriteId, setFavoriteId] = useState()
-    const [favoriteId2, setFavoriteId2] = useState()
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+    console.log("data",data)
 
 
 
@@ -75,22 +69,22 @@ const FavoriteDetail = () => {
 
     useEffect(() => {
       setToken()
+    //   console.log("data",data)
       }, []);
 
 
   return (
     <Container>
-        <>
-        
+        <>  
+        {data && data.map(({card,hotel,plane}) => (
             <Content>
              <Favoritebox>
-                 <div>{data3}</div>
-                 <button onClick={console.log(data)}>data</button>
+                 <div>{card}</div>
              </Favoritebox>
              <Airbox>
                  <div className="airfont">항공권</div>
                 <Slider {...settings}>
-                 {data && data.map(({company, discountPrice,during, endPlace,endTime,layover,originPrice,planeDate,site,startPlace,startTime,companyImg,url }) => (
+                 {plane && plane.map(({company, discountPrice,during, endPlace,endTime,layover,originPrice,planeDate,site,startPlace,startTime,companyImg,url }) => (
                  <Smallairbox onClick={() => goToUrl(url)} >
                 <div className="small-box">
                  <Aircompanybox>
@@ -99,7 +93,7 @@ const FavoriteDetail = () => {
                         {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
                     </div>
                     <img src={`${companyImg}`} alt="" />
-                    <div className="company-box">{company}</div>
+                    <div className="company-box">{truncateString(company,7)}</div>
                  </Aircompanybox>
                  <Airplacebox>
                      <div className="layover">
@@ -108,17 +102,17 @@ const FavoriteDetail = () => {
                      </div>
                      <div className="air-place">
                          <div>
-                             <div>{startPlace.substr(0,3)}</div>
+                             <div>{startPlace ? startPlace.substr(0,3) : 'N/A'}</div>
                              <div>{startTime}</div>
                          </div>
                          <IoAirplaneSharp className="air-icon"></IoAirplaneSharp> 
                          <div>
-                             <div>{endPlace.substr(0,3)}</div>
+                             <div>{endPlace ? endPlace.substr(0,3) : 'N/A'}</div>
                              <div>{endTime}</div>
                          </div>
                      </div>
                      <div className="price-box">
-                         {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
+                         {/* {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))} */}
                          <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
                      </div>
                  </Airplacebox>
@@ -130,9 +124,9 @@ const FavoriteDetail = () => {
          <Hotelbox>
              <div className="hotelfont">숙박</div>
              <Slider {...settings}>
-             {data2 && data2.map(({hotelName,discountPrice,end,img,originPrice,site,start,url }) => (
+             {hotel && hotel.map(({hotelName,discountPrice,end,img,originPrice,site,start,url }) => (
              <Hotelcontent onClick={() => goToUrl(url)}>
-                  {( img === 0)? (<RanHotelimg src={"/cardlogo/hotel.png"} alt="img" />):(<Hotelimg src={`${img}`} alt="img" />)}
+                  {( img === "0")? (<RanHotelimg src={"/cardlogo/hotel.png"} alt="img" />):(<Hotelimg src={`${img}`} alt="img" />)}
                  <div className="hotel-content">
                      <Hoteldate>
                          {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/agoda.png"} alt="logo" />))}
@@ -148,11 +142,12 @@ const FavoriteDetail = () => {
              ))}
              </Slider>
          </Hotelbox>
-     </Content>
+     </Content>))}
 </>
     </Container>
     )}
 export default FavoriteDetail
+
 
 const Favoritebox = styled.div`
     display: flex;
@@ -196,7 +191,11 @@ const Hoteldate = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1vh;
+    margin-bottom: 4vh;
+    & > div{
+        margin-top: 1vh;
+        height: 1vh;
+    }
 `
 
 
@@ -225,7 +224,7 @@ const Discountprice2 = styled.div`
 const Container = styled.div`
   margin-top: 30px;
   margin-bottom: 20px;
-  height: 100vh;
+  height: 60vh;
   width: 100%;
 
   .Navecontainer{
@@ -258,7 +257,7 @@ const Smallairbox = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 30%;
+    width: 100%;
     height: 100%;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
@@ -276,9 +275,8 @@ const Airplacebox = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    justify-items: end;
     align-items: center;
-    margin-top: 1.4vh;
+    margin-top: 3vh;
     margin-right: 0.4vh;
 
     .layover{
@@ -295,6 +293,10 @@ const Airplacebox = styled.div`
         justify-content: space-between;
         align-items: center;
         width: 90%;
+        margin-top: 2vh;
+        height: 4vh;
+        font-size: 17px;
+        margin-bottom: 2vh;
     }
     .air-icon{
         color: #9AC5F4;
@@ -323,7 +325,6 @@ const Aircompanybox = styled.div`
     width: 90%;
     height: 100%;
 
-
     .company-box{
         height: 5vh;
         display: flex;
@@ -335,7 +336,6 @@ const Aircompanybox = styled.div`
     .site-box{
         width: 100%;
         height: 2vh;
-        margin-top: 0.5vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -348,14 +348,12 @@ const Aircompanybox = styled.div`
         position: relative;
         left: 58%;
         background-color: white;
-
-
     
 }
     & > img {
      width: 4vh;
-     margin-top: 4vh;
-     margin-bottom: 2vh;
+     margin-top: 2vh;
+     margin-bottom: 0.5vh;
  }
  
 `
@@ -421,6 +419,7 @@ const Hotelcontent = styled.div`
         margin-left: 3vw;
     }
     .hotelname{
+        margin-bottom: 2vh;
     }
 
 `

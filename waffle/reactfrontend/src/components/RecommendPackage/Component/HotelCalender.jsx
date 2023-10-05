@@ -16,12 +16,8 @@ class CalendarComponent extends Component {
         const [start, end] = dates;
         
         // 첫 번째 선택일로부터 2일 후의 날짜 계산
-        const maxDate = start ? new Date(start.getTime()) : null;
-        if (maxDate) {
-            maxDate.setDate(maxDate.getDate() + 2);
-        }
 
-        this.setState({ startDate: start, endDate: end, maxDate: maxDate });
+        this.setState({ startDate: start, endDate: end });
 
         this.props.onChange({ start, end })
     };
