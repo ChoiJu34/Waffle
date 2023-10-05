@@ -83,6 +83,8 @@ public class TripPackageService {
 				.during(planeDto.getDuring())
 				.site(planeDto.getSite())
 				.card(planeDto.getCard())
+				.url(planeDto.getUrl())
+				.companyImg(planeDto.getCompanyImg())
 				.favoritePackage(favoritePackage)
 				.build();
 			favoritePlaneRepository.save(favoritePlane);
@@ -132,6 +134,8 @@ public class TripPackageService {
 				packagePlaneDto.setDuring(favoritePlane.getDuring());
 				packagePlaneDto.setSite(favoritePlane.getSite());
 				packagePlaneDto.setCard(favoritePlane.getCard());
+				packagePlaneDto.setUrl(favoritePlane.getUrl());
+				packagePlaneDto.setCompanyImg(favoritePlane.getCompanyImg());
 				packagePlaneDtos.add(packagePlaneDto);
 			}
 			for(FavoriteHotel favoriteHotel : hotelList){
