@@ -17,7 +17,7 @@ import tossBankLogo from '../../assets/tossbanklogo.png'
 import wooriLogo from '../../assets/woorilogo.png'
 
 
-const Signup = () => {
+const TeamAccountAddNew = () => {
 
 // 모달 관리
 const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,20 +40,20 @@ const closeModal = () => {
     company: ''
   })
 
-  useEffect = (() => {
-    handleInputChange()
-  }, [formData.name, formData.goal, formData.endDay, formData.accountNumber, formData.company])
+  // useEffect(() => {
+  //   handleInputChange()
+  // }, [formData.name, formData.goal, formData.endDay, formData.accountNumber, formData.company])
 
-  useEffect = (() => {
-    onChangeBirthdate()
-  }, [formData.endDay])
+  // useEffect(() => {
+  //   onChangeBirthdate()
+  // }, [formData.endDay])
 
-  useEffect = (() => {
+  useEffect(() => {
     handleBankSelect()
     handleTelBlur()
-  }, [formData.tel])
+  }, [formData.accountNumber])
 
-  useEffect = (() => {
+  useEffect(() => {
     if (formData.company !== "") {
       setIsTelComplete(true);
     } else {
@@ -323,31 +323,6 @@ const handleChange = (e) => {
       })
   }
 
-  // 이메일 인증
-  const [loading, setLoading] = useState(false)
-
-  const handleEmailVerification = (e) => {
-
-    e.preventDefault()
-
-    setLoading(true)
-
-    axios.post(`/user/verify-email`, { email: formData.email })
-      .then((response) => {
-        if (response.data.message === "DUPLICATE") {
-          alert('이미 가입된 이메일입니다')
-          return
-        }
-        alert('입력하신 메일로 인증코드가 전송되었습니다')
-        navigate('/user/verify-email', {state: { email: formData.email, name: formData.name, birthday: formData.birthday, tel: formData.tel }})
-      })
-      .catch((error) => {
-        console.log('이메일 인증 메일 전송 실패')
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -414,6 +389,7 @@ const handleTargetValue = (e) => {
 }
 
 console.log(formData)
+console.log(isBirthdate)
 
   return (
     <SignupWrapper>
@@ -1089,4 +1065,4 @@ const BankLabel = styled.p`
   width: 100%;
 `;
 
-export default Signup
+export default TeamAccountAddNew

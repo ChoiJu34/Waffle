@@ -19,7 +19,6 @@ import axios from "axios";
 const PackageList = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [favorite, setFavorite] = useState()
     const data = [location.state.value.package];
     const favoritedata = location.state.value.package
     const favoritedata2 = location.state.value.userPackage
@@ -169,7 +168,7 @@ const PackageList = () => {
              <Content>
              <Favoritebox>
                  <div>{card}</div>
-                 {(trueFavorite === false? (<AiOutlineStar size={30} color="#9AC5F4" backgroundcolor="red" onClick={()=> PostFavorite()}>즐겨찾기</AiOutlineStar>):(<AiFillStar className="start" size={30} onClick={()=> UnFavorite()}>즐겨찾기</AiFillStar>))}
+                 {(trueFavorite === false? (<AiOutlineStar size={30} color="#9AC5F4" onClick={()=> PostFavorite()}>즐겨찾기</AiOutlineStar>):(<AiFillStar className="start" size={30} onClick={()=> UnFavorite()}>즐겨찾기</AiFillStar>))}
              </Favoritebox>
              <Airbox>
                  <div className="airfont">항공권</div>

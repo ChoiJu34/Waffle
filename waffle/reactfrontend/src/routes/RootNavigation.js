@@ -107,7 +107,7 @@ const RootNavigation = () => {
           <Route path="/teamaccount/out" element={<TeamAccountOut />} />
           <Route path="/teamaccount/delete" element={<TeamAccountDelete />} />
           <Route path="/mypage/mycard" element={<MyCard />} />
-          <Route path="/mycard/card-register" element={<CardRegister />} />
+          <Route path="/mypage/card-register" element={<CardRegister />} />
         </Route>
       </Routes>
     </BrowserRouter>

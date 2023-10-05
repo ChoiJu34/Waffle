@@ -13,7 +13,7 @@ const MainPage = () => {
 
   // 이미지 회전하는 속도에 맞춰 글자 변환
   const [text, setText] = useState('최저가 항공권');
-  const texts = ['최저가 항공권', '맞춤 카드', '환율 예측', '모임 통장'];
+  const texts = ['최저가 항공권', '맞춤 카드', '모임 통장', '경비 절약'];
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const MainPage = () => {
 
 
   // 일정 수준 스크롤되어야 요소가 나타나도록 하기
-  const [showPackage, setShowPackage] = useState(false);
+  const [showPackage, setShowPackage] = useState(true);
   const [showCard, setShowCard] = useState(false);
   const [showExchange, setShowExchange] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
@@ -49,9 +49,6 @@ const MainPage = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 70) {
-        setShowPackage(true);
-      }
       if (window.scrollY > 300) {
         setShowCard(true);
       }
