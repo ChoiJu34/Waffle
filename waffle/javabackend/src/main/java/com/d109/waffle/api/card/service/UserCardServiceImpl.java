@@ -159,8 +159,9 @@ public class UserCardServiceImpl implements UserCardService {
     public List<UserCardListDto> getUserCardList(String authorization) throws Exception {
         Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
         if(!userEntity.isPresent()) {
-            throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+            throw new Exception("사용자 정보를 찾을 수 없습니다.");
         }
+        // log.info("usercardlist: {}", userCardRepository.findByUserEntity_IdAndGetCardNameList(userEntity.get().getId()));
         return userCardRepository.findByUserEntity_IdAndGetCardNameList(userEntity.get().getId());
     }
 
@@ -168,8 +169,11 @@ public class UserCardServiceImpl implements UserCardService {
     public void deleteUserCard(String authorization, int id) throws Exception {
         Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
         if(!userEntity.isPresent()) {
-            throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+            throw new Exception("사용자 정보를 찾을 수 없습니다.");
         }
-        userCardRepository.deleteByUserEntity_IdAndCardEntity_Id(userEntity.get().getId(), id);
+        if(userCardRepository.findById(id).get().getUserEntity().getId() != userEntity.get().getId()) {
+            throw new Exception("본인의 카드가 아닙니다.");
+        }
+        userCardRepository.deleteById(id);
     }
 }
