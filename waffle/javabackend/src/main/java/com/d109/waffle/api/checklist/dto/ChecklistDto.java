@@ -20,7 +20,7 @@ import lombok.ToString;
 @DynamicUpdate
 public class ChecklistDto {
 	int checklistListId;
-	int price;
+	String price;
 	String currency;
 	String content;
 	int order;

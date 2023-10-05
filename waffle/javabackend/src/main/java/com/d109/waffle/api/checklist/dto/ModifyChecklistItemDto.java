@@ -21,7 +21,7 @@ import lombok.ToString;
 public class ModifyChecklistItemDto {
 	int id;
 	String content;
-	int price;
+	String price;
 	int order;
 	String currency;
 	int when;
