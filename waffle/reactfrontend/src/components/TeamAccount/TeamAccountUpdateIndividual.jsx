@@ -94,7 +94,7 @@ const TeamAccountUpdateIndividual = () => {
 
       <TeamAccountUpdateIndividualList sentData={sentData} updateGoal={updateGoal}/>
 
-      <button onClick={updateSubmit}>수정하기</button>
+      <button className="update-button" onClick={updateSubmit}>수정하기</button>
     </TeamAccountUpdateIndividualWrapper>
   )
 }
@@ -119,6 +119,18 @@ const TeamAccountUpdateIndividualWrapper = styled.div`
     width: 80%;
     margin: 1.5vh auto;
     background-color: #000004;
+  }
+
+  .update-button {
+      width: 13vh;
+      height: 5vh;
+      border-radius: 15px;
+      border: none;
+      background-color: #9AC5F4;
+      color: white;
+      font-weight: 800;
+      font-size: 2.3vh;
+      margin-top: 2vh;
   }
 `
 
