@@ -30,7 +30,7 @@ public class CountryChecklist {
 	int id;
 	String country;
 	String content;
-	int price;
+	String price;
 	String currency;
 	int order;
 }

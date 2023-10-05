@@ -34,7 +34,7 @@ public class Checklist {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	String content;
-	int price;
+	String price;
 	String currency;
 	byte check;
 	int order;
