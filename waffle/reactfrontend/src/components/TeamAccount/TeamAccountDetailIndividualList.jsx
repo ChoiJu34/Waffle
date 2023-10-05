@@ -35,6 +35,25 @@ const TeamAccountDetailIndividualList = () => {
     })
   }, [])
 
+  const rerender = () => {
+    const id = window.location.pathname.match(/\d+$/)?.[0];
+
+    if (!id) {
+      console.error('ID를 찾을 수 없습니다.');
+      return;
+    }
+
+    axios.get(`/team-account/member-list/${id}`, {headers})
+    .then(response => {
+      console.log(response.data.list)
+      setTeamAccountIndividual(response.data.list)
+    })
+    .catch(error => {
+      console.error('대실패')
+      alert('리스트 못가져옴')
+    })
+  }
+
   console.log(teamAccountIndividual)
 
    return (
@@ -45,7 +64,7 @@ const TeamAccountDetailIndividualList = () => {
         </div>) : (
         <>
         {teamAccountIndividual?.map((data, index) => (
-          <TeamAccountDetailIndividualItem key={data.id} data={data} index={index} />
+          <TeamAccountDetailIndividualItem key={data.id} data={data} index={index} rerender={rerender}/>
         ))}
         </>
         )}
