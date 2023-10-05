@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
+import edit from '../../assets/edit.png'
+import save from '../../assets/save.png'
 
-const TeamAccountDetailIndividualItem = ({ data, index }) => {
+const TeamAccountDetailIndividualItem = ({ data, index, rerender }) => {
 
     const individualName = data?.name
     const individualTarget = data?.goal
@@ -57,9 +60,81 @@ const TeamAccountDetailIndividualItem = ({ data, index }) => {
       return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  const token = localStorage.getItem('access_token')
+
+  const headers = {
+    "Authorization": "Bearer " + token
+  }
+
+  const [isMine, setIsMine] = useState(false)
+
+  const id = window.location.pathname.match(/\d+$/)?.[0];
+
+  useEffect (() => {
+    axios.get(`/team-account/get-groupId/${id}`, { headers: headers })
+    .then(response => {
+      if (response.data.id === data.id) {
+        setIsMine(true)
+      }
+    })
+    .catch(error => {
+      console.error('넌 못 지운다');
+    })
+  }, [])
+
+  const [editing, setEditing] = useState(false)
+
+  const [nickname, setNickname] = useState({
+    id: data.id,
+    nickname: data.name
+  })
+
+  const [rerendering, setRerendering] = useState(1)
+
+  const startEdit = () => {
+    setEditing(true)
+  }
+
+  const endEdit = () => {
+    setEditing(false)
+
+    axios.put(`/team-account/update-nickname/`, nickname, { headers: headers })
+    .then(response => {
+      setRerendering(rerendering * -1)
+      rerender()
+    })
+    .catch(error => {
+      alert('닉네임 수정 실패')
+      console.error('넌 못 지운다');
+    })
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNickname((prevData) => {
+        const newData = { ...prevData, [name]: value };
+        return newData;
+    });
+  }
+
     return (
       <TeamAccountDetailIndividualItemWrapper raisedRatio={raisedRatio}>
-        <div className="individual-name">{individualName}</div>
+        <div className="individual-name-conatiner">
+          <div className="individual-name">
+            {editing ? 
+            (<>
+              <input className="edit-nickname" value={nickname.nickname} onChange={handleChange} name="nickname"/>
+              <img src={save} alt="save" className="edit" onClick={endEdit}></img>
+            </>) : 
+            (
+              <>
+              {individualName}{isMine && <img src={edit} alt="edit" className="edit" onClick={startEdit} />}
+              </>
+            )
+            }
+          </div> 
+          
+        </div>
         <div className="individual-graph">
           <div 
             data-type="target"
@@ -95,18 +170,21 @@ margin-top: 3vh;
 .individual-name {
   text-align: left;
   margin-left: 7.5vw;
-  font-size: 2vh;
+  font-size: 4.5vw;
+  display: flex;
+  width: 80vw;
+  justify-content: space-between;
 }
 
 .individual-graph {
-  margin-top: 1.5vh;
+  margin-top: 3vw;
   display: flex;
   justify-content: center;
  }
 
  .individual-graph-target {
   width: 80vw;
-  height: 2vh;
+  height: 4.5vw;
   background-color: #e7e7e7;
   border-radius: 15px;
   position: relative;
@@ -118,7 +196,7 @@ margin-top: 3vh;
   top: 0;
   left: 0;
   width: ${props => props.raisedRatio}%;
-  height: 2vh;
+  height: 4.5vw;
   background-color: #FAB7B7;
   border-radius: 15px;
   z-index: 2;
@@ -137,6 +215,34 @@ margin-top: 3vh;
   overflow: hidden;
   text-overflow: ellipsis;
   transform: translateX(0%) translateY(-50%);
+}
+
+.individual-name-container {
+  display: flex;
+}
+
+.edit {
+  height: 3.5vw;
+}
+
+.edit-nickname {
+  display: block;
+  width: 75vw;
+  color: #909090;
+  border: 0;
+  background-color: transparent;
+  box-sizing: border-box;
+  border-radius: 0;
+  padding: 0;
+  height: 10vw;
+  line-height: 1.33;
+  font-size: 4.5vw;
+  font-family: inherit;
+  vertical-align: baseline;
+  -webkit-appearance: none;
+  overflow: visible;
+  outline: none;
+  height: 4.5vw;
 }
 `
 
