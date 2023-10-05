@@ -62,6 +62,37 @@ const CardRegister = () => {
     }
   };
 
+  const handleCardNumber = () => {
+    const value = inputNumberRef.current.value.replace(/\D+/g, "");
+    const numberLength = 16;
+
+    let result;
+    result = "";
+
+    for (let i=0; i<value.length && i < numberLength; i++) {
+      switch (i) {
+        case 4:
+          result += "-";
+          break;
+        case 8:
+          result += "-";
+          break;
+        case 12:
+          result += "-";
+          break;
+        default:
+          break;
+      }
+      result += value[i];
+    }
+    inputNumberRef.current.value = result;
+  };
+
+  const handelCardNumberCahnge = (e) => {
+    handleCardNumber(e);
+    handleChange(e);
+  }
+
   // 유효 기간
   const [isDateFocused, setIsDateFocused] = useState(false);
   const [isDateComplete, setIsDateComplete] = useState(false);
@@ -121,7 +152,7 @@ const CardRegister = () => {
             onFocus={handleNumberFocus}
             onBlur={handleNumberBlur}
             onChange={(e) => {
-              handleChange(e);
+              handelCardNumberCahnge(e);
             }}
             value={formData.number}
             name="number"
