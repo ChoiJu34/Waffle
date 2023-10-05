@@ -59,10 +59,8 @@ const TeamAccountUpdate = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-
-    window.scrollTo(0, 0)
     
-    navigate('/teamaccount/main');
+    navigate(-1);
   }
 
   // 통장 이름 입력 칸
@@ -325,22 +323,21 @@ const TeamAccountUpdateWrapper = styled.div`
 
   .teamaccount-update-accountname > input{
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .teamaccount-update-accountname > input:focus{
@@ -397,22 +394,21 @@ const TeamAccountUpdateWrapper = styled.div`
 
   .teamaccount-update-target > input{
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .teamaccount-update-target > input:focus{
@@ -464,22 +460,21 @@ const TeamAccountUpdateWrapper = styled.div`
 
   .teamaccount-update-enddate > input{
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .teamaccount-update-enddate > input:focus{

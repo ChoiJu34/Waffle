@@ -420,7 +420,7 @@ console.log(isBirthdate)
         
         <div className={`signup-password-verify ${isTelFocused ? 'focus' : ''} ${isTelComplete ? 'complete' : ''}`}>
           <label id="signup-label">은행</label>
-          <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} name="company" onClick={openModal} autoComplete='off' value={chosenBank} readonly/>
+          <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} name="company" onClick={openModal} autoComplete='off' value={chosenBank} readonly inputmode="none"/>
         </div>
 
         <ModalOverlay isOpen={isModalOpen} onClick={closeModal} />
@@ -517,22 +517,21 @@ const SignupWrapper = styled.div`
 
   .signup-email > input{
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-email > input:focus{
@@ -605,22 +604,21 @@ const SignupWrapper = styled.div`
 
   .signup-password > input{
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-password > input:focus{
@@ -672,22 +670,21 @@ const SignupWrapper = styled.div`
 
   .signup-password-verify > input{
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-password-verify > input:focus{
@@ -739,22 +736,21 @@ const SignupWrapper = styled.div`
 
   .signup-name > input{
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-name > input:focus{
@@ -806,22 +802,21 @@ const SignupWrapper = styled.div`
 
   .signup-birthdate > input{
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-birthdate > input:focus{
@@ -873,22 +868,21 @@ const SignupWrapper = styled.div`
 
   .signup-tel > input{
     display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 5vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-tel > input:focus{

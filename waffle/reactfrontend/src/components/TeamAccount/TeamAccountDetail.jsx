@@ -345,8 +345,8 @@ const LandingAnimation = keyframes`
 
 const TeamAccountDetailWrapper = styled.div`
 .teamaccount-detail-title {
-    font-size: 3vh;
-    margin-top: 4vh;
+    font-size: 6.5vw;
+    margin-top: 9vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -355,13 +355,13 @@ const TeamAccountDetailWrapper = styled.div`
 
 .hamburger-dot {
     position: absolute;
-    right: 1.5vh;
+    right: 4vw;
 }
 
  .teamaccount-detail-maingraph-category {
   display: flex;
-  font-size: 1.7vh;
-  margin-top: 4vh;
+  font-size: 3.7vw;
+  margin-top: 9vw;
  }
 
  .teamaccount-detail-maingraph-category-spent {
@@ -370,7 +370,7 @@ const TeamAccountDetailWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 15vw;
-  height: 2.8vh;
+  height: 6.2vw;
   border-radius: 50px;
   background-color: #B0BDCB;
  }
@@ -381,7 +381,7 @@ const TeamAccountDetailWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 15vw;
-  height: 2.8vh;
+  height: 6.2vw;
   border-radius: 50px;
   background-color: #9AC5F4;
  }
@@ -392,20 +392,20 @@ const TeamAccountDetailWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 15vw;
-  height: 2.8vh;
+  height: 6.2vw;
   border-radius: 50px;
   background-color: #FFEEBB;
  }
 
  .teamaccout-detail-maingraph {
-  margin-top: 1.5vh;
+  margin-top: 3.5vw;
   display: flex;
   justify-content: center;
  }
 
  .teamaccount-detail-maingraph-target {
   width: 85vw;
-  height: 7vh;
+  height: 14vw;
   background-color: #FFEEBB;
   border-radius: 15px;
   position: relative;
@@ -417,7 +417,7 @@ const TeamAccountDetailWrapper = styled.div`
   top: 0;
   left: 0;
   width: ${props => props.spentRatio}%;
-  height: 7vh;
+  height: 14vw;
   background-color: #B0BDCB;
   border-radius: 15px;
   z-index: 3;
@@ -428,7 +428,7 @@ const TeamAccountDetailWrapper = styled.div`
   top: 0;
   left: 0;
   width: ${props => props.raisedRatio}%;
-  height: 7vh;
+  height: 14vw;
   background-color: #9AC5F4;
   border-radius: 15px;
   z-index: 2;
@@ -480,27 +480,27 @@ const TeamAccountDetailWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 15vw;
-  height: 2.8vh;
+  height: 6.5vw;
   border-radius: 50px;
 }
 
 .team-account-detail-individual-head-container {
   display: flex;
   justify-content: center;
-  margin-top: 2vh;
+  margin-top: 5vw;
   overflow: hidden;
-  height: 2vh;
+  height: 5vw;
 }
 
 .team-account-detail-individual-head {
   border: 3px solid #9AC5F4;
-  height: 5vh;
+  height: 10vw;
   border-radius: 15px;
   width: 85vw;
 }
 
 .team-account-detail-individual-title {
-  font-size: 2.5vh;
+  font-size: 6vw;
 }
 
 .menu {
@@ -512,7 +512,7 @@ const TeamAccountDetailWrapper = styled.div`
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 40000;
-  font-size: 2vh;
+  font-size: 4.5vw;
 }
 
 .menu-item {
@@ -527,11 +527,11 @@ const TeamAccountDetailWrapper = styled.div`
 .login-header {
   position: absolute;
   left: 0.1vw;
-  margin: 1.2vh 2vh;
+  margin: 1.2vw 2vh;
 }
 
 .teamaccount-detail-code-container {
-  height: 2vh;
+  height: 5vw;
   width: 100vw;
   display: flex;
   align-items: center;
@@ -539,9 +539,9 @@ const TeamAccountDetailWrapper = styled.div`
 }
 
 .teamaccount-detail-code {
-  margin-top: 4vh;
+  margin-top: 10vw;
   margin-right: 10vw;
-  height: 3vh;
+  height: 7vw;
   width: 20vw;
   background-color: #99DBF5;
   border-radius: 15px;
