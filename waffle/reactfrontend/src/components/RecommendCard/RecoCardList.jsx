@@ -4,6 +4,13 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import travel from '../../assets/travel.png'
+import wallet from '../../assets/wallet.png'
+import {PiAirplaneTiltDuotone} from "react-icons/pi"
+import {GrMoney} from "react-icons/gr"
+import {HiOutlineBuildingStorefront} from "react-icons/hi2"
+import {BsCreditCard} from "react-icons/bs"
+import {FaEarthAmericas} from "react-icons/fa6"
 
 const RecoCardList = (props) => {
   const navigate = useNavigate();
@@ -32,6 +39,9 @@ const RecoCardList = (props) => {
       },
     });
   };
+  function goToUrl(url) {
+    window.open(url, '_blank');
+  }
 
   return (
     <Container>
@@ -52,19 +62,69 @@ const RecoCardList = (props) => {
                   <Cardboxtitle>최적의 카드</Cardboxtitle>
                 ) : recommendNumber === 2 ? (
                   <Cardboxtitle>많은 혜택</Cardboxtitle>
-                ) : (
-                  <Cardboxtitle>환전</Cardboxtitle>
-                  
-                )}      
-                <Cardimgbox>
+                ) : (<Cardboxtitle>환전</Cardboxtitle>)}
+
+
+                {cardName === "트래블로그" ? (<Cardimgbox>
+                  <img
+                    src={travel}
+                    alt="카드사진"
+                    onClick={() => imgClick(cardId, originalPrice, discountPrice)}
+                  />
+                </Cardimgbox>
+                ) : cardName === "트래블월렛" ? (<Cardimgbox>
+                  <img
+                    src={wallet}
+                    alt="카드사진"
+                    onClick={() => imgClick(cardId, originalPrice, discountPrice)}
+                  />
+                </Cardimgbox>)
+                : (<Cardimgbox>
                   <img
                     src={`https://j9d109.p.ssafy.io/downloads/${cardId}.png`}
                     alt="카드사진"
                     onClick={() => imgClick(cardId, originalPrice, discountPrice)}
                   />
-                </Cardimgbox>
+                </Cardimgbox>)}
+
+
+
                 <Cardnamefont>{cardName}</Cardnamefont>
-                <Getbox>
+
+
+                {cardName === "트래블로그" ? (<Getbox>
+                  <Getsmallbox2>
+                    <PiAirplaneTiltDuotone size={30} ></PiAirplaneTiltDuotone>
+                    <div>
+                      해외 가맹점 이용 수수료 면제서비스
+                    </div>
+                  </Getsmallbox2>
+                  <Getsmallbox2>
+                    <GrMoney size={30} ></GrMoney>
+                    <div>해외 ATM 인출 수수료 면제서비스</div>
+                  </Getsmallbox2>
+                  <Getsmallbox2>
+                    <HiOutlineBuildingStorefront size={30}></HiOutlineBuildingStorefront>
+                    <div>국내 가맹점 하나머니적립</div>
+                  </Getsmallbox2>
+                </Getbox>
+                ) : cardName === "트래블월렛" ? (<Getbox>
+                  <Getsmallbox2>
+                    <BsCreditCard size={30}></BsCreditCard>
+                    <div>
+                    카드 한장에 다양한 외화 충전
+                    </div>
+                  </Getsmallbox2>
+                  <Getsmallbox2>
+                    <FaEarthAmericas size={30}>이용금 혜택</FaEarthAmericas>
+                    <div>전세계 어디서든 수수료 부담 없이</div>
+                  </Getsmallbox2>
+                  <Getsmallbox2>
+                    <GrMoney size={30}></GrMoney>
+                    <div>잔돈 걱정 없이 전액 환불 가능</div>
+                  </Getsmallbox2>
+                </Getbox>)
+                : (<Getbox>
                   <Getsmallbox>
                     <div>면세점 혜택</div>
                     <div>
@@ -79,8 +139,14 @@ const RecoCardList = (props) => {
                     <p>총 혜택</p>
                     <p>{getPrice?.["total"].toLocaleString("ko-KR")}원</p>
                   </Getsmallbox>
-                </Getbox>
-                <Totalbox>
+                </Getbox>)}
+
+
+                {cardName === "트래블로그" ? (<>
+                </>
+                ) : cardName === "트래블월렛" ? (<>
+                </>)
+                : (<Totalbox>
                   <p className="origintotal">
                     {originalPrice?.["total"].toLocaleString("ko-KR")}원
                   </p>
@@ -89,7 +155,7 @@ const RecoCardList = (props) => {
                       {discountPrice?.["total"].toLocaleString("ko-KR")}원
                     </div>
                   </div>
-                </Totalbox>
+                </Totalbox>)}
               </Contentbox>
             )
           )}
@@ -99,6 +165,7 @@ const RecoCardList = (props) => {
 };
 
 export default RecoCardList;
+
 const Nonecardbox = styled.div`
     margin-bottom: 9vw;
 `
@@ -236,5 +303,21 @@ const Getsmallbox = styled.div`
   align-content: space-around;
   & > p {
     font-size: 25px;
+  }
+`;
+const Getsmallbox2 = styled.div`
+  width: 90%;
+  margin-bottom: 12vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  justify-items: center;
+  & > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
 `;
