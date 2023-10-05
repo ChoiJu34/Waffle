@@ -13,13 +13,13 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { setToken, requestPostNode, deleteToken } from "../../lib/api";
-import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { IoAirplaneSharp } from "react-icons/io5";
 import { AiOutlineClose } from "react-icons/ai";
 import { AiFillCalendar } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom'; 
 import { Link } from "react-router-dom";
+
 
 const PackageMain = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,6 +44,7 @@ const PackageMain = () => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const navigate = useNavigate()
   const url = "https://dinorunner.com/ko/"
+  
   const settings = {
     dots: true,
     infinite: true,
@@ -426,7 +427,7 @@ const LoadingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(var(--vh, 1vh) * 100);
+  height: calc(var(--vh, 1vh) * 80);
 `;
 
 const LoadingSpinner = styled.div`
@@ -529,6 +530,7 @@ const Plusbox = styled.div`
     font-size: 25px;
   }
 `;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -536,7 +538,7 @@ const Container = styled.div`
   justify-content: center;
   margin-top: 30px;
   width: 100%;
-  height: calc(var(--vh, 1vh) * 40);
+  height: 100%;
   padding-bottom: 20px;
   & > span {
     font-size: 25px;
@@ -563,7 +565,6 @@ const Container = styled.div`
     margin: 10px;
   }
 
-  /* 포커스 시 테두리 색상 변경 */
   .hotelday-box {
     padding: 10px;
     margin-bottom: 30px;
@@ -598,8 +599,8 @@ const PlusMinusButton = styled.button`
 `;
 
 const Peoplebox = styled.div`
-  width: 340px; // 고정된 컨테이너 너비
-  height: 100px;
+  width: 90%; // 고정된 컨테이너 너비
+  height: 10vh;
   border: 1px solid #b3b1b1;
   border-radius: 7px;
   margin-bottom: 30px;
@@ -611,8 +612,7 @@ const Peoplebox = styled.div`
 `;
 
 const Airbox = styled.div`
-  width: 340px;
-  height: auto;
+  width: 90%;
   border: 1px solid #b3b1b1;
   border-radius: 7px;
   margin-bottom: 30px;
@@ -622,7 +622,7 @@ const Airbox = styled.div`
   justify-content: space-around;
 `;
 const Hotelbox = styled.div`
-  width: 340px;
+  width: 90%;
   border: 1px solid #b3b1b1;
   border-radius: 7px;
   margin-bottom: 10px;

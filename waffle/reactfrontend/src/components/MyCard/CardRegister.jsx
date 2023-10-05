@@ -1,10 +1,17 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const CardRegister = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const token = localStorage.getItem("access_token");
+
+  const headers = {
+    Authorization: "Bearer " + token,
+  };
 
   const numberFromPrevious = location.state?.number || "";
   const dateFromPrevious = location.state?.date || "";
@@ -15,6 +22,19 @@ const CardRegister = () => {
     date: dateFromPrevious,
     nickname: nicknameFromPrevious,
   });
+
+  const cardRegister = async () => {
+    const params = {
+      cardBin: formData.number.replace("-", "").slice(0, 6),
+      cardNumber: formData.number,
+      cardNickname: formData.nickname,
+      cardValidDate: formData.date,
+    };
+
+    await axios.post(`/user-card/add`, params, { headers });
+
+    navigate(-1);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +62,37 @@ const CardRegister = () => {
     }
   };
 
+  const handleCardNumber = () => {
+    const value = inputNumberRef.current.value.replace(/\D+/g, "");
+    const numberLength = 16;
+
+    let result;
+    result = "";
+
+    for (let i=0; i<value.length && i < numberLength; i++) {
+      switch (i) {
+        case 4:
+          result += "-";
+          break;
+        case 8:
+          result += "-";
+          break;
+        case 12:
+          result += "-";
+          break;
+        default:
+          break;
+      }
+      result += value[i];
+    }
+    inputNumberRef.current.value = result;
+  };
+
+  const handelCardNumberChange = (e) => {
+    handleCardNumber(e);
+    handleChange(e);
+  }
+
   // 유효 기간
   const [isDateFocused, setIsDateFocused] = useState(false);
   const [isDateComplete, setIsDateComplete] = useState(false);
@@ -59,6 +110,31 @@ const CardRegister = () => {
       setIsDateComplete(true);
     }
   };
+
+  const handleDate = (e) => {
+    const value = inputDateRef.current.value.replace(/\D+/g, "");
+    const numberLength = 4;
+
+    let result;
+    result = "";
+
+    for (let i=0; i<value.length && i < numberLength; i++) {
+      switch (i) {
+        case 2:
+          result += "/";
+          break;
+        default:
+          break;
+      }
+      result += value[i];
+    }
+    inputDateRef.current.value = result;
+  }
+
+  const handleDateChange = (e) => {
+    handleDate(e);
+    handleChange(e);
+  }
 
   // 닉네임
   const [isNicknameFocused, setIsNicknameFocused] = useState(false);
@@ -82,7 +158,9 @@ const CardRegister = () => {
     <CardRegisterWrapper>
       <RegisterHeader>
         <div onClick={() => navigate(-1)}>취소</div>
-        <div style={{ color: "#9ac5f4" }}>등록</div>
+        <div onClick={cardRegister} style={{ color: "#9ac5f4" }}>
+          등록
+        </div>
       </RegisterHeader>
       <Title>사용 중인 카드를 등록해주세요</Title>
       <form>
@@ -99,7 +177,7 @@ const CardRegister = () => {
             onFocus={handleNumberFocus}
             onBlur={handleNumberBlur}
             onChange={(e) => {
-              handleChange(e);
+              handelCardNumberChange(e);
             }}
             value={formData.number}
             name="number"
@@ -119,6 +197,7 @@ const CardRegister = () => {
             onFocus={handleDateFocus}
             onBlur={handleDateBlur}
             onChange={(e) => {
+              handleDateChange(e);
               handleChange(e);
             }}
             value={formData.date}
@@ -192,7 +271,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number > label {
-    top: 27vh;
+    top: 29vh;
     position: absolute;
     left: 9vh;
     max-width: 100%;
@@ -212,7 +291,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number.focus > label {
-    top: 25vh;
+    top: 27vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -220,7 +299,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number.complete > label {
-    top: 25vh;
+    top: 27vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -261,7 +340,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date > label {
-    top: 35vh;
+    top: 37vh;
     position: absolute;
     left: 9vh;
     max-width: 100%;
@@ -281,7 +360,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date.focus > label {
-    top: 33vh;
+    top: 35vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -289,7 +368,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date.complete > label {
-    top: 33vh;
+    top: 35vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -330,7 +409,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname > label {
-    top: 43vh;
+    top: 45vh;
     position: absolute;
     left: 9vh;
     max-width: 100%;
@@ -350,7 +429,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname.focus > label {
-    top: 41vh;
+    top: 43vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -358,7 +437,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname.complete > label {
-    top: 41vh;
+    top: 43vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;

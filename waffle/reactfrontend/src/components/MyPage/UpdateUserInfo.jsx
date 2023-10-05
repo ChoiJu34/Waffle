@@ -288,7 +288,7 @@ const UpdateUserInfo = () => {
         </div>
 
         <div className={`update-userinfo-password-for-update ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
-          <label id="signup-label">비밀번호</label>
+          <label id="signup-label">새 비밀번호</label>
           <input type="password" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {onChangePassword(e); handleChangeInfo(e)}} placeholder={showPasswordPlaceholder ? "영문, 숫자, 특수문자를 포함한 8자리 이상" : ""} value={userData.newPassword} name="newPassword"/>
         </div>
 

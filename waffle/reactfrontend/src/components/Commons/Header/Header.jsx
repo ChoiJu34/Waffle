@@ -154,7 +154,6 @@ useEffect(() => {
         )}
         <li className="sebu-package" onClick={goToPackage}>패키지 추천</li>
         <li className="sebu-recocard" onClick={goToCard}>카드 추천</li>
-        <li className="sebu-exchange">환율</li>
         <li className="sebu-teamaccount" onClick={goToTeamAccount}>모임통장</li>
       </ul>
       
