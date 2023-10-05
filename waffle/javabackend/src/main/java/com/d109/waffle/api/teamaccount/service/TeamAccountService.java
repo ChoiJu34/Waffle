@@ -20,4 +20,5 @@ public interface TeamAccountService {
     public String createInviteCode(String authorization, int accountId);
     public void addInvite(String authorization, InviteCodeEntity inviteCodeEntity);
     public void updateGoals(String authorization, UpdateGoalDto updateGoalDto);
+    public TeamMemberEntity getGroupId(String authorization, int accountId);
 }
