@@ -1,4 +1,6 @@
-package com.d109.waffle.api.checklist.dto;
+package com.d109.waffle.api.trippackage.dto;
+
+import java.util.List;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -18,10 +20,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class ChecklistDto {
-	int checklistListId;
-	String price;
-	String currency;
-	String content;
-	int order;
+public class RecommendResultDto {
+	int id;
+	int memberCnt;
+	String card;
+	List<PackagePlaneDto> plane;
+	List<PackageHotelDto> hotel;
 }

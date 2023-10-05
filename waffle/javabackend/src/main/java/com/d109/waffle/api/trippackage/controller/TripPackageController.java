@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.d109.waffle.api.trippackage.dto.AirplaneDto;
 import com.d109.waffle.api.trippackage.dto.RecommendDto;
+import com.d109.waffle.api.trippackage.dto.RecommendResultDto;
 import com.d109.waffle.api.trippackage.service.TripPackageService;
 import com.d109.waffle.api.user.entity.UserEntity;
 import com.d109.waffle.common.auth.service.JwtService;
@@ -67,7 +68,7 @@ public class TripPackageController {
 	public ResponseEntity<?> getFavoriteList(@RequestHeader("Authorization") String authorization){
 		Map<String,Object> result = new HashMap<>();
 		try {
-			List<RecommendDto> list = tripPackageService.getFavoriteList(authorization);
+			List<RecommendResultDto> list = tripPackageService.getFavoriteList(authorization);
 			result.put("list", list);
 			result.put("message", success);
 		}catch (Exception e) {

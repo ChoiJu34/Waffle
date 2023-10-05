@@ -37,53 +37,53 @@ result={
     "userPackage" : have_card_package,
 }
 
-airplane={
-    "대한항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/KE.png',
-    "아시아나항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/OZ.png',
-    "티웨이항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/TW.png',
-    "에어서울" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/RS.png',
-    "제주항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/7C.png',
-    "진에어" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/LJ.png',
-    "에어프레미아" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/YP.png',
-    "에어부산" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/BX.png',
-    "에티오피아항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/ET.png',
-    "전일본공수" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/NH.png',
-    "일본항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/JL.png',
-    "이스타항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/ZE.png',
-    "싱카포르항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/SQ.png',
-    "말레이시아항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/MH.png',
-    "스리랑카항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/UL.png',
-    "베트남항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/VN.png',
-    "카타르항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/QR.png',
-    "에티하드": 'https://openimage.interpark.com/tourpark/air/air_logo/m/EY.png',
-    "터키항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/TK.png',
-    "LOT POLISH AIRLINES": 'https://openimage.interpark.com/tourpark/air/air_logo/m/LO.png',
-    "에미레이트항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/EK.png',
-    "타이항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/TG.png',
-    "캐세이패시픽": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CX.png',
-    "에바항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/BR.png',
-    "인도항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AI.png',
-    "핀에어": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AY.png',
-    "KLM네덜란드": 'https://openimage.interpark.com/tourpark/air/air_logo/m/KL.png',
-    "중국국제항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CA.png',
-    "에어캐나다": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AC.png',
-    "중국동방항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/MU.png',
-    "중국남방항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CZ.png',
-    "에어마카오항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CZ.png',
-    "산동항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/SC.png',
-    "중화항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CI.png',
-    "가루다항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/GA.png',
-    "델타항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/DL.png"',
-    "하와이안항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/HA.png',
-    "사우디아항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/SV.png',
-    "루프트한자": 'https://openimage.interpark.com/tourpark/air/air_logo/m/LH.png',
-    "에어프랑스": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AF.png',
-    "콴다스항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/QF.png',
-    "스쿠트항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/TR.png',
-    "그레이터 베이 항공": 'https://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAWCAMAAACWh252AAAATlBMVEVHcEwAsK0AraoArqsAr6wAsK0AsK0AsK0Ar6wAsK0AraoAsK0Aran3/Py/5eTq9vbS7OxNvruv394Wsq80uLZgw8GFz83a8O+Bzsx1yce5MyEpAAAAC3RSTlMA72OyM0t6gJQc2n6I4TYAAACMSURBVCiRxdHJEoMgEARQcQPsHhYFNf//ozHekgC3VPr6pqhmpuv+lknrvukATMPt5ZgaAy9HwxcSUHU3Z9jBoeo9s1/FVT8xwm3OE7Y2wOOUVVjtuGRx0UfUKgx7iLI6Yi67jke6HWPRDR+BSbbymuysAAbv8/XA8qmjUfd+wbTx+1J2Nvo95Qq/yRO6wQanQZ9ClQAAAABJRU5ErkJggg==',
-    "미아트몽골리안항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/OM.png',
-    "홍콩에어라인": 'https://openimage.interpark.com/tourpark/air/air_logo/m/HX.png',
-}
+# airplane={
+#     "대한항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/KE.png',
+#     "아시아나항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/OZ.png',
+#     "티웨이항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/TW.png',
+#     "에어서울" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/RS.png',
+#     "제주항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/7C.png',
+#     "진에어" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/LJ.png',
+#     "에어프레미아" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/YP.png',
+#     "에어부산" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/BX.png',
+#     "에티오피아항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/ET.png',
+#     "전일본공수" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/NH.png',
+#     "일본항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/JL.png',
+#     "이스타항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/ZE.png',
+#     "싱카포르항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/SQ.png',
+#     "말레이시아항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/MH.png',
+#     "스리랑카항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/UL.png',
+#     "베트남항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/VN.png',
+#     "카타르항공" : 'https://openimage.interpark.com/tourpark/air/air_logo/m/QR.png',
+#     "에티하드": 'https://openimage.interpark.com/tourpark/air/air_logo/m/EY.png',
+#     "터키항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/TK.png',
+#     "LOT POLISH AIRLINES": 'https://openimage.interpark.com/tourpark/air/air_logo/m/LO.png',
+#     "에미레이트항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/EK.png',
+#     "타이항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/TG.png',
+#     "캐세이패시픽": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CX.png',
+#     "에바항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/BR.png',
+#     "인도항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AI.png',
+#     "핀에어": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AY.png',
+#     "KLM네덜란드": 'https://openimage.interpark.com/tourpark/air/air_logo/m/KL.png',
+#     "중국국제항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CA.png',
+#     "에어캐나다": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AC.png',
+#     "중국동방항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/MU.png',
+#     "중국남방항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CZ.png',
+#     "에어마카오항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CZ.png',
+#     "산동항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/SC.png',
+#     "중화항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/CI.png',
+#     "가루다항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/GA.png',
+#     "델타항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/DL.png"',
+#     "하와이안항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/HA.png',
+#     "사우디아항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/SV.png',
+#     "루프트한자": 'https://openimage.interpark.com/tourpark/air/air_logo/m/LH.png',
+#     "에어프랑스": 'https://openimage.interpark.com/tourpark/air/air_logo/m/AF.png',
+#     "콴다스항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/QF.png',
+#     "스쿠트항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/TR.png',
+#     "그레이터 베이 항공": 'https://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAWCAMAAACWh252AAAATlBMVEVHcEwAsK0AraoArqsAr6wAsK0AsK0AsK0Ar6wAsK0AraoAsK0Aran3/Py/5eTq9vbS7OxNvruv394Wsq80uLZgw8GFz83a8O+Bzsx1yce5MyEpAAAAC3RSTlMA72OyM0t6gJQc2n6I4TYAAACMSURBVCiRxdHJEoMgEARQcQPsHhYFNf//ozHekgC3VPr6pqhmpuv+lknrvukATMPt5ZgaAy9HwxcSUHU3Z9jBoeo9s1/FVT8xwm3OE7Y2wOOUVVjtuGRx0UfUKgx7iLI6Yi67jke6HWPRDR+BSbbymuysAAbv8/XA8qmjUfd+wbTx+1J2Nvo95Qq/yRO6wQanQZ9ClQAAAABJRU5ErkJggg==',
+#     "미아트몽골리안항공": 'https://openimage.interpark.com/tourpark/air/air_logo/m/OM.png',
+#     "홍콩에어라인": 'https://openimage.interpark.com/tourpark/air/air_logo/m/HX.png',
+# }
 
 hotel_or_plane_lock = threading.Lock()
 
@@ -101,6 +101,16 @@ def crawling(request):
     }
 
     # Spring Boot API에 GET 요청을 보냅니다.
+
+    threads = []
+    for k in range(1):
+        thread = threading.Thread(target=main_thread, args=((data),))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
     try:
         response = requests.get(spring_boot_api_url, headers=headers)
     except:
@@ -113,15 +123,6 @@ def crawling(request):
         user_cards = response.json()['result']
 
     logger.info(f"user_cards : {user_cards}")
-
-    threads = []
-    for k in range(1):
-        thread = threading.Thread(target=main_thread, args=((data),))
-        threads.append(thread)
-        thread.start()
-
-    for thread in threads:
-        thread.join()
 
     find_lowest_package(data, user_cards)
 
@@ -258,10 +259,6 @@ def find_lowest_package(data, user_cards):
         info = plane_infos_save1[pp].get()
         while True:
             if info.card=='' or set_card[2] in info.card:
-                try:
-                    companyImg = airplane[info.name]
-                except:
-                    companyImg = 'none'
                 plane_info.append({
                     "planeDate": info.date,
                     "company": info.name,
@@ -274,8 +271,9 @@ def find_lowest_package(data, user_cards):
                     "layover": info.layover,
                     "during": info.long,
                     "site": info.site,
-                    "card": info.card,
-                    "companyImg": companyImg
+                    "card": info.card.replace('결제', ''),
+                    "companyImg": info.companyImg,
+                    "url": info.url
                 })
                 if len(card_name)<len(info.card):
                     card_name = info.card
@@ -290,7 +288,7 @@ def find_lowest_package(data, user_cards):
                     "hotelName" : info.name,
                     "start" : info.start,
                     "end" : info.end,
-                    "card" : info.card,
+                    "card" : info.card.replace('결제', ''),
                     "originPrice" : int(info.originPrice),
                     "discountPrice" : int(info.discountPrice),
                     "url" : info.url,
@@ -304,6 +302,7 @@ def find_lowest_package(data, user_cards):
 
     #사용자가 보유한 카드로 최저가
     user_have_card_company=[]
+    have_card_name = ""
     for user_card in user_cards:
         user_card_name = user_card["company"]
         if '하나' in user_card_name and not card_company[0][1]:
@@ -335,10 +334,6 @@ def find_lowest_package(data, user_cards):
         info = plane_infos_save2[pp].get()
         while True:
             if info.card == '':#카드 없으면 넣고
-                try:
-                    companyImg = airplane[info.name]
-                except:
-                    companyImg = 'none'
                 user_plane_info.append({
                     "planeDate": info.date,
                     "company": info.name,
@@ -351,18 +346,15 @@ def find_lowest_package(data, user_cards):
                     "layover": info.layover,
                     "during": info.long,
                     "site": info.site,
-                    "card": info.card,
-                    "companyImg": companyImg
+                    "card": info.card.replace('결제', ''),
+                    "companyImg": info.companyImg,
+                    "url": info.url
                 })
-                if len(card_name) < len(info.card):
-                    card_name = info.card
+                if len(have_card_name) < len(info.card):
+                    have_card_name = info.card
                 break
             elif any(card in info.card for card in user_have_card_company):#회사가 겹쳤을 때
                 if(card+"카드" in info.card for card in user_have_card_company):#해당 회사 카드만 있어도 되는 할인이라면 넣고
-                    try:
-                        companyImg = airplane[info.name]
-                    except:
-                        companyImg = 'none'
                     user_plane_info.append({
                         "planeDate": info.date,
                         "company": info.name,
@@ -375,17 +367,14 @@ def find_lowest_package(data, user_cards):
                         "layover": info.layover,
                         "during": info.long,
                         "site": info.site,
-                        "card": info.card,
-                        "companyImg": companyImg
+                        "card": info.card.replace('결제', ''),
+                        "companyImg": info.companyImg,
+                        "url": info.url
                     })
-                    if len(card_name) < len(info.card):
-                        card_name = info.card
+                    if len(have_card_name) < len(info.card):
+                        have_card_name = info.card
                     break
                 elif (card["name"] in info.card for card in user_card):#특정 카드가 필요하다면 카드 명 비교
-                    try:
-                        companyImg = airplane[info.name]
-                    except:
-                        companyImg = 'none'
                     companyImg = 'none'
                     user_plane_info.append({
                         "planeDate": info.date,
@@ -399,11 +388,12 @@ def find_lowest_package(data, user_cards):
                         "layover": info.layover,
                         "during": info.long,
                         "site": info.site,
-                        "card": info.card,
-                        "companyImg": companyImg
+                        "card": info.card.replace('결제', ''),
+                        "companyImg": info.companyImg,
+                        "url": info.url
                     })
-                    if len(card_name) < len(info.card):
-                        card_name = info.card
+                    if len(have_card_name) < len(info.card):
+                        have_card_name = info.card
                     break
             info = plane_infos_save2[pp].get()
 
@@ -415,15 +405,15 @@ def find_lowest_package(data, user_cards):
                     "hotelName": info.name,
                     "start": info.start,
                     "end": info.end,
-                    "card": info.card,
+                    "card": info.card.replace('결제', ''),
                     "originPrice": int(info.originPrice),
                     "discountPrice": int(info.discountPrice),
                     "url": info.url,
                     "img": info.img,
                     "site": info.site,
                 })
-                if len(card_name) < len(info.card):
-                    card_name = info.card
+                if len(have_card_name) < len(info.card):
+                    have_card_name = info.card
                 break
             elif any(card in info.card for card in user_have_card_company):#회사가 겹쳤을 때
                 if(card+"카드" in info.card for card in user_have_card_company):#해당 회사 카드만 있어도 되는 할인이라면 넣고
@@ -431,41 +421,42 @@ def find_lowest_package(data, user_cards):
                         "hotelName": info.name,
                         "start": info.start,
                         "end": info.end,
-                        "card": info.card,
+                        "card": info.card.replace('결제', ''),
                         "originPrice": int(info.originPrice),
                         "discountPrice": int(info.discountPrice),
                         "url": info.url,
                         "img": info.img,
                         "site": info.site,
                     })
-                    if len(card_name) < len(info.card):
-                        card_name = info.card
+                    if len(have_card_name) < len(info.card):
+                        have_card_name = info.card
                     break
                 elif (card["name"] in info.card for card in user_card):#특정 카드가 필요하다면 카드 명 비교
                     user_hotel_info.append({
                         "hotelName": info.name,
                         "start": info.start,
                         "end": info.end,
-                        "card": info.card,
+                        "card": info.card.replace('결제', ''),
                         "originPrice": int(info.originPrice),
                         "discountPrice": int(info.discountPrice),
                         "url": info.url,
                         "img": info.img,
                         "site": info.site,
                     })
-                    if len(card_name) < len(info.card):
-                        card_name = info.card
+                    if len(have_card_name) < len(info.card):
+                        have_card_name = info.card
                     break
             info = hotel_infos_save2[pp].get()
 
 
     package["plane"] = plane_info
     package["hotel"] = hotel_info
-    package["card"] = card_name
+    package["card"] = card_name.replace("결제", "")
     package["memberCnt"] = data["memberCnt"]
 
     have_card_package["plane"] = user_plane_info
     have_card_package["hotel"] = user_hotel_info
+    have_card_package["card"] = have_card_name.replace("결제", "")
     have_card_package["memberCnt"] = data["memberCnt"]
 
 

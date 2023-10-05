@@ -12,6 +12,7 @@ import com.d109.waffle.api.trippackage.dto.AirplaneDto;
 import com.d109.waffle.api.trippackage.dto.PackageHotelDto;
 import com.d109.waffle.api.trippackage.dto.PackagePlaneDto;
 import com.d109.waffle.api.trippackage.dto.RecommendDto;
+import com.d109.waffle.api.trippackage.dto.RecommendResultDto;
 import com.d109.waffle.api.trippackage.entity.Airplane;
 import com.d109.waffle.api.trippackage.entity.FavoriteHotel;
 import com.d109.waffle.api.trippackage.entity.FavoritePackage;
@@ -77,11 +78,13 @@ public class TripPackageService {
 				.endPlace(planeDto.getEndPlace())
 				.endTime(planeDto.getEndTime())
 				.originPrice(planeDto.getOriginPrice())
-				.discountPrice(planeDto.getDiscountPirce())
+				.discountPrice(planeDto.getDiscountPrice())
 				.layover(planeDto.getLayover())
 				.during(planeDto.getDuring())
 				.site(planeDto.getSite())
 				.card(planeDto.getCard())
+				.url(planeDto.getUrl())
+				.companyImg(planeDto.getCompanyImg())
 				.favoritePackage(favoritePackage)
 				.build();
 			favoritePlaneRepository.save(favoritePlane);
@@ -104,14 +107,14 @@ public class TripPackageService {
 		return id;
 	}
 
-	public List<RecommendDto> getFavoriteList(String authorization){
+	public List<RecommendResultDto> getFavoriteList(String authorization){
 		Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
 		if (!userEntity.isPresent()) {
 			throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
 		}
 		UserEntity user = userEntity.get();
 		List<FavoritePackage> list = favoritePackageRepository.findAllByUserEntity_Id(user.getId());
-		List<RecommendDto> result = new ArrayList<>();
+		List<RecommendResultDto> result = new ArrayList<>();
 		for(FavoritePackage favoritePackage : list){
 			List<FavoritePlane> planeList = favoritePlaneRepository.findAllByFavoritePackage_Id(favoritePackage.getId());
 			List<FavoriteHotel> hotelList = favoriteHotelRepository.findAllByFavoritePackage_Id(favoritePackage.getId());
@@ -119,17 +122,20 @@ public class TripPackageService {
 			List<PackageHotelDto> packageHotelDtos = new ArrayList<>();
 			for(FavoritePlane favoritePlane : planeList){
 				PackagePlaneDto packagePlaneDto = new PackagePlaneDto();
+				packagePlaneDto.setPlaneDate(favoritePlane.getPlaneDate());
 				packagePlaneDto.setCompany(favoritePlane.getCompany());
 				packagePlaneDto.setStartPlace(favoritePlane.getStartPlace());
 				packagePlaneDto.setStartTime(favoritePlane.getStartTime());
 				packagePlaneDto.setEndPlace(favoritePlane.getEndPlace());
 				packagePlaneDto.setEndTime(favoritePlane.getEndTime());
 				packagePlaneDto.setOriginPrice(favoritePlane.getOriginPrice());
-				packagePlaneDto.setDiscountPirce(favoritePlane.getDiscountPrice());
+				packagePlaneDto.setDiscountPrice(favoritePlane.getDiscountPrice());
 				packagePlaneDto.setLayover(favoritePlane.getLayover());
 				packagePlaneDto.setDuring(favoritePlane.getDuring());
 				packagePlaneDto.setSite(favoritePlane.getSite());
 				packagePlaneDto.setCard(favoritePlane.getCard());
+				packagePlaneDto.setUrl(favoritePlane.getUrl());
+				packagePlaneDto.setCompanyImg(favoritePlane.getCompanyImg());
 				packagePlaneDtos.add(packagePlaneDto);
 			}
 			for(FavoriteHotel favoriteHotel : hotelList){
@@ -145,13 +151,14 @@ public class TripPackageService {
 				packageHotelDto.setSite(favoriteHotel.getSite());
 				packageHotelDtos.add(packageHotelDto);
 			}
-			RecommendDto recommendDto = RecommendDto.builder()
+			RecommendResultDto recommendResultDto = RecommendResultDto.builder()
+				.id(favoritePackage.getId())
 				.memberCnt(favoritePackage.getMemberCnt())
 				.card(favoritePackage.getCard())
 				.plane(packagePlaneDtos)
 				.hotel(packageHotelDtos)
 				.build();
-			result.add(recommendDto);
+			result.add(recommendResultDto);
 		}
 		return result;
 	}

@@ -17,7 +17,9 @@ Including another URLconf
 from django.urls import path
 
 from waffle import crawling
+# from waffle import waitingCnt
 
 urlpatterns = [
     path('package/recommend', crawling.crawling, name='convert_data'),
+    # path('package/waiting', waitingCnt.waiting, name='convert_data')
 ]

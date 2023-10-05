@@ -1,8 +1,7 @@
 package com.d109.waffle.api.teamaccount.controller;
 
-import com.d109.waffle.api.teamaccount.dto.TeamAccountDetailDto;
-import com.d109.waffle.api.teamaccount.dto.TeamAccountDto;
-import com.d109.waffle.api.teamaccount.dto.TeamAccountListDto;
+import com.d109.waffle.api.teamaccount.dto.*;
+import com.d109.waffle.api.teamaccount.entity.InviteCodeEntity;
 import com.d109.waffle.api.teamaccount.entity.TeamAccountEntity;
 import com.d109.waffle.api.teamaccount.entity.TeamMemberEntity;
 import com.d109.waffle.api.teamaccount.service.TeamAccountServiceImpl;
@@ -108,6 +107,7 @@ public class TeamAccountController {
             result.put("totalAdd", teamAccountDetailDto.getTotalAdd());
             result.put("totalSub", teamAccountDetailDto.getTotalSub());
             result.put("master", teamAccountDetailDto.getMaster());
+            result.put("me", teamAccountDetailDto.getMe());
             result.put("group", teamAccountDetailDto.getGroup());
             return new ResponseEntity<>(result, HttpStatus.OK);
         }catch(NoSuchElementException e){
@@ -158,22 +158,14 @@ public class TeamAccountController {
         Map<String, Object> result = new HashMap<>();
 
         try{
-            List<TeamMemberEntity> teamMemberEntityList = teamAccountService.getMemberList(authorization, accountId);
-            List<Map<String, Object>> list = new ArrayList<>();
-            for(int i=0, size=teamMemberEntityList.size();i<size;i++){
-                TeamMemberEntity e = teamMemberEntityList.get(i);
-
-                Map<String, Object> dto = new HashMap<>();
-                dto.put("id", e.getId());
-                dto.put("name", e.getNickname());
-                dto.put("master", e.getMaster());
-
-                list.add(dto);
-            }
+            List<Map<String, Object>> list = teamAccountService.getMemberList(authorization, accountId);
             result.put("list", list);
             result.put("message", "SUCCESS");
             return new ResponseEntity<>(result, HttpStatus.OK);
         }catch(NoSuchElementException e){
+            result.put("message", e.getMessage());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(TransactionException e){
             result.put("message", e.getMessage());
             return new ResponseEntity<>(result, HttpStatus.OK);
         }catch(Exception e){
@@ -227,8 +219,78 @@ public class TeamAccountController {
         }
     }
 
+    @GetMapping("create-code/{accountId}")
+    public ResponseEntity<?> createInviteCode(@RequestHeader("Authorization") String authorization, @PathVariable("accountId") int accountId){
+        Map<String, Object> result = new HashMap<>();
+
+        try{
+            String inviteCode = teamAccountService.createInviteCode(authorization, accountId);
+            result.put("code", inviteCode);
+            result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(NoSuchElementException e){
+            result.put("message", e.getMessage());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(Exception e){
+            result.put("message", "FAIL");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("add-invite")
+    public ResponseEntity<?> addInvite(@RequestHeader("Authorization") String authorization, @RequestBody InviteCodeEntity inviteCodeEntity){
+        Map<String, Object> result = new HashMap<>();
+
+        try{
+            teamAccountService.addInvite(authorization, inviteCodeEntity);
+            result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(NoSuchElementException e){
+            result.put("message", e.getMessage());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(Exception e){
+            result.put("message", "FAIL");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("update-goals")
+    public ResponseEntity<?> updateGoals(@RequestHeader("Authorization") String authorization, @RequestBody UpdateGoalDto updateGoalDto){
+
+        Map<String, Object> result = new HashMap<>();
+
+        try{
+            teamAccountService.updateGoals(authorization, updateGoalDto);
+            result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(NoSuchElementException e){
+            result.put("message", e.getMessage());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(Exception e){
+            result.put("message", "FAIL");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
 
+    }
+
+    @GetMapping("get-groupId/{accountId}")
+    public ResponseEntity<?> getGroupId(@RequestHeader("Authorization") String authorization, @PathVariable("accountId") int accountId){
+        Map<String, Object> result = new HashMap<>();
+
+        try{
+            TeamMemberEntity teamMemberEntity = teamAccountService.getGroupId(authorization, accountId);
+            result.put("id", teamMemberEntity.getId());
+            result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(NoSuchElementException e){
+            result.put("message", e.getMessage());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(Exception e){
+            result.put("message", "FAIL");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 }

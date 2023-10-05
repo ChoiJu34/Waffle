@@ -111,18 +111,18 @@ def interpark_crawling(info, chrome_options, service):
         wait = WebDriverWait(driver, 20)
         wait.until(EC.presence_of_element_located((By.XPATH, xpath3)))
         driver.find_element(By.XPATH, xpath3).click()
-    
+
         wait = WebDriverWait(driver, 20)
         # time.sleep(0.2)
         wait.until(EC.presence_of_element_located((By.XPATH, xpath4)))
         driver.find_element(By.XPATH, xpath4).click()
-    
+
         for i in range(5):
             # time.sleep(0.2)
             wait = WebDriverWait(driver, 20)
             wait.until(EC.element_to_be_clickable((By.XPATH, xpath5)))
             driver.find_element(By.XPATH, xpath5).click()
-    
+
         # time.sleep(0.7)
         wait = WebDriverWait(driver, 20)
         wait.until(EC.presence_of_element_located((By.XPATH, xpath1)))
@@ -152,14 +152,11 @@ def interpark_crawling(info, chrome_options, service):
                 hotel_name = ''
                 for h in hotel:
                     hotel_name += h
-                try:
-                    img = element2.get_attribute('src')
-                    multi_list[k].put(Hotel(hotel_name, start, end, '', price, price, element1.get_attribute('href'),
-                            img, '인터파크'))
-                except:
-                    logger.info("인터파크 호텔 element2 에러")
-                    multi_list[k].put(Hotel(hotel_name, start, end, '', price, price, element1.get_attribute('href'),
-                            '이미지를 가져오지 못했습니다', '인터파크'))
+                img = element2.get_attribute('src')
+                if "interpark" not in img:
+                    img = 0
+                multi_list[k].put(Hotel(hotel_name.split('(')[0].split('@')[0], start, end, '', price, price, element1.get_attribute('href'),
+                        img, '인터파크'))
                 # logger.info(f'{hotel_name}, {start}, {end}, , {price}, {price}, {element1}, 인터파크')
         except:
             logger.info("인터파크 호텔 데이터 정제화 중 에러")
@@ -174,11 +171,11 @@ def agoda_crawling(info, chrome_options, service):
     xpath3 = '//*[@id="autocomplete-box"]/div'
     xpath4 = '//*[@id="contentContainer"]/div[4]/ol/li'
     xpath5 = '//*[@id="sort-bar"]/div/a[2]'
-    xpath6 = '//*[@id="contentContainer"]/div[3]/ol/li/div/a'
-    xpath7 = '//*[@id="contentContainer"]/div[3]/ol/li/div/a/div/div[1]/div/div[3]/img'
+    xpath6 = '//*[@id="contentContainer"]/div[4]/ol/li/div/a'
+    xpath7 = '//*[@id="contentContainer"]/div[4]/ol/li/div/a/div/div[1]/div/div[3]/img'
 
     driver = webdriver.Chrome(service=service, options=chrome_options)
-    
+
     try:
         driver.get(url)
         time.sleep(0.5)
@@ -197,12 +194,12 @@ def agoda_crawling(info, chrome_options, service):
         wait = WebDriverWait(driver, 20)
         wait.until(EC.element_to_be_clickable((By.XPATH, xpath2)))
         driver.find_element(By.XPATH, xpath2).click()
-    
+
         time.sleep(0.6)
         wait = WebDriverWait(driver, 20)
         wait.until(EC.element_to_be_clickable((By.XPATH, xpath5)))
         driver.find_element(By.XPATH, xpath5).click()
-    
+
         time.sleep(0.6)
         before_location = driver.execute_script("return window.pageYOffset")
         while True:
@@ -213,24 +210,22 @@ def agoda_crawling(info, chrome_options, service):
                 break
             else:
                 before_location = driver.execute_script("return window.pageYOffset")
-    
+
         time.sleep(0.7)
         wait = WebDriverWait(driver, 20)
         wait.until(EC.presence_of_element_located((By.XPATH, xpath4)))
         elements = driver.find_elements(By.XPATH, xpath4)
+        elements2 = driver.find_elements(By.XPATH, xpath6)
+        elements3 = driver.find_elements(By.XPATH, xpath7)
     except:
         logger.info('아고다 호텔 크롤링 에러')
         return
 
-    for element in elements:
-        try:
-            href_element = element.find_element(By.XPATH, xpath6)
-        except Exception:
-            href_element = "https://www.agoda.com"
-        try:
-            src_element = element.find_element(By.XPATH, xpath7)
-        except Exception:
-            src_element = '이미지를 가지고 오지 못했습니다.'
+    for element, element2, element3 in zip(elements, elements2, elements3):
+        href_element = element2.get_attribute('href')
+        src_element = element3.get_attribute('src')
+        if "agoda" not in src_element:
+            src_element = 0
 
         try:
             origin = re.sub(r'\n예약 무료 취소|,|₩\s|페이지.*?\n', '', element.get_attribute('innerText'))
@@ -246,16 +241,12 @@ def agoda_crawling(info, chrome_options, service):
             origin = origin.split('\n')
             if '일정에 여유가 있으시다면 다음의 대체 날짜들도 고려해 보시기 바랍니다' in origin[0]:
                 continue
-            if href_element != 'https://www.agoda.com':
-                href_element = href_element.get_attribute('href')
-            if src_element != '이미지를 가지고 오지 못했습니다.':
-                src_element = src_element.get_attribute('src')
             if len(origin[0])==1:
                 continue
         except:
             logger.info("아고다 호텔 데이터 정제화 중 에러")
         try:
-            multi_list[k].put(Hotel(origin[0], start, end, '', origin[len(origin) - 1], int(origin[len(origin) - 1]), href_element, src_element, '아고다'))
+            multi_list[k].put(Hotel(origin[0].split('(')[0].split('@')[0], start, end, '', origin[len(origin) - 1], int(origin[len(origin) - 1]), href_element, src_element, '아고다'))
         except:
             logger.info(f"아고다 호텔 multi_list의 put 실패")
         # logger.info(f'{origin[0]}, {start}, {end}, , {origin[len(origin) - 1]}, {int(origin[len(origin) - 1])}, {href_element}, {src_element}, 아고다')

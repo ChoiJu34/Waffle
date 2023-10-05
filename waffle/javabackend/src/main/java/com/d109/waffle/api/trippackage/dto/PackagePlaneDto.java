@@ -26,9 +26,11 @@ public class PackagePlaneDto {
 	String endPlace;
 	String endTime;
 	String originPrice;
-	String discountPirce;
+	String discountPrice;
 	String layover;
 	String during;
 	String site;
 	String card;
+	String url;
+	String companyImg;
 }
