@@ -489,7 +489,7 @@ public class TeamAccountServiceImpl implements TeamAccountService {
             }
             else{
                 // 그 외를 빼고 생각하기 때문에 i = 1부터 그 외의 index는 0
-                for(int i=1,size=groupList.size();i<=size;i++){
+                for(int i=1,size=groupList.size();i<size;i++){
                     Group g = groupList.get(i);
                     int calculatedMoney = g.getMoney() + money;
                     if(e.getSenderName().equals(g.getName())){
