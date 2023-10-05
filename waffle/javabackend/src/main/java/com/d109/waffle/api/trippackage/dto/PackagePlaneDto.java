@@ -31,4 +31,6 @@ public class PackagePlaneDto {
 	String during;
 	String site;
 	String card;
+	String url;
+	String companyImg;
 }
