@@ -19,6 +19,8 @@ const RecoCardList = (props) => {
     slidesToScroll: 1,
   };
 
+
+
   const imgClick = (cardId, originalPrice, discountPrice) => {
 
     navigate("/cardinfo/" + cardId, {
@@ -97,6 +99,31 @@ const RecoCardList = (props) => {
 };
 
 export default RecoCardList;
+const Nonecardbox = styled.div`
+    margin-bottom: 9vw;
+`
+
+const Favoritebox = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    font-size: 6vw;
+    border-bottom: 1px solid #B3B1B1;
+    padding-bottom: 2vw;
+`
+
+const Favoritebox2 = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    width: 100%;
+    .start {
+        color: #9AC5F4;
+    }
+`
 
 const Container = styled.div`
   margin-top: 30px;
