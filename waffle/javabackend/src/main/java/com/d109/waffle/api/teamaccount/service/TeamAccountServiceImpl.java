@@ -772,4 +772,25 @@ public class TeamAccountServiceImpl implements TeamAccountService {
 
     }
 
+    @Override
+    public TeamMemberEntity getGroupId(String authorization, int accountId){
+        // *get UserEntity from AccessToken
+        Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
+        if(!userEntity.isPresent()){
+            throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+        }
+
+        UserEntity user = userEntity.get();
+
+        Optional<TeamMemberEntity> teamMemberEntityOptional = teamMemberRepository.findByUser_IdAndTeamAccount_Id(user.getId(), accountId);
+        if(!teamMemberEntityOptional.isPresent()){
+            throw new NoSuchElementException("잘못된 정보입니다.");
+        }
+
+        TeamMemberEntity teamMemberEntity = teamMemberEntityOptional.get();
+
+        return teamMemberEntity;
+
+    }
+
 }

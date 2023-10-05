@@ -274,6 +274,23 @@ public class TeamAccountController {
 
     }
 
+    @GetMapping("get-groupId/{accountId}")
+    public ResponseEntity<?> getGroupId(@RequestHeader("Authorization") String authorization, @PathVariable("accoutId") int accountId){
+        Map<String, Object> result = new HashMap<>();
+
+        try{
+            TeamMemberEntity teamMemberEntity = teamAccountService.getGroupId(authorization, accountId);
+            result.put("id", teamMemberEntity.getId());
+            result.put("message", "SUCCESS");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(NoSuchElementException e){
+            result.put("message", e.getMessage());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch(Exception e){
+            result.put("message", "FAIL");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 }
