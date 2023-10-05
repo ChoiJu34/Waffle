@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled,{ keyframes } from "styled-components";
 import AirModal from "./AirModal";
 import Select from "react-select";
 import moment from "moment";
@@ -44,6 +44,8 @@ const PackageMain = () => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const navigate = useNavigate()
   const url = "https://dinorunner.com/ko/"
+
+  
   
   const settings = {
     dots: true,
@@ -427,16 +429,26 @@ const LoadingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(var(--vh, 1vw) * 80);
+  height: calc(var(--vh, 1vh) * 80);
 `;
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+
 
 const LoadingSpinner = styled.div`
   border: 4px solid rgba(195, 195, 195, 0.3);
   border-top: 4px solid #9AC5F4;
   border-radius: 50%;
-  width: 40vw;
+  width: 40px;
   height: 40px;
-  animation: spin 2s linear infinite;
+  animation: ${spin} 2s linear infinite;
 `;
 
 const LoadingText = styled.div`
@@ -536,11 +548,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   margin-top: 30px;
   width: 100vw;
-  height: 130vw;
+  height: 160vw;
   padding-bottom: 8vw;
+  margin-top: 10vw;
+
   & > span {
     font-size: 25px;
   }
@@ -601,7 +615,7 @@ const PlusMinusButton = styled.button`
 
 const Peoplebox = styled.div`
   width: 90vw;
-  height: 23vw;
+  height: 22vw;
   border: 1px solid #b3b1b1;
   border-radius: 7px;
   margin-bottom: 8vw;
@@ -648,7 +662,7 @@ const customStyles = {
   control: (provided) => ({
     ...provided,
     marginRight: "0,5rem",
-    width: "80vw",
+    width: "100vw",
     height: "3rem",
     borderRadius: "2px",
   }),
