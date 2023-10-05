@@ -287,7 +287,7 @@ const saverecocardboard = async () => {
           <Latext>카드사 선택</Latext>
           <Smalltext>미선택시 모든 카드사를 검색합니다.</Smalltext>
         </Companytext>
-        <Lobox>
+        <Lobox className="lobox-container">
         {selectedCompaniesList.slice(0, 4).map((company, index) => (
                     <img key={index} src={company.logo} alt={company.name} style={{ width: '30px', margin: '0 5px' }} onClick={() => toggleCompanyState(company.key)} />
                 ))}
@@ -360,7 +360,7 @@ const saverecocardboard = async () => {
           </Usebox>
         </Writebox>
         </Budgetbox>
-      <button onClick={saverecocardboard}>확인</button>
+      <Button onClick={saverecocardboard}>확인</Button>
       {isModalOpen && (
         <BottomSheet title={bottomSheetTitle} closeModal={() => setIsModalOpen(false)}>
               <Countrybox onClick={() => countrySelect("USA")}>
@@ -485,6 +485,16 @@ const saverecocardboard = async () => {
 
 export default RecoCardMain;
 
+const Button = styled.button`
+  background-color: white;
+  margin-top: 1vh;
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  width: 20vw;
+  height: 4vh;
+  font-size: 16px;
+`
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -533,17 +543,19 @@ const Lobox = styled.div`
   align-items: center;
   padding-left: 1vh;
   padding-top: 0.3vh;
+  width: 100%;
 
   & > span {
-    width: 4.5vh;
+    width: 2vw;
     height: 3vh;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
-    margin-left: 1vh;
+    margin-left: 1vw;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    margin-right: 5vw;
 
   }
 `

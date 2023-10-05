@@ -42,9 +42,27 @@ const PackageList = () => {
     const settings = {
         dots: true,
         infinite: true,
-        speed: 500,
-        slidesToShow: 1,
+        speed: 100,
+        slidesToShow: 1, // 여기를 2로 변경
         slidesToScroll: 1,
+        draggable: true,
+        beforeChange: (oldIndex, newIndex) => {
+          setCurrentSlideIndex(newIndex);
+        },
+        customPaging: function (i) {
+          const activeColor = "#000000";
+          const inactiveColor = "#CCCCCC";
+    
+          const dotStyle = {
+            width: "10px",
+            height: "10px",
+            borderRadius: "50%",
+            backgroundColor: i === currentSlideIndex ? activeColor : inactiveColor,
+            marginTop: "-20px",
+          };
+    
+          return <div style={dotStyle}></div>;
+        },
       };
     
     const PostFavorite = async () => {
@@ -169,23 +187,21 @@ const PackageList = () => {
              <Content>
              <Favoritebox>
                  <div>{card}</div>
-                 {(trueFavorite2 === false? (<AiOutlineStar size={30} color="#9AC5F4" onClick={()=> PostFavorite2()}>즐겨찾기</AiOutlineStar>):(<AiFillStar className="start" size={30} onClick={()=> UnFavorite2()}>즐겨찾기</AiFillStar>))}
+                 {(trueFavorite === false? (<AiOutlineStar size={30} color="#9AC5F4" backgroundcolor="red" onClick={()=> PostFavorite()}>즐겨찾기</AiOutlineStar>):(<AiFillStar className="start" size={30} onClick={()=> UnFavorite()}>즐겨찾기</AiFillStar>))}
              </Favoritebox>
              <Airbox>
                  <div className="airfont">항공권</div>
-        
-                 {plane && plane.map(({company, discountPrice,during, endPlace,endTime,layover,originPrice,planeDate,site,startPlace,startTime,companyImg }) => (
-                 <Smallairbox>
+    
+                 {plane && plane.map(({company, discountPrice,during, endPlace,endTime,layover,originPrice,planeDate,site,startPlace,startTime,companyImg,url }) => (
+                 <Smallairbox onClick={() => goToUrl(url)} >
                  <Aircompanybox>
-                     <div className="site-box">
-                     <div className="plane-date">{formatDate(planeDate)}</div>
-                     {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
-
-                     </div>
-                     <img src={`${companyImg}`} alt="" />
-                     <div className="company-box">{company}</div>
+                    <div className="plane-date">{formatDate(planeDate)}</div>
+                    <div className="site-box">
+                        {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
+                    </div>
+                    <img src={`${companyImg}`} alt="" />
+                    <div className="company-box">{company}</div>
                  </Aircompanybox>
-                 
                  <Airplacebox>
                      <div className="layover">
                          <div>{layover}</div>
@@ -207,14 +223,13 @@ const PackageList = () => {
                          {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
                          <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
                      </div>
-                 </Airplacebox>
-                 
+                 </Airplacebox>   
              </Smallairbox>
              ))}
-
          </Airbox>
          <Hotelbox>
              <div className="hotelfont">숙박</div>
+             <Slider {...settings}>
              {hotel && hotel.map(({hotelName,discountPrice,end,img,originPrice,site,start,url }) => (
              <Hotelcontent onClick={() => goToUrl(url)}>
                   {( img === 0)? (<RanHotelimg src={"/cardlogo/hotel.png"} alt="img" />):(<Hotelimg src={`${img}`} alt="img" />)}
@@ -231,6 +246,7 @@ const PackageList = () => {
                  </div>
              </Hotelcontent>
              ))}
+             </Slider>
          </Hotelbox>
      </Content>))}
            </> ) : ( <>
@@ -242,17 +258,16 @@ const PackageList = () => {
                 </Favoritebox>
                 <Airbox>
                     <div className="airfont">항공권</div>
-           
-                    {plane && plane.map(({company, discountPrice,during, endPlace,endTime,layover,originPrice,planeDate,site,startPlace,startTime,companyImg }) => (
-                    <Smallairbox>
+                    {plane && plane.map(({company, discountPrice,during, endPlace,endTime,layover,originPrice,planeDate,site,startPlace,startTime,companyImg,url }) => (
+                    <Smallairbox onClick={() => goToUrl(url)}>
                     <Aircompanybox>
-                        <div className="site-box">
                         <div className="plane-date">{formatDate(planeDate)}</div>
+                        <div className="site-box">
+                        
                         {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
-
                         </div>
                         <img src={`${companyImg}`} alt="" />
-                        <div className="company-box">{company}</div>
+                        <div className="company-box">{truncateString(company, 8)}</div>
                     </Aircompanybox>
                     
                     <Airplacebox>
@@ -277,10 +292,8 @@ const PackageList = () => {
                             <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
                         </div>
                     </Airplacebox>
-                    
                 </Smallairbox>
                 ))}
-
             </Airbox>
             <Hotelbox>
                 <div className="hotelfont">숙박</div>
@@ -307,6 +320,16 @@ const PackageList = () => {
     )}
 export default PackageList
 
+const StyledSlider = styled(Slider)`
+  width: 90%;
+  .slick-slider {
+  width: 90%;
+  height: 80%;
+
+}
+
+`;
+
 const Favoritebox = styled.div`
     display: flex;
     flex-direction: row;
@@ -322,9 +345,6 @@ const Favoritebox = styled.div`
 
 const StyledNav = styled(Nav)`
   padding: 10px 10px;
-
-
-
   .nav-item {
     margin: 0 10px;
 
@@ -348,7 +368,6 @@ const StyledNav = styled(Nav)`
 `;
 
 const Hoteldate = styled.div`
-    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -382,7 +401,7 @@ const Discountprice2 = styled.div`
 const Container = styled.div`
   margin-top: 30px;
   margin-bottom: 20px;
-  height: calc(var(--vh, 1vh) * 80);
+  height: 100vh;
   width: 100%;
 
   .Navecontainer{
@@ -406,14 +425,14 @@ const RanHotelimg = styled.img`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   width: 100%;
   height: 100%;
 `
 const Smallairbox = styled.div`
     width: 90%;
-    height: 60%;
+    height: 70%;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
     margin-bottom: 2vh;
@@ -436,9 +455,10 @@ const Airplacebox = styled.div`
     .layover{
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
-        width: 80%;
+        width: 100%;
+
     }
     .air-place{
         display: flex;
@@ -469,11 +489,11 @@ const Airplacebox = styled.div`
 const Aircompanybox = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: start;
     align-items: center;
-    justify-items: center;
     width: 90%;
     height: 100%;
+
 
     .company-box{
         height: 5vh;
@@ -486,7 +506,7 @@ const Aircompanybox = styled.div`
     .site-box{
         width: 100%;
         height: 2vh;
-        margin-top: 0.3vh;
+        margin-top: 0.5vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -494,11 +514,10 @@ const Aircompanybox = styled.div`
     
 }
     .plane-date{
-        height: 30px;
+        bottom: 10px;
         padding: 2px;
         position: relative;
-
-        left: 9vh;
+        left: 58%;
         background-color: white;
 
 
@@ -506,24 +525,24 @@ const Aircompanybox = styled.div`
 }
     & > img {
      width: 4vh;
-     margin-top: 2vh;
-     margin-bottom: 1vh;
+     margin-top: 4vh;
+     margin-bottom: 2vh;
  }
  
 `
 const Companylogo = styled.img`
-    width: 9vh;
-    max-height: 3vh;
+    width: 22vw;
+    margin-top: 1vh;
 
 `
 
 const Airbox = styled.div`
     width: 85%;
-    height: 40%;
+    height: 35%;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
     margin-bottom: 30px;
-    box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
+
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -535,21 +554,16 @@ const Airbox = styled.div`
         justify-content: start;
         align-items: start;
         width: 85%;
-        height: 1vh;
-        font-size: 2vh;
+        margin-top: 1vh;
+        font-size: 25px;
     }
 `
 
 const Hotelbox = styled.div`
     width: 85%;
-    height: 60%;
-    border: 1px solid #B3B1B1;
-    border-radius: 7px;
-    box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
+    height: 40%;
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    align-items: center;
     margin-bottom: 10vh;
     .hotelfont{
         display: flex;
@@ -558,25 +572,27 @@ const Hotelbox = styled.div`
         align-items: start;
         width: 85%;
         height: 1vh;
-        font-size: 2vh;
+        font-size: 25px;
         margin: 2vh;
+        margin-bottom: 2vh;
     }
     
 `
 
 const Hotelcontent = styled.div`
     display: flex;
-    flex-direction: column;
-    justify-content: start;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    width: 90%;
     height: 75%;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
     box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
+    margin-top: 2vh;
     .hotel-content{
+        width: 90%;
         margin-top: 1vh;
-        width: 80%;
+        margin-left: 3vw;
     }
     .hotelname{
     }
@@ -585,6 +601,5 @@ const Hotelcontent = styled.div`
 const Hotelimg = styled.img`
     width: 100%;
     max-height: 16vh;
-    margin-bottom:1vh;
 
 `

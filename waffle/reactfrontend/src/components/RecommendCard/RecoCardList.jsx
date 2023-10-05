@@ -52,9 +52,9 @@ const RecoCardList = (props) => {
                   <Cardboxtitle>많은 혜택</Cardboxtitle>
                 ) : (
                   <Cardboxtitle>환전</Cardboxtitle>
-                )}
-                <Cardimgbox>
                   
+                )}      
+                <Cardimgbox>
                   <img
                     src={`https://j9d109.p.ssafy.io/downloads/${cardId}.png`}
                     alt="카드사진"
@@ -92,7 +92,6 @@ const RecoCardList = (props) => {
             )
           )}
       </Slider>
-      
     </Container>
   );
 };
@@ -178,8 +177,8 @@ const Getbox = styled.div`
   align-items: center;
   width: 100%;
   font-size: 20px;
-  margin-top: 50px;
-  margin-bottom: 20px;
+  margin-top: 5vh;
+  margin-bottom: 1vh;
 `;
 const Totalbox = styled.div`
   width: 90%;
@@ -211,4 +210,3 @@ const Getsmallbox = styled.div`
     font-size: 25px;
   }
 `;
-const Per = styled.p``;
