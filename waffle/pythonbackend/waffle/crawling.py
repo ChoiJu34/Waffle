@@ -270,8 +270,9 @@ def find_lowest_package(data, user_cards):
                     "layover": info.layover,
                     "during": info.long,
                     "site": info.site,
-                    "card": info.card,
-                    "companyImg": info.companyImg
+                    "card": info.card.replace('결제', ''),
+                    "companyImg": info.companyImg,
+                    "url": info.url
                 })
                 if len(card_name)<len(info.card):
                     card_name = info.card
@@ -286,7 +287,7 @@ def find_lowest_package(data, user_cards):
                     "hotelName" : info.name,
                     "start" : info.start,
                     "end" : info.end,
-                    "card" : info.card,
+                    "card" : info.card.replace('결제', ''),
                     "originPrice" : int(info.originPrice),
                     "discountPrice" : int(info.discountPrice),
                     "url" : info.url,
@@ -343,8 +344,9 @@ def find_lowest_package(data, user_cards):
                     "layover": info.layover,
                     "during": info.long,
                     "site": info.site,
-                    "card": info.card,
-                    "companyImg": info.companyImg
+                    "card": info.card.replace('결제', ''),
+                    "companyImg": info.companyImg,
+                    "url": info.url
                 })
                 if len(card_name) < len(info.card):
                     card_name = info.card
@@ -363,8 +365,9 @@ def find_lowest_package(data, user_cards):
                         "layover": info.layover,
                         "during": info.long,
                         "site": info.site,
-                        "card": info.card,
-                        "companyImg": info.companyImg
+                        "card": info.card.replace('결제', ''),
+                        "companyImg": info.companyImg,
+                        "url": info.url
                     })
                     if len(card_name) < len(info.card):
                         card_name = info.card
@@ -383,8 +386,9 @@ def find_lowest_package(data, user_cards):
                         "layover": info.layover,
                         "during": info.long,
                         "site": info.site,
-                        "card": info.card,
-                        "companyImg": info.companyImg
+                        "card": info.card.replace('결제', ''),
+                        "companyImg": info.companyImg,
+                        "url": info.url
                     })
                     if len(card_name) < len(info.card):
                         card_name = info.card
@@ -399,7 +403,7 @@ def find_lowest_package(data, user_cards):
                     "hotelName": info.name,
                     "start": info.start,
                     "end": info.end,
-                    "card": info.card,
+                    "card": info.card.replace('결제', ''),
                     "originPrice": int(info.originPrice),
                     "discountPrice": int(info.discountPrice),
                     "url": info.url,
@@ -415,7 +419,7 @@ def find_lowest_package(data, user_cards):
                         "hotelName": info.name,
                         "start": info.start,
                         "end": info.end,
-                        "card": info.card,
+                        "card": info.card.replace('결제', ''),
                         "originPrice": int(info.originPrice),
                         "discountPrice": int(info.discountPrice),
                         "url": info.url,
@@ -430,7 +434,7 @@ def find_lowest_package(data, user_cards):
                         "hotelName": info.name,
                         "start": info.start,
                         "end": info.end,
-                        "card": info.card,
+                        "card": info.card.replace('결제', ''),
                         "originPrice": int(info.originPrice),
                         "discountPrice": int(info.discountPrice),
                         "url": info.url,

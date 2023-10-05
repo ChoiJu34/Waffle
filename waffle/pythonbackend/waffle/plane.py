@@ -116,7 +116,7 @@ def interpark_crawling(info, chrome_options, service):
             origin = cards[len(cards)-1]
             del cards[len(cards)-1]
             if len(cards)==0:
-                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin, int(origin.replace("위탁수하물제공 ", "")), p[5], p[6], '인터파크', companyImg))
+                multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], "", origin, int(origin.replace("위탁수하물제공 ", "")), p[5], p[6], '인터파크', companyImg, url))
 
             pt = int(planeTime[0])
             uts = int(userTimeS[0])
@@ -129,16 +129,16 @@ def interpark_crawling(info, chrome_options, service):
                 discount = int(card_info[1].split('장애인')[0])
                 if n == 0:
                     if pt > uts:  # 비행기H>설정H
-                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg))
+                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg, url))
                     elif pt == uts and pt1 >= uts1:
-                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg))
+                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg, url))
                 elif n == (day - 1):
                     if pt < ute:
-                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg))
+                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg, url))
                     elif pt == ute and pt1 <= ute1:
-                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg))
+                        multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg, url))
                 else:
-                    multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg))
+                    multi_list[k].put(Plane(today, p[0], p[1], p[2], p[3], p[4], card_info[0], origin, discount, p[5], p[6], '인터파크', companyImg, url))
                 # logger.info(f'{today}, {p[0]}, {p[1]}, {p[2]}, {p[3]}, {p[4]}, {card_info[0]}, {origin}, {discount}, {p[5]}, {p[6]}, 인터파크')
         except:
             logger.info("인터파크 항공권 데이터 정제화 중 에러 발생")
@@ -217,17 +217,18 @@ def trip_crawling(info, chrome_options, service):
                 p[4] = "1회경유"
             if n == 0:
                 if pt > uts:  # 비행기H>설정H
-                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
+                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7].replace('최저가', ''), int(p[7].replace('최저가', '')), p[4], p[3], '트립닷컴', companyImg, url))
                 elif pt == uts and pt1 >= uts1:
-                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
+                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7].replace('최저가', ''), int(p[7].replace('최저가', '')), p[4], p[3], '트립닷컴', companyImg, url))
             elif n == (day - 1):
                 if pt < ute:
-                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
+                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7].replace('최저가', ''), int(p[7].replace('최저가', '')), p[4], p[3], '트립닷컴', companyImg, url))
                 elif pt == ute and pt1 <= ute1:
-                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
+                    multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7].replace('최저가', ''), int(p[7].replace('최저가', '')), p[4], p[3], '트립닷컴', companyImg, url))
             else:
-                multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7], int(p[7]), p[4], p[3], '트립닷컴', companyImg))
+                multi_list[k].put(Plane(today, p[0], p[2], p[1], p[6], p[5], "", p[7].replace('최저가', ''), int(p[7].replace('최저가', '')), p[4], p[3], '트립닷컴', companyImg, url))
             # logger.info(f'{today}, {p[0]}, {p[2]}, {p[1]}, {p[6]}, {p[5]}, "", {p[7]}, {int(p[7])}, {p[4]}, {p[3]}, 트립닷컴')
-        except:
+        except Exception as e:
+            logger.info(e)
             logger.info("트립닷컴 데이터 정제화 중 오류 발생")
     driver.quit()

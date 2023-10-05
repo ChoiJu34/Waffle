@@ -1,6 +1,6 @@
 
 class Plane:
-    def __init__(self, date, name, startPlace, startTime, endPlace, endTime, card, originPrice, discountPrice, layover, long, site, companyImg):
+    def __init__(self, date, name, startPlace, startTime, endPlace, endTime, card, originPrice, discountPrice, layover, long, site, companyImg, url):
         self.date = date
         self.name = name
         self.startPlace = startPlace
@@ -14,6 +14,7 @@ class Plane:
         self.long = long
         self.site = site
         self.companyImg = companyImg
+        self.url = url
 
     def __lt__(self, other):
         return self.discountPrice < other.discountPrice
