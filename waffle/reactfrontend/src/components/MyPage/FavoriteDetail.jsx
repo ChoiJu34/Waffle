@@ -261,7 +261,7 @@ const RanHotelimg = styled.img`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
   width: 100%;
 `
@@ -270,8 +270,8 @@ const Smallairbox = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
+    width: 80vw;
+    height: 90%;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
     box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
@@ -280,6 +280,7 @@ const Smallairbox = styled.div`
     .small-box{
         width: 100%;
         display: flex;
+        flex-direction: row;
     }
     
 `
@@ -377,7 +378,7 @@ const Companylogo = styled.img`
 `
 
 const Airbox = styled.div`
-    width: 90%;
+    width: 80%;
     height: 40%;
     display: flex;
     flex-direction: column;
@@ -396,7 +397,7 @@ const Airbox = styled.div`
 `
 
 const Hotelbox = styled.div`
-    width: 90%;
+    width: 80%;
     height: 40%;
     display: flex;
     flex-direction: column;
@@ -406,10 +407,9 @@ const Hotelbox = styled.div`
         flex-direction: row;
         justify-content: start;
         align-items: start;
-        width: 85%;
+        width: 80%;
         height: 1vh;
         font-size: 25px;
-        margin: 2vh;
         margin-bottom: 2vh;
     }
     
@@ -420,7 +420,7 @@ const Hotelcontent = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 100%;
     height: 100%;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
