@@ -520,7 +520,7 @@ const Signup = () => {
             }}
             placeholder={
               showPasswordPlaceholder
-                ? "영문, 숫자, 특수문자를 포함한 8자리 이상"
+                ? "영문, 숫자, 특수문자 포함 8자리 이상"
                 : ""
             }
             value={formData.password}
@@ -707,29 +707,30 @@ const Signup = () => {
 
 const SignupWrapper = styled.div`
   min-height: 100vh;
+  position: fixed;
 
   .signup-header {
     display: flex;
-    margin: 3vh 2vh;
+    margin: 8vw 6vw;
   }
 
   .signup-title {
-    font-size: 4vh;
-    margin-top: 3vh;
-    margin-left: 3vh;
+    font-size: 10vw;
+    margin-top: 3vw;
+    margin-left: 8vw;
     text-align: left;
     color: #000004;
   }
 
   .signup-title-underline {
-    height: 0.3vh;
-    width: 80%;
-    margin: 1.5vh auto;
+    height: 0.7vw;
+    width: 80vw;
+    margin: 4vw auto;
     background-color: #000004;
   }
 
   .signup-email {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
@@ -743,9 +744,9 @@ const SignupWrapper = styled.div`
     box-sizing: border-box;
     border-radius: 0;
     padding: 0;
-    height: 36px;
+    height: 10vw;
     line-height: 1.33;
-    font-size: 18px;
+    font-size: 5vw;
     font-family: inherit;
     vertical-align: baseline;
     -webkit-appearance: none;
@@ -760,14 +761,14 @@ const SignupWrapper = styled.div`
   }
 
   .signup-email > label {
-    top: 19vh;
+    top: 51vw;
     position: absolute;
-    left: 9vh;
+    left: 17vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
     color: #909090;
-    font-size: 18px;
+    font-size: 4.5vw;
     cursor: text;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -780,34 +781,34 @@ const SignupWrapper = styled.div`
   }
 
   .signup-email.focus > label {
-    top: 17vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 46vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .signup-email.complete > label {
-    top: 17vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 45vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
   }
 
   input::placeholder {
     color: #90909061;
-    font-size: 1.3vh;
+    font-size: 3vw;
   }
 
   .signup-emailverify {
-    width: 5vh;
-    margin-left: 1vh;
+    width: 12vw;
+    margin-left: 2vw;
     border-radius: 13px;
     border: none;
     background-color: #9ac5f4;
     color: white;
     font-weight: 600;
-    font-size: 1.5vh;
+    font-size: 3vw;
   }
 
   .signup-emailverify:disabled {
@@ -816,7 +817,7 @@ const SignupWrapper = styled.div`
   }
 
   .signup-password {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
@@ -830,16 +831,16 @@ const SignupWrapper = styled.div`
     box-sizing: border-box;
     border-radius: 0;
     padding: 0;
-    height: 36px;
+    height: 10vw;
     line-height: 1.33;
-    font-size: 18px;
+    font-size: 5vw;
     font-family: inherit;
     vertical-align: baseline;
     -webkit-appearance: none;
     overflow: visible;
     font-family: "돋움";
     font: small-caption;
-    font-size: 3vh;
+    font-size: 7vw;
   }
 
   .signup-password > input:focus {
@@ -850,14 +851,14 @@ const SignupWrapper = styled.div`
   }
 
   .signup-password > label {
-    top: 27vh;
+    top: 69vw;
     position: absolute;
-    left: 9vh;
+    left: 17vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
     color: #909090;
-    font-size: 18px;
+    font-size: 4.5vw;
     cursor: text;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -870,22 +871,22 @@ const SignupWrapper = styled.div`
   }
 
   .signup-password.focus > label {
-    top: 25vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 64vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .signup-password.complete > label {
-    top: 25vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 64vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
   }
 
   .signup-password-verify {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
@@ -899,9 +900,9 @@ const SignupWrapper = styled.div`
     box-sizing: border-box;
     border-radius: 0;
     padding: 0;
-    height: 36px;
+    height: 10vw;
     line-height: 1.33;
-    font-size: 18px;
+    font-size: 5vw;
     font-family: inherit;
     vertical-align: baseline;
     -webkit-appearance: none;
@@ -919,14 +920,14 @@ const SignupWrapper = styled.div`
   }
 
   .signup-password-verify > label {
-    top: 35vh;
+    top: 87vw;
     position: absolute;
-    left: 9vh;
+    left: 17vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
     color: #909090;
-    font-size: 18px;
+    font-size: 4.5vw;
     cursor: text;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -939,22 +940,22 @@ const SignupWrapper = styled.div`
   }
 
   .signup-password-verify.focus > label {
-    top: 33vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 82vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .signup-password-verify.complete > label {
-    top: 33vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 82vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
   }
 
   .signup-name {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
@@ -985,14 +986,14 @@ const SignupWrapper = styled.div`
   }
 
   .signup-name > label {
-    top: 43vh;
+    top: 104vw;
     position: absolute;
-    left: 9vh;
+    left: 17vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
     color: #909090;
-    font-size: 18px;
+    font-size: 4.5vw;
     cursor: text;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1005,22 +1006,22 @@ const SignupWrapper = styled.div`
   }
 
   .signup-name.focus > label {
-    top: 41vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 99vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .signup-name.complete > label {
-    top: 41vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 99vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
   }
 
   .signup-birthdate {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
@@ -1034,9 +1035,9 @@ const SignupWrapper = styled.div`
     box-sizing: border-box;
     border-radius: 0;
     padding: 0;
-    height: 36px;
+    height: 10vw;
     line-height: 1.33;
-    font-size: 18px;
+    font-size: 5vw;
     font-family: inherit;
     vertical-align: baseline;
     -webkit-appearance: none;
@@ -1051,14 +1052,14 @@ const SignupWrapper = styled.div`
   }
 
   .signup-birthdate > label {
-    top: 51vh;
+    top: 121vw;
     position: absolute;
-    left: 9vh;
+    left: 17vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
     color: #909090;
-    font-size: 18px;
+    font-size: 4.5vw;
     cursor: text;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1071,22 +1072,22 @@ const SignupWrapper = styled.div`
   }
 
   .signup-birthdate.focus > label {
-    top: 49vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 116vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .signup-birthdate.complete > label {
-    top: 49vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 116vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
   }
 
   .signup-tel {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
@@ -1100,9 +1101,9 @@ const SignupWrapper = styled.div`
     box-sizing: border-box;
     border-radius: 0;
     padding: 0;
-    height: 36px;
+    height: 10vw;
     line-height: 1.33;
-    font-size: 18px;
+    font-size: 5vw;
     font-family: inherit;
     vertical-align: baseline;
     -webkit-appearance: none;
@@ -1117,14 +1118,14 @@ const SignupWrapper = styled.div`
   }
 
   .signup-tel > label {
-    top: 59vh;
+    top: 139vw;
     position: absolute;
-    left: 9vh;
+    left: 17vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
     color: #909090;
-    font-size: 18px;
+    font-size: 4.5vw;
     cursor: text;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1137,43 +1138,43 @@ const SignupWrapper = styled.div`
   }
 
   .signup-tel.focus > label {
-    top: 57vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 134vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .signup-tel.complete > label {
-    top: 57vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 134vw;
+    left: 14vw;
+    font-size: 3vw;
     line-height: 1.33;
   }
 
   .signup-wrong {
-    margin-left: 2vh;
-    width: 3vh;
-    height: 3vh;
+    margin-left: 4vw;
+    width: 7vw;
+    height: 7vw;
   }
 
   .signup-correct {
-    margin-left: 2vh;
-    width: 3vh;
-    height: 3vh;
+    margin-left: 4vw;
+    width: 7vw;
+    height: 7vw;
   }
 `;
 
 const SignupButton = styled.button`
-  width: 12.5vh;
-  height: 5vh;
-  border-radius: 15px;
-  border: none;
-  background-color: #9ac5f4;
-  color: white;
-  font-weight: 800;
-  font-size: 2.3vh;
-  margin-top: 2vh;
+      width: 30vw;
+      height: 11vw;
+      border-radius: 15px;
+      border: none;
+      background-color: #9AC5F4;
+      color: white;
+      font-weight: 800;
+      font-size: 5vw;
+      margin-top: 5vw;
 
   &:disabled {
     background-color: #ddd;

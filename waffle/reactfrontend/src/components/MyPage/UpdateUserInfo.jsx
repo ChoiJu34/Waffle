@@ -272,7 +272,7 @@ const UpdateUserInfo = () => {
     <UpdateUserInfoWrapper>
     {isCorrectPassword ? (
       <>
-        <div className="update-userinfo-title">회원정보 변경</div>
+        <div className="update-userinfo-title-inner">회원정보 변경</div>
         <div className="update-userinfo-title-underline"></div>
 
         <form>
@@ -319,52 +319,65 @@ const UpdateUserInfo = () => {
 
 const UpdateUserInfoWrapper = styled.div`
    min-height: 100vh;
+   min-width: 100vw;
+   position: fixed;
  
    .update-userinfo-header {
      display: flex;
-     margin: 3vh 2vh;
+     margin: 8vw 6vw;
    }
  
    .update-userinfo-title {
-     font-size: 4vh;
-     margin-top: 3vh;
-     margin-left: 3vh;
-     text-align: left;
-     color: #000004;
+    font-size: 10vw;
+    margin-top: 3vw;
+    margin-left: 8vw;
+    text-align: left;
+    color: #000004;
+   }
+
+   .update-userinfo-title-inner {
+    font-size: 10vw;
+    margin-top: 11vw;
+    margin-left: 8vw;
+    text-align: left;
+    color: #000004;
    }
  
    .update-userinfo-title-underline {
-     height: 0.3vh;
-     width: 80%;
-     margin: 1.5vh auto;
-     background-color: #000004;
+    height: 0.7vw;
+    width: 80vw;
+    margin: 4vw auto;
+    background-color: #000004;
    }
  
    .update-userinfo-password {
-    padding: 3vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
   .update-userinfo-password > input{
     display: block;
-	  width: 100%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-	  font-size: 18px;
-	  font-family: inherit;
-	  vertical-align: baseline;
-	  -webkit-appearance: none;
-	  overflow: visible;
-    font-family: "돋움";
-    font: small-caption;
-    font-size: 3vh;
+	    width: 100%;
+	    color: #909090;
+	    border:0;
+	    border-bottom: 1px solid #8c8c8c;
+	    background-color: transparent;
+	    box-sizing: border-box;
+	    border-radius: 0;
+	    padding: 0;
+	    height: 10vw;
+	    line-height: 1.33;
+	    font-size: 5vw;
+	    font-family: inherit;
+	    vertical-align: baseline;
+	    -webkit-appearance: none;
+	    overflow: visible;
+	    margin:0;
+            /* type:password가 사용자 지정 폰트를 지원하지 않아 출력되지 않았으므로 여기서만 새로 지정 */
+      /* 단순히 돋움으로만 설정해두면 점 간격이 고르지 않아, 추가 작업 필요 */
+      font-family: "돋움";
+      font: small-caption;
+      font-size: 7vw;
   }
 
   .update-userinfo-password > input:focus{
@@ -375,79 +388,82 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-password > label{
-      top: 27vh;
-      position: absolute;
-      left: 9vh;
-      max-width: 100%;
-      height: 2.7em;
-      line-height: 1.33;
-      color: #909090;
-      font-size: 18px;
-      cursor: text;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: all .2s;
-      pointer-events: none;
-      -webkit-font-smoothing: antialiased;
-      transform: translate3d(0, 3px, 0) scale(1);
-      transform-origin: left top;
+    top: 49vw;
+        position: absolute;
+        left: 16vw;
+        max-width: 100%;
+        height: 2.7em;
+        line-height: 1.33;
+        color: #909090;
+        font-size: 4.5vw;
+        cursor: text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all .2s;
+        pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        transform: translate3d(0, 3px, 0) scale(1);
+        transform-origin: left top;
   }
 
   .update-userinfo-password.focus > label{
-      top: 25vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 44vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
+        color: #76A8DE;
       color: #76A8DE;
   }
 
   .update-userinfo-password.complete > label{
-      top: 25vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 44vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
+        color: #76A8DE;
   }
 
   .update-userinfo-button {
-      width: 11vh;
-      height: 5vh;
+    width: 24vw;
+      height: 11vw;
       border-radius: 15px;
       border: none;
       background-color: #9AC5F4;
       color: white;
       font-weight: 800;
-      font-size: 2.3vh;
-      margin-top: 2vh;
+      font-size: 5vw;
+      margin-top: 5vw;
     }
 
   input::placeholder {
     color: #90909087;
-    font-size: 1.3vh;
+    font-size: 4vw;
   }
 
   .update-userinfo-name {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
   .update-userinfo-name > input{
     display: block;
-	  width: 100%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-	  font-size: 18px;
-	  font-family: inherit;
-	  vertical-align: baseline;
-	  -webkit-appearance: none;
-	  overflow: visible;
+	    width: 100%;
+	    color: #909090;
+	    border:0;
+	    border-bottom: 1px solid #8c8c8c;
+	    background-color: transparent;
+	    box-sizing: border-box;
+	    border-radius: 0;
+	    padding: 0;
+	    height: 10vw;
+	    line-height: 1.33;
+	    font-size: 5vw;
+	    font-family: inherit;
+	    vertical-align: baseline;
+	    -webkit-appearance: none;
+	    overflow: visible;
+	    margin:0;
   }
 
   .update-userinfo-name > input:focus{
@@ -458,9 +474,9 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-name > label{
-      top: 19vh;
+      top: 38vw;
       position: absolute;
-      left: 9vh;
+      left: 16vw;
       max-width: 100%;
       height: 2.7em;
       line-height: 1.33;
@@ -478,22 +494,21 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-name.focus > label{
-      top: 17vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
-      color: #76A8DE;
+    top: 31vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 
   .update-userinfo-name.complete > label{
-      top: 17vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 31vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 
   .update-userinfo-tel {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
@@ -524,9 +539,9 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-tel > label{
-      top: 27vh;
+    top: 54vw;
       position: absolute;
-      left: 9vh;
+      left: 16vw;
       max-width: 100%;
       height: 2.7em;
       line-height: 1.33;
@@ -544,22 +559,22 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-tel.focus > label{
-      top: 25vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 48vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
       color: #76A8DE;
   }
 
   .update-userinfo-tel.complete > label{
-      top: 25vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 48vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 
   .update-userinfo-password-for-update {
-    padding: 3vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
@@ -593,9 +608,9 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-password-for-update > label{
-      top: 35vh;
+    top: 74vw;
       position: absolute;
-      left: 9vh;
+      left: 16vw;
       max-width: 100%;
       height: 2.7em;
       line-height: 1.33;
@@ -613,18 +628,18 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-password-for-update.focus > label{
-      top: 33vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 66vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
       color: #76A8DE;
   }
 
   .update-userinfo-password-for-update.complete > label{
-      top: 33vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 66vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 `
 

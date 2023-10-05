@@ -131,13 +131,11 @@ const FoundPassword = () => {
       <div className={`found-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
           <label id="found-password-label">새 비밀번호</label>
           <input type="password" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {onChangePassword(e); handleChange(e)}} placeholder={showPasswordPlaceholder ? "영문, 숫자, 특수문자를 포함한 8자리 이상" : ""} value={formData.newPassword} name="newPassword"/>
-          {isPassword === null ? null : (isPassword ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
         </div>
 
         <div className={`found-password-verify ${isPasswordVerifyFocused ? 'focus' : ''} ${isPasswordVerifyComplete ? 'complete' : ''}`}>
           <label id="signup-label">비밀번호 확인</label>
           <input type="password" id="signup-input" ref={inputPasswordVerifyRef} onFocus={handlePasswordVerifyFocus} onBlur={handlePasswordVerifyBlur} onChange={onChangePasswordVerify} placeholder={showPasswordVerifyPlaceholder ? "" : ""} />
-          {isPasswordVerify === null ? null : (isPasswordVerify ? <FontAwesomeIcon className="signup-correct" icon={faCheck} color="#9AC5F4" /> : <FontAwesomeIcon className="signup-wrong" icon={faTimes} color="red" />)}
         </div>
 
       <div className="found-password-button-container">
@@ -151,33 +149,35 @@ const FoundPassword = () => {
 
 const FindEmailWrapper = styled.div`
   min-height: 100vh;
+  min-width: 100vw;
+  position: fixed;
 
 .found-password-header {
   display: flex;
-  margin: 4.8vh 2vh;
+    margin: 8vw 6vw;
 }
 
 .found-password-title {
-  font-size: 4vh;
-  margin-top: 3vh;
-  margin-left: 3vh;
-  text-align: left;
-  color: #000004;
+  font-size: 10vw;
+    margin-top: 3vw;
+    margin-left: 8vw;
+    text-align: left;
+    color: #000004;
 }
 
 .found-password-title-underline {
-  height: 0.3vh;
-  width: 80%;
-  margin: 1.5vh auto;
-  background-color: #000004;
+  height: 0.7vw;
+    width: 80vw;
+    margin: 4vw auto;
+    background-color: #000004;
 }
 
 .found-password {
-    padding: 2vh 7vh;
+  padding: 4vw 15vw;
   }
 
   .found-password > input{
-	    display: block;
+    display: block;
 	    width: 100%;
 	    color: #909090;
 	    border:0;
@@ -186,14 +186,19 @@ const FindEmailWrapper = styled.div`
 	    box-sizing: border-box;
 	    border-radius: 0;
 	    padding: 0;
-	    height: 36px;
+	    height: 10vw;
 	    line-height: 1.33;
-	    font-size: 18px;
+	    font-size: 5vw;
 	    font-family: inherit;
 	    vertical-align: baseline;
 	    -webkit-appearance: none;
 	    overflow: visible;
 	    margin:0;
+      /* type:password가 사용자 지정 폰트를 지원하지 않아 출력되지 않았으므로 여기서만 새로 지정 */
+      /* 단순히 돋움으로만 설정해두면 점 간격이 고르지 않아, 추가 작업 필요 */
+      font-family: "돋움";
+      font: small-caption;
+      font-size: 7vw;
 	}
 
     .found-password > input:focus{
@@ -204,14 +209,14 @@ const FindEmailWrapper = styled.div`
     }
 
     .found-password > label{
-        top: 19vh;
+      top: 41vw;
         position: absolute;
-        left: 9vh;
+        left: 16vw;
         max-width: 100%;
         height: 2.7em;
         line-height: 1.33;
         color: #909090;
-        font-size: 18px;
+        font-size: 4.5vw;
         cursor: text;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -224,26 +229,26 @@ const FindEmailWrapper = styled.div`
     }
 
     .found-password.focus > label{
-        top: 17vh;
-        left: 8vh;
-        font-size: 12px;
+      top: 36vw;
+        left: 14vw;
+        font-size: 3vw;
         line-height: 1.33;
         color: #76A8DE;
     }
 
     .found-password.complete > label{
-        top: 17vh;
-        left: 8vh;
-        font-size: 12px;
+      top: 36vw;
+        left: 14vw;
+        font-size: 3vw;
         line-height: 1.33;
     }
 
     .found-password-verify {
-    padding: 2vh 7vh;
+      padding: 4vw 15vw;
   }
 
   .found-password-verify > input{
-	    display: block;
+    display: block;
 	    width: 100%;
 	    color: #909090;
 	    border:0;
@@ -252,14 +257,19 @@ const FindEmailWrapper = styled.div`
 	    box-sizing: border-box;
 	    border-radius: 0;
 	    padding: 0;
-	    height: 36px;
+	    height: 10vw;
 	    line-height: 1.33;
-	    font-size: 18px;
+	    font-size: 5vw;
 	    font-family: inherit;
 	    vertical-align: baseline;
 	    -webkit-appearance: none;
 	    overflow: visible;
 	    margin:0;
+      /* type:password가 사용자 지정 폰트를 지원하지 않아 출력되지 않았으므로 여기서만 새로 지정 */
+      /* 단순히 돋움으로만 설정해두면 점 간격이 고르지 않아, 추가 작업 필요 */
+      font-family: "돋움";
+      font: small-caption;
+      font-size: 7vw;
 	}
 
     .found-password-verify > input:focus{
@@ -270,9 +280,9 @@ const FindEmailWrapper = styled.div`
     }
 
     .found-password-verify > label{
-        top: 27vh;
+      top: 59vw;
         position: absolute;
-        left: 9vh;
+        left: 16vw;
         max-width: 100%;
         height: 2.7em;
         line-height: 1.33;
@@ -290,30 +300,30 @@ const FindEmailWrapper = styled.div`
     }
 
     .found-password-verify.focus > label{
-        top: 25vh;
-        left: 8vh;
-        font-size: 12px;
+      top: 54vw;
+        left: 14vw;
+        font-size: 3vw;
         line-height: 1.33;
         color: #76A8DE;
     }
 
     .found-password-verify.complete > label{
-        top: 25vh;
-        left: 8vh;
-        font-size: 12px;
+      top: 54vw;
+        left: 14vw;
+        font-size: 3vw;
         line-height: 1.33;
     }
 
     .found-password-button {
-      width: 16vh;
-      height: 5vh;
+      width: 40vw;
+      height: 11vw;
       border-radius: 15px;
       border: none;
       background-color: #9AC5F4;
       color: white;
       font-weight: 800;
-      font-size: 2.1vh;
-      margin-top: 2vh;
+      font-size: 5vw;
+      margin-top: 5vw;
       &:disabled {
       background-color: #ddd;
       cursor: not-allowed;
@@ -321,16 +331,16 @@ const FindEmailWrapper = styled.div`
     }
 
     .found-password-underline {
-    height: 0.1vh;
+      height: 0.1vw;
     width: 80%;
-    margin: 1.5vh auto;
-    margin-top: 3vh;
+    margin: 5vw auto;
+    margin-top: 7vw;
     background-color: #000004;
   }
 
   input::placeholder {
     color: #90909061;
-    font-size: 1.3vh;
+    font-size: 3vw;
   }
 `
 

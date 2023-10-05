@@ -151,21 +151,8 @@ const Login = () => {
 
 const LoginWrapper = styled.div`
   min-height: 100vh;
+  min-width: 100vw;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: auto;
-
-  .entire {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow-y: auto;
-  }
 
   .login-header {
     display: flex;
@@ -192,23 +179,25 @@ const LoginWrapper = styled.div`
   }
 
   .login-email > input{
-	    display: block;
-	    width: 100%;
-	    color: #909090;
-	    border:0;
-	    border-bottom: 1px solid #8c8c8c;
-	    background-color: transparent;
-	    box-sizing: border-box;
-	    border-radius: 0;
-	    padding: 0;
-	    height: 10vw;
-	    line-height: 1.33;
-	    font-size: 6vw;
-	    font-family: inherit;
-	    vertical-align: baseline;
-	    -webkit-appearance: none;
-	    overflow: visible;
-	    margin:0;
+    display: block;
+    width: 80%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
+    font-family: "돋움";
+    font: small-caption;
+    font-size: 7vw;
 	}
 
     .login-email > input:focus{
@@ -269,7 +258,7 @@ const LoginWrapper = styled.div`
 	    padding: 0;
 	    height: 10vw;
 	    line-height: 1.33;
-	    font-size: 6vw;
+	    font-size: 5vw;
 	    font-family: inherit;
 	    vertical-align: baseline;
 	    -webkit-appearance: none;

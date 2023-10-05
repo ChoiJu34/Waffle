@@ -70,31 +70,33 @@ const VerifyEmail = () => {
 
 const VerifyEmailWrapper = styled.div`
   min-height: 100vh;
+  min-width: 100vw;
+  position: fixed;
 
   .verify-email-header {
     display: flex;
-    margin: 3vh 2vh;
+    margin: 8vw 6vw;
   }
 
   .verify-email-title {
-    font-size: 4vh;
-    margin-top: 3vh;
-    margin-left: 3vh;
+    font-size: 10vw;
+    margin-top: 3vw;
+    margin-left: 8vw;
     text-align: left;
     color: #000004;
   }
 
   .verify-email-title-underline {
-    height: 0.3vh;
-    width: 80%;
-    margin: 1.5vh auto;
+    height: 0.7vw;
+    width: 80vw;
+    margin: 4vw auto;
     background-color: #000004;
   }
 
   .verify-email-token-input {
-    padding: 2vh 7vh;
-    margin-top: 6vh;
-    margin-bottom: 6vh;
+    padding: 4vw 15vw;
+    margin-top: 12vw;
+    margin-bottom: 12vw;
   }
 
   .verify-email-token-input > input {
@@ -107,9 +109,9 @@ const VerifyEmailWrapper = styled.div`
 	    box-sizing: border-box;
 	    border-radius: 0;
 	    padding: 0;
-	    height: 36px;
+	    height: 10vw;
 	    line-height: 1.33;
-	    font-size: 18px;
+	    font-size: 5vw;
 	    font-family: inherit;
 	    vertical-align: baseline;
 	    -webkit-appearance: none;
@@ -125,15 +127,15 @@ const VerifyEmailWrapper = styled.div`
   }
 
   .verify-email-token-submit {
-      width: 12vh;
-      height: 5vh;
+    width: 27vw;
+      height: 11vw;
       border-radius: 15px;
       border: none;
       background-color: #9AC5F4;
       color: white;
       font-weight: 800;
-      font-size: 2.1vh;
-      margin-top: 2vh;
+      font-size: 5vw;
+      margin-top: 5vw;
     }
 `
 

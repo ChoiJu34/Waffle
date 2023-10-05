@@ -103,33 +103,35 @@ const TeamAccountAddNew = () => {
 
 const LoginWrapper = styled.div`
   min-height: 100vh;
+  min-width: 100vw;
+  position: fixed;
 
   .teamaccount-add-code-header {
     display: flex;
-    margin: 3vh 2vh;
+    margin: 8vw 6vw;
   }
 
   .teamaccount-add-code-title {
-    font-size: 3vh;
-    margin-top: 3vh;
-    margin-left: 3vh;
+    font-size: 6vw;
+    margin-top: 3vw;
+    margin-left: 8vw;
     text-align: left;
     color: #000004;
   }
 
   .teamaccount-add-code-title-underline {
-    height: 0.3vh;
-    width: 80%;
-    margin: 1.5vh auto;
+    height: 0.7vw;
+    width: 80vw;
+    margin: 4vw auto;
     background-color: #000004;
   }
 
   .login-email {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
   }
 
   .login-email > input{
-	    display: block;
+    display: block;
 	    width: 100%;
 	    color: #909090;
 	    border:0;
@@ -138,9 +140,9 @@ const LoginWrapper = styled.div`
 	    box-sizing: border-box;
 	    border-radius: 0;
 	    padding: 0;
-	    height: 36px;
+	    height: 10vw;
 	    line-height: 1.33;
-	    font-size: 18px;
+	    font-size: 5vw;
 	    font-family: inherit;
 	    vertical-align: baseline;
 	    -webkit-appearance: none;
@@ -156,14 +158,14 @@ const LoginWrapper = styled.div`
     }
 
     .login-email > label{
-        top: 19vh;
+      top: 45vw;
         position: absolute;
-        left: 9vh;
+        left: 16vw;
         max-width: 100%;
         height: 2.7em;
         line-height: 1.33;
         color: #909090;
-        font-size: 18px;
+        font-size: 4.5vw;
         cursor: text;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -176,37 +178,37 @@ const LoginWrapper = styled.div`
     }
 
     .login-email.focus > label{
-        top: 17vh;
-        left: 8vh;
-        font-size: 12px;
+      top: 40vw;
+        left: 14vw;
+        font-size: 3vw;
         line-height: 1.33;
         color: #76A8DE;
     }
 
     .login-email.complete > label{
-        top: 17vh;
-        left: 8vh;
-        font-size: 12px;
+      top: 40vw;
+        left: 14vw;
+        font-size: 3vw;
         line-height: 1.33;
     }
 
     .add-button {
-      width: 10vh;
-      height: 5vh;
+      width: 20vw;
+      height: 11vw;
       border-radius: 15px;
       border: none;
       background-color: #9AC5F4;
       color: white;
       font-weight: 800;
-      font-size: 2.3vh;
-      margin-top: 2vh;
+      font-size: 5vw;
+      margin-top: 5vw;
     }
 
     .teamaccount-add-code-underline {
-    height: 0.1vh;
+      height: 0.1vw;
     width: 80%;
-    margin: 1.5vh auto;
-    margin-top: 3vh;
+    margin: 5vw auto;
+    margin-top: 7vw;
     background-color: #000004;
   }
 
@@ -214,8 +216,8 @@ const LoginWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 1vh 6vh;
-    font-size: 1.4vh;
+    margin: 1vw 14vw;
+    font-size: 3.5vw;
   }
 `
 
