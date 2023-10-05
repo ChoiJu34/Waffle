@@ -3,8 +3,9 @@ import styled from 'styled-components'
 
 const TeamAccountDetailIndividualItem = ({ data, index }) => {
 
-    const individualName = data?.name || '그 외'
+    const individualName = data?.name
     const individualTarget = data?.goal
+
     const individualRaised = data?.money
     const raisedRatio = individualTarget !== 0 ? individualRaised / individualTarget * 100 : 0;
 

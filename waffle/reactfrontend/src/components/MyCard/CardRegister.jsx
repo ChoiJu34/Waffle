@@ -1,10 +1,17 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const CardRegister = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const token = localStorage.getItem("access_token");
+
+  const headers = {
+    Authorization: "Bearer " + token,
+  };
 
   const numberFromPrevious = location.state?.number || "";
   const dateFromPrevious = location.state?.date || "";
@@ -15,6 +22,19 @@ const CardRegister = () => {
     date: dateFromPrevious,
     nickname: nicknameFromPrevious,
   });
+
+  const cardRegister = async () => {
+    const params = {
+      cardBin: formData.number.slice(0, 6),
+      cardNumber: formData.number.replace(/(.{4})/g, "$1-").slice(0, -1),
+      cardNickname: formData.nickname,
+      cardValidDate: formData.date,
+    };
+
+    await axios.post(`/user-card/add`, params, { headers });
+
+    navigate(-1);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,7 +102,9 @@ const CardRegister = () => {
     <CardRegisterWrapper>
       <RegisterHeader>
         <div onClick={() => navigate(-1)}>취소</div>
-        <div style={{ color: "#9ac5f4" }}>등록</div>
+        <div onClick={cardRegister} style={{ color: "#9ac5f4" }}>
+          등록
+        </div>
       </RegisterHeader>
       <Title>사용 중인 카드를 등록해주세요</Title>
       <form>
@@ -192,7 +214,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number > label {
-    top: 27vh;
+    top: 29vh;
     position: absolute;
     left: 9vh;
     max-width: 100%;
@@ -212,7 +234,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number.focus > label {
-    top: 25vh;
+    top: 27vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -220,7 +242,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number.complete > label {
-    top: 25vh;
+    top: 27vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -261,7 +283,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date > label {
-    top: 35vh;
+    top: 37vh;
     position: absolute;
     left: 9vh;
     max-width: 100%;
@@ -281,7 +303,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date.focus > label {
-    top: 33vh;
+    top: 35vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -289,7 +311,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date.complete > label {
-    top: 33vh;
+    top: 35vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -330,7 +352,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname > label {
-    top: 43vh;
+    top: 45vh;
     position: absolute;
     left: 9vh;
     max-width: 100%;
@@ -350,7 +372,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname.focus > label {
-    top: 41vh;
+    top: 43vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;
@@ -358,7 +380,7 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname.complete > label {
-    top: 41vh;
+    top: 43vh;
     left: 8vh;
     font-size: 12px;
     line-height: 1.33;

@@ -17,6 +17,7 @@ const FavoriteList = () => {
     axios.get('/package/get-favorite-list', {headers})
     .then(response => {
       setYourFavorite(response.data.list)
+      console.log(response.data)
     })
     .catch(error => {
       console.error('대실패')
@@ -25,10 +26,15 @@ const FavoriteList = () => {
     
   }, [])
 
+  const handleDelete = (id) => {
+    const newItems = yourFavorite.filter(item => item.id !== id);
+    setYourFavorite(newItems);
+  }
+
   return (
     <FavoriteListWrapper>
       {yourFavorite?.map((data, index) => (
-        <FavoriteItem key={index} data={data}/>
+        <FavoriteItem key={index} data={data} handleDelete={handleDelete}/>
       ))}
     </FavoriteListWrapper>
   )

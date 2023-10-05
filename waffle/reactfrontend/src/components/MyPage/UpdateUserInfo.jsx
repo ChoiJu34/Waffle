@@ -270,8 +270,6 @@ const UpdateUserInfo = () => {
 
   return (
     <UpdateUserInfoWrapper>
-    {isCorrectPassword ? (
-      <>
         <div className="update-userinfo-title">회원정보 변경</div>
         <div className="update-userinfo-title-underline"></div>
 
@@ -296,29 +294,14 @@ const UpdateUserInfo = () => {
           <SignupButton type="submit" className="signup-button" disabled={!(isName && isPassword && isTel)} onClick={handleSubmit}>변경하기</SignupButton>
         </div>
       </form>
-      </>
-    ) : (
-      <>
-      <div className="update-userinfo-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
-        <div className="update-userinfo-title">비밀번호 확인</div>
-        <div className="update-userinfo-title-underline"></div>
-  
-        <div className={`update-userinfo-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
-          <label id="signup-label">비밀번호</label>
-          <input type="password" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {handleChange(e)}} placeholder={showPasswordPlaceholder ? "영문, 숫자, 특수문자를 포함한 8자리 이상" : ""} name="password"/>
-        </div>
-
-        <div className="update-userinfo-button-container">
-          <button className="update-userinfo-button" onClick={verifyCorrectPassword}>확인</button>
-        </div>
-        </>
-      )}
     </UpdateUserInfoWrapper>
   )
 }
 
 const UpdateUserInfoWrapper = styled.div`
+  margin-top: 2vh;
    min-height: 100vh;
+   position: fixed;
  
    .update-userinfo-header {
      display: flex;
@@ -458,7 +441,7 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-name > label{
-      top: 19vh;
+      top: 13vh;
       position: absolute;
       left: 9vh;
       max-width: 100%;
@@ -478,7 +461,7 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-name.focus > label{
-      top: 17vh;
+      top: 11vh;
       left: 8vh;
       font-size: 12px;
       line-height: 1.33;
@@ -486,7 +469,7 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-name.complete > label{
-      top: 17vh;
+      top: 11vh;
       left: 8vh;
       font-size: 12px;
       line-height: 1.33;
@@ -524,7 +507,7 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-tel > label{
-      top: 27vh;
+      top: 21vh;
       position: absolute;
       left: 9vh;
       max-width: 100%;
@@ -544,7 +527,7 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-tel.focus > label{
-      top: 25vh;
+      top: 19vh;
       left: 8vh;
       font-size: 12px;
       line-height: 1.33;
@@ -552,7 +535,7 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-tel.complete > label{
-      top: 25vh;
+      top: 19vh;
       left: 8vh;
       font-size: 12px;
       line-height: 1.33;
@@ -593,9 +576,9 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-password-for-update > label{
-      top: 35vh;
+      top: 29vh;
       position: absolute;
-      left: 9vh;
+      left: 8vh;
       max-width: 100%;
       height: 2.7em;
       line-height: 1.33;
@@ -613,7 +596,7 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-password-for-update.focus > label{
-      top: 33vh;
+      top: 27vh;
       left: 8vh;
       font-size: 12px;
       line-height: 1.33;
@@ -621,7 +604,7 @@ const UpdateUserInfoWrapper = styled.div`
   }
 
   .update-userinfo-password-for-update.complete > label{
-      top: 33vh;
+      top: 27vh;
       left: 8vh;
       font-size: 12px;
       line-height: 1.33;

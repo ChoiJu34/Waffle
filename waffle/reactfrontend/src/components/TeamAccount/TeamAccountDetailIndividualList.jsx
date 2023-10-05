@@ -47,7 +47,6 @@ const TeamAccountDetailIndividualList = () => {
         {teamAccountIndividual?.map((data, index) => (
           <TeamAccountDetailIndividualItem key={data.id} data={data} index={index} />
         ))}
-        <TeamAccountDetailIndividualItem />
         </>
         )}
   </TeamAccountDetailIndividualListWrapper>
