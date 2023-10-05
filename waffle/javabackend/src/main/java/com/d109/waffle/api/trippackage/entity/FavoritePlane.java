@@ -42,6 +42,8 @@ public class FavoritePlane {
 	String during;
 	String site;
 	String card;
+	String url;
+	String companyImg;
 	@ManyToOne
 	@JoinColumn(name = "package_id")
 	private FavoritePackage favoritePackage;
