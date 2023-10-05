@@ -115,6 +115,7 @@ const Login = () => {
 
   return (
     <LoginWrapper>
+      <div className="entire">
       <div className="login-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
       <div className="login-title">로그인</div>
       <div className="login-title-underline"></div>
@@ -143,7 +144,7 @@ const Login = () => {
         <div className="login-change-password"><StyledLink to="/user/find-password">비밀번호 찾기</StyledLink></div>
         <div className="login-signup"><StyledLink to="/user/sign-up">회원가입</StyledLink></div>
       </div>
-
+    </div>
     </LoginWrapper>
   );
 }
@@ -151,6 +152,11 @@ const Login = () => {
 const LoginWrapper = styled.div`
   min-height: 100vh;
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
 
   .login-header {
     display: flex;

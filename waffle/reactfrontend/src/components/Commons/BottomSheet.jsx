@@ -1,5 +1,6 @@
 // import { icClose } from 'assets';
 import styled from 'styled-components';
+import { GrFormClose } from "react-icons/gr";
 
 
 function BottomSheet({ title, closeModal, children }) {
@@ -8,7 +9,7 @@ function BottomSheet({ title, closeModal, children }) {
       <StyledModalBackground />
       <StyledBottomSheet>
         <StyledBottomSheetHeader>
-          <button onClick={closeModal}>X</button>
+          <GrFormClose size={30} onClick={closeModal}/>
           <div>{title}</div>
         </StyledBottomSheetHeader>
         <div>{children}</div>
