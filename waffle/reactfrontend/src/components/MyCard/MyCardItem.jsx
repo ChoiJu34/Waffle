@@ -51,11 +51,9 @@ const MyCardItem = ({ data, setModalOpen, setDeleteCardId }) => {
   };
 
   const cardDelete = async () => {
-    setDeleteCardId(); // 사용자 카드 id 설정 필
+    setDeleteCardId(data.id);
     setModalOpen(true);
   };
-
-  console.log(data);
 
   return (
     <CardItem
@@ -72,7 +70,7 @@ const MyCardItem = ({ data, setModalOpen, setDeleteCardId }) => {
             <img src={CardDelete} onClick={cardDelete} alt="지우기없음"></img>
           </CardItemHeader>
           <CardItemNameInfo>
-            <div style={{ marginBottom: "10px" }}>{data.company}</div>
+            <div style={{ marginBottom: "10px" }}>{data.cardNickname}</div>
             <div>{data.name}</div>
           </CardItemNameInfo>
         </CardItemFront>
@@ -82,7 +80,10 @@ const MyCardItem = ({ data, setModalOpen, setDeleteCardId }) => {
             <img src={logoLink} alt="로고없음"></img>
             <img src={CardDelete} onClick={cardDelete} alt="지우기없음"></img>
           </CardItemHeader>
-          <CardItemContentInfo></CardItemContentInfo>
+          <CardItemNameInfo>
+            <div style={{ marginBottom: "10px" }}>{data.cardNumber}</div>
+            <div>{data.cardValidDate}</div>
+          </CardItemNameInfo>
         </CardItemBack>
       )}
     </CardItem>
