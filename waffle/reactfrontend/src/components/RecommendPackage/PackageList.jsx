@@ -359,7 +359,11 @@ const Hoteldate = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1vh;
+    margin-bottom: 4vh;
+    & > div{
+        margin-top: 1vh;
+        height: 1vh;
+    }
 `
 
 
@@ -388,7 +392,7 @@ const Discountprice2 = styled.div`
 const Container = styled.div`
   margin-top: 30px;
   margin-bottom: 20px;
-  height: 100vh;
+  height: 60vh;
   width: 100%;
 
   .Navecontainer{
@@ -421,7 +425,7 @@ const Smallairbox = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 30%;
+    width: 100%;
     height: 100%;
     border: 1px solid #B3B1B1;
     border-radius: 7px;
@@ -439,9 +443,8 @@ const Airplacebox = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    justify-items: end;
     align-items: center;
-    margin-top: 1.4vh;
+    margin-top: 3vh;
     margin-right: 0.4vh;
 
     .layover{
@@ -458,6 +461,10 @@ const Airplacebox = styled.div`
         justify-content: space-between;
         align-items: center;
         width: 90%;
+        margin-top: 2vh;
+        height: 4vh;
+        font-size: 17px;
+        margin-bottom: 2vh;
     }
     .air-icon{
         color: #9AC5F4;
@@ -486,7 +493,6 @@ const Aircompanybox = styled.div`
     width: 90%;
     height: 100%;
 
-
     .company-box{
         height: 5vh;
         display: flex;
@@ -498,7 +504,6 @@ const Aircompanybox = styled.div`
     .site-box{
         width: 100%;
         height: 2vh;
-        margin-top: 0.5vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -511,14 +516,12 @@ const Aircompanybox = styled.div`
         position: relative;
         left: 58%;
         background-color: white;
-
-
     
 }
     & > img {
      width: 4vh;
-     margin-top: 4vh;
-     margin-bottom: 2vh;
+     margin-top: 2vh;
+     margin-bottom: 0.5vh;
  }
  
 `
@@ -584,6 +587,7 @@ const Hotelcontent = styled.div`
         margin-left: 3vw;
     }
     .hotelname{
+        margin-bottom: 2vh;
     }
 
 `

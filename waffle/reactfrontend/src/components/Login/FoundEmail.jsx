@@ -14,7 +14,7 @@ const FindEmail = () => {
   }
 
   const goToFindPassword = () => {
-    navigate('/user/findPassword')
+    navigate('/user/find-password')
   }
 
   // 이메일 찾기 결과
