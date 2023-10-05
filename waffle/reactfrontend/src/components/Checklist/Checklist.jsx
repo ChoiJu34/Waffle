@@ -27,7 +27,7 @@ const ChecklistList = () => {
 
   const [addContent, setAddContent] = useState("");
   const [addPrice, setAddPrice] = useState("");
-  const [addCurrency, setAddCurrency] = useState("");
+  const [addCurrency, setAddCurrency] = useState("원");
 
   const [restart, setRestart] = useState("");
 
@@ -37,9 +37,9 @@ const ChecklistList = () => {
     { value: '1', label: '달러' },
     { value: '2', label: '엔' },
     { value: '3', label: '유로' },
-    { value: '3', label: '파운드' },
-    { value: '3', label: '위안' },
-    { value: '3', label: '프랑' },
+    { value: '4', label: '파운드' },
+    { value: '5', label: '위안' },
+    { value: '6', label: '프랑' },
   ];
 
   useEffect(() => {
@@ -142,9 +142,8 @@ const ChecklistList = () => {
     }
   };
 
-  const [selectedOption, setSelectedOption] = useState(null);
   const handleOptionChange = (option) => {
-    setSelectedOption(option);
+    setAddCurrency(option.label);
   };
 
   const customStyles = {
@@ -158,9 +157,10 @@ const ChecklistList = () => {
     }),
     menu: (provided, state) => ({
       ...provided,
-      zIndex: "10001",
+      zIndex: "99999",
       overflow: "auto",
-      maxHeight: "7rem", // 옵션 창의 최대 높이 (조절 가능)
+      maxHeight: "7rem",
+      top: "-8rem",
     }),
     option: (provided, state) => ({
       ...provided,
@@ -168,6 +168,7 @@ const ChecklistList = () => {
       color: state.isSelected ? "#ffffff" : "#333333",
       height: "2rem",
       width: "6rem",
+      zIndex: "99999",
     }),
     indicatorSeparator: (provided) => ({
       ...provided,
