@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
 import WaffleLogo from '../../../assets/WaffleLogo.png'
 import { useAuth } from '../AuthProvider'
+import axios from 'axios'
+import user from '../../../assets/mypageUser.png'
 
 const Header = () => {
 
@@ -95,6 +97,27 @@ useEffect(() => {
   }
 }, [location.pathname])
 
+const [nowMe, setNowMe] = useState()
+
+const token = isLoggedIn ? localStorage.getItem('access_token') : null;
+
+const headers = {
+  "Authorization": "Bearer " + token
+}
+
+useEffect(() => {
+  if (isLoggedIn) {
+    axios.get(`/user`, { headers: headers })
+    .then(response => {
+      setNowMe(response.data.result.name)
+    })
+    .catch(error => {
+      console.error('회원 정보 호출 실패');
+      alert('회원 정보 호출에 실패했습니다');
+    });
+  }
+}, []);
+
 
   return (
     <HeaderWrapper isToggled={isToggled} userToggled={userToggled} nowPage={nowPage}>
@@ -162,6 +185,7 @@ useEffect(() => {
       <ul className="header-menulist-user">
         {isLoggedIn? (
         <>
+          <div className="now-user">안녕하세요, {nowMe} 님</div>
           <li onClick={handleLogout}>로그아웃</li>
           <li onClick={goToMyPage}>마이페이지</li>
         </>
@@ -293,6 +317,15 @@ const HeaderWrapper = styled.div`
 
     .header-user {
       display: block;
+    }
+
+
+    .now-user {
+      width: 73vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5vw;
     }
   }
 
