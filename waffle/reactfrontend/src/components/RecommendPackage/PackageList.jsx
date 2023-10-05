@@ -166,12 +166,14 @@ const PackageList = () => {
             <>
             {data && data.map(({card,hotel,plane}) => (
              <Content>
-             <Favoritebox>
-                 <div>{card}</div>
-                 {(trueFavorite === false? (<AiOutlineStar size={30} color="#9AC5F4" onClick={()=> PostFavorite()}>즐겨찾기</AiOutlineStar>):(<AiFillStar className="start" size={30} onClick={()=> UnFavorite()}>즐겨찾기</AiFillStar>))}
-             </Favoritebox>
-             <Airbox>
-                 <div className="airfont">항공권</div>
+                {(card === "" ? (<Nonecardbox></Nonecardbox>):(<Favoritebox>
+                    <div>{card}</div>
+                </Favoritebox>))}
+                 <Airbox>
+                <Favoritebox2>
+                    <div className="airfont">항공권</div>
+                    {(trueFavorite === false? (<AiOutlineStar size={30} color="#9AC5F4" onClick={()=> PostFavorite()}>즐겨찾기</AiOutlineStar>):(<AiFillStar className="start" size={30} onClick={()=> UnFavorite()}>즐겨찾기</AiFillStar>))}  
+                </Favoritebox2>
                 <Slider {...settings}>
                  {plane && plane.map(({company, discountPrice,during, endPlace,endTime,layover,originPrice,planeDate,site,startPlace,startTime,companyImg,url }) => (
                  <Smallairbox onClick={() => goToUrl(url)} >
@@ -182,7 +184,7 @@ const PackageList = () => {
                         {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
                     </div>
                     <img src={`${companyImg}`} alt="" />
-                    <div className="company-box">{company}</div>
+                    <div className="company-box">{truncateString(company,8)}</div>
                  </Aircompanybox>
                  <Airplacebox>
                      <div className="layover">
@@ -201,7 +203,6 @@ const PackageList = () => {
                          </div>
                      </div>
                      <div className="price-box">
-                         {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
                          <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
                      </div>
                  </Airplacebox>
@@ -221,9 +222,8 @@ const PackageList = () => {
                          {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/agoda.png"} alt="logo" />))}
                          <div>{start}</div>
                      </Hoteldate>
-                     <div className="hotelname">{truncateString(solution(hotelName), 20)}</div>
-                     <div className="price-box">
-                         {/* {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))} */}
+                        <div className="hotelname">{truncateString(solution(hotelName), 20)}</div>
+                        <div className="price-box">
                      </div>
                      <Discountprice2>{discountPrice.toLocaleString("ko-KR")}원</Discountprice2>
                  </div>
@@ -235,12 +235,15 @@ const PackageList = () => {
            </> ) : ( <>
             {data2 && data2.map(({hotel,plane,card}) => (
             <Content>
-                <Favoritebox>
+                {(card === "" ? (<Nonecardbox></Nonecardbox>):(<Favoritebox>
                     <div>{card}</div>
-                    {(trueFavorite2 === false? (<AiOutlineStar size={30} color="#9AC5F4" onClick={()=> PostFavorite2()}>즐겨찾기</AiOutlineStar>):(<AiFillStar className="start" size={30} onClick={()=> UnFavorite2()}>즐겨찾기</AiFillStar>))}
-                </Favoritebox>
+                </Favoritebox>))}
+                
                 <Airbox>
+                    <Favoritebox2>
                     <div className="airfont">항공권</div>
+                    {(trueFavorite2 === false? (<AiOutlineStar size={30} color="#9AC5F4" onClick={()=> PostFavorite2()}>즐겨찾기</AiOutlineStar>):(<AiFillStar className="start" size={30} onClick={()=> UnFavorite2()}>즐겨찾기</AiFillStar>))}
+                    </Favoritebox2>
                     <Slider {...settings}>
                     {plane && plane.map(({company, discountPrice,during, endPlace,endTime,layover,originPrice,planeDate,site,startPlace,startTime,companyImg,url }) => (
                     <Smallairbox onClick={() => goToUrl(url)}>
@@ -270,7 +273,6 @@ const PackageList = () => {
                                     </div>
                                 </div>
                                 <div className="price-box">
-                                    
                                     {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
                                     <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
                                 </div>
@@ -293,7 +295,6 @@ const PackageList = () => {
                         </Hoteldate>
                         <div className="hotelname">{truncateString(solution(hotelName), 20)}</div>
                         <div className="price-box">
-                            {/* {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))} */}
                         </div>
                         <Discountprice2>{discountPrice.toLocaleString("ko-KR")}원</Discountprice2>
                     </div>
@@ -307,27 +308,30 @@ const PackageList = () => {
     )}
 export default PackageList
 
-const StyledSlider = styled(Slider)`
-  width: 90%;
-  .slick-slider {
-  width: 90%;
-  height: 80%;
-
-}
-
-`;
+const Nonecardbox = styled.div`
+    margin-bottom: 9vw;
+`
 
 const Favoritebox = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    width: 85%;
-    font-size: 2vh;
+    width: 90%;
+    font-size: 6vw;
+    border-bottom: 1px solid #B3B1B1;
+    padding-bottom: 2vw;
+`
+
+const Favoritebox2 = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    width: 100%;
     .start {
         color: #9AC5F4;
     }
-
 `
 
 const StyledNav = styled(Nav)`

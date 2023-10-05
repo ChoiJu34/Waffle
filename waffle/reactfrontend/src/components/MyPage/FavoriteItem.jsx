@@ -8,7 +8,10 @@ import axios from 'axios'
 import { useNavigate } from 'react-router'
 
 
+
 const FavoriteItem = ( { data, handleDelete } ) => {
+
+  console.log(data)
 
   const totalHotelOriginPrice = data.hotel.reduce((acc, currentItem) => {
     const price = currentItem.originPrice ? parseInt(currentItem.originPrice, 10) : 0;
@@ -30,7 +33,7 @@ const FavoriteItem = ( { data, handleDelete } ) => {
     return acc + price;
   }, 0);
 
-  const discountRatio = Math.round((totalHotelDiscountPrice + totalPlaneDiscountPrice) / (totalHotelOriginPrice + totalPlaneOriginPrice) * 100)
+  const discountRatio = Math.round(((totalHotelOriginPrice + totalPlaneOriginPrice) - (totalHotelDiscountPrice + totalPlaneDiscountPrice)) / (totalHotelOriginPrice + totalPlaneOriginPrice) * 100)
 
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -42,7 +45,10 @@ const FavoriteItem = ( { data, handleDelete } ) => {
     "Authorization": "Bearer " + token
   }
 
-  const deleteBookmark = () => {
+  const deleteBookmark = (e) => {
+
+    e.stopPropagation()
+
     axios.delete(`/package/delete-favorite/${data.id}`, {headers: headers})
     .then(response => {
       handleDelete(data.id)
@@ -68,17 +74,17 @@ const FavoriteItem = ( { data, handleDelete } ) => {
 
 
   return (
-    <FavoriteItemWrapper onClick={() => PostData(data)}>
-    <div className="favorite-item-container">
+    <FavoriteItemWrapper>
+    <div className="favorite-item-container" onClick={() => PostData(data)}>
       <div className="card-name-container">{data.card ? data.card : "모든 카드"}</div>
       <div className="favorite-item-discount-text">
         <div className="discount-container">
           <img src={BookmarkPlane} alt="비행기를타고가던너따라가고싶어울었던" className="favorite-item-discount-img"/>
-          <span>-{numberWithCommas(totalPlaneDiscountPrice)}원</span>
+          <span>-{numberWithCommas((totalPlaneOriginPrice - totalPlaneDiscountPrice))}원</span>
         </div>
         <div className="discount-container">
           <img src={BookmarkHotel} alt="철없을적내기억속에비행기타고가요파란" className="favorite-item-discount-img"/>
-          <span>-{numberWithCommas(totalHotelDiscountPrice)}원</span>
+          <span>-{numberWithCommas((totalHotelOriginPrice - totalHotelDiscountPrice))}원</span>
         </div>
       </div>
 

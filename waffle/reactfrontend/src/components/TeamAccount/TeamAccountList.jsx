@@ -59,8 +59,8 @@ const TeamAccountListWrapper = styled.div`
   margin-top: 6vh;
 
   .team-account-add {
-    width: 80vw;
-    height: 10vh;
+    width: 79vw;
+    height: 9vh;
     border: dashed 2px #000004;
     border-radius: 15px;
     display: flex;

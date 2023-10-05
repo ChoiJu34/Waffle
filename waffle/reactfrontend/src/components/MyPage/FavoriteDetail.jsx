@@ -75,14 +75,16 @@ const FavoriteDetail = () => {
 
   return (
     <Container>
-        <>  
-        {data && data.map(({card,hotel,plane}) => (
-            <Content>
-             <Favoritebox>
-                 <div>{card}</div>
-             </Favoritebox>
-             <Airbox>
-                 <div className="airfont">항공권</div>
+        <>
+            {data && data.map(({card,hotel,plane}) => (
+             <Content>
+               {(card === "" ? (<Nonecardbox></Nonecardbox>):(<Favoritebox>
+                    <div>{card}</div>
+                </Favoritebox>))}
+                 <Airbox>
+                <Favoritebox2>
+                    <div className="airfont">항공권</div>
+                </Favoritebox2>
                 <Slider {...settings}>
                  {plane && plane.map(({company, discountPrice,during, endPlace,endTime,layover,originPrice,planeDate,site,startPlace,startTime,companyImg,url }) => (
                  <Smallairbox onClick={() => goToUrl(url)} >
@@ -93,7 +95,7 @@ const FavoriteDetail = () => {
                         {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/trip.png"} alt="logo" />))}
                     </div>
                     <img src={`${companyImg}`} alt="" />
-                    <div className="company-box">{truncateString(company,7)}</div>
+                    <div className="company-box">{truncateString(company,8)}</div>
                  </Aircompanybox>
                  <Airplacebox>
                      <div className="layover">
@@ -102,17 +104,16 @@ const FavoriteDetail = () => {
                      </div>
                      <div className="air-place">
                          <div>
-                             <div>{startPlace ? startPlace.substr(0,3) : 'N/A'}</div>
+                             <div>{startPlace.substr(0,3)}</div>
                              <div>{startTime}</div>
                          </div>
                          <IoAirplaneSharp className="air-icon"></IoAirplaneSharp> 
                          <div>
-                             <div>{endPlace ? endPlace.substr(0,3) : 'N/A'}</div>
+                             <div>{endPlace.substr(0,3)}</div>
                              <div>{endTime}</div>
                          </div>
                      </div>
                      <div className="price-box">
-                         {/* {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))} */}
                          <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
                      </div>
                  </Airplacebox>
@@ -126,15 +127,14 @@ const FavoriteDetail = () => {
              <Slider {...settings}>
              {hotel && hotel.map(({hotelName,discountPrice,end,img,originPrice,site,start,url }) => (
              <Hotelcontent onClick={() => goToUrl(url)}>
-                  {( img === "0")? (<RanHotelimg src={"/cardlogo/hotel.png"} alt="img" />):(<Hotelimg src={`${img}`} alt="img" />)}
+                  {( img === 0)? (<RanHotelimg src={"/cardlogo/hotel.png"} alt="img" />):(<Hotelimg src={`${img}`} alt="img" />)}
                  <div className="hotel-content">
                      <Hoteldate>
                          {(site === "인터파크"? (<Companylogo src={"/cardlogo/interpark.png"} alt="logo" />):(<Companylogo src={ "/cardlogo/agoda.png"} alt="logo" />))}
                          <div>{start}</div>
                      </Hoteldate>
-                     <div className="hotelname">{truncateString(solution(hotelName), 20)}</div>
-                     <div className="price-box">
-                         {/* {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))} */}
+                        <div className="hotelname">{truncateString(solution(hotelName), 20)}</div>
+                        <div className="price-box">
                      </div>
                      <Discountprice2>{discountPrice.toLocaleString("ko-KR")}원</Discountprice2>
                  </div>
@@ -143,23 +143,36 @@ const FavoriteDetail = () => {
              </Slider>
          </Hotelbox>
      </Content>))}
-</>
+           </>
     </Container>
     )}
 export default FavoriteDetail
 
 
+const Nonecardbox = styled.div`
+    margin-bottom: 9vw;
+`
+
 const Favoritebox = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    width: 85%;
-    font-size: 2vh;
+    width: 90%;
+    font-size: 6vw;
+    border-bottom: 1px solid #B3B1B1;
+    padding-bottom: 2vw;
+`
+
+const Favoritebox2 = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    width: 100%;
     .start {
         color: #9AC5F4;
     }
-
 `
 
 const StyledNav = styled(Nav)`
