@@ -161,6 +161,8 @@ public class UserCardServiceImpl implements UserCardService {
         if(!userEntity.isPresent()) {
             throw new Exception("사용자 정보를 찾을 수 없습니다.");
         }
+        List<UserCardListDto> li = userCardRepository.findByUserEntity_IdAndGetCardNameList(userEntity.get().getId());
+        log.info("list : {}, {}, {}, {} ", li.get(0).getCardNumber(), li.get(0).getCardValidDate(), li.get(0).getCompany(), li.get(0).getCardNickname());
         // log.info("usercardlist: {}", userCardRepository.findByUserEntity_IdAndGetCardNameList(userEntity.get().getId()));
         return userCardRepository.findByUserEntity_IdAndGetCardNameList(userEntity.get().getId());
     }
