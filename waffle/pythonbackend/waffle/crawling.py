@@ -101,6 +101,16 @@ def crawling(request):
     }
 
     # Spring Boot API에 GET 요청을 보냅니다.
+
+    threads = []
+    for k in range(1):
+        thread = threading.Thread(target=main_thread, args=((data),))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
     try:
         response = requests.get(spring_boot_api_url, headers=headers)
     except:
@@ -113,15 +123,6 @@ def crawling(request):
         user_cards = response.json()['result']
 
     logger.info(f"user_cards : {user_cards}")
-
-    threads = []
-    for k in range(1):
-        thread = threading.Thread(target=main_thread, args=((data),))
-        threads.append(thread)
-        thread.start()
-
-    for thread in threads:
-        thread.join()
 
     find_lowest_package(data, user_cards)
 
@@ -450,12 +451,12 @@ def find_lowest_package(data, user_cards):
 
     package["plane"] = plane_info
     package["hotel"] = hotel_info
-    package["card"] = card_name
+    package["card"] = card_name.replace("결제", "")
     package["memberCnt"] = data["memberCnt"]
 
     have_card_package["plane"] = user_plane_info
     have_card_package["hotel"] = user_hotel_info
-    have_card_package["card"] = have_card_name
+    have_card_package["card"] = have_card_name.replace("결제", "")
     have_card_package["memberCnt"] = data["memberCnt"]
 
 
