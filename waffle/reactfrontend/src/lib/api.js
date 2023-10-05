@@ -69,10 +69,12 @@ export const requestGetNode = async (url, params) => {
   }
 };
 
-export const requestPost = async (url, body, headers) => {
+export const requestPost = async (url, body) => {
   try {
+    const authorization = localStorage.getItem('access_token');
     const headers = {
-      'Content-Type':'application/json;charset=UTF-8',
+      'Content-Type': 'application/json;charset=UTF-8',
+      "Authorization": "Bearer " + authorization,
     };
     const data = await axios.post(baseUrl + url, body, headers);
     return data;
