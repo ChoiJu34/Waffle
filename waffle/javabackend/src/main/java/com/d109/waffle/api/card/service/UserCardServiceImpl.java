@@ -70,8 +70,11 @@ public class UserCardServiceImpl implements UserCardService {
                 CardResponseDto.class
         );
 
+        // log.info("res: {}", response);
+
         if(response.getBody().getMessage().equals("SUCCESS")) {
             Optional<CardEntity> cardEntity = cardRepository.findByName(response.getBody().getResult());
+            // log.info("cardEntity: {}", cardEntity);
             if(cardEntity.isEmpty()) {
                 throw new NoSuchElementException("해당 카드의 정보를 찾지 못했습니다.");
             }
@@ -87,7 +90,7 @@ public class UserCardServiceImpl implements UserCardService {
                 .build();
             userCardRepository.save(userCardEntity);
         }
-
+        throw new Exception("해당 카드의 정보를 찾지 못했습니다.");
     }
 
     @Override
