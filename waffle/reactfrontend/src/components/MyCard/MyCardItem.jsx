@@ -24,7 +24,7 @@ const MyCardItem = ({ data, setModalOpen, setDeleteCardId }) => {
       setBackgroundColor("#AADAEF");
     } else if (data.company === "NH농협카드") {
       setLogoLink("/cardlogo/nonghyuplogo.png");
-      setBackgroundColor("#EEC55B");
+      setBackgroundColor("#f8db92");
     } else if (data.company === "롯데카드") {
       //   setLogoLink("/cardlogo/nonghyuplogo.png");
       //   setBackgroundColor("#fff");
@@ -43,6 +43,9 @@ const MyCardItem = ({ data, setModalOpen, setDeleteCardId }) => {
     } else if (data.company === "현대카드") {
       setLogoLink("/cardlogo/HDlogo.png");
       setBackgroundColor("#C798CE");
+    } else if (data.company === "삼성카드") {
+      setLogoLink("/cardlogo/samsungLogo.png");
+      setBackgroundColor("#9eddff");
     }
   }, []);
 
