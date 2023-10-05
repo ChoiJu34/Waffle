@@ -25,8 +25,8 @@ const CardRegister = () => {
 
   const cardRegister = async () => {
     const params = {
-      cardBin: formData.number.slice(0, 6),
-      cardNumber: formData.number.replace(/(.{4})/g, "$1-").slice(0, -1),
+      cardBin: formData.number.replace("-", "").slice(0, 6),
+      cardNumber: formData.number,
       cardNickname: formData.nickname,
       cardValidDate: formData.date,
     };
@@ -88,7 +88,7 @@ const CardRegister = () => {
     inputNumberRef.current.value = result;
   };
 
-  const handelCardNumberCahnge = (e) => {
+  const handelCardNumberChange = (e) => {
     handleCardNumber(e);
     handleChange(e);
   }
@@ -110,6 +110,31 @@ const CardRegister = () => {
       setIsDateComplete(true);
     }
   };
+
+  const handleDate = (e) => {
+    const value = inputDateRef.current.value.replace(/\D+/g, "");
+    const numberLength = 4;
+
+    let result;
+    result = "";
+
+    for (let i=0; i<value.length && i < numberLength; i++) {
+      switch (i) {
+        case 2:
+          result += "/";
+          break;
+        default:
+          break;
+      }
+      result += value[i];
+    }
+    inputDateRef.current.value = result;
+  }
+
+  const handleDateChange = (e) => {
+    handleDate(e);
+    handleChange(e);
+  }
 
   // 닉네임
   const [isNicknameFocused, setIsNicknameFocused] = useState(false);
@@ -152,7 +177,7 @@ const CardRegister = () => {
             onFocus={handleNumberFocus}
             onBlur={handleNumberBlur}
             onChange={(e) => {
-              handelCardNumberCahnge(e);
+              handelCardNumberChange(e);
             }}
             value={formData.number}
             name="number"
@@ -172,6 +197,7 @@ const CardRegister = () => {
             onFocus={handleDateFocus}
             onBlur={handleDateBlur}
             onChange={(e) => {
+              handleDateChange(e);
               handleChange(e);
             }}
             value={formData.date}
