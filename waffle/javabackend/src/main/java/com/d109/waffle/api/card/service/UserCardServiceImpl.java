@@ -70,8 +70,11 @@ public class UserCardServiceImpl implements UserCardService {
                 CardResponseDto.class
         );
 
+        // log.info("res: {}", response);
+
         if(response.getBody().getMessage().equals("SUCCESS")) {
             Optional<CardEntity> cardEntity = cardRepository.findByName(response.getBody().getResult());
+            // log.info("cardEntity: {}", cardEntity);
             if(cardEntity.isEmpty()) {
                 throw new NoSuchElementException("해당 카드의 정보를 찾지 못했습니다.");
             }
@@ -87,7 +90,7 @@ public class UserCardServiceImpl implements UserCardService {
                 .build();
             userCardRepository.save(userCardEntity);
         }
-
+        throw new Exception("해당 카드의 정보를 찾지 못했습니다.");
     }
 
     @Override
@@ -156,8 +159,11 @@ public class UserCardServiceImpl implements UserCardService {
     public List<UserCardListDto> getUserCardList(String authorization) throws Exception {
         Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
         if(!userEntity.isPresent()) {
-            throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+            throw new Exception("사용자 정보를 찾을 수 없습니다.");
         }
+        List<UserCardListDto> li = userCardRepository.findByUserEntity_IdAndGetCardNameList(userEntity.get().getId());
+        log.info("list : {}, {}, {}, {} ", li.get(0).getCardNumber(), li.get(0).getCardValidDate(), li.get(0).getCompany(), li.get(0).getCardNickname());
+        // log.info("usercardlist: {}", userCardRepository.findByUserEntity_IdAndGetCardNameList(userEntity.get().getId()));
         return userCardRepository.findByUserEntity_IdAndGetCardNameList(userEntity.get().getId());
     }
 
@@ -165,8 +171,11 @@ public class UserCardServiceImpl implements UserCardService {
     public void deleteUserCard(String authorization, int id) throws Exception {
         Optional<UserEntity> userEntity = jwtService.accessHeaderToUser(authorization);
         if(!userEntity.isPresent()) {
-            throw new NoSuchElementException("사용자 정보를 찾을 수 없습니다.");
+            throw new Exception("사용자 정보를 찾을 수 없습니다.");
         }
-        userCardRepository.deleteByUserEntity_IdAndCardEntity_Id(userEntity.get().getId(), id);
+        if(userCardRepository.findById(id).get().getUserEntity().getId() != userEntity.get().getId()) {
+            throw new Exception("본인의 카드가 아닙니다.");
+        }
+        userCardRepository.deleteById(id);
     }
 }
