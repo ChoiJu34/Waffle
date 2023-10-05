@@ -75,7 +75,7 @@ const TeamAccountUpdate = () => {
   };
 
   const handleAccountNameBlur = useCallback(() => {
-    const accountNameValue = formData.accountName
+    const accountNameValue = formData.name
 
     setIsAccountNameFocused(false);
     if (accountNameValue === "") {
@@ -83,7 +83,7 @@ const TeamAccountUpdate = () => {
     } else {
       setIsAccountNameComplete(true);
     }
-  }, [formData.accountName]);
+  }, [formData.name]);
 
   // 목표 금액 입력 칸
   const [isTargetFocused, setIsTargetFocused] = useState(false);
@@ -115,13 +115,13 @@ const TeamAccountUpdate = () => {
   const handleEndDateBlur = useCallback(() => {
     setIsEndDateFocused(false);
 
-    const endDateValue = formData.endDate
+    const endDateValue = formData.endDay
     if (endDateValue === "") {
       setIsEndDateComplete(false);
     } else {
       setIsEndDateComplete(true);
     }
-  }, [formData.endDate]);
+  }, [formData.endDay]);
 
   const showEndDatePlaceholder = isEndDateFocused && !inputEndDateRef.current?.value
 
@@ -295,46 +295,52 @@ console.log(formData)
 
 const TeamAccountUpdateWrapper = styled.div`
   min-height: 100vh;
+  min-width: 100vw;
+  position: fixed;
 
   .teamaccount-update-header {
     display: flex;
-    margin: 3vh 2vh;
+    margin: 8vw 6vw;
   }
 
   .teamaccount-update-title {
-    font-size: 2.8vh;
-    margin-top: 3vh;
-    margin-left: 3vh;
+    font-size: 7vw;
+    margin-top: 3vw;
+    margin-left: 8vw;
     text-align: left;
     color: #000004;
   }
 
   .teamaccount-update-title-underline {
-    height: 0.3vh;
-    width: 80%;
-    margin: 1.5vh auto;
+    height: 0.7vw;
+    width: 80vw;
+    margin: 4vw auto;
     background-color: #000004;
   }
 
   .teamaccount-update-accountname {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
   .teamaccount-update-accountname > input{
     display: block;
-	  width: 80%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-	  font-size: 2vh;
-    font-weight: 800;
+	    width: 100%;
+	    color: #909090;
+	    border:0;
+	    border-bottom: 1px solid #8c8c8c;
+	    background-color: transparent;
+	    box-sizing: border-box;
+	    border-radius: 0;
+	    padding: 0;
+	    height: 10vw;
+	    line-height: 1.33;
+	    font-size: 5vw;
+	    font-family: inherit;
+	    vertical-align: baseline;
+	    -webkit-appearance: none;
+	    overflow: visible;
+	    margin:0;
   }
 
   .teamaccount-update-accountname > input:focus{
@@ -345,38 +351,38 @@ const TeamAccountUpdateWrapper = styled.div`
   }
 
   .teamaccount-update-accountname > label{
-      top: 19vh;
-      position: absolute;
-      left: 9vh;
-      max-width: 100%;
-      height: 2.7em;
-      line-height: 1.33;
-      color: #909090;
-      font-size: 2vh;
-      cursor: text;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: all .2s;
-      pointer-events: none;
-      -webkit-font-smoothing: antialiased;
-      transform: translate3d(0, 3px, 0) scale(1);
-      transform-origin: left top;
+    top: 46vw;
+        position: absolute;
+        left: 16vw;
+        max-width: 100%;
+        height: 2.7em;
+        line-height: 1.33;
+        color: #909090;
+        font-size: 4.5vw;
+        cursor: text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all .2s;
+        pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        transform: translate3d(0, 3px, 0) scale(1);
+        transform-origin: left top;
   }
 
   .teamaccount-update-accountname.focus > label{
-      top: 17vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 41vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
       color: #76A8DE;
   }
 
   .teamaccount-update-accountname.complete > label{
-      top: 17vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 41vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 
   input::placeholder {
@@ -391,18 +397,22 @@ const TeamAccountUpdateWrapper = styled.div`
 
   .teamaccount-update-target > input{
     display: block;
-	  width: 80%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-    font-size: 2vh;
-    font-weight:620;
+	    width: 100%;
+	    color: #909090;
+	    border:0;
+	    border-bottom: 1px solid #8c8c8c;
+	    background-color: transparent;
+	    box-sizing: border-box;
+	    border-radius: 0;
+	    padding: 0;
+	    height: 10vw;
+	    line-height: 1.33;
+	    font-size: 5vw;
+	    font-family: inherit;
+	    vertical-align: baseline;
+	    -webkit-appearance: none;
+	    overflow: visible;
+	    margin:0;
   }
 
   .teamaccount-update-target > input:focus{
@@ -413,38 +423,38 @@ const TeamAccountUpdateWrapper = styled.div`
   }
 
   .teamaccount-update-target > label{
-      top: 27vh;
-      position: absolute;
-      left: 9vh;
-      max-width: 100%;
-      height: 2.7em;
-      line-height: 1.33;
-      color: #909090;
-      font-size: 2vh;
-      cursor: text;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: all .2s;
-      pointer-events: none;
-      -webkit-font-smoothing: antialiased;
-      transform: translate3d(0, 3px, 0) scale(1);
-      transform-origin: left top;
+    top: 64vw;
+        position: absolute;
+        left: 16vw;
+        max-width: 100%;
+        height: 2.7em;
+        line-height: 1.33;
+        color: #909090;
+        font-size: 4.5vw;
+        cursor: text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all .2s;
+        pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        transform: translate3d(0, 3px, 0) scale(1);
+        transform-origin: left top;
   }
 
   .teamaccount-update-target.focus > label{
-      top: 25vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 59vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
       color: #76A8DE;
   }
 
   .teamaccount-update-target.complete > label{
-      top: 25vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 59vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 
   .teamaccount-update-enddate {
@@ -454,18 +464,22 @@ const TeamAccountUpdateWrapper = styled.div`
 
   .teamaccount-update-enddate > input{
     display: block;
-	  width: 80%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-	  font-size: 2vh;
-    font-weight: 700;
+	    width: 100%;
+	    color: #909090;
+	    border:0;
+	    border-bottom: 1px solid #8c8c8c;
+	    background-color: transparent;
+	    box-sizing: border-box;
+	    border-radius: 0;
+	    padding: 0;
+	    height: 10vw;
+	    line-height: 1.33;
+	    font-size: 5vw;
+	    font-family: inherit;
+	    vertical-align: baseline;
+	    -webkit-appearance: none;
+	    overflow: visible;
+	    margin:0;
   }
 
   .teamaccount-update-enddate > input:focus{
@@ -476,51 +490,51 @@ const TeamAccountUpdateWrapper = styled.div`
   }
 
   .teamaccount-update-enddate > label{
-      top: 35vh;
-      position: absolute;
-      left: 9vh;
-      max-width: 100%;
-      height: 2.7em;
-      line-height: 1.33;
-      color: #909090;
-      font-size: 2vh;
-      cursor: text;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: all .2s;
-      pointer-events: none;
-      -webkit-font-smoothing: antialiased;
-      transform: translate3d(0, 3px, 0) scale(1);
-      transform-origin: left top;
+    top: 82vw;
+        position: absolute;
+        left: 16vw;
+        max-width: 100%;
+        height: 2.7em;
+        line-height: 1.33;
+        color: #909090;
+        font-size: 4.5vw;
+        cursor: text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all .2s;
+        pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        transform: translate3d(0, 3px, 0) scale(1);
+        transform-origin: left top;
   }
 
   .teamaccount-update-enddate.focus > label{
-      top: 33vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 77vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
       color: #76A8DE;
   }
 
   .teamaccount-update-enddate.complete > label{
-      top: 33vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 77vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 `
 
 const TeamAccountUpdateButton = styled.button`
-  width: 12.5vh;
-  height: 5vh;
-  border-radius: 15px;
-  border: none;
-  background-color: #9AC5F4;
-  color: white;
-  font-weight: 800;
-  font-size: 2.3vh;
-  margin-top: 2vh;
+      width: 28vw;
+      height: 11vw;
+      border-radius: 15px;
+      border: none;
+      background-color: #9AC5F4;
+      color: white;
+      font-weight: 800;
+      font-size: 5vw;
+      margin-top: 5vw;
 
   &:disabled {
     background-color: #ddd;

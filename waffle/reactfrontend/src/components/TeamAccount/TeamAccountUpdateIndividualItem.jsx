@@ -122,24 +122,28 @@ input::placeholder {
   }
 
   .teamaccount-update-target {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
   .teamaccount-update-target > input{
     display: block;
-	  width: 100%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-    font-size: 2vh;
-    font-weight:620;
+	    width: 100%;
+	    color: #909090;
+	    border:0;
+	    border-bottom: 1px solid #8c8c8c;
+	    background-color: transparent;
+	    box-sizing: border-box;
+	    border-radius: 0;
+	    padding: 0;
+	    height: 10vw;
+	    line-height: 1.33;
+	    font-size: 5vw;
+	    font-family: inherit;
+	    vertical-align: baseline;
+	    -webkit-appearance: none;
+	    overflow: visible;
+	    margin:0;
   }
 
   .teamaccount-update-target > input:focus{
@@ -150,7 +154,7 @@ input::placeholder {
   }
 
   .teamaccount-update-target > label{
-      top: ${props => 19 + (props.index * 8)}vh;
+      top: ${props => 49 + (props.index * 18)}vw;
       position: absolute;
       
       max-width: 100%;
@@ -170,7 +174,7 @@ input::placeholder {
   }
 
   .teamaccount-update-target.focus > label{
-      top: ${props => 17 + (props.index * 8)}vh;
+      top: ${props => 44 + (props.index * 18)}vw;
       left: 8vh;
       font-size: 12px;
       line-height: 1.33;
@@ -178,7 +182,7 @@ input::placeholder {
   }
 
   .teamaccount-update-target.complete > label{
-      top: ${props => 17 + (props.index * 8)}vh;
+      top: ${props => 44 + (props.index * 18)}vw;
       left: 8vh;
       font-size: 12px;
       line-height: 1.33;

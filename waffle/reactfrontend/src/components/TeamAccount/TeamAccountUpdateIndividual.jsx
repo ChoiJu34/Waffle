@@ -103,34 +103,34 @@ const TeamAccountUpdateIndividualWrapper = styled.div`
 
   .teamaccount-update-individual-header {
     display: flex;
-    margin: 3vh 2vh;
+    margin: 8vw 6vw;
   }
 
   .teamaccount-update-individual-title {
-    font-size: 2.8vh;
-    margin-top: 3vh;
-    margin-left: 3vh;
+    font-size: 8vw;
+    margin-top: 3vw;
+    margin-left: 8vw;
     text-align: left;
     color: #000004;
   }
 
   .teamaccount-update-individual-title-underline {
-    height: 0.3vh;
-    width: 80%;
-    margin: 1.5vh auto;
+    height: 0.7vw;
+    width: 80vw;
+    margin: 4vw auto;
     background-color: #000004;
   }
 
   .update-button {
-      width: 13vh;
-      height: 5vh;
+    width: 28vw;
+      height: 11vw;
       border-radius: 15px;
       border: none;
       background-color: #9AC5F4;
       color: white;
       font-weight: 800;
-      font-size: 2.3vh;
-      margin-top: 2vh;
+      font-size: 5vw;
+      margin-top: 5vw;
   }
 `
 

@@ -232,12 +232,12 @@ const CardRegister = () => {
 export default CardRegister;
 
 const CardRegisterWrapper = styled.div`
-  margin-top: 5vh;
+  margin-top: 10vw;
   display: flex;
   flex-direction: column;
 
   .mycard-number {
-    padding: 2vh 7vh;
+    margin: 8vw 14vw;
     display: flex;
   }
 
@@ -258,9 +258,6 @@ const CardRegisterWrapper = styled.div`
     vertical-align: baseline;
     -webkit-appearance: none;
     overflow: visible;
-    font-family: "돋움";
-    font: small-caption;
-    font-size: 3vh;
   }
 
   .mycard-number > input:focus {
@@ -271,9 +268,9 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number > label {
-    top: 29vh;
+    top: 66vw;
     position: absolute;
-    left: 9vh;
+    left: 18vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
@@ -291,22 +288,22 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-number.focus > label {
-    top: 27vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 61vw;
+    left: 16vw;
+    font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .mycard-number.complete > label {
-    top: 27vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 61vw;
+    left: 16vw;
+    font-size: 3vw;
     line-height: 1.33;
   }
 
   .mycard-date {
-    padding: 2vh 7vh;
+    margin: 8vw 14vw;
     display: flex;
   }
 
@@ -327,9 +324,6 @@ const CardRegisterWrapper = styled.div`
     vertical-align: baseline;
     -webkit-appearance: none;
     overflow: visible;
-    font-family: "돋움";
-    font: small-caption;
-    font-size: 3vh;
   }
 
   .mycard-date > input:focus {
@@ -340,9 +334,9 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date > label {
-    top: 37vh;
+    top: 83vw;
     position: absolute;
-    left: 9vh;
+    left: 18vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
@@ -360,22 +354,22 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-date.focus > label {
-    top: 35vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 78vw;
+    left: 16vw;
+    font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .mycard-date.complete > label {
-    top: 35vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 78vw;
+    left: 16vw;
+    font-size: 3vw;
     line-height: 1.33;
   }
 
   .mycard-nickname {
-    padding: 2vh 7vh;
+    margin: 8vw 14vw;
     display: flex;
   }
 
@@ -396,9 +390,6 @@ const CardRegisterWrapper = styled.div`
     vertical-align: baseline;
     -webkit-appearance: none;
     overflow: visible;
-    font-family: "돋움";
-    font: small-caption;
-    font-size: 3vh;
   }
 
   .mycard-nickname > input:focus {
@@ -409,9 +400,9 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname > label {
-    top: 45vh;
+    top: 100vw;
     position: absolute;
-    left: 9vh;
+    left: 18vw;
     max-width: 100%;
     height: 2.7em;
     line-height: 1.33;
@@ -429,17 +420,17 @@ const CardRegisterWrapper = styled.div`
   }
 
   .mycard-nickname.focus > label {
-    top: 43vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 95vw;
+    left: 16vw;
+    font-size: 3vw;
     line-height: 1.33;
     color: #76a8de;
   }
 
   .mycard-nickname.complete > label {
-    top: 43vh;
-    left: 8vh;
-    font-size: 12px;
+    top: 95vw;
+    left: 16vw;
+    font-size: 3vw;
     line-height: 1.33;
   }
 `;

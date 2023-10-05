@@ -33,6 +33,7 @@ import UpdateUserInfo from "../components/MyPage/UpdateUserInfo";
 import MyCard from "../components/MyCard/MyCard";
 import CardRegister from "../components/MyCard/CardRegister";
 import PackageList from "../components/RecommendPackage/PackageList";
+import FavoriteDetail from "../components/MyPage/FavoriteDetail";
 
 const RootNavigation = () => {
   return (
@@ -101,6 +102,7 @@ const RootNavigation = () => {
           <Route path="/mypage/checklist/:id" element={<Checklist />} />
           <Route path="/cardinfo/:cardId" element={<CardInfo />} />
           <Route path="/mypage/favorite" element={<Favorite />} />
+          <Route path="/mypage/favorite/detail" element={<FavoriteDetail/>} />
           <Route path="/mypage/update-userinfo" element={<UpdateUserInfo />} />
           <Route path="/teamaccount/out" element={<TeamAccountOut />} />
           <Route path="/teamaccount/delete" element={<TeamAccountDelete />} />
