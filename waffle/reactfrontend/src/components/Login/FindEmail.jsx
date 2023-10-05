@@ -148,33 +148,35 @@ const FindEmail = () => {
 
 const FindEmailWrapper = styled.div`
   min-height: 100vh;
+  min-width: 100vw;
+  position: fixed;
 
 .find-email-header {
   display: flex;
-  margin: 3vh 2vh;
+    margin: 8vw 6vw;
 }
 
 .find-email-title {
-  font-size: 4vh;
-  margin-top: 3vh;
-  margin-left: 3vh;
-  text-align: left;
-  color: #000004;
+  font-size: 10vw;
+    margin-top: 3vw;
+    margin-left: 8vw;
+    text-align: left;
+    color: #000004;
 }
 
 .find-email-title-underline {
-  height: 0.3vh;
-  width: 80%;
-  margin: 1.5vh auto;
-  background-color: #000004;
+  height: 0.7vw;
+    width: 80vw;
+    margin: 4vw auto;
+    background-color: #000004;
 }
 
 .find-email-name {
-    padding: 2vh 7vh;
+  padding: 4vw 15vw;
   }
 
   .find-email-name > input{
-	    display: block;
+    display: block;
 	    width: 100%;
 	    color: #909090;
 	    border:0;
@@ -183,9 +185,9 @@ const FindEmailWrapper = styled.div`
 	    box-sizing: border-box;
 	    border-radius: 0;
 	    padding: 0;
-	    height: 36px;
+	    height: 10vw;
 	    line-height: 1.33;
-	    font-size: 18px;
+	    font-size: 5vw;
 	    font-family: inherit;
 	    vertical-align: baseline;
 	    -webkit-appearance: none;
@@ -194,21 +196,21 @@ const FindEmailWrapper = styled.div`
 	}
 
     .find-email-name > input:focus{
-        outline:0;
+      outline:0;
         border-color:#76A8DE;
-        border-width: 2px;
+        border-width: 0.5vw;
         color:#76A8DE;
     }
 
     .find-email-name > label{
-        top: 19vh;
+      top: 49vw;
         position: absolute;
-        left: 9vh;
+        left: 16vw;
         max-width: 100%;
         height: 2.7em;
         line-height: 1.33;
         color: #909090;
-        font-size: 18px;
+        font-size: 4.5vw;
         cursor: text;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -221,26 +223,26 @@ const FindEmailWrapper = styled.div`
     }
 
     .find-email-name.focus > label{
-        top: 17vh;
-        left: 8vh;
-        font-size: 12px;
+      top: 44vw;
+        left: 14vw;
+        font-size: 3vw;
         line-height: 1.33;
         color: #76A8DE;
     }
 
     .find-email-name.complete > label{
-        top: 17vh;
-        left: 8vh;
-        font-size: 12px;
+      top: 44vw;
+        left: 14vw;
+        font-size: 3vw;
         line-height: 1.33;
     }
 
     .find-email-tel {
-    padding: 2vh 7vh;
+      padding: 4vw 15vw;
   }
 
   .find-email-tel > input{
-	    display: block;
+    display: block;
 	    width: 100%;
 	    color: #909090;
 	    border:0;
@@ -249,9 +251,9 @@ const FindEmailWrapper = styled.div`
 	    box-sizing: border-box;
 	    border-radius: 0;
 	    padding: 0;
-	    height: 36px;
+	    height: 10vw;
 	    line-height: 1.33;
-	    font-size: 18px;
+	    font-size: 5vw;
 	    font-family: inherit;
 	    vertical-align: baseline;
 	    -webkit-appearance: none;
@@ -260,16 +262,16 @@ const FindEmailWrapper = styled.div`
 	}
 
     .find-email-tel > input:focus{
-        outline:0;
+      outline:0;
         border-color:#76A8DE;
-        border-width: 2px;
+        border-width: 0.5vw;
         color:#76A8DE;
     }
 
     .find-email-tel > label{
-        top: 27vh;
+      top: 67vw;
         position: absolute;
-        left: 9vh;
+        left: 16vw;
         max-width: 100%;
         height: 2.7em;
         line-height: 1.33;
@@ -287,37 +289,37 @@ const FindEmailWrapper = styled.div`
     }
 
     .find-email-tel.focus > label{
-        top: 25vh;
-        left: 8vh;
+      top: 62vw;
+        left: 14vw;
         font-size: 12px;
         line-height: 1.33;
         color: #76A8DE;
     }
 
     .find-email-tel.complete > label{
-        top: 25vh;
-        left: 8vh;
+      top: 62vw;
+        left: 14vw;
         font-size: 12px;
         line-height: 1.33;
     }
 
     .find-email-button {
-      width: 15vh;
-      height: 5vh;
+      width: 34vw;
+      height: 11vw;
       border-radius: 15px;
       border: none;
       background-color: #9AC5F4;
       color: white;
       font-weight: 800;
-      font-size: 2.3vh;
-      margin-top: 2vh;
+      font-size: 5vw;
+      margin-top: 5vw;
     }
 
     .find-email-underline {
-    height: 0.1vh;
+      height: 0.1vw;
     width: 80%;
-    margin: 1.5vh auto;
-    margin-top: 3vh;
+    margin: 5vw auto;
+    margin-top: 7vw;
     background-color: #000004;
   }
 
@@ -325,8 +327,8 @@ const FindEmailWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 1vh 8vh;
-    font-size: 1.4vh;
+    margin: 1vw 14vw;
+    font-size: 3.2vw;
   }
 `
 
