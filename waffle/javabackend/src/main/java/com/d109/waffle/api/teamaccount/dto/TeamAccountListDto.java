@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class TeamAccountListDto {
     private int id;
     private String name;
-    private int percent;
+    private double percent;
     private LocalDate endDay;
     private Boolean master;
 

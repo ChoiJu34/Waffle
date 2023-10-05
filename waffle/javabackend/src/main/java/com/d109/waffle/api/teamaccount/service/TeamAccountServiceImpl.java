@@ -11,6 +11,8 @@ import com.d109.waffle.api.user.entity.UserEntity;
 import com.d109.waffle.common.auth.service.JwtService;
 import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.hibernate.TransactionException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -27,7 +29,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Transactional
-
+@Slf4j
 public class TeamAccountServiceImpl implements TeamAccountService {
 
     private final TeamMemberRepository teamMemberRepository;
@@ -125,13 +127,16 @@ public class TeamAccountServiceImpl implements TeamAccountService {
             }
             
             // 불러온 계좌의 잔액 조회
-            int percent = 0;
+            double percent = 0;
             int balance = 0;
             BankAccountDto bankAccountDto = response.getBody().getBankAccountDto();
             balance = bankAccountDto.getBalance();
+            int goal = teamAccountEntity.getGoal();
 
             // 퍼센트 구하기
-            percent = balance / teamAccountEntity.getGoal() * 100;
+            percent = (double)balance / goal * 100;
+
+            // log.info("percent: {}, {}, {}, {}", balance, goal, percent, balance/goal);
                 
             // 구한 퍼센트로 TeamAccountListDto 만들고 list에 추가하기
             teamAccountListDtoList.add(
