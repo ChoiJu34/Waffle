@@ -5,6 +5,8 @@ import BookmarkPlane from '../../assets/bookmarkPlane.png'
 import BookmarkHotel from '../../assets/bookmarkHotel.png'
 import BookmarkStar from '../../assets/bookmarkStar.png'
 import axios from 'axios'
+import { useNavigate } from 'react-router'
+
 
 const FavoriteItem = ( { data, handleDelete } ) => {
 
@@ -51,8 +53,22 @@ const FavoriteItem = ( { data, handleDelete } ) => {
     })
   }
 
+
+  const navigate = useNavigate()
+  const PostData = async (res) => {
+    try {
+  
+      console.log("res", res);   
+      navigate('/mypage/favorite/detail', { state: { value: res} });   
+  
+    } catch (error) {
+      console.error('포스트 에러', error);
+    } 
+  };
+
+
   return (
-    <FavoriteItemWrapper>
+    <FavoriteItemWrapper onClick={() => PostData(data)}>
     <div className="favorite-item-container">
       <div className="card-name-container">{data.card ? data.card : "모든 카드"}</div>
       <div className="favorite-item-discount-text">

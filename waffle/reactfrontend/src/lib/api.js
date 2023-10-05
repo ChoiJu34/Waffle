@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const baseUrl = 'https://i9d108.p.ssafy.io/api/';
 const baseUrl = '`https://j9d109.p.ssafy.io:8081/';
-const baseNodeUrl = 'http://j9d109.p.ssafy.io:8000/';
+const baseNodeUrl = 'https://j9d109.p.ssafy.io:8003/';
 // const baseUrl = 'http://localhost:9999/api/';
 
 const headers = {
