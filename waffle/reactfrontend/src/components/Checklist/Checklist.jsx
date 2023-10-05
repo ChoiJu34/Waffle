@@ -149,11 +149,11 @@ const ChecklistList = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      width: "29vw",
-      height: "5vh",
-      borderRadius: "2px",
+      width: "25vw",
+      height: "4vh",
+      borderRadius: "10px",
       color: state.isSelected ? "#76A8DE" : "#909090",
-      borderColor: state.isFocused ? "#76A8DE" : "#333"
+      borderColor: state.isFocused ? "#76A8DE" : "#909090"
     }),
     menu: (provided, state) => ({
       ...provided,
