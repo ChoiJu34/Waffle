@@ -29,56 +29,68 @@ file_path = os.path.join(current_directory, '..', '..', 'chromedriver.exe')
 multi_list = []
 
 def plane(data):
+    try:
+        memberCnt = data["memberCnt"]
 
-    memberCnt = data["memberCnt"]
+        multi_list[:] = [queue.PriorityQueue() for _ in data["planPlane"]]
 
-    multi_list[:] = [queue.PriorityQueue() for _ in data["planPlane"]]
-
-    threads = []
-    for k, plan in enumerate(data["planPlane"]):
-        thread = threading.Thread(target=multi_threading, args=((k, plan, memberCnt),))
-        threads.append(thread)
-        thread.start()
-
-    for thread in threads:
-        thread.join()
-
-    return multi_list
-
-def multi_threading(info):
-    k, planPlane, memberCnt = info
-
-    placeStart = planPlane["placeStart"]
-    placeEnd = planPlane["placeEnd"]
-    startStart = planPlane["startStart"].replace("-", "")
-    startEnd = planPlane["startEnd"].replace("-", "")
-
-    day = int(startEnd) - int(startStart) + 1
-
-    threads = []
-    for n in range(day):
-        for i in range(2):
-            thread = threading.Thread(target=crawling_multi_thread, args=((i, k, n, memberCnt, placeStart, placeEnd, startStart, planPlane, day),))
+        threads = []
+        for k, plan in enumerate(data["planPlane"]):
+            thread = threading.Thread(target=multi_threading, args=((k, plan, memberCnt),))
             threads.append(thread)
             thread.start()
 
-    for thread in threads:
-        thread.join()
+        for thread in threads:
+            thread.join()
+
+        return multi_list
+    except:
+        logger.info("비행기 plane 예외 발생")
+        multi_list[:] = [queue.PriorityQueue() for _ in data["planPlane"]]
+        return multi_list
+
+def multi_threading(info):
+    try:
+        k, planPlane, memberCnt = info
+
+        placeStart = planPlane["placeStart"]
+        placeEnd = planPlane["placeEnd"]
+        startStart = planPlane["startStart"].replace("-", "")
+        startEnd = planPlane["startEnd"].replace("-", "")
+
+        day = int(startEnd) - int(startStart) + 1
+
+        threads = []
+        for n in range(day):
+            for i in range(2):
+                thread = threading.Thread(target=crawling_multi_thread, args=((i, k, n, memberCnt, placeStart, placeEnd, startStart, planPlane, day),))
+                threads.append(thread)
+                thread.start()
+
+        for thread in threads:
+            thread.join()
+    except:
+        logger.info("비행기 multi_threading 예외 발생")
+        return
 
 def crawling_multi_thread(info):
-    i, k, n, memberCnt, placeStart, placeEnd, startStart, planPlane, day = info
-    service = Service()
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('headless')
-    chrome_options.add_argument('window-size=1920x1080')
-    chrome_options.add_argument("disable-gpu")
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
+    try:
+        i, k, n, memberCnt, placeStart, placeEnd, startStart, planPlane, day = info
+        service = Service()
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('headless')
+        chrome_options.add_argument('window-size=1920x1080')
+        chrome_options.add_argument("disable-gpu")
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
 
-    if i == 0:
-        interpark_crawling(info, chrome_options, service)
-    elif i == 1:
-        trip_crawling(info, chrome_options, service)
+        if i == 0:
+            interpark_crawling(info, chrome_options, service)
+        elif i == 1:
+            trip_crawling(info, chrome_options, service)
+    except:
+        logger.info("비행기 crawling_multi_thread 예외발생")
+        return
 
 
 def interpark_crawling(info, chrome_options, service):
