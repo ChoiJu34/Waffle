@@ -25,6 +25,8 @@ const TeamAccountItem = ({ data, index }) => {
     }
   }, [data.endDay]);
 
+  const percent = Math.round(data.percent)
+
   return (
     <TeamAccountItemWrapper>
       <div className="team-account-item-container" onClick={goToDetail}>
@@ -35,7 +37,7 @@ const TeamAccountItem = ({ data, index }) => {
           <span className="team-account-item-content-spacer"></span>D-{dDay}
         </div>
         <div className="team-account-item-percentage">
-          <span className="team-account-item-content-spacer"></span>{data.percent}%
+          <span className="team-account-item-content-spacer"></span>{percent}%
         </div>
       </div>
     </TeamAccountItemWrapper>
