@@ -273,7 +273,6 @@ const PackageList = () => {
                                     </div>
                                 </div>
                                 <div className="price-box">
-                                    {(discountPrice === originPrice ? (<div></div>) : (<div className="origin-price">{originPrice.toLocaleString("ko-KR")}원</div>))}
                                     <Discountprice>{discountPrice.toLocaleString("ko-KR")}원</Discountprice>
                                 </div>
                             </Airplacebox>

@@ -493,7 +493,7 @@ const Hotelcontent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   position: relative;
 `;
 
@@ -607,7 +607,7 @@ const Peoplebox = styled.div`
   border: 1px solid #b3b1b1;
   border-radius: 7px;
   margin-bottom: 8vw;
-  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -619,7 +619,7 @@ const Airbox = styled.div`
   border: 1px solid #b3b1b1;
   border-radius: 7px;
   margin-bottom: 10vw;
-  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -632,7 +632,7 @@ const Hotelbox = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 10vw;
-  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     
 `
 const Contentbox = styled.div`
@@ -643,7 +643,7 @@ const Contentbox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const customStyles = {
