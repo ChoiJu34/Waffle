@@ -42,7 +42,7 @@ public class ScheduledExchange {
 	@Value("${request.recent_exchange_open_api.base_url}")
 	private String recent_exchange_url;
 
-	@Scheduled(cron = "0 0/5  8-23 * * 1-5", zone = "Asia/Seoul")
+	// @Scheduled(cron = "0 0/5  8-23 * * 1-5", zone = "Asia/Seoul")
 	public void updateCurrentExchangeData() {
 		log.info("scheduler running {}", LocalDateTime.now());
 
