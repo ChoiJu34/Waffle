@@ -6,13 +6,19 @@ import { NumericFormat } from 'react-number-format';
 import { append } from 'stylis';
 import RecoCardList from './RecoCardList'
 import { useNavigate } from 'react-router-dom';
+import kbLogo from '../../assets/kblogo.png'
+import tossBankLogo from '../../assets/tossbanklogo.png'
+import samsungLogo from '../../assets/samsungLogo.png'
+import lotteCardLogo from '../../assets/lotteCardLogo.png'
+import nonghyuplogo from '../../assets/nonghyuplogo.png'
+import { right } from '@popperjs/core';
 
 
 const RecoCardMain = () => {
   const navigate = useNavigate();
   const [creaditData, setCreaditData] = useState();;
   const [dutyFree, setDutyFree] = useState();
-  const [annualFee, setannualFee] = useState();
+  const [annualFee, setannualFee] = useState(300000);
   const [company, setcompany] = useState([]);
   const [use, setuse] = useState();
   const [checkCard, setCheckcard] = useState(0);
@@ -25,14 +31,76 @@ const RecoCardMain = () => {
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [HA, setHA] = useState(false)
   const [NH, setNH] = useState(false)
+  const [KB, setKB] = useState(false)
+  const [SS, setSS] = useState(false)
+  const [TS, setTS] = useState(false)
+  const [LT, setLT] = useState(false)
   const [WR, setWR] = useState(false)
   const [BU, setBU] = useState(false)
   const [HD, setHD] = useState(false)
   const [MG, setMG] = useState(false)
   const [SH, setSH] = useState(false)
   const [IBK, setIBK] = useState(false)
+ 
 
+    const allCompanies = [
+      {state: HA, key: 'HA', name: '하나카드', logo: '/cardlogo/hana.png'},
+      {state: NH, key: 'NH', name: '농협카드', logo: nonghyuplogo},
+      {state: KB, key: 'KB', name: '국민카드', logo: kbLogo},
+      {state: SS, key: 'SS', name: '삼성카드', logo: samsungLogo},
+      {state: TS, key: 'TS', name: '토스뱅크', logo: tossBankLogo},
+      {state: LT, key: 'LT', name: '롯데카드', logo: lotteCardLogo},
+      {state: WR, key: 'WR', name: '우리카드', logo: '/cardlogo/woorilogo.png'},
+      {state: BU, key: 'BU', name: 'BNK부산은행', logo: '/cardlogo/BNKlogo.png'},
+      {state: IBK, key: 'IBK', name: 'IBK기업은행', logo: '/cardlogo/ibklogo.png'},
+      {state: SH, key: 'SH', name: '신한은행', logo: '/cardlogo/shinhanlogo.png'},
+      {state: MG, key: 'MG', name: 'MG새마을금고', logo: '/cardlogo/MGlogo.png'},
+      {state: HD, key: 'HD', name: '현대카드', logo: '/cardlogo/HDlogo.png'},
+    ]
 
+    const selectedCompaniesList = allCompanies.filter(company => company.state);
+    function toggleCompanyState(companyKey) {
+      switch (companyKey) {
+          case 'HA':
+              setHA(prev => !prev);
+              break;
+          case 'NH':
+              setNH(prev => !prev);
+              break;
+          case 'KB':
+              setKB(prev => !prev);
+              break;
+          case 'SS':
+              setSS(prev => !prev);
+              break;
+          case 'TS':
+              setTS(prev => !prev);
+              break;
+          case 'LT':
+              setLT(prev => !prev);
+              break;
+          case 'WR':
+              setWR(prev => !prev);
+              break;
+          case 'BU':
+              setBU(prev => !prev);
+              break;
+          case 'IBK':
+              setIBK(prev => !prev);
+              break;
+          case 'SH':
+              setSH(prev => !prev);
+              break;
+          case 'MG':
+              setMG(prev => !prev);
+              break;
+          case 'HD':
+              setHD(prev => !prev);
+              break;
+          default:
+              break;
+      }
+  }
 
   function clickHA () {
     if (HA === false) {
@@ -90,6 +158,34 @@ const RecoCardMain = () => {
       setSH(false)
     }
   }
+  function clickKB () {
+    if (KB === false) {
+      setKB(true)
+    } else {
+      setKB(false)
+    }
+  }
+  function clickSS () {
+    if (SS === false) {
+      setSS(true)
+    } else {
+      setSS(false)
+    }
+  }
+  function clickTS () {
+    if (TS === false) {
+      setTS(true)
+    } else {
+      setTS(false)
+    }
+  }
+  function clickLT () {
+    if (LT === false) {
+      setLT(true)
+    } else {
+      setLT(false)
+    }
+  }
 
   function clickIBK () {
     if (IBK === false) {
@@ -119,23 +215,7 @@ const RecoCardMain = () => {
   useEffect(() => {
 ;
   }, []);
-  // const likeBtn = async() => {
-  //   const param = {
-  //     fpId: {
-  //       "id": Number(postid)     
-  //   },
-  // } 
-  // try {
-  //   console.log(param)
-  //     const likeres = await axios.post('http://i9d108.p.ssafy.io:9999/api/free/post/is/good', param);
-  //     setlike(true);
-  //     console.log(like)
-  //     console.log('성공')
-    
-  // } catch (error) {
-  //   console.error('에러:', error);
-  // }
-  // };
+
 
 const saverecocardboard = async () => {
     try {
@@ -147,8 +227,10 @@ const saverecocardboard = async () => {
       if (MG) company.push('MG새마을금고');
       if (SH) company.push('신한카드');
       if (IBK) company.push('IBK기업은행');
-      // if (SS) company.push('삼성카드');
-      // if (KB) company.push('국민카드');
+      if (SS) company.push('삼성카드');
+      if (KB) company.push('국민카드');
+      if (LT) company.push('롯데카드');
+      if (TS) company.push('토스뱅크');
 
       const params = {
         card: creditCard+checkCard,
@@ -164,10 +246,9 @@ const saverecocardboard = async () => {
 
       if (response.data.result[0]["cardId"] === response.data.result[1]["cardId"]){
         console.log("카드아이디",response.data.result[0]["cardId"])
-       let res = response.data.result.shift()
+        response.data.result = response.data.result.filter((item, index) => index !== 1);
        console.log(response)
        navigate('/recocard/list', {state : {value : response.data}})
-       
       } else {
         navigate('/recocard/list', {state : {value : response.data}})
       }
@@ -207,8 +288,13 @@ const saverecocardboard = async () => {
           <Latext>카드사 선택</Latext>
           <Smalltext>미선택시 모든 카드사를 검색합니다.</Smalltext>
         </Companytext>
-        <Company onClick={() => setIsModalOpen2(true)}>+</Company>
-          
+        <Lobox className="lobox-container">
+        {selectedCompaniesList.slice(0, 4).map((company, index) => (
+                    <img key={index} src={company.logo} alt={company.name} style={{ width: '30px', margin: '0 5px' }} onClick={() => toggleCompanyState(company.key)} />
+                ))}
+                {selectedCompaniesList.length > 4 && <span>+{selectedCompaniesList.length-4}개</span>}
+                <Company onClick={() => setIsModalOpen2(true)}>+</Company>
+        </Lobox>  
       </Companybox>
       <AnnualFeebox>
         <div>최대 연회비</div>
@@ -275,39 +361,39 @@ const saverecocardboard = async () => {
           </Usebox>
         </Writebox>
         </Budgetbox>
-      <button onClick={saverecocardboard}>확인</button>
+      <Button onClick={saverecocardboard}>확인</Button>
       {isModalOpen && (
         <BottomSheet title={bottomSheetTitle} closeModal={() => setIsModalOpen(false)}>
-              <Countrybox>
-                <Countryimg onClick={() => countrySelect("USA")} src="/countrys/US.png" alt="US"/>
+              <Countrybox onClick={() => countrySelect("USA")}>
+                <Countryimg  src="/countrys/US.png" alt="US"/>
                 <div>미국</div>
               </Countrybox>
-              <Countrybox>
-                <Countryimg onClick={() => countrySelect("Europe")} src="/countrys/UR.png" alt="US"/>
+              <Countrybox onClick={() => countrySelect("Europe")}>
+                <Countryimg  src="/countrys/UR.png" alt="US"/>
                 <div>유럽</div>
               </Countrybox>
-              <Countrybox>
-                <Countryimg onClick={() => countrySelect("England")} src="/countrys/UK.png" alt="US"/>
+              <Countrybox onClick={() => countrySelect("England")}>
+                <Countryimg  src="/countrys/UK.png" alt="US"/>
                 <div>영국</div>
               </Countrybox>
-              <Countrybox>
-                <Countryimg onClick={() => countrySelect("Japan")} src="/countrys/JP.png" alt="US"/>
+              <Countrybox onClick={() => countrySelect("Japan")}>
+                <Countryimg  src="/countrys/JP.png" alt="US"/>
                 <div>일본</div>
               </Countrybox>
-              <Countrybox>
-                <Countryimg onClick={() => countrySelect("China")}  src="/countrys/CH.png" alt="US"/>
+              <Countrybox onClick={() => countrySelect("China")}>
+                <Countryimg   src="/countrys/CH.png" alt="US"/>
                 <div>중국</div>
               </Countrybox>
-              <Countrybox>
-                <Countryimg onClick={() => countrySelect("Hongkong")} src="/countrys/HO.png" alt="US"/>
-                <div>홍콩</div>
+              <Countrybox onClick={() => countrySelect("Hongkong")}>
+                <Countryimg  src="/countrys/HO.png" alt="US"/>
+                <div >홍콩</div>
               </Countrybox>
-              <Countrybox>
-                <Countryimg onClick={() => countrySelect("Singapore")} src="/countrys/SI.png" alt="US"/>
+              <Countrybox onClick={() => countrySelect("Singapore")}>
+                <Countryimg  src="/countrys/SI.png" alt="US"/>
                 <div>싱가포르</div>
               </Countrybox>
-              <Countrybox>
-                <Countryimg onClick={() => countrySelect("Thailand")} src="/countrys/TH.png" alt="US"/>
+              <Countrybox onClick={() => countrySelect("Thailand")}>
+                <Countryimg  src="/countrys/TH.png" alt="US"/>
                 <div>태국</div>
               </Countrybox>
         </BottomSheet>
@@ -338,9 +424,9 @@ const saverecocardboard = async () => {
             </Companyslay>
             <Companyslay>
               {(NH === false ? (
-                <Companysbox onClick={clickNH} ><img src="/cardlogo/nonghyuplogo.png" alt="" />
+                <Companysbox onClick={clickNH} ><img src={nonghyuplogo} alt="" />
                 <div>농협카드</div></Companysbox>
-                ) : ( <Companysbox2 onClick={clickNH}><img src="/cardlogo/nonghyuplogo.png" alt="" />
+                ) : ( <Companysbox2 onClick={clickNH}><img src={nonghyuplogo} alt="" />
                 <div>농협카드</div></Companysbox2> ))}
               {(HD === false ? (
                 <Companysbox onClick={clickHD}><img src="/cardlogo/HDlogo.png" alt="" />
@@ -354,6 +440,23 @@ const saverecocardboard = async () => {
                 <div>새마을금고</div></Companysbox2> ))}
             </Companyslay>
             <Companyslay>
+              {(SS === false ? (
+                <Companysbox onClick={clickSS} ><img src={samsungLogo}alt="" />
+                <div>삼성카드</div></Companysbox>
+                ) : ( <Companysbox2 onClick={clickSS}><img src={samsungLogo} alt="" />
+                <div>삼성카드</div></Companysbox2> ))}
+              {(KB === false ? (
+                <Companysbox onClick={clickKB}><img src={kbLogo} alt="" />
+                <div>국민카드</div></Companysbox>
+                ) : ( <Companysbox2 onClick={clickKB}><img src={kbLogo} alt="" />
+                <div>국민카드</div></Companysbox2> ))}
+              {(TS === false ? (
+                <Companysbox onClick={clickTS}><img src={tossBankLogo} alt="" />
+                <div>토스뱅크</div></Companysbox>
+                ) : ( <Companysbox2 onClick={clickTS}><img src={tossBankLogo} alt="" />
+                <div>토스뱅크</div></Companysbox2> ))}
+            </Companyslay>
+            <Companyslay>
               {(IBK === false ? (
                 <Companysbox onClick={clickIBK}><img src="/cardlogo/ibklogo.png" alt="" />
                 <div>기업은행</div></Companysbox>
@@ -364,7 +467,12 @@ const saverecocardboard = async () => {
                 <div>부산은행</div></Companysbox>
                 ) : ( <Companysbox2 onClick={clickBU}><img src="/cardlogo/BNKlogo.png" alt="" />
                 <div>부산은행</div></Companysbox2> ))}       
-              <Minbox></Minbox>
+              {(LT === false ? (
+                <Companysbox onClick={clickLT}><img src={lotteCardLogo} alt="" />
+                <div>롯데카드</div></Companysbox>
+                ) : ( <Companysbox2 onClick={clickLT}><img src={lotteCardLogo}alt="" />
+                <div>룻데카드</div></Companysbox2> ))}       
+
             </Companyslay>
           </Cardsheetbox>
           <Companybutton onClick={() => setIsModalOpen2(false)}>확인</Companybutton>
@@ -378,38 +486,48 @@ const saverecocardboard = async () => {
 
 export default RecoCardMain;
 
+const Button = styled.button`
+  background-color: white;
+  margin-top: 1vh;
+  border: 1px solid #B3B1B1;
+  border-radius: 7px;
+  width: 20vw;
+  height: 4vh;
+  font-size: 16px;
+`
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 30px;
-  width: 400px;
-  height: 100%;
+  margin-top: 12vw;
+  width: 100vw;
+  height: 150vw;
 
 `
 
 const Creditbox = styled.div`
-  width: 340px;
-  height: 100px;
+  width: 80%;
+  height: 23vw;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-bottom: 8vw;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   
 `
 const Cardtext = styled.div`
-  padding-top: 10px;
-  padding-left: 15px;
-  padding-bottom: 10px;
+  padding-top: 3vw;
+  padding-left: 3vw;
+  padding-bottom: 3vw;
   display: flex;
 `
 const Checkcardbox = styled.div`
-  width: 140px;
-  height: 30px;
+  width: 30vw;
+  height: 7vw;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   display: flex;
@@ -419,9 +537,33 @@ const Checkcardbox = styled.div`
   cursor: pointer;
 `
 
+const Lobox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  padding-left: 1vh;
+  padding-top: 0.3vh;
+  width: 100%;
+
+  & > span {
+    width: 10vw;
+    height: 7vw;
+    border: 1px solid #B3B1B1;
+    border-radius: 7px;
+    margin-left: 1vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5vw;
+
+  }
+`
+
 const Checkcardbox2 = styled.div`
-  width: 140px;
-  height: 30px;
+  width: 30vw;
+  height: 7vw;
   border: 1px solid #9AC5F4;
   border-radius: 7px;
   display: flex;
@@ -436,11 +578,11 @@ const Checkcardline = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  padding: 3px;
+
 `
 const Companybox = styled.div`
-  width: 340px;
-  height: 80px;
+  width: 80vw;
+  height: 8vh;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin-bottom: 30px;
@@ -456,35 +598,35 @@ const Companytext = styled.div`
   
 `
 const Latext = styled.div`
-  margin-top: 10px;
-  margin-left: 15px;
+  margin-top: 2vw;
+  margin-left: 3vw;
 `
 
 const Smalltext = styled.div`
   font-size: 13px;
-  margin-left: 3px;
+  margin-left: 3vw;
   color: #DD3232;
 `
 
 const Company = styled.div`
-  width: 80px;
+  width: 8vw;
   border-radius: 7px;
   border: 1px dashed;
   margin: 10px;
 `
 
 const Budgetbox = styled.div`
-  width: 340px;
+  width: 80vw;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
-  margin-bottom: 10px;
+  margin-bottom: 3vw;
   display: flex;
   flex-direction: column;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `
 const Budgettext = styled.div`
   display: flex;
-  margin: 15px;
+  margin: 4vw;
 `
 const Writebox = styled.div`
   display: flex;
@@ -496,52 +638,57 @@ const Frombox = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin: 15px;
+  margin: 5vw;
 `
 const From = styled.div`
 `
 const Shopbox = styled.div`
-  width: 280px;
+  width: 69vw;
+  height: 8vw;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 15px;
+  margin: 3vw;
+
+  & > div{
+  }
 `
 const Usebox = styled.div`
- width: 280px;
+  width: 69vw;
+  height: 8vw;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 15px;
+  margin: 3vw;
 `
 const Nations = styled.div`
-  width: 80px;
+  width: 17vw;
   border-radius: 7px;
   border: 1px dashed;
-  margin-left: 120px;
+  margin-left: 28vw;
   cursor: pointer;
 `
 
 
 const Countryimg = styled.img`
-  width: 100px;
+  width: 27vw;
   height: 50px;
 `
 const Countrybox = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: 10px;
-  padding: 10px;
+  margin-bottom: 1vw;
+  padding: 3vw;
   border-bottom: 1px solid #898989;
   cursor: pointer;
 `
 
 const AnnualFeebox = styled.div`
-  width: 340px;
-  height: 60px;
+  width: 80vw;
+  height: 12vw;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin-bottom: 10px;
@@ -554,9 +701,9 @@ const AnnualFeebox = styled.div`
 
 const Selecnation = styled.div`
   & > img {
-    width: 100px;
-    height: 50px;
-    margin-left: 110px;
+    width: 12vh;
+    height: 6vh;
+    margin-left: 23vw;
   }
 `
 const Cardsheetbox = styled.div`
@@ -573,17 +720,17 @@ const Companysbox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 120px;
-  height: 100px;
-  background-color: #A7ECEE;
+  width: 26vw;
+  height: 24vw;
+  background-color: white;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin: 10px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   & > img {
-    width: 50px;
-    height: 40px;
-    margin-bottom: 5px;
+    width: 10vw;
+    height: 10vw;
+    margin-bottom: 2vw;
   }
 `
 
@@ -592,17 +739,17 @@ const Companysbox2 = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 120px;
-  height: 100px;
+  width: 26vw;
+  height: 24vw;
   background-color: #9AC5F4;
   border: 1px solid #B3B1B1;
   border-radius: 7px;
   margin: 10px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   & > img {
-    width: 50px;
-    height: 40px;
-    margin-bottom: 5px;
+    width: 10vw;
+    height: 10vw;
+    margin-bottom: 2vw;
   }
 `
 
@@ -611,10 +758,9 @@ const Minbox = styled.div`
   margin: 10px;
 `
 const Companybutton = styled.button`
-  width: 100px;
-  background-color: #A7ECEE;
-  border: 1px solid #B3B1B1;
+  width: 15vw;
+  background-color: white;
   border-radius: 7px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  margin: 10px;
+  margin: 5vw;
 `

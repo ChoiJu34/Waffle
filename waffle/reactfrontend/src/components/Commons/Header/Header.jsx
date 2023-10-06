@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
 import WaffleLogo from '../../../assets/WaffleLogo.png'
 import { useAuth } from '../AuthProvider'
+import axios from 'axios'
+import user from '../../../assets/mypageUser.png'
 
 const Header = () => {
 
@@ -69,7 +71,7 @@ const goToSignup = () => {
 }
 
 const goToMyPage = () => {
-  navigate('/mypage/favorite')
+  navigate('/mypage/checklist')
   setIsToggled(false)
   setUserToggled(false)
 }
@@ -94,6 +96,27 @@ useEffect(() => {
     setNowPage('main')
   }
 }, [location.pathname])
+
+const [nowMe, setNowMe] = useState()
+
+const token = isLoggedIn ? localStorage.getItem('access_token') : null;
+
+const headers = {
+  "Authorization": "Bearer " + token
+}
+
+useEffect(() => {
+  if (isLoggedIn) {
+    axios.get(`/user`, { headers: headers })
+    .then(response => {
+      setNowMe(response.data.result.name)
+    })
+    .catch(error => {
+      console.error('회원 정보 호출 실패');
+      alert('회원 정보 호출에 실패했습니다');
+    });
+  }
+}, []);
 
 
   return (
@@ -154,7 +177,6 @@ useEffect(() => {
         )}
         <li className="sebu-package" onClick={goToPackage}>패키지 추천</li>
         <li className="sebu-recocard" onClick={goToCard}>카드 추천</li>
-        <li className="sebu-exchange">환율</li>
         <li className="sebu-teamaccount" onClick={goToTeamAccount}>모임통장</li>
       </ul>
       
@@ -163,6 +185,7 @@ useEffect(() => {
       <ul className="header-menulist-user">
         {isLoggedIn? (
         <>
+          <div className="now-user">안녕하세요, {nowMe} 님</div>
           <li onClick={handleLogout}>로그아웃</li>
           <li onClick={goToMyPage}>마이페이지</li>
         </>
@@ -250,7 +273,7 @@ const HeaderWrapper = styled.div`
 
   .header-now-where {
     color: black;
-    font-size: 2.3vh;
+    font-size: 5vw;
   }
 
   @media screen and (max-width: 768px) {
@@ -295,6 +318,15 @@ const HeaderWrapper = styled.div`
     .header-user {
       display: block;
     }
+
+
+    .now-user {
+      width: 73vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5vw;
+    }
   }
 
   .header-buttons-container {
@@ -302,7 +334,7 @@ const HeaderWrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin: 0 1vh;
+    margin: 0 3vw;
   }
 
 `;

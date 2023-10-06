@@ -17,7 +17,7 @@ import tossBankLogo from '../../assets/tossbanklogo.png'
 import wooriLogo from '../../assets/woorilogo.png'
 
 
-const Signup = () => {
+const TeamAccountAddNew = () => {
 
 // 모달 관리
 const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,42 +33,40 @@ const closeModal = () => {
   const location = useLocation()
 
   const [formData, setFormData] = useState({
-    email: '',
     name: '',
-    password: '',
-    birthday: '',
-    tel: ''
+    goal: '',
+    endDay: '',
+    accountNumber: '',
+    company: ''
   })
 
-  useEffect = (() => {
-    handleInputChange()
-  }, [formData.email, formData.name, formData.password, formData.tel, formData.birthday])
+  // useEffect(() => {
+  //   handleInputChange()
+  // }, [formData.name, formData.goal, formData.endDay, formData.accountNumber, formData.company])
 
-  useEffect = (() => {
-    onChangeBirthdate()
-  }, [formData.birthday])
+  // useEffect(() => {
+  //   onChangeBirthdate()
+  // }, [formData.endDay])
 
-  useEffect = (() => {
+  useEffect(() => {
     handleBankSelect()
     handleTelBlur()
-  }, [formData.tel])
+  }, [formData.accountNumber])
 
-  useEffect = (() => {
-    if (formData.tel !== "") {
+  useEffect(() => {
+    if (formData.company !== "") {
       setIsTelComplete(true);
     } else {
       setIsTelComplete(false);
     }
-  }, [formData.tel]);
+  }, [formData.company]);
 
   // 뒤로가기
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-
-    window.scrollTo(0, 0)
     
-    navigate(-1);
+    navigate('/teamaccount/main');
   }
 
   // 이메일 입력 칸
@@ -81,7 +79,7 @@ const closeModal = () => {
   };
 
   const handleEmailBlur = useCallback(() => {
-    const emailValue = formData.email
+    const emailValue = formData.name
 
     setIsEmailFocused(false);
     if (emailValue === "") {
@@ -89,9 +87,9 @@ const closeModal = () => {
     } else {
       setIsEmailComplete(true);
     }
-  }, [formData.email]);
+  }, [formData.name]);
 
-  const showEmailPlaceholder = isEmailFocused && !formData.email
+  const showEmailPlaceholder = isEmailFocused && !formData.name
 
   // 비밀번호 입력 칸
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
@@ -117,7 +115,7 @@ const closeModal = () => {
 
     const [year, month, day] = passwordCurrent.split("-").map((str) => parseInt(str, 10))
   
-    }, [formData.password]);
+    }, [formData.goal]);
 
   const showPasswordPlaceholder = isPasswordFocused && !inputPasswordRef.current?.value
 
@@ -152,14 +150,14 @@ const closeModal = () => {
 
   const handleNameBlur = useCallback(() => {
 
-    const nameValue = formData.name
+    const nameValue = formData.accountNumber
     setIsNameFocused(false);
     if (nameValue === "") {
       setIsNameComplete(false);
     } else {
       setIsNameComplete(true);
     }
-  }, [formData.name]);
+  }, [formData.accountNumber]);
 
   const showNamePlaceholder = isNameFocused && !inputNameRef.current?.value
 
@@ -175,13 +173,13 @@ const closeModal = () => {
   const handleBirthdateBlur = useCallback(() => {
     setIsBirthdateFocused(false);
 
-    const birthdateValue = formData.birthday
+    const birthdateValue = formData.endDay
     if (birthdateValue === "") {
       setIsBirthdateComplete(false);
     } else {
       setIsBirthdateComplete(true);
     }
-  }, [formData.birthday]);
+  }, [formData.endDay]);
 
   const showBirthdatePlaceholder = isBirthdateFocused && !inputBirthdateRef.current?.value
 
@@ -223,7 +221,7 @@ const closeModal = () => {
   };
 
   const handleTelBlur = useCallback(() => {
-    const telValue = formData.tel
+    const telValue = formData.company
     setIsTelFocused(false);
     if (telValue === "") {
       setIsTelComplete(false);
@@ -269,7 +267,16 @@ const closeModal = () => {
     } else {
       setIsBirthdate(false);
     }
-    }, [formData.birthday]);
+    
+  // 현재 날짜와 입력된 날짜를 비교
+  const currentDate = new Date();
+  const inputDate = new Date(year, month - 1, day)
+
+  if (inputDate.getTime() < currentDate.getTime()) {
+    setIsBirthdate(false);
+    return;
+  }
+    }, [formData.endDay]);
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -294,51 +301,28 @@ const handleChange = (e) => {
     handleChange(e);
   }
 
-  // 회원가입
+  // 신규 통장 등록
+
+  const token = localStorage.getItem('access_token')
+
+  const headers = {
+    "Authorization": "Bearer " + token
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    const forSubmitFormData = {
-      ...formData,
-      birthday: `${formData.birthday} 00:00`
-    }
-
-    axios.post('/user/sign-up', forSubmitFormData)
+    axios.post('/team-account/add-list', formData, {headers: headers})
       .then(response => {
-        navigate('/user/sign-up/complete')
+        alert('새 통장이 등록되었습니다')
+        navigate('/teamaccount/main')
       })
       .catch(error => {
-        console.error('회원가입 실패')
-        alert('회원가입에 실패했습니다')
+        console.error('통장 등록 실패')
+        alert('통장 등록에 실패했습니다')
       })
   }
 
-  // 이메일 인증
-  const [loading, setLoading] = useState(false)
-
-  const handleEmailVerification = (e) => {
-
-    e.preventDefault()
-
-    setLoading(true)
-
-    axios.post(`/user/verify-email`, { email: formData.email })
-      .then((response) => {
-        if (response.data.message === "DUPLICATE") {
-          alert('이미 가입된 이메일입니다')
-          return
-        }
-        alert('입력하신 메일로 인증코드가 전송되었습니다')
-        navigate('/user/verify-email', {state: { email: formData.email, name: formData.name, birthday: formData.birthday, tel: formData.tel }})
-      })
-      .catch((error) => {
-        console.log('이메일 인증 메일 전송 실패')
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -365,7 +349,7 @@ const BANK_INFO = {
 const handleBankSelect = (bankInfo) => () => { 
   setChosenBank(bankInfo.display);
   
-  setFormData(prevData => ({ ...prevData, tel: bankInfo.value }));
+  setFormData(prevData => ({ ...prevData, company: bankInfo.value }));
 
   if (bankInfo.value !== "") {
     setIsTelComplete(true);
@@ -375,30 +359,38 @@ const handleBankSelect = (bankInfo) => () => {
   closeModal();
 };
 
+const formatValueWithComma = (value) => {
+  let formattedValue = "";  
+  let reversedValue = value.split('').reverse().join('');
+  
+  for (let i = 0; i < reversedValue.length; i++) {
+      if (i > 0 && i % 3 === 0) {
+          formattedValue += ",";
+      }
+      formattedValue += reversedValue[i];
+  }
+
+  return formattedValue.split('').reverse().join('');
+}
+
 const [displayValue, setDisplayValue] = useState('');
 
 const handleTargetValue = (e) => {
 
   const value = e.target.value.replace(/\D+/g, "");
+  const formattedValue = formatValueWithComma(value);
   
-  let formattedValue = "";  
-
-
-  for (let i = 0; i < value.length; i++) {
-      if (i > 0 && i % 3 === 0) {
-          formattedValue += ",";
-      }
-      formattedValue += value[i];
-  }
-
   setDisplayValue(formattedValue);
 
   setFormData(prevData => ({
     ...prevData,
-    password: value
+    goal: value
   }));
 }
-console.log(formData.password)
+
+console.log(formData)
+console.log(isBirthdate)
+
   return (
     <SignupWrapper>
       <div className="signup-header"><FontAwesomeIcon icon={faArrowLeft} color="black" size="2x" onClick={handleGoBack}/></div>
@@ -408,27 +400,27 @@ console.log(formData.password)
       <form>
         <div className={`signup-email ${isEmailFocused ? 'focus' : ''} ${isEmailComplete ? 'complete' : ''}`}>
           <label id="signup-label">통장 이름</label>
-          <input type="text" id="signup-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} onChange={(e) => {functionSetEmail(e); handleInputChange(e)}} inputmode="email" value={formData.email} name="email"/>
+          <input type="text" id="signup-input" ref={inputEmailRef} onFocus={handleEmailFocus} onBlur={handleEmailBlur} onChange={(e) => {functionSetEmail(e); handleInputChange(e)}} inputmode="email" value={formData.name} name="name"/>
         </div>
 
         <div className={`signup-password ${isPasswordFocused ? 'focus' : ''} ${isPasswordComplete ? 'complete' : ''}`}>
           <label id="signup-label">목표액</label>
-          <input type="text" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {handleTargetValue(e)}} value={displayValue} name="password"/>
+          <input type="text" id="signup-input" ref={inputPasswordRef} onFocus={handlePasswordFocus} onBlur={handlePasswordBlur} onChange={(e) => {handleTargetValue(e)}} value={displayValue} name="goal"/>
         </div>
 
         <div className={`signup-birthdate ${isBirthdateFocused ? 'focus' : ''} ${isBirthdateComplete ? 'complete' : ''}`}>
           <label id="signup-label">종료일</label>
-          <input type="text" id="signup-input" ref={inputBirthdateRef} onFocus={handleBirthdateFocus} onBlur={handleBirthdateBlur} onChange={(e) => {functionSetBirthdate(e) ; handleInputChange(e)}} value={formData.birthday} name="birthday"/>
+          <input type="text" id="signup-input" ref={inputBirthdateRef} onFocus={handleBirthdateFocus} onBlur={handleBirthdateBlur} onChange={(e) => {functionSetBirthdate(e) ; handleInputChange(e)}} value={formData.endDay} name="endDay"/>
         </div>
 
         <div className={`signup-name ${isNameFocused ? 'focus' : ''} ${isNameComplete ? 'complete' : ''}`}>
           <label id="signup-label">계좌번호</label>
-          <input type="text" id="signup-input" ref={inputNameRef} onFocus={handleNameFocus} onBlur={handleNameBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} value={formData.name} name="name"/>
+          <input type="text" id="signup-input" ref={inputNameRef} onFocus={handleNameFocus} onBlur={handleNameBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} value={formData.accountNumber} name="accountNumber"/>
         </div>
         
         <div className={`signup-password-verify ${isTelFocused ? 'focus' : ''} ${isTelComplete ? 'complete' : ''}`}>
           <label id="signup-label">은행</label>
-          <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} name="tel" onClick={openModal} autoComplete='off' value={chosenBank}/>
+          <input type="text" id="signup-input" ref={inputTelRef} onFocus={handleTelFocus} onBlur={handleTelBlur} onChange={(e) => {handleChange(e); handleInputChange(e)}} name="company" onClick={openModal} autoComplete='off' value={chosenBank} readonly inputmode="none"/>
         </div>
 
         <ModalOverlay isOpen={isModalOpen} onClick={closeModal} />
@@ -486,7 +478,7 @@ console.log(formData.password)
         </ModalWrapper>
 
         <div className="signup-button-container">
-          <SignupButton type="submit" className="signup-button" onClick={handleSubmit} disabled={!(formData.name && formData.email && formData.password && formData.tel && formData.birthday && isBirthdate)}>등록하기</SignupButton>
+          <SignupButton type="submit" className="signup-button" onClick={handleSubmit} disabled={!(formData.name && formData.goal && formData.endDay && formData.accountNumber && formData.company && isBirthdate)}>등록하기</SignupButton>
         </div>
       </form>
     </SignupWrapper>
@@ -495,46 +487,51 @@ console.log(formData.password)
 
 const SignupWrapper = styled.div`
   min-height: 100vh;
+  min-width: 100vw;
+  position: fixed;
 
   .signup-header {
     display: flex;
-    margin: 3vh 2vh;
+    margin: 8vw 6vw;
   }
 
   .signup-title {
-    font-size: 2.8vh;
-    margin-top: 3vh;
-    margin-left: 3vh;
+    font-size: 6vw;
+    margin-top: 3vw;
+    margin-left: 8vw;
     text-align: left;
     color: #000004;
   }
 
   .signup-title-underline {
-    height: 0.3vh;
-    width: 80%;
-    margin: 1.5vh auto;
+    height: 0.7vw;
+    width: 80vw;
+    margin: 4vw auto;
     background-color: #000004;
   }
 
   .signup-email {
-    padding: 2vh 7vh;
+    padding: 4vw 15vw;
     display: flex;
   }
 
   .signup-email > input{
     display: block;
-	  width: 80%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-	  font-size: 2vh;
-    font-weight: 800;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-email > input:focus{
@@ -545,38 +542,38 @@ const SignupWrapper = styled.div`
   }
 
   .signup-email > label{
-      top: 19vh;
-      position: absolute;
-      left: 9vh;
-      max-width: 100%;
-      height: 2.7em;
-      line-height: 1.33;
-      color: #909090;
-      font-size: 2vh;
-      cursor: text;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: all .2s;
-      pointer-events: none;
-      -webkit-font-smoothing: antialiased;
-      transform: translate3d(0, 3px, 0) scale(1);
-      transform-origin: left top;
+    top: 45vw;
+        position: absolute;
+        left: 16vw;
+        max-width: 100%;
+        height: 2.7em;
+        line-height: 1.33;
+        color: #909090;
+        font-size: 4.5vw;
+        cursor: text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all .2s;
+        pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        transform: translate3d(0, 3px, 0) scale(1);
+        transform-origin: left top;
   }
 
   .signup-email.focus > label{
-      top: 17vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 40vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
       color: #76A8DE;
   }
 
   .signup-email.complete > label{
-      top: 17vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 40vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 
   input::placeholder {
@@ -607,18 +604,21 @@ const SignupWrapper = styled.div`
 
   .signup-password > input{
     display: block;
-	  width: 80%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-    font-size: 2vh;
-    font-weight:620;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-password > input:focus{
@@ -629,38 +629,38 @@ const SignupWrapper = styled.div`
   }
 
   .signup-password > label{
-      top: 27vh;
-      position: absolute;
-      left: 9vh;
-      max-width: 100%;
-      height: 2.7em;
-      line-height: 1.33;
-      color: #909090;
-      font-size: 2vh;
-      cursor: text;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: all .2s;
-      pointer-events: none;
-      -webkit-font-smoothing: antialiased;
-      transform: translate3d(0, 3px, 0) scale(1);
-      transform-origin: left top;
+    top: 63vw;
+        position: absolute;
+        left: 16vw;
+        max-width: 100%;
+        height: 2.7em;
+        line-height: 1.33;
+        color: #909090;
+        font-size: 4.5vw;
+        cursor: text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all .2s;
+        pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        transform: translate3d(0, 3px, 0) scale(1);
+        transform-origin: left top;
   }
 
   .signup-password.focus > label{
-      top: 25vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 58vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
       color: #76A8DE;
   }
 
   .signup-password.complete > label{
-      top: 25vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 58vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 
   .signup-password-verify {
@@ -670,18 +670,21 @@ const SignupWrapper = styled.div`
 
   .signup-password-verify > input{
     display: block;
-	  width: 80%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-	  font-size: 2vh;
-    font-weight: 800;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-password-verify > input:focus{
@@ -692,38 +695,38 @@ const SignupWrapper = styled.div`
   }
 
   .signup-password-verify > label{
-      top: 51vh;
-      position: absolute;
-      left: 9vh;
-      max-width: 100%;
-      height: 2.7em;
-      line-height: 1.33;
-      color: #909090;
-      font-size: 2vh;
-      cursor: text;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: all .2s;
-      pointer-events: none;
-      -webkit-font-smoothing: antialiased;
-      transform: translate3d(0, 3px, 0) scale(1);
-      transform-origin: left top;
+    top: 119vw;
+        position: absolute;
+        left: 16vw;
+        max-width: 100%;
+        height: 2.7em;
+        line-height: 1.33;
+        color: #909090;
+        font-size: 4.5vw;
+        cursor: text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all .2s;
+        pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        transform: translate3d(0, 3px, 0) scale(1);
+        transform-origin: left top;
   }
 
   .signup-password-verify.focus > label{
-      top: 49vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 114vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
       color: #76A8DE;
   }
 
   .signup-password-verify.complete > label{
-      top: 49vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 114vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 
   .signup-name {
@@ -733,21 +736,21 @@ const SignupWrapper = styled.div`
 
   .signup-name > input{
     display: block;
-	  width: 80%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-	  font-size: 2vh;
-	  font-family: inherit;
-	  vertical-align: baseline;
-	  -webkit-appearance: none;
-	  overflow: visible;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-name > input:focus{
@@ -758,38 +761,38 @@ const SignupWrapper = styled.div`
   }
 
   .signup-name > label{
-      top: 43vh;
-      position: absolute;
-      left: 9vh;
-      max-width: 100%;
-      height: 2.7em;
-      line-height: 1.33;
-      color: #909090;
-      font-size: 2vh;
-      cursor: text;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: all .2s;
-      pointer-events: none;
-      -webkit-font-smoothing: antialiased;
-      transform: translate3d(0, 3px, 0) scale(1);
-      transform-origin: left top;
+    top: 100vw;
+        position: absolute;
+        left: 16vw;
+        max-width: 100%;
+        height: 2.7em;
+        line-height: 1.33;
+        color: #909090;
+        font-size: 4.5vw;
+        cursor: text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all .2s;
+        pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        transform: translate3d(0, 3px, 0) scale(1);
+        transform-origin: left top;
   }
 
   .signup-name.focus > label{
-      top: 41vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 95vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
       color: #76A8DE;
   }
 
   .signup-name.complete > label{
-      top: 41vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 95vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 
   .signup-birthdate {
@@ -799,21 +802,21 @@ const SignupWrapper = styled.div`
 
   .signup-birthdate > input{
     display: block;
-	  width: 80%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-	  font-size: 2vh;
-	  font-family: inherit;
-	  vertical-align: baseline;
-	  -webkit-appearance: none;
-	  overflow: visible;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-birthdate > input:focus{
@@ -824,38 +827,38 @@ const SignupWrapper = styled.div`
   }
 
   .signup-birthdate > label{
-      top: 35vh;
-      position: absolute;
-      left: 9vh;
-      max-width: 100%;
-      height: 2.7em;
-      line-height: 1.33;
-      color: #909090;
-      font-size: 2vh;
-      cursor: text;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: all .2s;
-      pointer-events: none;
-      -webkit-font-smoothing: antialiased;
-      transform: translate3d(0, 3px, 0) scale(1);
-      transform-origin: left top;
+    top: 81vw;
+        position: absolute;
+        left: 16vw;
+        max-width: 100%;
+        height: 2.7em;
+        line-height: 1.33;
+        color: #909090;
+        font-size: 4.5vw;
+        cursor: text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all .2s;
+        pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        transform: translate3d(0, 3px, 0) scale(1);
+        transform-origin: left top;
   }
 
   .signup-birthdate.focus > label{
-      top: 33vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 76vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
       color: #76A8DE;
   }
 
   .signup-birthdate.complete > label{
-      top: 33vh;
-      left: 8vh;
-      font-size: 12px;
-      line-height: 1.33;
+    top: 76vw;
+        left: 14vw;
+        font-size: 3vw;
+        line-height: 1.33;
   }
 
   .signup-tel {
@@ -865,21 +868,21 @@ const SignupWrapper = styled.div`
 
   .signup-tel > input{
     display: block;
-	  width: 80%;
-	  color: #909090;
-	  border:0;
-	  border-bottom: 1px solid #8c8c8c;
-	  background-color: transparent;
-	  box-sizing: border-box;
-	  border-radius: 0;
-	  padding: 0;
-	  height: 36px;
-	  line-height: 1.33;
-	  font-size: 2vh;
-	  font-family: inherit;
-	  vertical-align: baseline;
-	  -webkit-appearance: none;
-	  overflow: visible;
+    width: 100%;
+    color: #909090;
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0;
+    height: 10vw;
+    line-height: 1.33;
+    font-size: 5vw;
+    font-family: inherit;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    overflow: visible;
   }
 
   .signup-tel > input:focus{
@@ -938,15 +941,15 @@ const SignupWrapper = styled.div`
 `
 
 const SignupButton = styled.button`
-  width: 12.5vh;
-  height: 5vh;
-  border-radius: 15px;
-  border: none;
-  background-color: #9AC5F4;
-  color: white;
-  font-weight: 800;
-  font-size: 2.3vh;
-  margin-top: 2vh;
+      width: 28vw;
+      height: 11vw;
+      border-radius: 15px;
+      border: none;
+      background-color: #9AC5F4;
+      color: white;
+      font-weight: 800;
+      font-size: 5vw;
+      margin-top: 5vw;
 
   &:disabled {
     background-color: #ddd;
@@ -993,7 +996,8 @@ const ModalWrapper = styled.div`
   overflow: hidden;
   transition: height 0.2s ease-in-out;
   z-index: 2000;
-  border-radius: 20px;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 `;
 
 const ModalContent = styled.div`
@@ -1055,4 +1059,4 @@ const BankLabel = styled.p`
   width: 100%;
 `;
 
-export default Signup
+export default TeamAccountAddNew

@@ -13,7 +13,7 @@ const MainPage = () => {
 
   // 이미지 회전하는 속도에 맞춰 글자 변환
   const [text, setText] = useState('최저가 항공권');
-  const texts = ['최저가 항공권', '맞춤 카드', '환율 예측', '모임 통장'];
+  const texts = ['최저가 항공권', '맞춤 카드', '모임 통장', '경비 절약'];
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const MainPage = () => {
 
 
   // 일정 수준 스크롤되어야 요소가 나타나도록 하기
-  const [showPackage, setShowPackage] = useState(false);
+  const [showPackage, setShowPackage] = useState(true);
   const [showCard, setShowCard] = useState(false);
   const [showExchange, setShowExchange] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
@@ -49,19 +49,13 @@ const MainPage = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 70) {
-        setShowPackage(true);
-      }
       if (window.scrollY > 300) {
         setShowCard(true);
       }
       if (window.scrollY > 600) {
-        setShowExchange(true);
-      }
-      if (window.scrollY > 900) {
         setShowAccount(true);
       }
-      if (window.scrollY > 1200) {
+      if (window.scrollY > 900) {
         setShowChecklist(true);
       }
     };
@@ -137,24 +131,7 @@ const goToTeamAccount = () => {
           </div>
         </div>
 
-        <div className="main-body-exchange-container" style={{opacity: showExchange ? 1 : 0, transition: 'opacity 1s'}}>
-            <div className="main-body-exchange-text">
-              <div className="main-body-exchange-text-title">
-                오늘 대비하는 내일의 환율
-              </div>
-              <br/>
-              <div className="main-body-exchange-text-content">
-                데이터 기반의 예측으로
-                <div className="main-body-text-spacer"></div>
-                더 많은 추억을 위한 환전 계획을 세우세요
-              </div>
-              <button className="main-body-exchange-button">환율 예측해보기</button>
-            </div>
-              <img className="main-body-exchange-img" src={MainExchangeImg}/>
-          </div>
-
           <div className="main-body-account-container" style={{opacity: showAccount ? 1 : 0, transition: 'opacity 1s'}}>
-            <img className="main-body-account-img" src={MainAccountImg}/>
             <div className="main-body-account-text">
               <div className="main-body-account-text-title">
                 함께 준비해가는 여행
@@ -167,9 +144,11 @@ const goToTeamAccount = () => {
               </div>
               <button className="main-body-account-button" onClick={goToTeamAccount}>모임 통장 보기</button>
             </div>
+            <img className="main-body-account-img" src={MainAccountImg}/>
           </div>
 
           <div className="main-body-checklist-container" style={{opacity: showChecklist ? 1 : 0, transition: 'opacity 1s'}}>
+          <img className="main-body-checklist-img" src={MainChecklistImg}/>
             <div className="main-body-checklist-text">
               <div className="main-body-checklist-text-title">
                 한 여행은 또 다음 여행으로
@@ -182,7 +161,6 @@ const goToTeamAccount = () => {
               </div>
               <button className="main-body-checklist-button" onClick={handleScrollToTop}>와플 시작해보기</button>
             </div>
-              <img className="main-body-checklist-img" src={MainChecklistImg}/>
           </div>
       </MainPageWrapper>
   )
@@ -241,10 +219,10 @@ const MainPageWrapper = styled.div`
   .main-img-waffle {
     position: absolute;
     top: 28vh;
-    left: 96vw;
-    transform: translate(-50%, -50%);
+    left: 97vw;
+    -webkit-transform: translate(-50%, -50%);
     width: 90vw;
-    animation: ${rotateAnimation} 20s linear infinite;
+    -webkit-animation: ${rotateAnimation} 20s linear infinite;
   }
 
   .main-body-title {
@@ -268,24 +246,24 @@ const MainPageWrapper = styled.div`
   .main-body-package-text-title {
     text-align: left;
     margin-left: 2.5vh;
-    font-size: 15px;
+    font-size: 2vh;
   }
 
   .main-body-package-text-content {
-    font-size: 12px;
+    font-size: 1.3vh;
     text-align: left;
-    margin-left: 4vh;
+    margin-left: 8vw;
   }
 
   .main-body-package-button {
     margin-top: 1.5vh;
     background-color: #9AC5F4;
     border-radius: 5px;
-    width: 15vh;
+    width: 35vw;
     height: 4vh;
     border: none;
     font-weight: 800;
-    margin-left: 11vh;
+    margin-left: 25vw;
   }
 
   .main-body-package-img {
@@ -307,13 +285,13 @@ const MainPageWrapper = styled.div`
   .main-body-card-text {
     display: flex;
     flex-direction: column;
-    margin-right: 1.1vh;
+    margin-right: 7vw;
   }
 
   .main-body-card-text-title {
     text-align: left;
     margin-left: 2.5vh;
-    font-size: 15px;
+    font-size: 2vh;
   }
 
   .main-body-card-text-content {
@@ -331,52 +309,11 @@ const MainPageWrapper = styled.div`
     margin-top: 1.5vh;
     background-color: #99DBF5;
     border-radius: 5px;
-    width: 15vh;
+    width: 35vw;
     height: 4vh;
     border: none;
     font-weight: 800;
-    margin-left: 13vh;
-  }
-
-  .main-body-exchange-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 30vh;
-  }
-
-  .main-body-exchange-text {
-    display: flex;
-    flex-direction: column;
-
-  }
-
-  .main-body-exchange-text-title {
-    text-align: left;
-    margin-left: 2.5vh;
-    font-size: 15px;
-  }
-
-  .main-body-exchange-text-content {
-    font-size: 12px;
-    text-align: left;
-    margin-left: 4vh;
-  }
-
-  .main-body-exchange-button {
-    margin-top: 1.5vh;
-    background-color: #A7ECEE;
-    border-radius: 5px;
-    width: 15vh;
-    height: 4vh;
-    border: none;
-    font-weight: 800;
-    margin-left: 11vh;
-  }
-
-  .main-body-exchange-img {
-    width: 25%;
-    margin-right: 3vh;
+    margin-left: 26vw;
   }
 
   .main-body-account-container {
@@ -389,35 +326,35 @@ const MainPageWrapper = styled.div`
   .main-body-account-text {
     display: flex;
     flex-direction: column;
-    margin-right: 1.1vh;
+
   }
 
   .main-body-account-text-title {
     text-align: left;
     margin-left: 2.5vh;
-    font-size: 15px;
+    font-size: 2vh;
   }
 
   .main-body-account-text-content {
-    font-size: 12px;
+    font-size: 1.3vh;
     text-align: left;
-    margin-left: 4vh;
-  }
-
-  .main-body-account-img {
-    width: 25%;
-    margin-left: 3vh;
+    margin-left: 8vw;
   }
 
   .main-body-account-button {
     margin-top: 1.5vh;
-    background-color: #FFEEBB;
+    background-color: #A7ECEE;
     border-radius: 5px;
-    width: 15vh;
+    width: 35vw;
     height: 4vh;
     border: none;
     font-weight: 800;
-    margin-left: 13vh;
+    margin-left: 25vw;
+  }
+
+  .main-body-account-img {
+    width: 25%;
+    margin-right: 3vh;
   }
 
   .main-body-checklist-container {
@@ -425,19 +362,19 @@ const MainPageWrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-top: 30vh;
-    margin-bottom: 20vh;
+    margin-bottom: 5vh;
   }
 
   .main-body-checklist-text {
     display: flex;
     flex-direction: column;
-
+    margin-right: 7vw;
   }
 
   .main-body-checklist-text-title {
     text-align: left;
-    margin-left: 2.5vh;
-    font-size: 15px;
+    margin-left: 5vw;
+    font-size: 2vh;
   }
 
   .main-body-checklist-text-content {
@@ -446,20 +383,20 @@ const MainPageWrapper = styled.div`
     margin-left: 4vh;
   }
 
+  .main-body-checklist-img {
+    width: 25%;
+    margin-left: 3vh;
+  }
+
   .main-body-checklist-button {
     margin-top: 1.5vh;
-    background-color: #FFF8E4;
+    background-color: #FFEEBB;
     border-radius: 5px;
-    width: 15vh;
+    width: 35vw;
     height: 4vh;
     border: none;
     font-weight: 800;
-    margin-left: 11vh;
-  }
-
-  .main-body-checklist-img {
-    width: 25%;
-    margin-right: 3vh;
+    margin-left: 26vw;
   }
 `
 

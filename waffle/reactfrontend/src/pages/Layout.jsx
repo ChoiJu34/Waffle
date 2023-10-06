@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 
 import Header from '../components/Commons/Header/Header.jsx'
 import Footer from '../components/Commons/Footer/Footer.jsx'
-import { useSelector } from 'react-redux'
+
 
 const Layout = () => {
 
@@ -12,14 +12,15 @@ const Layout = () => {
   const isUserRoute = /^\/user\//.test(location.pathname);
   const isTeamAccountAddRoute = /\/teamaccount\/add/.test(location.pathname);
   const isTeamAccountUpdateRoute = /\/teamaccount\/update/.test(location.pathname);
+  const isUserUpdate = /\/mypage\/update-userinfo/.test(location.pathname)
 
   return (
     <SLayout>
-      {!(isUserRoute || isTeamAccountAddRoute || isTeamAccountUpdateRoute)&& <Header/>}
+      {!(isUserRoute || isTeamAccountAddRoute || isTeamAccountUpdateRoute) && <Header />}
       <SContent isUserRoute={isUserRoute} isTeamAccountAddRoute={isTeamAccountAddRoute} isTeamAccountUpdateRoute={isTeamAccountUpdateRoute}>
         <Outlet/>
       </SContent>
-      {!(isUserRoute || isTeamAccountAddRoute || isTeamAccountUpdateRoute) && <Footer/>}
+      {(isUserUpdate || (!(isUserRoute || isTeamAccountAddRoute || isTeamAccountUpdateRoute))) && <Footer />}
     </SLayout>
   )
 }

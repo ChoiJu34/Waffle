@@ -6,11 +6,14 @@ import 'animate.css';
 import TeamAccountDetailIndividualList from './TeamAccountDetailIndividualList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import IndividualDataContext from '../Commons/IndividualDataContext';
 import TeamAccountUpdateIndividual from './TeamAccountUpdateIndividual';
+import axios from 'axios'
 
 const TeamAccountDetail = () => {
+
+  const location = useLocation()
 
   const navigate = useNavigate()
 
@@ -20,6 +23,36 @@ const TeamAccountDetail = () => {
 
     navigate(-1);
   }
+
+  const token = localStorage.getItem('access_token')
+
+  const headers = {
+    "Authorization": "Bearer " + token
+  }
+
+  const [teamAccountData, setTeamAccountData] = useState()
+  const [isMaster, setIsMaster] = useState(false)
+
+  useEffect(() => {
+    const id = window.location.pathname.match(/\d+$/)?.[0];
+
+    if (!id) {
+      console.error('ID를 찾을 수 없습니다.');
+      return;
+    }
+
+    axios.get(`/team-account/detail/${id}/`, { headers: headers })
+      .then(response => {
+        if (response.data.master) {
+          setIsMaster(true)
+        }
+        setTeamAccountData(response.data)
+      })
+      .catch(error => {
+        console.error('로그인 실패');
+        alert('로그인에 실패했습니다');
+      });
+  }, []);
 
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 })
 
@@ -66,15 +99,8 @@ const TeamAccountDetail = () => {
     setShowDetail({ target: false, raised: false, spent: false });
   }
 
-  const accountName = "텅장"
-  const endDate = "2023-11-30"
-
-  const spentValue = 500
-  const raisedValue = 1300
-  const targetValue = 3000
-
-  const spentRatio = spentValue / targetValue * 100
-  const raisedRatio = raisedValue / targetValue * 100
+  const spentRatio = teamAccountData?.totalSub / teamAccountData?.goal * 100
+  const raisedRatio = teamAccountData?.totalAdd / teamAccountData?.goal * 100
 
   // 메뉴
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -98,20 +124,22 @@ const TeamAccountDetail = () => {
 
   // 수정 화면으로 보낼 데이터
   const dataToUpdate = {
-    accountName: accountName,
-    target: targetValue,
-    endDate: endDate
+    accountName: teamAccountData?.name,
+    target: teamAccountData?.goal,
+    endDate: teamAccountData?.endDay
   }
 
+  const id = window.location.pathname.match(/\d+$/)?.[0]
+
   const goToUpdate = () => {
-    navigate('/teamaccount/update', { state: dataToUpdate })
+    navigate(`/teamaccount/update/${id}`, { state: dataToUpdate })
   }
 
   const [dDay, setDDay] = useState(null);
 
   useEffect(() => {
-    if (endDate) {
-      const targetDate = new Date(endDate);
+    if (teamAccountData?.endDay) {
+      const targetDate = new Date(teamAccountData?.endDay);
       const currentDate = new Date();
 
       const differenceInTime = targetDate - currentDate;
@@ -119,25 +147,7 @@ const TeamAccountDetail = () => {
 
       setDDay(differenceInDays);
     }
-  }, [endDate]);
-
-  // 개인 목표 수정
-  const [individualData, setIndividualData] = useState(
-      [
-        {name: "대장", target: 500},
-        {name: "부부젤라", target: 1500}
-      ])
-
-  const handleIndividualDataChange = (updatedData) => {
-    setIndividualData(updatedData)
-  }
-
-  const goToUpdateIndividual = () => {
-    setShowIndividualUpdate(true)
-    // navigate('/teamaccount/update/individual', { state: individualData })
-  }
-
-  const [showIndividualUpdate, setShowIndividualUpdate] = useState(false);
+  }, [teamAccountData?.endDay]);
 
   // 스윙 이미지
   const [swingAnimation, setSwingAnimation] = useState("animate__fadeInTopLeft");
@@ -177,22 +187,64 @@ const TeamAccountDetail = () => {
         return () => clearTimeout(initialTimeout);
     }, []);
 
+    const numberWithCommas = (x) => {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+
+    const [inviteCode, setInviteCode] = useState('')
+
+    useEffect(() => {
+      const accountId = teamAccountData?.id
+  
+      axios.get(`/team-account/create-code/${accountId}`, { headers: headers })
+        .then(response => {
+          setInviteCode(response.data.code)
+        })
+        .catch(error => {
+          console.error('초대 코드 못 가져옴');
+        });
+    }, [teamAccountData]);
+
+   const goToOut = () => {
+    navigate(`/teamaccount/out`, { state: teamAccountData })
+   }
+
+   const goToDelete = () => {
+    navigate(`/teamaccount/delete`, { state: teamAccountData })
+   }
+
+   const goToUpdateIndividual = () => {
+    const accountId = teamAccountData?.id
+
+    navigate(`/teamaccount/update/individual/${accountId}`)
+   }
+
   return (
-    <TeamAccountDetailWrapper spentRatio={spentRatio} raisedRatio={raisedRatio}>
-       {showIndividualUpdate ? (<TeamAccountUpdateIndividual handleIndividualDataChange={handleIndividualDataChange} individualData={individualData} setShowIndividualUpdate={setShowIndividualUpdate}/>) : 
-      (<>
+    <TeamAccountDetailWrapper spentRatio={spentRatio} raisedRatio={raisedRatio}> 
       <div className="teamaccount-detail-title">
       <div className="login-header"><FontAwesomeIcon icon={faArrowLeft} color="black" onClick={handleGoBack}/></div>
-        <div className="teamaccount-detail-title-text">{accountName}</div>
+        <div className="teamaccount-detail-title-text">{teamAccountData?.name}</div>
         <FontAwesomeIcon icon={faEllipsisVertical} color="black" className="hamburger-dot" onClick={toggleMenu}/>
         {isMenuOpen && (
           <div className="menu">
+          {isMaster ?
+           (<>
            <div className="menu-item" onClick={goToUpdate}>통장 정보 수정</div>
            <div className="menu-item" onClick={goToUpdateIndividual}>개인 목표 수정</div>
-           <div className="menu-item-delete">모임 통장 삭제</div>
+           <div className="menu-item-delete" onClick={goToDelete}>모임 통장 삭제</div>
+           </>) :
+           (<>
+           <div className="menu-item-delete" onClick={goToOut}>모임 통장 탈퇴</div>
+           </>)}
           </div>
         )}
-      </div>
+        </div>
+      
+      {isMaster && 
+      (<div className='teamaccount-detail-code-container'>
+        <div className='teamaccount-detail-code'>{inviteCode}</div>
+      </div>)}
 
       <div className="teamaccount-detail-maingraph-container">
         <div className="teamaccount-detail-maingraph-category">
@@ -218,7 +270,7 @@ const TeamAccountDetail = () => {
             onTouchStart={handleMouseDown}
             onTouchEnd={handleMouseUpOrLeave}
           >
-            {showDetail.target && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>목표 금액<br />3,000원</div>}
+            {showDetail.target && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>목표 금액<br />{numberWithCommas(teamAccountData?.goal)}원</div>}
 
             <div
               data-type="raised"
@@ -228,8 +280,8 @@ const TeamAccountDetail = () => {
               onMouseLeave={handleMouseUpOrLeave}
               onTouchStart={handleMouseDown}
               onTouchEnd={handleMouseUpOrLeave}
-            >{showDetail.raised && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>모은 금액<br />1,900원</div>}
-             {raisedValue < targetValue/2 ?
+            >{showDetail.raised && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>모은 금액<br />{numberWithCommas(teamAccountData?.totalAdd)}원</div>}
+             {teamAccountData?.totalAdd < teamAccountData?.goal/2 ?
               <img src={MainGraphBackpack} alt="MainGraphBackpack" className={`animate__animated ${backAnimation} raised-end-back`} data-type="raised" /> :
               <img src={MainGraphPlane} alt="MainGraphPlane" className={`animate__animated ${swingAnimation} raised-end`}  data-type="raised" />}
             </div>
@@ -242,7 +294,7 @@ const TeamAccountDetail = () => {
               onMouseLeave={handleMouseUpOrLeave}
               onTouchStart={handleMouseDown}
               onTouchEnd={handleMouseUpOrLeave}
-            >{showDetail.spent && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>지출 금액<br />500원</div>}</div>
+            >{showDetail.spent && <div className="teamaccount-detail-maingraph-detail" style={{top: `${touchPosition.y}px`, left: `${touchPosition.x}px`}}>지출 금액<br />{numberWithCommas(teamAccountData?.totalSub)}원</div>}</div>
           </div>
         </div>
         <div className="team-account-detail-individual-head-container">
@@ -251,10 +303,8 @@ const TeamAccountDetail = () => {
         <div className="team-account-detail-individual-title">개인별 목표 금액</div>
         <TeamAccountDetailIndividualList />
       </div>
-      </>)}
     </TeamAccountDetailWrapper>
-  )
-}
+  )}
 
 const swingAnimation = keyframes`
   20% {
@@ -295,8 +345,8 @@ const LandingAnimation = keyframes`
 
 const TeamAccountDetailWrapper = styled.div`
 .teamaccount-detail-title {
-    font-size: 3vh;
-    margin-top: 4vh;
+    font-size: 6.5vw;
+    margin-top: 9vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -305,13 +355,13 @@ const TeamAccountDetailWrapper = styled.div`
 
 .hamburger-dot {
     position: absolute;
-    right: 1.5vh;
+    right: 4vw;
 }
 
  .teamaccount-detail-maingraph-category {
   display: flex;
-  font-size: 1.7vh;
-  margin-top: 4vh;
+  font-size: 3.7vw;
+  margin-top: 9vw;
  }
 
  .teamaccount-detail-maingraph-category-spent {
@@ -320,7 +370,7 @@ const TeamAccountDetailWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 15vw;
-  height: 2.8vh;
+  height: 6.2vw;
   border-radius: 50px;
   background-color: #B0BDCB;
  }
@@ -331,7 +381,7 @@ const TeamAccountDetailWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 15vw;
-  height: 2.8vh;
+  height: 6.2vw;
   border-radius: 50px;
   background-color: #9AC5F4;
  }
@@ -342,20 +392,20 @@ const TeamAccountDetailWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 15vw;
-  height: 2.8vh;
+  height: 6.2vw;
   border-radius: 50px;
   background-color: #FFEEBB;
  }
 
  .teamaccout-detail-maingraph {
-  margin-top: 1.5vh;
+  margin-top: 3.5vw;
   display: flex;
   justify-content: center;
  }
 
  .teamaccount-detail-maingraph-target {
   width: 85vw;
-  height: 7vh;
+  height: 14vw;
   background-color: #FFEEBB;
   border-radius: 15px;
   position: relative;
@@ -367,7 +417,7 @@ const TeamAccountDetailWrapper = styled.div`
   top: 0;
   left: 0;
   width: ${props => props.spentRatio}%;
-  height: 7vh;
+  height: 14vw;
   background-color: #B0BDCB;
   border-radius: 15px;
   z-index: 3;
@@ -378,7 +428,7 @@ const TeamAccountDetailWrapper = styled.div`
   top: 0;
   left: 0;
   width: ${props => props.raisedRatio}%;
-  height: 7vh;
+  height: 14vw;
   background-color: #9AC5F4;
   border-radius: 15px;
   z-index: 2;
@@ -430,27 +480,27 @@ const TeamAccountDetailWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 15vw;
-  height: 2.8vh;
+  height: 6.5vw;
   border-radius: 50px;
 }
 
 .team-account-detail-individual-head-container {
   display: flex;
   justify-content: center;
-  margin-top: 2vh;
+  margin-top: 5vw;
   overflow: hidden;
-  height: 2vh;
+  height: 5vw;
 }
 
 .team-account-detail-individual-head {
   border: 3px solid #9AC5F4;
-  height: 5vh;
+  height: 10vw;
   border-radius: 15px;
   width: 85vw;
 }
 
 .team-account-detail-individual-title {
-  font-size: 2.5vh;
+  font-size: 6vw;
 }
 
 .menu {
@@ -462,7 +512,7 @@ const TeamAccountDetailWrapper = styled.div`
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 40000;
-  font-size: 2vh;
+  font-size: 4.5vw;
 }
 
 .menu-item {
@@ -477,7 +527,27 @@ const TeamAccountDetailWrapper = styled.div`
 .login-header {
   position: absolute;
   left: 0.1vw;
-  margin: 1.2vh 2vh;
+  margin: 1.2vw 2vh;
+}
+
+.teamaccount-detail-code-container {
+  height: 5vw;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.teamaccount-detail-code {
+  margin-top: 10vw;
+  margin-right: 10vw;
+  height: 7vw;
+  width: 20vw;
+  background-color: #99DBF5;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 `
 

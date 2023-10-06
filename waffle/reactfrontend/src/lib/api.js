@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const baseUrl = 'https://i9d108.p.ssafy.io/api/';
 const baseUrl = '`https://j9d109.p.ssafy.io:8081/';
-const baseNodeUrl = 'http://j9d109.p.ssafy.io:8000/';
+const baseNodeUrl = 'https://j9d109.p.ssafy.io:8003/';
 // const baseUrl = 'http://localhost:9999/api/';
 
 const headers = {
@@ -69,8 +69,13 @@ export const requestGetNode = async (url, params) => {
   }
 };
 
-export const requestPost = async (url, body, headers) => {
+export const requestPost = async (url, body) => {
   try {
+    const authorization = localStorage.getItem('access_token');
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8',
+      "Authorization": "Bearer " + authorization,
+    };
     const data = await axios.post(baseUrl + url, body, headers);
     return data;
   } catch (error) {
@@ -84,13 +89,13 @@ export const requestPostNode = async (url, body) => {
     const headers = {
       'Content-Type':'application/json;charset=UTF-8',
     };
-    const data = await axios.post(baseNodeUrl + url, body);
-    return data;
+    const response = await axios.post(baseNodeUrl + url, body, { headers });
+    return response.data;
   } catch (error) {
     console.log(error);
     throw error;
   }
-};
+}
 
 export const requestPut = async (url, body, headers) => {
   try {
