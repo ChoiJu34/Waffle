@@ -77,8 +77,6 @@ def crawling(request):
 
     find_lowest_package(data, user_cards)
 
-    logger.info(result)
-
     json_response = json.dumps(result, ensure_ascii=False).encode('utf-8')
     return HttpResponse(json_response, content_type="application/json;charset=utf-8")
 
