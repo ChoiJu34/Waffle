@@ -4,13 +4,24 @@ import Cell from "./Cell";
 
 function Board({ numbers, handleClick }) {
   return (
+    <Wrapper>
+      <div className="subtitle">1에서 50까지 순서대로 빠르게!</div>
     <Container>
       {numbers.map((num, index) => (
         <Cell num={num} key={index} handleClick={handleClick}></Cell>
       ))}
     </Container>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  font-size: 2vh;
+
+  .subtitle {
+  margin-bottom: 2vh;
+  }
+`
 
 const Container = styled.div`
   width: 90vw;
