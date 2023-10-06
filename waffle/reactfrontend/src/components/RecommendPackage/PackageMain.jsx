@@ -19,6 +19,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { AiFillCalendar } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 import SignupCompleteWaffle from "../../assets/SignupCompleteWaffle.png";
+import Game from '../Game/Game'
 
 
 
@@ -240,7 +241,9 @@ const PackageMain = () => {
   
     } catch (error) {
       console.error('포스트 에러', error);
-    } 
+    } finally {
+      setLoading(false)
+    }
   };
   const handleAirDelete = (id) => {
     // 해당 id를 가진 요소를 제외한 나머지 요소로 배열을 필터링합니다.
@@ -280,13 +283,7 @@ const PackageMain = () => {
 
   return (
       <Container>{loading ? (
-          <LoadingOverlay>
-            <LoadingImage
-              className="animate__animated animate__bounce animate__slow animate__infinite"
-              src={SignupCompleteWaffle}
-              alt="LoadingWaffle"
-            />
-          </LoadingOverlay>
+          <Game />
       ) : (
         <>
         <Peoplebox>

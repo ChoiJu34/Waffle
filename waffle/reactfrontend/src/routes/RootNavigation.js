@@ -34,6 +34,7 @@ import MyCard from "../components/MyCard/MyCard";
 import CardRegister from "../components/MyCard/CardRegister";
 import PackageList from "../components/RecommendPackage/PackageList";
 import FavoriteDetail from "../components/MyPage/FavoriteDetail";
+import LoadingGame from '../components/Game/Game';
 
 const RootNavigation = () => {
   return (
@@ -108,6 +109,7 @@ const RootNavigation = () => {
           <Route path="/teamaccount/delete" element={<TeamAccountDelete />} />
           <Route path="/mypage/mycard" element={<MyCard />} />
           <Route path="/mypage/card-register" element={<CardRegister />} />
+          <Route path="/game" element={<LoadingGame />} />
         </Route>
       </Routes>
     </BrowserRouter>
